@@ -104,16 +104,16 @@ ggplot(data = pd,
     plot.subtitle=element_text(face="italic",size=12,colour="grey40"),
     plot.title=element_text(size=22,face="bold")) 
 
-  # Doubling times
-start <- 1
-vec <- c(start, rep(NA, 10))
-text_list <- list()
-for (i in 0:10){
-  iup <- i + 1
-  this_day <- 4 * i
-  this_val <- vec[iup]
-  vec[iup+1] <- 4 * this_val
-  text_list[iup] <- paste0('Day ', this_day, ': ',format(this_val, big.mark = ','))
-}
-text_list <- unlist(text_list)
-cat(paste0(text_list, collapse = '\n'))
+#   # Doubling times
+# start <- 1
+# vec <- c(start, rep(NA, 10))
+# text_list <- list()
+# for (i in 0:10){
+#   iup <- i + 1
+#   this_day <- 4 * i
+#   this_val <- vec[iup]
+#   vec[iup+1] <- 4 * this_val
+#   text_list[iup] <- paste0('Day ', this_day, ': ',format(this_val, big.mark = ','))
+# }
+# text_list <- unlist(text_list)
+# cat(paste0(text_list, collapse = '\n'))
