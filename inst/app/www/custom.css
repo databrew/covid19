@@ -10,14 +10,15 @@ body {
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
     font-size: 16px;
-    overflow-x: hidden;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 .wrapper {
     height: 100%;
     position: relative;
     overflow-x: hidden;
-    overflow-y: auto
+    overflow-y: auto;
 }
 .wrapper:after,.wrapper:before {
     content: " ";
@@ -40,7 +41,6 @@ body {
 }
 .layout-top-nav .content-wrapper,.layout-top-nav .main-footer,.layout-top-nav .right-side {
     margin-left: 0}
-
 
 
 @media (max-width: 767px) {
@@ -67,7 +67,8 @@ body {
     background: #fff;
     padding: 15px;
     color: #444;
-    border-top: 1px solid #d2d6de}
+    border-top: 1px solid #d2d6de
+}
 .fixed .left-side,.fixed .main-header,.fixed .main-sidebar {
     position: fixed}
 .fixed .main-header {
@@ -187,21 +188,7 @@ a:active,a:focus,a:hover {
 }
 .layout-top-nav .main-header .navbar {
     margin-left: 0}
-.main-header #navbar-search-input.form-control {
-    background: rgba(255,255,255,.2);
-    border-color: transparent}
-.main-header #navbar-search-input.form-control:active,.main-header #navbar-search-input.form-control:focus {
-    border-color: rgba(0,0,0,.1);
-    background: rgba(255,255,255,.9)}
-.main-header #navbar-search-input.form-control:: -moz-placeholder {
-    color: #ccc;
-    opacity: 1}
-.main-header #navbar-search-input.form-control: -ms-input-placeholder {
-    color: #ccc}
-.main-header #navbar-search-input.form-control:: -webkit-input-placeholder {
-    color: #ccc}
-.main-header .navbar-custom-menu,.main-header .navbar-right {
-    float: right}
+
 @media (max-width: 991px) {
     .main-header .navbar-custom-menu a,.main-header .navbar-right a {
     color: inherit;
@@ -216,6 +203,7 @@ a:active,a:focus,a:hover {
     color: inherit;
     border: 0}
 }
+
 .main-header .sidebar-toggle {
     float: right;
     background-color: transparent;
@@ -223,6 +211,7 @@ a:active,a:focus,a:hover {
     padding: 20px 20px;
     font-family: fontAwesome; 
     color: rgb(108,108,108) !important;
+    visibility: hidden;
 }
 .main-header .sidebar-toggle:before {
     content: "\f0c9"}
@@ -317,11 +306,6 @@ a:active,a:focus,a:hover {
 /* Navbar */
 /* ########################### */ 
 
-.navbar-nav {
-    font-family: 'Ubuntu Mono', monospace;
-    font-weight: 100 !important;
-}
-
 .navbar-toggle {
     color: rgb(108,108,108);
     border: 0;
@@ -330,6 +314,21 @@ a:active,a:focus,a:hover {
     padding: 15px 15px
 }
 
+.navbar-nav {
+    font-family: 'Ubuntu Mono', monospace;
+    font-weight: 100 !important;
+}
+
+@media (max-width: 1250px) {
+.navbar-nav {
+margin-top: -50px;    
+}
+}
+
+@media (max-width: 767px) {
+.navbar-nav { 
+}
+}
 
 @media (max-width: 991px) {
     .navbar-custom-menu .navbar-nav>li {
@@ -740,7 +739,7 @@ a:active,a:focus,a:hover {
     border-top-right-radius: 0;
     border-bottom-right-radius: 4px;
     border-bottom-left-radius: 4px;
-    font-size: 14px;
+    font-size: 12px;
     background-color: #fff;
     padding: 7px 10px;
     border-bottom: 1px solid #eee;
@@ -920,7 +919,8 @@ a:active,a:focus,a:hover {
     left: auto}
 @media (max-width: 991px) {
     .navbar-custom-menu>.navbar-nav {
-    float: right}
+    float: right;
+    }
 .navbar-custom-menu>.navbar-nav>li {
     position: static}
 .navbar-custom-menu>.navbar-nav>li>.dropdown-menu {
@@ -2203,14 +2203,13 @@ background-color: #fff;
 
 /* Footer */
 footer {
-    height: 200px;
-    margin-top: 100px;
-    background: #444;
+    width: 100%;
     font-size: 10pt;
-    color: #f3f3f3;
+    color: rgb(108,108,108);
     padding: 30px;
     display: block;
-    align-content: center;
+    flex: 0 0 150px;/*or just height:50px;*/
+    margin-top: 100px;
 }
 
 footer .btn {

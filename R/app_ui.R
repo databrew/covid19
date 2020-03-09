@@ -3,29 +3,13 @@
 app_ui <- function() {
   
   # HEADER
-  header <- dashboardHeader(title = 'COVID-19 DATA EXPLORER') #tags$a(tags$img(src='www/logo.png', alt = 'Databrew')))
-  
-  # SIDEBAR
-  sidebar <- dashboardSidebar(collapsed = TRUE,
-    sidebarMenu(
-      menuItem(
-        text="Main",
-        tabName="main"
-        ),
-      menuItem(
-        text = 'About',
-        tabName = 'about'
-        )
-    )
-  )
+  header <- dashboardHeader(title = 'COVID-19 DATA') #tags$a(tags$img(src='www/logo.png', alt = 'Databrew')))
   
   # BODY
   body <- dashboardBody(
     golem_add_external_resources(),
-    tabItems(
-      tabItem(
-        tabName="main",
         navbarPage(title = '',
+                   footer = includeHTML("footer.html"),
                    tabPanel('Home'),
                    tabPanel('Contagion Simulator'),
                    tabPanel('COVID-19 online'),
@@ -71,27 +55,25 @@ app_ui <- function() {
                                                   collapsible = TRUE,
                                                   footer = 'This is a footer',
                                                   leaflet::leafletOutput('l1')
-                              )))),
-        mod_social_ui("social_module_1")
+                              ))
+        # mod_social_ui("social_module_1")
       ),
-      tabItem(
-        tabName = 'about',
-        fluidPage(
-          fluidRow(
-            div(img(src='www/logo.png', align = "center"), style="text-align: center;"),
-            h4('Built by ',
-               a(href = 'http://databrew.cc',
-                 target='_blank', 'Databrew'),
-               align = 'center'),
-            p('Empowering research and analysis through collaborative data science.', align = 'center'),
-            div(a(actionButton(inputId = "email", label = "info@databrew.cc", 
-                               icon = icon("envelope", lib = "font-awesome")),
-                  href="mailto:info@databrew.cc",
-                  align = 'center')), 
-            style = 'text-align:center;'
-          )
-        )
-      )
+      tabPanel(title = 'About',
+               fluidPage(
+                 fluidRow(
+                   div(img(src='www/logo.png', align = "center"), style="text-align: center;"),
+                   h4('Built by ',
+                      a(href = 'http://databrew.cc',
+                        target='_blank', 'Databrew'),
+                      align = 'center'),
+                   p('Empowering research and analysis through collaborative data science.', align = 'center'),
+                   div(a(actionButton(inputId = "email", label = "info@databrew.cc", 
+                                      icon = icon("envelope", lib = "font-awesome")),
+                         href="mailto:info@databrew.cc",
+                         align = 'center')), 
+                   style = 'text-align:center;'
+                 )
+               ))
     )
   )
   
