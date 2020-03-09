@@ -3,10 +3,10 @@
 app_ui <- function() {
   
   # HEADER
-  header <- dashboardHeader(title = tags$a(tags$img(src='www/logo.png', alt = 'Databrew')))
+  header <- dashboardHeader(title = 'COVID-19 DATA EXPLORER') #tags$a(tags$img(src='www/logo.png', alt = 'Databrew')))
   
   # SIDEBAR
-  sidebar <- dashboardSidebar(
+  sidebar <- dashboardSidebar(collapsed = TRUE,
     sidebarMenu(
       menuItem(
         text="Main",
