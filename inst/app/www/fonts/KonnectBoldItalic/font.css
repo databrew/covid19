@@ -1,0 +1,12 @@
+@font-face {
+  font-family: 'Konnect-BoldItalic';
+  src: url('Konnect-BoldItalic.eot');
+  src: url('Konnect-BoldItalic.eot?#iefix') format('embedded-opentype'),
+       url('Konnect-BoldItalic.svg#Konnect-BoldItalic') format('svg'),
+       url('Konnect-BoldItalic.ttf') format('truetype'),
+       url('Konnect-BoldItalic.woff') format('woff'),
+       url('Konnect-BoldItalic.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+

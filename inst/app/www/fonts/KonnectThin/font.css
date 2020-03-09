@@ -1,0 +1,12 @@
+@font-face {
+  font-family: 'Konnect-Thin';
+  src: url('Konnect-Thin.eot');
+  src: url('Konnect-Thin.eot?#iefix') format('embedded-opentype'),
+       url('Konnect-Thin.svg#Konnect-Thin') format('svg'),
+       url('Konnect-Thin.ttf') format('truetype'),
+       url('Konnect-Thin.woff') format('woff'),
+       url('Konnect-Thin.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+

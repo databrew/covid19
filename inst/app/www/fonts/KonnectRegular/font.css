@@ -1,0 +1,12 @@
+@font-face {
+  font-family: 'Konnect-Regular';
+  src: url('Konnect-Regular.eot');
+  src: url('Konnect-Regular.eot?#iefix') format('embedded-opentype'),
+       url('Konnect-Regular.svg#Konnect-Regular') format('svg'),
+       url('Konnect-Regular.ttf') format('truetype'),
+       url('Konnect-Regular.woff') format('woff'),
+       url('Konnect-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+

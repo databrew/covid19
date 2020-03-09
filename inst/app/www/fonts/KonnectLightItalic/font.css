@@ -1,0 +1,12 @@
+@font-face {
+  font-family: 'Konnect-LightItalic';
+  src: url('Konnect-LightItalic.eot');
+  src: url('Konnect-LightItalic.eot?#iefix') format('embedded-opentype'),
+       url('Konnect-LightItalic.svg#Konnect-LightItalic') format('svg'),
+       url('Konnect-LightItalic.ttf') format('truetype'),
+       url('Konnect-LightItalic.woff') format('woff'),
+       url('Konnect-LightItalic.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
