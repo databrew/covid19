@@ -8,5 +8,13 @@ golem::detach_all_attached()
 # Document and reload your package
 golem::document_and_reload()
 
+# Re-capture fresh data from JHU
+# (Set to true when you want to fetch fresh data, but generally keep to false in 
+# order to avoid over-pinging the server)
+refresh <- FALSE
+if(refresh){
+  source('data-raw/update_data.R', chdir = T)
+}
+
 # Run the application
 run_app()
