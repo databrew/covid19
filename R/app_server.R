@@ -25,6 +25,29 @@ app_server <- function(input, output,session) {
             sub = "You can't modify it from html/css, it's an image file")
   })
   
+  output$region_ui <- renderUI({
+    
+    # Capture the country
+    the_country <- input$country
+    ok <- FALSE
+    if(!is.null(the_country)){
+      the_choices <- covid19::df %>% filter(country == the_country)
+      the_choices <- sort(unique(the_choices$district))
+      print(paste0('The choices are: '))
+      print(the_choices)
+      if(length(the_choices) > 0){
+        ok <- TRUE
+      }
+    }
+    if(!ok){
+      the_choices <- '<Not available>'
+    }
+    
+    
+    selectInput('region', 'Sub-region (if available)',
+                choices = the_choices)
+  })
+  
   library(leaflet)
   output$l1 <- leaflet::renderLeaflet({
     leaflet() %>%

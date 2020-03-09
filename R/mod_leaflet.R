@@ -18,23 +18,9 @@ mod_leaflet_ui <- function(id){
   ns <- NS(id)
   # tagList(
 
-  fluidPage(
-    column(8,
-           leafletOutput(
-             ns('leafy')
-           )),
-    column(4,
-           selectInput('indicator', 'Indicator',
-                       choices = letters),
-           sliderInput('date_range',
-                          'Date range',
-                          min = 1982,
-                          max = 2017,
-                       value = c(1982, 2017),
-                       step = 1,
-                       sep = ''))
+  leafletOutput(
+    ns('leafy')
   )
-  
 }
     
 # Module Server
@@ -46,9 +32,7 @@ mod_leaflet_ui <- function(id){
 #' @param plot_years Years to plot
 #' @keywords internal
     
-mod_leaflet_server <- function(input, output, session,
-                               plot_years = 1982:2015,
-                               indicator = "Proportion of population spending more than 10% of household consumption or income on out-of-pocket health care expenditure (%)"){
+mod_leaflet_server <- function(input, output, session){
   
   shp <- world
   shp@data$pop <- shp@data$value <-  sample(1:100, size = nrow(shp@data), replace = T)
@@ -62,6 +46,8 @@ mod_leaflet_server <- function(input, output, session,
     "Value: ", round(55.5212, digits = 3), "<br/>", 
     sep="") %>%
     lapply(htmltools::HTML)
+  
+  
   
   output$leafy <- renderLeaflet({
     leaflet(shp) %>% 

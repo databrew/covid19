@@ -26,7 +26,14 @@ app_ui <- function() {
       tabItem(
         tabName="main",
         navbarPage(title = '',
-                   tabPanel('Home'),
+                   tabPanel('Home',
+                            fluidPage(
+                              column(8,
+                                     mod_leaflet_ui('leaf1')),
+                              column(4,
+                                     selectInput('country', 'Country',
+                                                 choices = sort(unique(sort(unique(covid19::df$country))))),
+                                     uiOutput('region_ui')))),
                    tabPanel('Contagion Simulator'),
                    tabPanel('COVID-19 online'),
                    tabPanel('Economic impact'),

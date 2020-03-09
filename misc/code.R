@@ -50,7 +50,19 @@ pd <- df %>%
   # mutate(country = ifelse(country != 'Mainland China', 'Other', 'China')) %>%
   arrange(date, country) %>%
   filter(country %in% c(
-    'Italy', 'Spain')) %>% #, 'France', 'US',
+    'Italy', 
+    # 'Germany',
+    'US',
+    'France',
+    'UK',
+    # 'South Korea',
+    # 'Iran',
+    # 'Germany',
+    # # 'Japan',
+    # 'Norway',
+    # 'Switzerland',
+    # 'South Korea',
+    'Spain')) %>% #, 'France', 'US',
                         # 'South Korea',
                         # 'Iran',
                         # 'Germany',
@@ -63,17 +75,25 @@ pd <- df %>%
   summarise(confirmed_cases = sum(confirmed_cases)) %>%
   ungroup %>%
   group_by(country) %>%
-  mutate(first_case = min(date[confirmed_cases > 0])) %>%
+  mutate(first_case = min(date[confirmed_cases > 100])) %>%
   ungroup %>%
   mutate(days_since_first_case = date - first_case) %>%
   filter(days_since_first_case >= 0)
 
 cols <- colorRampPalette(RColorBrewer::brewer.pal(n = 8,
                                                   name = 'Set1'))(length(unique(pd$country)))
-cols <- c('red', 'darkorange')
+# cols <- c( 'lightblue', 'red', 'darkorange', 'blue')
+# cols[which(sort(unique(pd$country)) %in% c('Italy', 'Spain'))] <- c('red', 'darkorange')
+# cols[which(sort(unique(pd$country)) %in% c('France'))] <- c('grey')
+# cols[which(sort(unique(pd$country)) %in% c('US'))] <- c('blue')
+
+
+# cols[which(sort(unique(pd$country)) %in% c('Japan'))] <- c('lightblue')
+
 library(databrew)
 library(extrafont)
-loadfonts()
+library(ggplot2)
+# loadfonts()
 ggplot(data = pd,
        aes(x = as.numeric(days_since_first_case),
            y = confirmed_cases)) +
@@ -81,13 +101,14 @@ ggplot(data = pd,
   theme_bw() +
   scale_color_manual(name = '',
                      values = cols) +
-  # scale_y_log10() +
+  scale_y_log10(breaks = c(100, 200, 300, 500, 1000, 2000, 3000)) +
   labs(x = 'Days since first case (0 = day of first confirmation)',
        y = 'Cumulative number of confirmed cases\n(Logarithmic scale)',
-       title = 'COVID-19: growth in cases since zone\'s first confirmed case',
-       subtitle = 'Data as of March 6',
+       title = 'COVID-19: growth in cases since country\'s first confirmed case',
+       subtitle = 'Data as of March 8',
        caption = 'Raw data from Johns Hopkins University: https://github.com/CSSEGISandData/COVID-19\nData processing and visualization: Joe Brew') +
-  theme_bw()+
+  theme_bw() +
+  geom_hline(yintercept = 1000, lty = 2, alpha = 0.6) +
   theme(
     text = element_text(family = "Ubuntu light", color = "grey20", size = 16),
     strip.background = element_blank(),
@@ -103,7 +124,7 @@ ggplot(data = pd,
     plot.caption=element_text(hjust=1,size=9,colour="grey30"),
     plot.subtitle=element_text(face="italic",size=12,colour="grey40"),
     plot.title=element_text(size=22,face="bold")) 
-
+ggsave('~/Desktop/x.png', width = 11, height = 6)
 #   # Doubling times
 # start <- 1
 # vec <- c(start, rep(NA, 10))
