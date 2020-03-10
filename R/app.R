@@ -42,7 +42,7 @@ app_ui <- function() {
         tabName="main",
         navbarPage(title = '',
                    id = 'navs',
-                   footer = includeHTML("footer.html"),
+                   footer = shiny::includeHTML(system.file('footer.html', package = 'covid19')),
                    tabPanel('World',
                             fluidPage(
                               fluidRow(
