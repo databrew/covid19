@@ -5,6 +5,20 @@ app_ui <- function() {
   # HEADER
   header <- dashboardHeader(title = 'COVID-19 DATA') #tags$a(tags$img(src='www/logo.png', alt = 'Databrew')))
   
+  # SIDEBAR
+  sidebar <- dashboardSidebar(disable = TRUE,
+    sidebarMenu(
+      menuItem(
+        text="Main",
+        tabName="main"
+      ),
+      menuItem(
+        text = 'About',
+        tabName = 'about'
+      )
+    )
+  )
+  
   # BODY
   body <- dashboardBody(
     golem_add_external_resources(),
