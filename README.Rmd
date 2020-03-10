@@ -19,37 +19,28 @@ knitr::opts_chunk$set(
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
-The goal of covid19 is to ...
+## To deploy:
 
-## Installation
+To deploy on a shiny server, simply place an `app.R` file in a folder as one normally would do, and populate that file with the following lines:
 
-You can install the released version of covid19 from [CRAN](https://CRAN.R-project.org) with:
-
-``` r
-install.packages("covid19")
-```
-
-## Example
-
-This is a basic example which shows you how to solve a common problem:
-
-```{r example}
+```{r, eval = FALSE}
 library(covid19)
-## basic example code
+run_app()
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
-
-```{r cars}
-summary(cars)
+To do this:
+```
+# Run the below once only
+mkdir /srv/shiny-server/covid19
+sudo chmod -R 777 /srv/shiny-server/covid19
+echo "library(covid19); covid19::run_app()" > /srv/shiny-server/covid19/app.R
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date.
+When re-deploying, you won't need to re-do the above. But you will need to remove the previous iteration of the app, reinstall, and restart the shiny server.
 
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
 ```
+sudo su - -c "R -e \"remove.packages('covid19')\""
+sudo su - -c "R -e \"devtools::install_github('databrew/covid19', dependencies = TRUE, force = TRUE)\""
+sudo systemctl restart shiny-server
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub!
+```
