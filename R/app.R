@@ -57,11 +57,14 @@ app_ui <- function() {
                                                                 selected = c('Italy', 'Spain', 'France', 'US')),
                                                     checkboxInput('ylog', 'Logarithmic y-axis?',
                                                                   value = TRUE),
-                                                    sliderInput('day0', 'Minimum number of cases to be considered "day 0"',
+                                                    helpText('Because the relationship between time and cumulative number of cases is exponential, using a logarithmic scale is a better way to compare countries over time.'),
+                                                    br(), br(),
+                                                    sliderInput('day0', 'Minimum number of cases to be considered for "day 0"',
                                                                 min = 1,
                                                                 max = 500,
                                                                 value = 1,
-                                                                step = 1))
+                                                                step = 1),
+                                                    helpText("The initial number of people infected varies greatly between country. The slider above allows the user to compare countries trajectory once 'x' number of people are already infected. For example, moving the value to 100, will show the curve of each country after at least 100 people were infected."))
                               )
                             )
                             
@@ -96,7 +99,7 @@ app_ui <- function() {
         #            tabPanel('Contagion'),
         #            tabPanel('Mortality'))
         ),
-      mod_social_ui("social_module_1")
+      # mod_social_ui("social_module_1")
     ),
     tabItem(
       tabName = 'about',
@@ -236,7 +239,7 @@ app_server <- function(input, output, session) {
                 aes(x = as.numeric(days_since_first_case),
                     y = confirmed_cases)) +
       geom_line(aes(color = country),  alpha = 1, size = 1) +
-      geom_point(aes(color = country), size = 3, alpha = 0.6) +
+      geom_point(aes(color = country), size = 1, alpha = 0.6) +
       theme_bw() +
       scale_color_manual(name = '',
                          values = cols) +
@@ -246,8 +249,7 @@ app_server <- function(input, output, session) {
                       ifelse(ylog, '\n(Logarithmic scale)', '')),
            title = paste0('COVID-19 cases since country\'s\nfirst day with ',
                           day0, " or more cases"),
-           subtitle = paste0('Data as of ', max(df$date)),
-           caption = 'Raw data from Johns Hopkins University: https://github.com/CSSEGISandData/COVID-19\nData processing and visualization: Databrew LLC | www.databrew.cc') +
+           subtitle = paste0('Data as of ', max(df$date))) +
       theme_simple()
     if(ylog){
       g <- g + scale_y_log10()
