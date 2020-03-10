@@ -43,25 +43,14 @@ app_ui <- function() {
         navbarPage(title = '',
                    id = 'navs',
                    footer = shiny::includeHTML(system.file('footer.html', package = 'covid19')),
-                   tabPanel('World',
+                   tabPanel('Day zero comparison',
                             fluidPage(
                               fluidRow(
                                 shinydashboard::box(width = 6,
-                                                    title = 'World map',
-                                                    leafletOutput('leafy'),
-                                                    selectInput('map_type',
-                                                                'Map type',
-                                                                choices = c('Polygons (choropleth)',
-                                                                            # 'One point per person (jittering)',
-                                                                            'Points (radius)')),
-                                                    selectInput('indicator',
-                                                                'Indicator',
-                                                                choices = c('Confirmed cases',
-                                                                            'Recoveries',
-                                                                            'Deaths'))),
-                                shinydashboard::box(width = 6,
                                                     title = 'Day-zero comparison plot',
-                                                    plotOutput('plot_day_zero'),
+                                                    plotOutput('plot_day_zero')),
+                                shinydashboard::box(width = 6,
+                                                    title = 'Plot parameters',
                                                     selectInput('country', 'Country',
                                                                 multiple = TRUE,
                                                                 choices = sort(unique(sort(unique(covid19::df$country)))),
@@ -72,12 +61,34 @@ app_ui <- function() {
                                                                 min = 1,
                                                                 max = 500,
                                                                 value = 1,
-                                                                step = 1))),
+                                                                step = 1))
+                              )
+                            )
+                            
+                   ),
+                   tabPanel('World Map', 
+                            fluidPage(
+                              fluidRow(
+                                shinydashboard::box(width = 6,
+                                                    title = 'World map',
+                                                    leafletOutput('leafy')),
+                                shinydashboard::box(width = 6,
+                                                    title = 'Map parameters',
+                                                    selectInput('map_type',
+                                                                'Map type',
+                                                                choices = c('Polygons (choropleth)',
+                                                                            # 'One point per person (jittering)',
+                                                                            'Points (radius)')),
+                                                    selectInput('indicator',
+                                                                'Indicator',
+                                                                choices = c('Confirmed cases',
+                                                                            'Recoveries',
+                                                                            'Deaths'))
+                                                    )),
                               fluidRow(
                                 shinydashboard::box(width = 12,
                                                     plotOutput('plot_overall')))
-                            )
-                   )#,
+                            ))
         # tabPanel('Contagion Simulator'),
         # tabPanel('COVID-19 online'),
         # tabPanel('Economic impact'),
@@ -256,6 +267,7 @@ app_server <- function(input, output, session) {
   observeEvent({
     input$indicator
     input$map_type
+    input$navs
     1
   },{
     
