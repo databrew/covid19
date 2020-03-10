@@ -18,3 +18,4 @@ if(refresh){
 
 # Run the application
 run_app()
+

@@ -26,6 +26,7 @@ app_ui <- function() {
       tabItem(
         tabName="main",
         navbarPage(title = '',
+                   footer = includeHTML("footer.html"),
                    tabPanel('Home',
                             fluidPage(
                               column(8,
