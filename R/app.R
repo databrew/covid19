@@ -84,7 +84,7 @@ app_ui <- function() {
         #            tabPanel('Contagion'),
         #            tabPanel('Mortality'))
         ),
-      mod_social_ui("social_module_1")
+      # mod_social_ui("social_module_1")
     ),
     tabItem(
       tabName = 'about',
