@@ -27,19 +27,19 @@ mod_social_ui <- function(id){
                type = "twitter"
              ),
              
-             shinydashboardPlus::socialButton(
-               url = "https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fwww.bohemia.team/covid19/&title=The%20Databrew%20COVID19%20App",
-               type = "linkedin"
-             ),
+             # shinydashboardPlus::socialButton(
+             #   url = "https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fwww.bohemia.team/covid19/&title=The%20Databrew%20COVID19%20App",
+             #   type = "linkedin"
+             # ),
              
              a(actionButton(inputId = "email", label = "", 
                             icon = icon("envelope", lib = "font-awesome")),
                href="mailto:info@databrew.cc?subject=https%3A%2F%2Fwww.bohemia.team/covid19/&body=The%20Databrew%20COVID19%20App%20https%3A%2F%2Fwww.bohemia.team/covid19/"),
              
-             shinydashboardPlus::socialButton(
-               url = "http://www.facebook.com/sharer.php?u=https%3A%2F%2Fwww.bohemia.team/covid19/",
-               type = "facebook"
-             ),
+             # shinydashboardPlus::socialButton(
+             #   url = "http://www.facebook.com/sharer.php?u=https%3A%2F%2Fwww.bohemia.team/covid19/",
+             #   type = "facebook"
+             # ),
              
              shinydashboardPlus::socialButton(
                url = "https://github.com/databrew/covid19",

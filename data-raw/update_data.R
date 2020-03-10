@@ -50,10 +50,20 @@ df <- full_join(x = confirmed_cases,
                 y = deaths) %>%
   full_join(recovered)
 
+# Join all together but by country
+df_country <- df <- df %>%
+  group_by(country, date) %>%
+  summarise(lat = mean(lat),
+            lng = mean(lng),
+            confirmed_cases = sum(confirmed_cases, na.rm = TRUE),
+            deaths = sum(deaths, na.rm = TRUE),
+            recovered = sum(recovered, na.rm = TRUE))
+
 usethis::use_data(df, overwrite = T)
 usethis::use_data(deaths, overwrite = T)
 usethis::use_data(confirmed_cases, overwrite = T)
 usethis::use_data(recovered, overwrite = T)
+usethis::use_data(df_country, overwrite = T)
 
 
 # # Italy vs Spain

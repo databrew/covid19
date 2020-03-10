@@ -51,16 +51,16 @@ pd <- df %>%
   arrange(date, country) %>%
   filter(country %in% c(
     'Italy', 
-    # 'Germany',
-    'US',
+    'Germany',
+    # 'US',
     'France',
-    'UK',
+    # 'UK',
     # 'South Korea',
     # 'Iran',
-    # 'Germany',
-    # # 'Japan',
-    # 'Norway',
-    # 'Switzerland',
+    'Germany',
+    # 'Japan',
+    'Norway',
+    'Switzerland',
     # 'South Korea',
     'Spain')) %>% #, 'France', 'US',
                         # 'South Korea',
@@ -75,16 +75,17 @@ pd <- df %>%
   summarise(confirmed_cases = sum(confirmed_cases)) %>%
   ungroup %>%
   group_by(country) %>%
-  mutate(first_case = min(date[confirmed_cases > 100])) %>%
+  mutate(first_case = min(date[confirmed_cases > 150])) %>%
   ungroup %>%
   mutate(days_since_first_case = date - first_case) %>%
   filter(days_since_first_case >= 0)
 
 cols <- colorRampPalette(RColorBrewer::brewer.pal(n = 8,
                                                   name = 'Set1'))(length(unique(pd$country)))
+# cols <- c('darkorange', 'blue')
 # cols <- c( 'lightblue', 'red', 'darkorange', 'blue')
-# cols[which(sort(unique(pd$country)) %in% c('Italy', 'Spain'))] <- c('red', 'darkorange')
-# cols[which(sort(unique(pd$country)) %in% c('France'))] <- c('grey')
+cols[which(sort(unique(pd$country)) %in% c('Italy', 'Spain'))] <- c('darkorange', 'blue')
+cols[which(sort(unique(pd$country)) %in% c('Norway'))] <- c('grey')
 # cols[which(sort(unique(pd$country)) %in% c('US'))] <- c('blue')
 
 
@@ -97,20 +98,23 @@ library(ggplot2)
 ggplot(data = pd,
        aes(x = as.numeric(days_since_first_case),
            y = confirmed_cases)) +
-  geom_line(aes(color = country), size = 2, alpha = 1) +
+  geom_line(aes(color = country),  alpha = 1, size = 1) +
+  geom_point(aes(color = country), size = 3, alpha = 0.6) +
   theme_bw() +
   scale_color_manual(name = '',
                      values = cols) +
-  scale_y_log10(breaks = c(100, 200, 300, 500, 1000, 2000, 3000)) +
-  labs(x = 'Days since first case (0 = day of first confirmation)',
+  scale_y_log10(breaks = c(150, 300, 500, 1000, 3000, 10000)) +
+  # scale_y_log10() +
+  labs(x = 'Days since country\'s first day with > 150 cases',
        y = 'Cumulative number of confirmed cases\n(Logarithmic scale)',
-       title = 'COVID-19: growth in cases since country\'s first confirmed case',
-       subtitle = 'Data as of March 8',
+       title = 'COVID-19 cases since country\'s first day at > 150 cases',
+       subtitle = 'Data as of March 9',
        caption = 'Raw data from Johns Hopkins University: https://github.com/CSSEGISandData/COVID-19\nData processing and visualization: Joe Brew') +
   theme_bw() +
-  geom_hline(yintercept = 1000, lty = 2, alpha = 0.6) +
+  geom_hline(yintercept = 1000, lty = 2, alpha = 0.3) + 
+  geom_vline(xintercept = 6, lty = 2, alpha = 0.3) +
   theme(
-    text = element_text(family = "Ubuntu light", color = "grey20", size = 16),
+    text = element_text(family = "Ubuntu light", color = "grey20", size = 14),
     strip.background = element_blank(),
     strip.text = element_text(hjust = 0),
     panel.grid.major = element_blank(), #element_line(colour="grey70",size=0.15),
@@ -124,7 +128,7 @@ ggplot(data = pd,
     plot.caption=element_text(hjust=1,size=9,colour="grey30"),
     plot.subtitle=element_text(face="italic",size=12,colour="grey40"),
     plot.title=element_text(size=22,face="bold")) 
-ggsave('~/Desktop/x.png', width = 11, height = 6)
+ggsave('~/Desktop/y.png', width = 11, height = 6)
 #   # Doubling times
 # start <- 1
 # vec <- c(start, rep(NA, 10))
