@@ -1,20 +1,24 @@
+
+
+#############################
+# UTILITIES
+#############################
 #' @import shiny
 #' @import shinydashboard
 #' @import leaflet
 #' @import shiny
 #' @import ggplot2
-
 ##################################################
 # UI
 ##################################################
-app_ui <- function() {
+app_ui <- function(request) {
   options(scipen = '999')
   options(shiny.sanitize.errors = FALSE)
   
   #############################
   # HEADER
-  header <- dashboardHeader(title = tags$a(tags$img(src='www/logo.png', alt = 'Databrew')))
   #############################
+  header <- dashboardHeader(title = tags$a(tags$img(src='www/logo.png', alt = 'Databrew')))
   
   #############################
   # SIDEBAR
@@ -84,53 +88,78 @@ app_ui <- function() {
                                                                 choices = c('Confirmed cases',
                                                                             'Recoveries',
                                                                             'Deaths'))
-                                                    )),
+                                )),
                               fluidRow(
                                 shinydashboard::box(width = 12,
                                                     plotOutput('plot_overall')))
                             ))
-        # tabPanel('Contagion Simulator'),
-        # tabPanel('COVID-19 online'),
-        # tabPanel('Economic impact'),
-        # navbarMenu('Comparison to other diseases',
-        #            tabPanel('Contagion'),
-        #            tabPanel('Mortality'))
+                   # tabPanel('Contagion Simulator'),
+                   # tabPanel('COVID-19 online'),
+                   # tabPanel('Economic impact'),
+                   # navbarMenu('Comparison to other diseases',
+                   #            tabPanel('Contagion'),
+                   #            tabPanel('Mortality'))
         ),
-      mod_social_ui("social_module_1")
-    ),
-    tabItem(
-      tabName = 'about',
-      fluidPage(
-        fluidRow(
-          div(img(src='www/logo.png', align = "center"), style="text-align: center;"),
-          h4('Built by ',
-             a(href = 'http://databrew.cc',
-               target='_blank', 'Databrew'),
-             align = 'center'),
-          p('Empowering research and analysis through collaborative data science.', align = 'center'),
-          div(a(actionButton(inputId = "email", label = "info@databrew.cc", 
-                             icon = icon("envelope", lib = "font-awesome")),
-                href="mailto:info@databrew.cc",
-                align = 'center')), 
-          style = 'text-align:center;'
+        mod_social_ui("social_module_1")
+      ),
+      tabItem(
+        tabName = 'about',
+        fluidPage(
+          fluidRow(
+            div(img(src='www/logo.png', align = "center"), style="text-align: center;"),
+            h4('Built by ',
+               a(href = 'http://databrew.cc',
+                 target='_blank', 'Databrew'),
+               align = 'center'),
+            p('Empowering research and analysis through collaborative data science.', align = 'center'),
+            div(a(actionButton(inputId = "email", label = "info@databrew.cc", 
+                               icon = icon("envelope", lib = "font-awesome")),
+                  href="mailto:info@databrew.cc",
+                  align = 'center')), 
+            style = 'text-align:center;'
+          )
         )
       )
     )
   )
+  
+  #############################
+  # UI COMBINATION
+  #############################
+  tagList(
+    golem_add_external_resources(),
+    # UI
+    dashboardPage(
+      header = header,
+      sidebar = sidebar,
+      body = body)
   )
+}
 
-#############################
-# UI COMBINATION
-#############################
-tagList(
-  golem_add_external_resources(),
-  # UI
-  dashboardPage(
-    header = header,
-    sidebar = sidebar,
-    body = body, 
-    skin="blue", title = 'databrew')
-)
+#' Add external Resources to the Application
+#' 
+#' This function is internally used to add external 
+#' resources inside the Shiny application. 
+#' 
+#' @import shiny
+#' @importFrom golem add_resource_path activate_js favicon bundle_resources
+#' @noRd
+golem_add_external_resources <- function(){
+  addResourcePath(
+    'www', system.file('app/www', package = 'covid19')
+  )
+  
+  tags$head(
+    golem::activate_js(),
+    golem::favicon(),
+    # Add here all the external resources
+    # Google analytics script
+    includeHTML(system.file('app/www/google-analytics.js', package = 'covid19')),
+    # includeScript('www/google-analytics.js'),
+    # If you have a custom.css in the inst/app/www
+    tags$link(rel="stylesheet", type="text/css", href="www/custom.css")
+    # tags$link(rel="stylesheet", type="text/css", href="www/custom.css")
+  )
 }
 
 ##################################################
@@ -311,7 +340,7 @@ app_server <- function(input, output, session) {
       "Value: ", round(shp@data$value, digits = 3), "<br/>",
       sep="") %>%
       lapply(htmltools::HTML)
-
+    
     
     if(map_type == 'Points (radius)'){
       mypalette <- colorBin(RColorBrewer::brewer.pal(n= 8, name = 'Spectral'),
@@ -326,23 +355,23 @@ app_server <- function(input, output, session) {
         clearMarkers() %>%
         clearControls() %>%
         addPolygons(data = shp,
-                      fillColor = NA,
-                      color = 'black',
-                      weight = 0.5,
+                    fillColor = NA,
+                    color = 'black',
+                    weight = 0.5,
                     fillOpacity = 0) %>%
         addCircleMarkers(data = shp@data,
-                   lng = shp@data$LON,
-                   lat = shp@data$LAT,
-                   radius = log(shp@data$value) * 3,
-                   fillOpacity = 0.8,
-                   label = mytext,
-                   color = ~mypalette(value),
-                   labelOptions = labelOptions(
-                     style = list("font-weight" = "normal", padding = "3px 8px"),
-                     textsize = "13px",
-                     direction = "auto"
-                   ))
-
+                         lng = shp@data$LON,
+                         lat = shp@data$LAT,
+                         radius = log(shp@data$value) * 3,
+                         fillOpacity = 0.8,
+                         label = mytext,
+                         color = ~mypalette(value),
+                         labelOptions = labelOptions(
+                           style = list("font-weight" = "normal", padding = "3px 8px"),
+                           textsize = "13px",
+                           direction = "auto"
+                         ))
+      
     }
     
     # if(map_type == 'One point per person (jittering)'){
@@ -419,23 +448,6 @@ app_server <- function(input, output, session) {
 }
 
 
-##################################################
-# UTILITIES
-##################################################
-golem_add_external_resources <- function(){
-  addResourcePath(
-    'www', system.file('app/www', package = 'covid19')
-  )
-  
-  tags$head(
-    golem::activate_js(),
-    golem::favicon(),
-    # Add here all the external resources
-    # If you have a custom.css in the inst/app/www
-    tags$link(rel="stylesheet", type="text/css", href="www/custom.css")
-    # tags$link(rel="stylesheet", type="text/css", href="www/custom.css")
-  )
-}
 
 
 app <- function(){
