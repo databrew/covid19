@@ -14,118 +14,7 @@
 app_ui <- function(request) {
   options(scipen = '999')
   options(shiny.sanitize.errors = FALSE)
-  
-  #############################
-  # HEADER
-  #############################
-  header <- dashboardHeader(title = tags$a(tags$img(src='www/logo.png', alt = 'Databrew')))
-  
-  #############################
-  # SIDEBAR
-  #############################
-  sidebar <- dashboardSidebar(
-    sidebarMenu(
-      menuItem(
-        text="Main",
-        tabName="main"
-      ),
-      menuItem(
-        text = 'About',
-        tabName = 'about'
-      )
-    )
-  )
-  
-  #############################
-  # BODY
-  #############################
-  body <- dashboardBody(
-    golem_add_external_resources(),
-    tabItems(
-      tabItem(
-        tabName="main",
-        navbarPage(title = '',
-                   id = 'navs',
-                   # footer = shiny::includeHTML(system.file('footer.html', package = 'covid19')),
-                   footer = shiny::includeHTML(system.file('app/www/footer.html', package = 'covid19')),
-                   tabPanel('Day zero comparison',
-                            fluidPage(
-                              fluidRow(
-                                shinydashboard::box(width = 6,
-                                                    title = 'Day-zero comparison plot',
-                                                    plotOutput('plot_day_zero')),
-                                shinydashboard::box(width = 6,
-                                                    title = 'Plot parameters',
-                                                    selectInput('country', 'Country',
-                                                                multiple = TRUE,
-                                                                choices = sort(unique(sort(unique(covid19::df$country)))),
-                                                                selected = c('Italy', 'Spain', 'France', 'US')),
-                                                    checkboxInput('ylog', 'Logarithmic y-axis?',
-                                                                  value = TRUE),
-                                                    helpText('Because the relationship between time and cumulative number of cases is exponential, using a logarithmic scale is a better way to compare countries over time.'),
-                                                    br(), br(),
-                                                    sliderInput('day0', 'Minimum number of cases to be considered for "day 0"',
-                                                                min = 1,
-                                                                max = 500,
-                                                                value = 1,
-                                                                step = 1),
-                                                    helpText("The initial number of people infected varies greatly between country. The slider above allows the user to compare countries trajectory once 'x' number of people are already infected. For example, moving the value to 100, will show the curve of each country after at least 100 people were infected."))
-                              )
-                            )
-                            
-                   ),
-                   tabPanel('World Map', 
-                            fluidPage(
-                              fluidRow(
-                                shinydashboard::box(width = 6,
-                                                    title = 'World map',
-                                                    leafletOutput('leafy')),
-                                shinydashboard::box(width = 6,
-                                                    title = 'Map parameters',
-                                                    selectInput('map_type',
-                                                                'Map type',
-                                                                choices = c('Polygons (choropleth)',
-                                                                            # 'One point per person (jittering)',
-                                                                            'Points (radius)')),
-                                                    selectInput('indicator',
-                                                                'Indicator',
-                                                                choices = c('Confirmed cases',
-                                                                            'Recoveries',
-                                                                            'Deaths'))
-                                )),
-                              fluidRow(
-                                shinydashboard::box(width = 12,
-                                                    plotOutput('plot_overall')))
-                            ))
-                   # tabPanel('Contagion Simulator'),
-                   # tabPanel('COVID-19 online'),
-                   # tabPanel('Economic impact'),
-                   # navbarMenu('Comparison to other diseases',
-                   #            tabPanel('Contagion'),
-                   #            tabPanel('Mortality'))
-        ),
 
-      # mod_social_ui("social_module_1")
-    ),
-    tabItem(
-      tabName = 'about',
-      fluidPage(
-        fluidRow(
-          div(img(src='www/logo.png', align = "center"), style="text-align: center;"),
-          h4('Built by ',
-             a(href = 'http://databrew.cc',
-               target='_blank', 'Databrew'),
-             align = 'center'),
-          p('Empowering research and analysis through collaborative data science.', align = 'center'),
-          div(a(actionButton(inputId = "email", label = "info@databrew.cc", 
-                             icon = icon("envelope", lib = "font-awesome")),
-                href="mailto:info@databrew.cc",
-                align = 'center')), 
-          style = 'text-align:center;'
-        )
-      )
-    )
-  ))
   
   #############################
   # UI COMBINATION
@@ -133,10 +22,84 @@ app_ui <- function(request) {
   tagList(
     golem_add_external_resources(),
     # UI
-    dashboardPage(
-      header = header,
-      sidebar = sidebar,
-      body = body)
+    navbarPage(title = 'Databrew\'s COVID-19 data explorer',
+               id = 'navs',
+               footer = shiny::includeHTML(system.file('app/www/footer.html', package = 'covid19')),
+               tabPanel('Day zero comparison',
+                        fluidPage(
+                          fluidRow(
+                            shinydashboard::box(width = 6,
+                                                title = 'Day-zero comparison plot',
+                                                plotOutput('plot_day_zero')),
+                            shinydashboard::box(width = 6,
+                                                title = 'Plot parameters',
+                                                selectInput('country', 'Country',
+                                                            multiple = TRUE,
+                                                            choices = sort(unique(sort(unique(covid19::df$country)))),
+                                                            selected = c('Italy', 'Spain', 'France', 'US')),
+                                                checkboxInput('ylog', 'Logarithmic y-axis?',
+                                                              value = TRUE),
+                                                helpText('Because the relationship between time and cumulative number of cases is exponential, using a logarithmic scale is a better way to compare countries over time.'),
+                                                br(), br(),
+                                                sliderInput('day0', 'Minimum number of cases to be considered for "day 0"',
+                                                            min = 1,
+                                                            max = 500,
+                                                            value = 1,
+                                                            step = 1),
+                                                helpText("The slider above allows for the comparison between countries' trajectories once 'x' number of people are already infected. For example, moving the value to 100, will show the curve of each country beginning on the day at which at least 100 people were infected."))
+                          )
+                        )
+               ),
+               tabPanel('World Map', 
+                        fluidPage(
+                          fluidRow(
+                            shinydashboard::box(width = 6,
+                                                title = 'World map',
+                                                leafletOutput('leafy')),
+                            shinydashboard::box(width = 6,
+                                                title = 'Map parameters',
+                                                selectInput('map_type',
+                                                            'Map type',
+                                                            choices = c('Polygons (choropleth)',
+                                                                        # 'One point per person (jittering)',
+                                                                        'Points (radius)')),
+                                                selectInput('indicator',
+                                                            'Indicator',
+                                                            choices = c('Confirmed cases',
+                                                                        'Recoveries',
+                                                                        'Deaths'))
+                            )),
+                          fluidRow(
+                            shinydashboard::box(width = 12,
+                                                plotOutput('plot_overall')))
+                        )),
+               tabPanel('About',
+                        fluidPage(
+                          fluidRow(
+                            div(img(src='www/logo.png', align = "center"), style="text-align: center;"),
+                            h4('Built by ',
+                               a(href = 'http://databrew.cc',
+                                 target='_blank', 'Databrew'),
+                               align = 'center'),
+                            p('Empowering research and analysis through collaborative data science.', align = 'center'),
+                            div(a(actionButton(inputId = "email", label = "info@databrew.cc", 
+                                               icon = icon("envelope", lib = "font-awesome")),
+                                  href="mailto:info@databrew.cc",
+                                  align = 'center')), 
+                            style = 'text-align:center;'
+                          )
+                        ))
+               # tabPanel('Contagion Simulator'),
+               # tabPanel('COVID-19 online'),
+               # tabPanel('Economic impact'),
+               # navbarMenu('Comparison to other diseases',
+               #            tabPanel('Contagion'),
+               #            tabPanel('Mortality'))
+    )
+    # dashboardPage(
+    #   header = header,
+    #   sidebar = sidebar,
+    #   body = body)
   )
 }
 
