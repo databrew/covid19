@@ -1641,7 +1641,7 @@ label {
 .nav-pills>li>a>.fa,.nav-pills>li>a>.glyphicon,.nav-pills>li>a>.ion {
     margin-right: 5px}
 .nav-pills>li.active>a,.nav-pills>li.active>a:focus,.nav-pills>li.active>a:hover {
-    border-top-color: #3c8dbc}
+    border-top-color: #000}
 .nav-pills>li.active>a {
     font-weight: 600}
 .nav-stacked>li>a {
@@ -1653,7 +1653,8 @@ label {
     background: 0 0;
     color: #444;
     border-top: 0;
-    border-left-color: #3c8dbc}
+    border-left-color: rgb(108,108,108)
+}
 .nav-stacked>li.header {
     border-bottom: 1px solid #ddd;
     color: #777;
@@ -1687,7 +1688,8 @@ label {
 .nav-tabs-custom>.nav-tabs>li: not(.active)>a:active,.nav-tabs-custom>.nav-tabs>li: not(.active)>a:focus,.nav-tabs-custom>.nav-tabs>li: not(.active)>a:hover {
     border-color: transparent}
 .nav-tabs-custom>.nav-tabs>li.active {
-    border-top-color: #3c8dbc}
+    border-top-color: rgb(108,108,108)
+}
 .nav-tabs-custom>.nav-tabs>li.active:hover>a,.nav-tabs-custom>.nav-tabs>li.active>a {
     background-color: #fff;
     color: #444}
@@ -1726,7 +1728,7 @@ label {
     background: 0 0;
     color: #999}
 .nav-tabs-custom.tab-primary>.nav-tabs>li.active {
-    border-top-color: #3c8dbc}
+    border-top-color: rgb(108,108,108)}
 .nav-tabs-custom.tab-info>.nav-tabs>li.active {
     border-top-color: #00c0ef}
 .nav-tabs-custom.tab-danger>.nav-tabs>li.active {
@@ -2116,6 +2118,20 @@ table.text-center,table.text-center td,table.text-center th {
     border: 2px solid #d2d6de;
     padding: 2px}
 
+/* Hr line */
+
+	hr {
+		border-top: solid 1px rgba(124, 128, 129, 0.5);
+		margin-top: 3em;
+        margin-bottom: 3em;
+	}
+
+/* Image */
+
+img#logo {
+    height: 50px;
+}
+
 /* logo */
 .skin-blue .main-header .logo {
                       background-color: rgb(233,236,238);
@@ -2204,15 +2220,115 @@ background-color: #fff;
 /* Footer */
 footer {
     width: 100%;
-    font-size: 10pt;
+    font-size: 0.8em;
     color: rgb(108,108,108);
-    padding: 30px;
     display: block;
-    flex: 0 0 150px;/*or just height:50px;*/
     margin-top: 100px;
+    text-align: center;
 }
 
-footer .btn {
-    display: inline-block;
-    margin-left: 12px;
+footer ul{
+    margin-left: -5em;
 }
+
+#footer .copyright {
+			line-height: 1.5em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+		}
+
+			#footer .copyright a {
+				color: inherit;
+			}
+
+			#footer .copyright li {
+				display: inline-block;
+			}
+
+
+/* Icon */
+
+	.icon {
+		text-decoration: none;
+		position: relative;
+	}
+
+		.icon:before {
+			-moz-osx-font-smoothing: grayscale;
+			-webkit-font-smoothing: antialiased;
+			font-family: FontAwesome;
+			font-style: normal;
+			font-weight: normal;
+			text-transform: none !important;
+		}
+
+		.icon.circle {
+			-moz-transition: all 0.2s ease-in-out;
+			-webkit-transition: all 0.2s ease-in-out;
+			-ms-transition: all 0.2s ease-in-out;
+			transition: all 0.2s ease-in-out;
+			border: 0;
+			border-radius: 100%;
+			display: inline-block;
+			font-size: 1.5em;
+			height: 2em;
+			left: 0;
+			line-height: 2em;
+			text-align: center;
+			text-decoration: none;
+			top: 0;
+			width: 2em;
+		}
+
+.icon > .label {
+			display: none;
+		}
+
+			.icon.circle.fa-twitter {
+				background: #C8C8C8;
+				color: #505050;
+			}
+
+				.icon.circle.fa-twitter:hover {
+					background: #C8C8C8;
+                    color: #fff;
+				}
+
+			.icon.circle.fa-facebook {
+				background: #C8C8C8;
+				color: #505050;
+			}
+
+				.icon.circle.fa-facebook:hover {
+					background: #C8C8C8;
+                    color: #fff;
+				}
+
+			.icon.circle.fa-github {
+				background: #C8C8C8;
+				color: #505050;
+			}
+
+				.icon.circle.fa-github:hover {
+					background: #C8C8C8;
+                    color: #fff;
+				}
+
+			.icon.circle.fa-linkedin {
+				background: #C8C8C8;
+				color: #505050;
+			}
+
+				.icon.circle.fa-linkedin:hover {
+					background: #C8C8C8;
+                    color: #fff;
+				}
+
+ul.icons {
+		cursor: default;
+	}
+		ul.icons li {
+			display: inline-block;
+			line-height: 1em;
+			padding-left: 1em;
+		}
