@@ -46,7 +46,8 @@ app_ui <- function(request) {
         tabName="main",
         navbarPage(title = '',
                    id = 'navs',
-                   footer = shiny::includeHTML(system.file('footer.html', package = 'covid19')),
+                   # footer = shiny::includeHTML(system.file('footer.html', package = 'covid19')),
+                   footer = shiny::includeHTML(system.file('app/www/footer.html', package = 'covid19')),
                    tabPanel('Day zero comparison',
                             fluidPage(
                               fluidRow(
@@ -61,11 +62,14 @@ app_ui <- function(request) {
                                                                 selected = c('Italy', 'Spain', 'France', 'US')),
                                                     checkboxInput('ylog', 'Logarithmic y-axis?',
                                                                   value = TRUE),
-                                                    sliderInput('day0', 'Minimum number of cases to be considered "day 0"',
+                                                    helpText('Because the relationship between time and cumulative number of cases is exponential, using a logarithmic scale is a better way to compare countries over time.'),
+                                                    br(), br(),
+                                                    sliderInput('day0', 'Minimum number of cases to be considered for "day 0"',
                                                                 min = 1,
                                                                 max = 500,
                                                                 value = 1,
-                                                                step = 1))
+                                                                step = 1),
+                                                    helpText("The initial number of people infected varies greatly between country. The slider above allows the user to compare countries trajectory once 'x' number of people are already infected. For example, moving the value to 100, will show the curve of each country after at least 100 people were infected."))
                               )
                             )
                             
@@ -100,28 +104,28 @@ app_ui <- function(request) {
                    #            tabPanel('Contagion'),
                    #            tabPanel('Mortality'))
         ),
-        mod_social_ui("social_module_1")
-      ),
-      tabItem(
-        tabName = 'about',
-        fluidPage(
-          fluidRow(
-            div(img(src='www/logo.png', align = "center"), style="text-align: center;"),
-            h4('Built by ',
-               a(href = 'http://databrew.cc',
-                 target='_blank', 'Databrew'),
-               align = 'center'),
-            p('Empowering research and analysis through collaborative data science.', align = 'center'),
-            div(a(actionButton(inputId = "email", label = "info@databrew.cc", 
-                               icon = icon("envelope", lib = "font-awesome")),
-                  href="mailto:info@databrew.cc",
-                  align = 'center')), 
-            style = 'text-align:center;'
-          )
+
+      # mod_social_ui("social_module_1")
+    ),
+    tabItem(
+      tabName = 'about',
+      fluidPage(
+        fluidRow(
+          div(img(src='www/logo.png', align = "center"), style="text-align: center;"),
+          h4('Built by ',
+             a(href = 'http://databrew.cc',
+               target='_blank', 'Databrew'),
+             align = 'center'),
+          p('Empowering research and analysis through collaborative data science.', align = 'center'),
+          div(a(actionButton(inputId = "email", label = "info@databrew.cc", 
+                             icon = icon("envelope", lib = "font-awesome")),
+                href="mailto:info@databrew.cc",
+                align = 'center')), 
+          style = 'text-align:center;'
         )
       )
     )
-  )
+  ))
   
   #############################
   # UI COMBINATION
@@ -265,7 +269,7 @@ app_server <- function(input, output, session) {
                 aes(x = as.numeric(days_since_first_case),
                     y = confirmed_cases)) +
       geom_line(aes(color = country),  alpha = 1, size = 1) +
-      geom_point(aes(color = country), size = 3, alpha = 0.6) +
+      geom_point(aes(color = country), size = 1, alpha = 0.6) +
       theme_bw() +
       scale_color_manual(name = '',
                          values = cols) +
@@ -275,8 +279,7 @@ app_server <- function(input, output, session) {
                       ifelse(ylog, '\n(Logarithmic scale)', '')),
            title = paste0('COVID-19 cases since country\'s\nfirst day with ',
                           day0, " or more cases"),
-           subtitle = paste0('Data as of ', max(df$date)),
-           caption = 'Raw data from Johns Hopkins University: https://github.com/CSSEGISandData/COVID-19\nData processing and visualization: Databrew LLC | www.databrew.cc') +
+           subtitle = paste0('Data as of ', max(df$date))) +
       theme_simple()
     if(ylog){
       g <- g + scale_y_log10()
