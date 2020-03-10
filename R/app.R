@@ -9,6 +9,7 @@
 ##################################################
 app_ui <- function() {
   options(scipen = '999')
+  options(shiny.sanitize.errors = FALSE)
   
   #############################
   # HEADER
@@ -426,6 +427,9 @@ golem_add_external_resources <- function(){
 
 
 app <- function(){
+  # Detect the system. If on AWS, don't launch browswer
+  is_aws <- grepl('aws', tolower(Sys.info()['release']))
   shinyApp(ui = app_ui,
-           server = app_server)
+           server = app_server,
+           options = list('launch.browswer' = !is_aws))
 }
