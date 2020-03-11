@@ -22,6 +22,7 @@ app_ui <- function(request) {
     
     # UI
     navbarPage(title = 'Databrew\'s COVID-19 data explorer',
+               collapsible = TRUE,
                id = 'navs',
                footer = shiny::includeHTML(system.file('app/www/footer.html', package = 'covid19')),
                tabPanel('Epidemic curves',
@@ -151,12 +152,12 @@ golem_add_external_resources <- function(){
     # Add here all the external resources
     # Google analytics script
     includeHTML(system.file('app/www/google-analytics.html', package = 'covid19')),
-    includeScript(system.file('app/www/script.js', package = 'covid19'))#,
+    includeScript(system.file('app/www/script.js', package = 'covid19')),
     # includeScript('inst/app/www/script.js'),
     
     # includeScript('www/google-analytics.js'),
     # If you have a custom.css in the inst/app/www
-    # tags$link(rel="stylesheet", type="text/css", href="www/custom.css")
+    tags$link(rel="stylesheet", type="text/css", href="www/custom.css")
     # tags$link(rel="stylesheet", type="text/css", href="www/custom.css")
   )
 }
