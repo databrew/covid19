@@ -125,7 +125,7 @@ golem_add_external_resources <- function(){
   share <- list(
     title = "Databrew's COVID-19 Data Explorer",
     url = "https://datacat.cc/covid19/",
-    image = "http://www.databrew.cc/images/blog/covid/9.png",
+    image = "http://www.databrew.cc/images/blog/covid2.png",
     description = "Comparing epidemic curves across countries",
     twitter_user = "data_brew"
   )
