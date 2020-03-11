@@ -201,6 +201,7 @@ a:active,a:focus,a:hover {
     margin: 7.5px -15px}
 .main-header .navbar-right>li {
     color: inherit;
+    background: #fff;
     border: 0}
 }
 
@@ -306,42 +307,31 @@ a:active,a:focus,a:hover {
 /* Navbar */
 /* ########################### */ 
 
-.navbar-toggle {
-    color: rgb(108,108,108);
-    border: 0;
-    margin: 0;
-    position: absolute;
-    padding: 15px 15px
-}
-
 .navbar-nav {
     font-family: 'Ubuntu Mono', monospace;
     font-weight: 100 !important;
 }
 
-@media (max-width: 1250px) {
-.navbar-nav {
-margin-top: -50px;    
-}
-}
-
-@media (max-width: 767px) {
-.navbar-nav { 
-}
-}
-
 @media (max-width: 991px) {
+    
     .navbar-custom-menu .navbar-nav>li {
-    float: left}
+    float: left;
+    }
 .navbar-custom-menu .navbar-nav {
     margin: 0;
-    float: left}
+    float: left;
+}
 .navbar-custom-menu .navbar-nav>li>a {
     padding-top: 12px;
     padding-bottom: 15px;
-    line-height: 20px}
+    line-height: 20px;
+    }
 }
 @media (max-width: 767px) {
+    .navbar-nav {
+    background: #fff;
+}
+    
     .main-header {
     position: relative;
     }
@@ -417,7 +407,7 @@ margin-top: -50px;
 .sidebar {
     padding-bottom: 10px}
 .sidebar-form input:focus {
-    border-color: transparentimf
+    border-color: transparent
 }
 
 /* Sidebar */
@@ -705,9 +695,11 @@ margin-top: -50px;
     color: #5e5e5e}
 .dropdown-menu {
     box-shadow: none;
-    border-color: #eee}
+    border-color: #eee;
+    background-color: #fff !important}
 .dropdown-menu>li>a {
-    color: #777}
+    color: #777;
+background-color: #fff}
 .dropdown-menu>li>a>.fa,.dropdown-menu>li>a>.glyphicon,.dropdown-menu>li>a>.ion {
     margin-right: 10px}
 .dropdown-menu>li>a:hover {
@@ -916,7 +908,8 @@ margin-top: -50px;
 .navbar-custom-menu>.navbar-nav>li>.dropdown-menu {
     position: absolute;
     right: 0;
-    left: auto}
+    left: auto;
+}
 @media (max-width: 991px) {
     .navbar-custom-menu>.navbar-nav {
     float: right;
@@ -2170,7 +2163,6 @@ img#logo {
                       }
 /* toggle button when hovered  */
  .skin-blue .main-header .navbar .sidebar-toggle:hover{
-                      background-color: transparent;
                       color: rgb(108,108,108);
                       }
 /* background */

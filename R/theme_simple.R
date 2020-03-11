@@ -12,7 +12,7 @@
 #' @export 
 #' @import ggplot2
 #' @import extrafont
-theme_simple <- function (base_size = 12, base_family = "Ubuntu Light"){
+theme_simple <- function (base_size = 12, base_family = "Arial"){
   extrafont::loadfonts(quiet = TRUE)
   theme_bw(base_size = base_size) + theme(text = element_text(family = base_family, 
                                                               color = "grey20", size = base_size), strip.background = element_blank(), 

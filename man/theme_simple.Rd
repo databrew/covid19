@@ -4,7 +4,7 @@
 \alias{theme_simple}
 \title{Theme simple}
 \usage{
-theme_simple(base_size = 12, base_family = "Ubuntu Light")
+theme_simple(base_size = 12, base_family = "Arial")
 }
 \arguments{
 \item{base_size}{Base size}
