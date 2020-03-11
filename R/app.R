@@ -21,6 +21,9 @@ app_ui <- function(request) {
   #############################
   tagList(
     golem_add_external_resources(),
+    # Force view of non-mobile
+
+    
     # UI
     navbarPage(title = 'Databrew\'s COVID-19 data explorer',
                id = 'navs',
@@ -120,11 +123,15 @@ golem_add_external_resources <- function(){
   )
   
   tags$head(
+    
+    # Force to wide / non-mobile view to avoid cut-off
+    HTML('<meta name="viewport" content="width=1024">'),
+    
     golem::activate_js(),
     golem::favicon(),
     # Add here all the external resources
     # Google analytics script
-    includeHTML(system.file('app/www/google-analytics.js', package = 'covid19')),
+    includeHTML(system.file('app/www/google-analytics.html', package = 'covid19')),
     # includeScript('www/google-analytics.js'),
     # If you have a custom.css in the inst/app/www
     tags$link(rel="stylesheet", type="text/css", href="www/custom.css")
