@@ -6,6 +6,8 @@ golem::detach_all_attached()
 # rm(list=ls(all.names = TRUE))
 
 # Document and reload your package
+# remove.packages('covid19')
+# devtools::install() # if underlying changes to system files
 golem::document_and_reload()
 
 # Re-capture fresh data from JHU
