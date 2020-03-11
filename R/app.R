@@ -129,7 +129,7 @@ golem_add_external_resources <- function(){
   tags$head(
     
     # # Force to wide / non-mobile view to avoid cut-off
-    HTML('<meta name="viewport" content="width=1024">'),
+    # HTML('<meta name="viewport" content="width=1024">'),
     
     # Facebook OpenGraph tags
     tags$meta(property = "og:title", content = share$title),
@@ -151,12 +151,12 @@ golem_add_external_resources <- function(){
     # Add here all the external resources
     # Google analytics script
     includeHTML(system.file('app/www/google-analytics.html', package = 'covid19')),
-    includeScript(system.file('app/www/script.js', package = 'covid19')),
+    includeScript(system.file('app/www/script.js', package = 'covid19'))#,
     # includeScript('inst/app/www/script.js'),
     
     # includeScript('www/google-analytics.js'),
     # If you have a custom.css in the inst/app/www
-    tags$link(rel="stylesheet", type="text/css", href="www/custom.css")
+    # tags$link(rel="stylesheet", type="text/css", href="www/custom.css")
     # tags$link(rel="stylesheet", type="text/css", href="www/custom.css")
   )
 }
