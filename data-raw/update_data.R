@@ -50,14 +50,37 @@ df <- full_join(x = confirmed_cases,
                 y = deaths) %>%
   full_join(recovered)
 
+# Decumulate too
+df <- df %>%
+  ungroup %>%
+  arrange(country, district, date) %>%
+  group_by(country, district, lat, lng) %>%
+  mutate(confirmed_cases_non_cum = confirmed_cases - lag(confirmed_cases, default = 0),
+         deaths_non_cum = deaths - lag(deaths, default = 0),
+         recovered_non_cum = recovered - lag(recovered, default = 0)) %>%
+  ungroup
+
+# Optionally choose ad-hoc updates mid-day
+ad_hoc <- FALSE
+if(ad_hoc){
+  datey <- as.Date('2020-03-10')
+}
+
+
 # Join all together but by country
-df_country <- df <- df %>%
+df_country <- df %>%
   group_by(country, date) %>%
   summarise(lat = mean(lat),
             lng = mean(lng),
             confirmed_cases = sum(confirmed_cases, na.rm = TRUE),
             deaths = sum(deaths, na.rm = TRUE),
-            recovered = sum(recovered, na.rm = TRUE))
+            recovered = sum(recovered, na.rm = TRUE)) %>%
+  ungroup %>%
+  group_by(country, lat, lng) %>%
+  mutate(confirmed_cases_non_cum = confirmed_cases - lag(confirmed_cases, default = 0),
+         deaths_non_cum = deaths - lag(deaths, default = 0),
+         recovered_non_cum = recovered - lag(recovered, default = 0)) %>%
+  ungroup
 
 usethis::use_data(df, overwrite = T)
 usethis::use_data(deaths, overwrite = T)

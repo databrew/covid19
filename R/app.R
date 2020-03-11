@@ -39,14 +39,16 @@ app_ui <- function(request) {
                                                             selected = c('Italy', 'Spain', 'France', 'US')),
                                                 checkboxInput('ylog', 'Logarithmic y-axis?',
                                                               value = TRUE),
-                                                helpText('Because the relationship between time and cumulative number of cases is exponential, using a logarithmic scale is a better way to compare countries over time.'),
+                                                checkboxInput('cumulative', 'Cumulative cases?',
+                                                              value = TRUE),
+                                                helpText('Because the relationship between time and number of cases is exponential, using a logarithmic, rather than linear, scale is a better way to visualize comparisons countries over time.'),
                                                 br(), br(),
                                                 sliderInput('day0', 'Minimum number of cases to be considered for "day 0"',
                                                             min = 1,
                                                             max = 500,
                                                             value = 1,
                                                             step = 1),
-                                                helpText("The slider above allows for the comparison between countries' trajectories once 'x' number of people are already infected. For example, moving the value to 100, will show the curve of each country beginning on the day at which at least 100 people were infected."))
+                                                helpText("The slider above allows for the comparison between countries' trajectories once 'x' number of people are already infected. For example, moving the value to 100, will show the curve of each country beginning on the day at which at least 100 people were infected (either cumulatively or on the specific day, depending on your choice)."))
                           )
                         )
                ),
@@ -200,12 +202,19 @@ app_server <- function(input, output, session) {
       day0 <-0
     }
     
-    pd <- df %>%
+    # Get whether cumulative or not
+    cumulative <- input$cumulative
+    if(is.null(cumulative)){
+      cumulative <- TRUE
+    }
+    
+    pd <- df_country %>%
       # mutate(country = ifelse(country != 'Mainland China', 'Other', 'China')) %>%
       arrange(date, country) %>%
       filter(country %in% these_countries) %>%
       group_by(country, date) %>%
-      summarise(confirmed_cases = sum(confirmed_cases)) %>%
+      summarise(confirmed_cases = sum(confirmed_cases),
+                confirmed_cases_non_cum = sum(confirmed_cases_non_cum)) %>%
       ungroup %>%
       group_by(country) %>%
       mutate(first_case = min(date[confirmed_cases >= day0])) %>%
@@ -228,9 +237,16 @@ app_server <- function(input, output, session) {
                                                         name = 'Set1'))(length(these_countries))
     }
     
+    # Assign which to plot
+    if(cumulative){
+      pd$value <- pd$confirmed_cases
+    } else {
+      pd$value <- pd$confirmed_cases_non_cum
+    }
+    
     g <- ggplot(data = pd,
                 aes(x = as.numeric(days_since_first_case),
-                    y = confirmed_cases)) +
+                    y = value)) +
       geom_line(aes(color = country),  alpha = 1, size = 1) +
       geom_point(aes(color = country), size = 1, alpha = 0.6) +
       theme_bw() +
@@ -238,10 +254,10 @@ app_server <- function(input, output, session) {
                          values = cols) +
       labs(x = paste0("Days since country's first day with ",
                       day0, " or more cases"),
-           y = paste0('Cumulative number of confirmed cases',
+           y = paste0(ifelse(cumulative, "Cumulative n", "N"), 'umber of confirmed cases',
                       ifelse(ylog, '\n(Logarithmic scale)', '')),
            title = paste0('COVID-19 cases since country\'s\nfirst day with ',
-                          day0, " or more cases"),
+                          day0, " or more ", ifelse(cumulative, "cumulative", "daily"),  " cases"),
            subtitle = paste0('Data as of ', max(df$date))) +
       theme_simple()
     if(ylog){
