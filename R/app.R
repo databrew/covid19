@@ -35,7 +35,7 @@ app_ui <- function(request) {
                                                 title = 'Plot parameters',
                                                 selectInput('country', 'Country',
                                                             multiple = TRUE,
-                                                            choices = sort(unique(sort(unique(covid19::df$country)))),
+                                                            choices = sort(unique(sort(unique(covid19::df_country$country)))),
                                                             selected = c('Italy', 'Spain', 'France', 'US')),
                                                 checkboxInput('ylog', 'Logarithmic y-axis?',
                                                               value = TRUE),
@@ -178,19 +178,19 @@ app_server <- function(input, output, session) {
     indicator <- input$indicator
     
     if(indicator == 'Confirmed cases'){
-      right <- df %>%
+      right <- df_country %>%
         group_by(country) %>%
         filter(date == max(date)) %>%
         summarise(value = sum(confirmed_cases))
     }
     if(indicator == 'Recoveries'){
-      right <- df %>%
+      right <- df_country %>%
         group_by(country) %>%
         filter(date == max(date)) %>%
         summarise(value = sum(recovered))
     }
     if(indicator == 'Deaths'){
-      right <- df %>%
+      right <- df_country %>%
         group_by(country) %>%
         filter(date == max(date)) %>%
         summarise(value = sum(deaths))
@@ -211,7 +211,7 @@ app_server <- function(input, output, session) {
       labs(x = '',
            y = '',
            title = indicator,
-           subtitle = paste0('Data as of ', as.character(max(df$date)))) 
+           subtitle = paste0('Data as of ', as.character(max(df_country$date)))) 
   })
   
   # Day zero adjustment chart
@@ -289,7 +289,7 @@ app_server <- function(input, output, session) {
                       ifelse(ylog, '\n(Logarithmic scale)', '')),
            title = paste0('COVID-19 cases since country\'s\nfirst day with ',
                           day0, " or more ", ifelse(cumulative, "cumulative", "daily"),  " cases"),
-           subtitle = paste0('Data as of ', max(df$date))) +
+           subtitle = paste0('Data as of ', max(df_country$date))) +
       theme_simple()
     if(ylog){
       g <- g + scale_y_log10()
@@ -327,19 +327,19 @@ app_server <- function(input, output, session) {
     
     # Get the values per country
     if(indicator == 'Confirmed cases'){
-      right <- df %>%
+      right <- df_country %>%
         group_by(country) %>%
         filter(date == max(date)) %>%
         summarise(value = sum(confirmed_cases))
     }
     if(indicator == 'Recoveries'){
-      right <- df %>%
+      right <- df_country %>%
         group_by(country) %>%
         filter(date == max(date)) %>%
         summarise(value = sum(recovered))
     }
     if(indicator == 'Deaths'){
-      right <- df %>%
+      right <- df_country %>%
         group_by(country) %>%
         filter(date == max(date)) %>%
         summarise(value = sum(deaths))

@@ -60,12 +60,6 @@ df <- df %>%
          recovered_non_cum = recovered - lag(recovered, default = 0)) %>%
   ungroup
 
-# Optionally choose ad-hoc updates mid-day
-ad_hoc <- FALSE
-if(ad_hoc){
-  datey <- as.Date('2020-03-10')
-}
-
 
 # Join all together but by country
 df_country <- df %>%
@@ -76,11 +70,17 @@ df_country <- df %>%
             deaths = sum(deaths, na.rm = TRUE),
             recovered = sum(recovered, na.rm = TRUE)) %>%
   ungroup %>%
+  # # Weird March 11 correction
+  mutate(confirmed_cases = ifelse(country == 'US' & date == '2020-03-10', 1050, confirmed_cases)) %>%
+  mutate(deaths = ifelse(country == 'US' & date == '2020-03-10', 29, deaths)) %>%
+  mutate(recovered = ifelse(country == 'US' & date == '2020-03-10', 1050, recovered)) %>%
   group_by(country, lat, lng) %>%
   mutate(confirmed_cases_non_cum = confirmed_cases - lag(confirmed_cases, default = 0),
          deaths_non_cum = deaths - lag(deaths, default = 0),
          recovered_non_cum = recovered - lag(recovered, default = 0)) %>%
   ungroup
+
+
 
 usethis::use_data(df, overwrite = T)
 usethis::use_data(deaths, overwrite = T)
