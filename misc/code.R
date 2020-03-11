@@ -1,6 +1,85 @@
 library(tidyverse)
+library(covid19)
+library(ggplot2)
+library(databrew)
+
 
 # Datasets at https://github.com/CSSEGISandData/COVID-19
+pd <- df_country %>%
+  # mutate(country = ifelse(country != 'Mainland China', 'Other', 'China')) %>%
+  arrange(date, country) %>%
+  filter(country %in% c(
+    'Italy', 
+    'Germany',
+    'US',
+    'France',
+    # 'UK',
+    'South Korea',
+    'Iran',
+    'Germany',
+    # 'Japan',
+    'Norway',
+    'Switzerland',
+    'South Korea',
+    'Spain')) %>% #, 'France', 'US',
+
+  group_by(country, date) %>%
+  summarise(confirmed_cases = sum(confirmed_cases)) %>%
+  ungroup %>%
+  group_by(country) %>%
+  mutate(first_case = min(date[confirmed_cases > 150])) %>%
+  ungroup %>%
+  mutate(days_since_first_case = date - first_case)# %>%
+  # filter(days_since_first_case >= 0)
+
+cols <- colorRampPalette(RColorBrewer::brewer.pal(n = 8, 'Set1'))(length(unique(pd$country)))
+
+selfy <- function(x){abs(x)}
+ggplot(data = pd,
+       aes(x = as.numeric(days_since_first_case),
+           y = confirmed_cases)) +
+  geom_line(aes(group = country,
+                color = country),
+            size = 2,
+            alpha = 0.85) + 
+  # geom_point(aes(group = country,
+  #                color = country),
+  #            size = 2) +
+  geom_hline(yintercept = 150, lty = 2, alpha = 0.7) +
+  geom_vline(xintercept = 0, lty = 2, alpha = 0.7) +
+  geom_point(data = tibble(days_since_first_case = 0,
+                           confirmed_cases = 150),
+             aes(x = days_since_first_case,
+                 y = confirmed_cases),
+             color = 'red', 
+             pch = 1,
+             size = 20) +
+  scale_y_log10() +
+  theme_simple() +
+  scale_color_manual(name = '', values = cols) +
+  labs(x = 'Days until/after reaching "critical mass" (150 cases)',
+       y = 'Confirmed cases\n(cumulative, logarithmic scale)',
+       title = 'Cumulative cases by country',
+       subtitle = 'Day 0 = first day at which the country had > 150 cases',
+       caption = 'Data from https://github.com/CSSEGISandData/COVID-19\nChart by www.databrew.cc') +
+  scale_x_continuous(sec.axis = sec_axis(~ . + 0,
+                                         breaks = c(-20, 10),
+                                         labels = c('Before "critical mass"',
+                                                    'After "critical mass"')))
+
+
+ggplot(data = pd %>% filter(country == 'US'),
+       aes(x = date,
+           y = confirmed_cases)) +
+  geom_point() +
+  geom_line() +
+  theme_simple() +
+  xlim(as.Date('2020-01-15'),
+       Sys.Date()) +
+  labs(x = 'Date',
+       y = 'Confirmed cases',
+       title = 'COVID-19 cases and Donald Trump\'s statements on the disease')
+
 
 # Confirmed cases
 download.file(url = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv',
