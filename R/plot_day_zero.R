@@ -106,10 +106,10 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'France', 'US', 'Germa
   }
   if(add_markers){
     g <- g + 
-      geom_hline(yintercept = 150, lty = 2, alpha = 0.7) +
+      geom_hline(yintercept = day0, lty = 2, alpha = 0.7) +
       geom_vline(xintercept = 0, lty = 2, alpha = 0.7) +
       geom_point(data = tibble(days_since_first_case = 0,
-                               confirmed_cases = 150),
+                               confirmed_cases = day0),
                  aes(x = days_since_first_case,
                      y = confirmed_cases),
                  color = 'red', 
