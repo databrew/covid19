@@ -125,7 +125,7 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'France', 'US', 'Germa
                         day0, " or more ", ifelse(cumulative, "cumulative", "daily"),  " cases"),
          subtitle = paste0('Data as of ', max(df_country$date))) +
     theme_simple() +
-    scale_x_continuous(breaks = -100:100) +
+    scale_x_continuous(breaks = seq(-100, 100, 2)) +
     theme(plot.title = element_text(size = 14))
   if(ylog){
     g <- g + scale_y_log10()
