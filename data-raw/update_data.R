@@ -58,8 +58,13 @@ df <- full_join(x = confirmed_cases,
 # df <- df %>%
 #   filter(country != 'US' |
 #            tolower(district) %in% states)
+# Beginning on March 10, the data format changes for the US - reporting states and
+# sub-state entities
+# we want to keep all US entries through March 9 and then beginning on the 10th,
+# only keep those with commas (the states)
 df <- df %>%
   filter(country != 'US' |
+           date < '2020-03-10' |
            !grepl(', ', district))
 
 # Decumulate too
