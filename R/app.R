@@ -226,7 +226,8 @@ app_server <- function(input, output, session) {
                   ylog = input$ylog,
                   day0 = input$day0,
                   cumulative = input$cumulative)
-  })
+  },
+  height = 400, width = 700)
   
   # Day zero adjustment chart
   output$plot0_b <- renderPlot({
@@ -237,7 +238,8 @@ app_server <- function(input, output, session) {
                   cumulative = input$cumulative,
                   time_before = -10,
                   add_markers = TRUE)
-  })
+  },
+  height = 400, width = 700)
   
   # Main leaflet chart  
   output$leafy <- renderLeaflet({

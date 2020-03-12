@@ -9,3 +9,15 @@ run_app <- function(...) {
     golem_opts = list(...)
   )
 }
+
+
+#' @export
+#' @importFrom shiny shinyApp
+#' @importFrom golem with_golem_options
+run_app_mini <- function(...) {
+  golem::with_golem_options(
+    app = mini_app(),
+    golem_opts = list(...)
+  )
+}
+
