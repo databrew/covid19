@@ -29,7 +29,7 @@ app_ui <- function(request) {
                         fluidPage(
                           fluidRow(
                             shinydashboard::box(width = 12,
-                                                title = 'Day-zero comparison plots',
+                                                title = '"Critical mass" comparison plots',
                                                 column(6,
                                                        plotOutput('plot_day_zero')),
                                                 column(6,
