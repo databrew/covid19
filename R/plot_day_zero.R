@@ -139,7 +139,7 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'France', 'US', 'Germa
                                                       labels = c('Before\n"critical mass"',
                                                                  'After\n"critical mass"'))) 
   }
-  if(add_markers){
+  if(add_markers & cumulative){
     g <- g + 
       geom_hline(yintercept = day0, lty = 2, alpha = 0.7) +
       geom_vline(xintercept = 0, lty = 2, alpha = 0.7) +
