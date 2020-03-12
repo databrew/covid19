@@ -13,7 +13,7 @@ golem::document_and_reload()
 # Re-capture fresh data from JHU
 # (Set to true when you want to fetch fresh data, but generally keep to false in 
 # order to avoid over-pinging the server)
-refresh <- FALSE
+refresh <- F
 if(refresh){
   source('data-raw/update_data.R', chdir = T)
 }

@@ -31,9 +31,9 @@ app_ui <- function(request) {
                             shinydashboard::box(width = 12,
                                                 title = '"Critical mass" comparison plots',
                                                 column(6,
-                                                       plotOutput('plot_day_zero')),
+                                                       plotOutput('plot0')),
                                                 column(6,
-                                                       plotOutput('plot_day_zero_b'))),
+                                                       plotOutput('plot0_b'))),
                             shinydashboard::box(width = 12,
                                                 title = 'Plot parameters',
                                                 fluidRow(
@@ -47,7 +47,7 @@ app_ui <- function(request) {
                                                                      min = 1,
                                                                      width = '100%',
                                                                      max = 500,
-                                                                     value = 1,
+                                                                     value = 150,
                                                                      step = 1),
                                                          helpText("The slider above allows for the comparison between countries' trajectories once 'x' number of people are already infected. For example, moving the value to 100, will show the curve of each country setting as 'day zero' the moment at which at least 100 people were infected.")),
                                                   column(4,
@@ -176,7 +176,6 @@ golem_add_external_resources <- function(){
 #' @import leaflet
 app_server <- function(input, output, session) {
   
-  
   ## Social
   callModule(mod_social_server, "social_module_1")
   
@@ -222,190 +221,22 @@ app_server <- function(input, output, session) {
   })
   
   # Day zero adjustment chart
-  output$plot_day_zero <- renderPlot({
-    
-    # Get countries
-    these_countries <- input$country
-    if(is.null(these_countries)){
-      these_countries <- c('France', 'Italy', 'Spain', 'South Korea', 'Japan')
-    }
-    
-    # Get y scale
-    ylog <- input$ylog
-    if(is.null(ylog)){ylog <- TRUE}    
-    
-    # Get day zero definition
-    day0 <- input$day0
-    if(is.null(day0)){
-      day0 <-0
-    }
-    
-    # Get whether cumulative or not
-    cumulative <- input$cumulative
-    if(is.null(cumulative)){
-      cumulative <- TRUE
-    }
-    
-    pd <- df_country %>%
-      # mutate(country = ifelse(country != 'Mainland China', 'Other', 'China')) %>%
-      arrange(date, country) %>%
-      filter(country %in% these_countries) %>%
-      group_by(country, date) %>%
-      summarise(confirmed_cases = sum(confirmed_cases),
-                confirmed_cases_non_cum = sum(confirmed_cases_non_cum)) %>%
-      ungroup %>%
-      group_by(country) %>%
-      mutate(first_case = min(date[confirmed_cases >= day0])) %>%
-      ungroup %>%
-      mutate(days_since_first_case = date - first_case) %>%
-      filter(days_since_first_case >= 0)
-    
-    
-    if(length(these_countries) == 0){
-      return(NULL)
-    }
-    if(length(these_countries) == 1){
-      cols <- 'black'
-    }
-    if(length(these_countries) == 2){
-      cols <- c('black', 'red')
-    }
-    if(length(these_countries) > 2){
-      cols <- colorRampPalette(RColorBrewer::brewer.pal(n = 8,
-                                                        name = 'Set1'))(length(these_countries))
-    }
-    
-    # Assign which to plot
-    if(cumulative){
-      pd$value <- pd$confirmed_cases
-    } else {
-      pd$value <- pd$confirmed_cases_non_cum
-    }
-    
-    g <- ggplot(data = pd,
-                aes(x = as.numeric(days_since_first_case),
-                    y = value)) +
-      geom_line(aes(color = country),  alpha = 0.85, size = 2) +
-      geom_point(aes(color = country), size = 1, alpha = 0.6) +
-      theme_bw() +
-      scale_color_manual(name = '',
-                         values = cols) +
-      labs(x = paste0("Days since country's first day with ",
-                      day0, " or more cases"),
-           y = paste0(ifelse(cumulative, "Cumulative n", "N"), 'umber of confirmed cases',
-                      ifelse(ylog, '\n(Logarithmic scale)', '')),
-           title = paste0('COVID-19 cases since country\'s\nfirst day with ',
-                          day0, " or more ", ifelse(cumulative, "cumulative", "daily"),  " cases"),
-           subtitle = paste0('Data as of ', max(df_country$date))) +
-      theme_simple()
-    if(ylog){
-      g <- g + scale_y_log10()
-    }
-    return(g)
+  output$plot0 <- renderPlot({
+    plot_day_zero(countries = input$country,
+                  ylog = input$ylog,
+                  day0 = input$day0,
+                  cumulative = input$cumulative)
   })
   
   # Day zero adjustment chart
-  output$plot_day_zero_b <- renderPlot({
+  output$plot0_b <- renderPlot({
     
-    # Get countries
-    these_countries <- input$country
-    if(is.null(these_countries)){
-      these_countries <- c('France', 'Italy', 'Spain', 'South Korea', 'Japan')
-    }
-    
-    # Get y scale
-    ylog <- input$ylog
-    if(is.null(ylog)){ylog <- TRUE}    
-    
-    # Get day zero definition
-    day0 <- input$day0
-    if(is.null(day0)){
-      day0 <-0
-    }
-    
-    # Get whether cumulative or not
-    cumulative <- input$cumulative
-    if(is.null(cumulative)){
-      cumulative <- TRUE
-    }
-    
-    pd <- df_country %>%
-      # mutate(country = ifelse(country != 'Mainland China', 'Other', 'China')) %>%
-      arrange(date, country) %>%
-      filter(country %in% these_countries) %>%
-      group_by(country, date) %>%
-      summarise(confirmed_cases = sum(confirmed_cases),
-                confirmed_cases_non_cum = sum(confirmed_cases_non_cum)) %>%
-      ungroup %>%
-      group_by(country) %>%
-      mutate(first_case = min(date[confirmed_cases >= day0])) %>%
-      ungroup %>%
-      mutate(days_since_first_case = date - first_case) %>%
-      filter(days_since_first_case >= -20)
-    
-    
-    if(length(these_countries) == 0){
-      return(NULL)
-    }
-    if(length(these_countries) == 1){
-      cols <- 'black'
-    }
-    if(length(these_countries) == 2){
-      cols <- c('black', 'red')
-    }
-    if(length(these_countries) > 2){
-      cols <- colorRampPalette(RColorBrewer::brewer.pal(n = 8,
-                                                        name = 'Set1'))(length(these_countries))
-    }
-    
-    # Assign which to plot
-    if(cumulative){
-      pd$value <- pd$confirmed_cases
-    } else {
-      pd$value <- pd$confirmed_cases_non_cum
-    }
-    
-    selfy <- function(x){abs(x)}
-    g <- ggplot(data = pd,
-           aes(x = as.numeric(days_since_first_case),
-               y = value)) +
-      geom_line(aes(group = country,
-                    color = country),
-                size = 2,
-                alpha = 0.85) + 
-      # geom_point(aes(group = country,
-      #                color = country),
-      #            size = 2) +
-      scale_x_continuous(sec.axis = sec_axis(~ . + 0,
-                                             breaks = c(-10, 10),
-                                             labels = c('Before "critical mass"',
-                                                        'After "critical mass"'))) +
-      scale_color_manual(name = '',
-                         values = cols) +
-      labs(x = paste0("Days since country's first day with ",
-                      day0, " or more cases"),
-           y = paste0(ifelse(cumulative, "Cumulative n", "N"), 'umber of confirmed cases',
-                      ifelse(ylog, '\n(Logarithmic scale)', '')),
-           title = paste0('COVID-19 cases since country\'s\nfirst day with ',
-                          day0, " or more ", ifelse(cumulative, "cumulative", "daily"),  " cases"),
-           subtitle = paste0('Data as of ', max(df_country$date))) +
-      theme_simple()
-    if(ylog){
-      g <- g + scale_y_log10() 
-    } 
-    if(cumulative){
-      g <- g + 
-        geom_point(data = tibble(days_since_first_case = 0,
-                                 value = day0),
-                   aes(x = days_since_first_case,
-                       y = value),
-                   color = 'red', 
-                   pch = 1,
-                   size = 20) +
-        geom_hline(yintercept = day0, lty = 2, alpha = 0.7) +
-        geom_vline(xintercept = 0, lty = 2, alpha = 0.7) 
-    }
-    return(g)
+    plot_day_zero(countries = input$country,
+                  ylog = input$ylog,
+                  day0 = input$day0,
+                  cumulative = input$cumulative,
+                  time_before = -10,
+                  add_markers = TRUE)
   })
   
   # Main leaflet chart  
@@ -570,9 +401,6 @@ app_server <- function(input, output, session) {
   
   
 }
-
-
-
 
 app <- function(){
   # Detect the system. If on AWS, don't launch browswer
