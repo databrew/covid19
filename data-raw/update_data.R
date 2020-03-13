@@ -67,6 +67,11 @@ df <- df %>%
            date < '2020-03-10' |
            !grepl(', ', district))
 
+# Manual update for Spain (JHU data behind)
+df$confirmed_cases[df$country == 'Spain' & df$date == '2020-03-12'] <- 3000
+df$deaths[df$country == 'Spain' & df$date == '2020-03-12'] <- 84
+# df$recovered[df$country == 'Spain' & df$date == '2020-03-12']
+
 # Decumulate too
 df <- df %>%
   ungroup %>%
