@@ -122,8 +122,8 @@ ggsave('~/Desktop/isglobal/g.png')
 
 
 pdf('~/Desktop/isglobal/all.pdf',
-    height = 11,
-    width = 8)
+    height = 33,
+    width = 24)
 Rmisc::multiplot(a, b, cc, d, e, f, g,
                        cols = 2)
 dev.off()
