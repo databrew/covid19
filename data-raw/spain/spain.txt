@@ -8,7 +8,7 @@ Cantabria 16
 CLM 115
 CyL 92
 Cataluña 260
-C.Valenciana 94
+C. Valenciana 94
 Extremadura 19
 Galicia 35
 Madrid 1388
@@ -27,7 +27,7 @@ Cantabria 16
 CLM 115
 CyL 92
 Cataluña 260
-C.Valenciana 94
+C. Valenciana 94
 Extremadura 19
 Galicia 35
 Madrid 1388
@@ -46,7 +46,7 @@ Cantabria 12
 CLM 39
 CyL 56
 Cataluña 124
-C.Valenciana 50
+C. Valenciana 50
 Extremadura 8
 Galicia 22
 Madrid 782
@@ -65,7 +65,7 @@ Cantabria 12
 CLM 39
 CyL 56
 Cataluña 124
-C.Valenciana 50
+C. Valenciana 50
 Extremadura 8
 Galicia 22
 Madrid 782
@@ -84,7 +84,7 @@ Cantabria 12
 CLM 26
 CyL 23
 Cataluña 75
-C.Valenciana 37
+C. Valenciana 37
 Extremadura 7
 Galicia 6
 Madrid 469
@@ -103,7 +103,7 @@ Cantabria 12
 CLM 15
 CyL 22
 Cataluña 49
-C.Valenciana 37
+C. Valenciana 37
 Extremadura 6
 Galicia 5
 Madrid 202
@@ -203,12 +203,12 @@ Canarias 7
 Cataluña 6
 Baleares 2
 Andalucía 12
-Castilla y León 3
+CyL 3
 Extremadura 4
 País Vasco 3
 Asturias 1
 Cantabria 1
-Castilla-La Mancha 1
+CLM 1
 Navarra 1
 
 2020-02-28 17:00:00
@@ -219,7 +219,7 @@ Cataluña 3
 Baleares 1
 Andalucía 7
 Aragón 1
-Castilla y León 2
+CyL 2
 
 2020-02-28 12:00:00
 Madrid 5
@@ -229,7 +229,7 @@ Cataluña 3
 Baleares 1
 Andalucía 6
 Aragón 1
-Castilla y León 2
+CyL 2
 
 2020-02-27 09:00:00
 Canarias 5

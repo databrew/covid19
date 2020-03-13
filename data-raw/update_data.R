@@ -121,3 +121,39 @@ spain_file <- 'spain/spain.txt'
 con <- file(spain_file,open="r")
 spain_lines <- readLines(con)
 close(con)
+
+# Process line function for Spain
+out_list <- list()
+date_time <- Sys.time()
+counter <- 0
+for(i in 1:length(spain_lines)){
+  message(i)
+  this_line <- spain_lines[i]
+  if(this_line != ''){
+    # Split at the spaces
+    line_split <- strsplit(this_line, split = ' ', fixed = TRUE)
+    line_split <- unlist(line_split)
+    # See if date
+    
+    is_date <- substr(line_split[1], 1, 4) == '2020'
+    if(is_date){
+      this_date_time <- paste0(line_split[1], ' ',
+                               line_split[2], ' CET')
+      date_time <- this_date_time
+    } else {
+      counter <- counter + 1
+      cases <- as.numeric(line_split[length(line_split)])
+      ccaa <- paste0(line_split[1:(length(line_split)-1)], collapse = ' ')
+      out <- tibble(date_time = date_time,
+                    ccaa = ccaa,
+                    value = cases)
+      out_list[[counter]] <- out
+    }
+  }
+ 
+}
+esp <- bind_rows(out_list)
+esp$date_time <- as.POSIXct(esp$date_time,tz='Europe/Madrid')
+
+write_csv(esp, 'spain/ccaa.csv')
+usethis::use_data(esp, overwrite = T)
