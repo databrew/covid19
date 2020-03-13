@@ -21,7 +21,7 @@ download.file(url = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/m
 download.file(url = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv',
               destfile = 'jhu/recovered.csv')
 
-# Read in 
+# Read in
 confirmed_cases <- read_csv('jhu/confirmed_cases.csv')
 deaths <- read_csv('jhu/deaths.csv')
 recovered <- read_csv('jhu/recovered.csv')
@@ -34,12 +34,12 @@ clean_up <- function(ts, value_name = 'deaths'){
     gather(key = date,
            value = value_name,
            names(ts)[!is.na(as.Date(names(ts), format = '%m/%d/%y'))])
-  
+
   # Clean up columns and names
   names(ts) <- c('district', 'country', 'lat', 'lng', 'date', value_name)
   ts$date <- as.Date(ts$date, format = '%m/%d/%y')
   return(ts)
-  
+
 }
 
 # Clean up the datasets
@@ -81,8 +81,8 @@ if(length(df$confirmed_cases[df$country == 'Spain' & df$date == '2020-03-13']) =
                     country = 'Spain',
                     lat = df$lat[df$country == 'Spain'][1],
                     lng = df$lng[df$country == 'Spain'][1],
-                    confirmed_cases = 4209,
-                    deaths = 120,
+                    confirmed_cases = 4231,
+                    deaths = 121,
                     recovered = 189)
   df <- df %>% bind_rows(new_row)
 }
@@ -149,7 +149,7 @@ for(i in 1:length(spain_lines)){
     line_split <- strsplit(this_line, split = ' ', fixed = TRUE)
     line_split <- unlist(line_split)
     # See if date
-    
+
     is_date <- substr(line_split[1], 1, 4) == '2020'
     if(is_date){
       this_date_time <- paste0(line_split[1], ' ',
@@ -165,7 +165,7 @@ for(i in 1:length(spain_lines)){
       out_list[[counter]] <- out
     }
   }
- 
+
 }
 esp <- bind_rows(out_list)
 esp$date_time <- as.POSIXct(esp$date_time,tz='Europe/Madrid')
@@ -174,4 +174,3 @@ write_csv(esp, 'spain/ccaa.csv')
 usethis::use_data(esp, overwrite = T)
 
 # Write a map
-

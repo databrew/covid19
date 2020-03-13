@@ -11,7 +11,7 @@ Cataluña 316
 C.Valenciana 94
 Extremadura 39
 Galicia 85
-Madrid 1.990
+Madrid 1990
 Melilla 2
 Murcia 35
 Navarra 130
