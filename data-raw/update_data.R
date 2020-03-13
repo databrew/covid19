@@ -109,6 +109,13 @@ usethis::use_data(confirmed_cases, overwrite = T)
 usethis::use_data(recovered, overwrite = T)
 usethis::use_data(df_country, overwrite = T)
 
+if(!dir.exists('isglobal')){
+  dir.create('isglobal')
+}
+write_csv(df, 'isglobal/world_region_data.csv')
+write_csv(df_country, 'isglobal/world_data.csv')
+
+
 # Spain
 spain_file <- 'spain/spain.txt'
 con <- file(spain_file,open="r")
