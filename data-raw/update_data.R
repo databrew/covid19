@@ -68,9 +68,22 @@ df <- df %>%
            !grepl(', ', district))
 
 # Manual update for Spain (JHU data behind)
-df$confirmed_cases[df$country == 'Spain' & df$date == '2020-03-12'] <- 3000
+df$confirmed_cases[df$country == 'Spain' & df$date == '2020-03-12'] <- 3050
 df$deaths[df$country == 'Spain' & df$date == '2020-03-12'] <- 84
 # df$recovered[df$country == 'Spain' & df$date == '2020-03-12']
+
+# Add a Spain row for March 13 (updating manually)
+if(length(df$confirmed_cases[df$country == 'Spain' & df$date == '2020-03-13']) == 0){
+  new_row <- tibble(district = NA,
+                    date = as.Date('2020-03-13'),
+                    country = 'Spain',
+                    lat = df$lat[df$country == 'Spain'][1],
+                    lng = df$lng[df$country == 'Spain'][1],
+                    confirmed_cases = 4209,
+                    deaths = 120,
+                    recovered = 189)
+  df <- df %>% bind_rows(new_row)
+}
 
 # Decumulate too
 df <- df %>%
@@ -157,3 +170,6 @@ esp$date_time <- as.POSIXct(esp$date_time,tz='Europe/Madrid')
 
 write_csv(esp, 'spain/ccaa.csv')
 usethis::use_data(esp, overwrite = T)
+
+# Write a map
+
