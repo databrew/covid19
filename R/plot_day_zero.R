@@ -5,12 +5,16 @@
 #' @param day0 An integer, the number of cumulative cases at which the outbreak is considered to have started
 #' @param cumulative Whether to count cases cumulatively
 #' @param time_before How many days before outbreak to show
+#' @param max_date The maximum date
 #' @import dplyr
 #' @export
 prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'France', 'US', 'Germany'),
                                    day0 = 150,
                                    cumulative = TRUE,
-                                   time_before = 0){
+                                   time_before = 0,
+                                   max_date = Sys.Date()){
+  
+  
   
   if(time_before > 0){
     stop('time_before must be less than or equal to 0')
@@ -48,6 +52,9 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'France', 'US
   
   if(length(these_countries) == 0){
     return(NULL)
+  } else {
+    pd <- pd %>% dplyr::filter(date <= max_date)
+    
   }
  
   # Assign which to plot
@@ -70,6 +77,7 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'France', 'US
 #' @param time_before How many days before outbreak to show
 #' @param add_markets Whether to show lines / circle at outbreak start
 #' @param line_size Size of line
+#' @param max_date The maximum date
 #' @import dplyr
 #' @import ggplot2
 #' @import RColorBrewer
@@ -80,12 +88,14 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'France', 'US', 'Germa
                           cumulative = TRUE,
                           time_before = 0,
                           add_markers = FALSE,
-                          line_size = 1.5){
+                          line_size = 1.5,
+                          max_date = Sys.Date()){
   
   pd <- prepare_day_zero_data(countries = countries,
                               day0 = day0,
                               cumulative = cumulative,
-                              time_before = time_before)
+                              time_before = time_before,
+                              max_date = max_date)
   these_countries <- countries
   
  

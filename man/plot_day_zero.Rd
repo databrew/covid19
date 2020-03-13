@@ -11,7 +11,8 @@ plot_day_zero(
   cumulative = TRUE,
   time_before = 0,
   add_markers = FALSE,
-  line_size = 1.5
+  line_size = 1.5,
+  max_date = Sys.Date()
 )
 }
 \arguments{
@@ -26,6 +27,8 @@ plot_day_zero(
 \item{time_before}{How many days before outbreak to show}
 
 \item{line_size}{Size of line}
+
+\item{max_date}{The maximum date}
 
 \item{add_markets}{Whether to show lines / circle at outbreak start}
 }

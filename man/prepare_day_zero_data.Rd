@@ -8,7 +8,8 @@ prepare_day_zero_data(
   countries = c("Italy", "Spain", "France", "US", "Germany"),
   day0 = 150,
   cumulative = TRUE,
-  time_before = 0
+  time_before = 0,
+  max_date = Sys.Date()
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ prepare_day_zero_data(
 \item{cumulative}{Whether to count cases cumulatively}
 
 \item{time_before}{How many days before outbreak to show}
+
+\item{max_date}{The maximum date}
 }
 \description{
 Generate a plot with time adjusted for the day at which the outbreak is considered to have started
