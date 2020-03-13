@@ -27,3 +27,4 @@ ggplot(data = esp,
   scale_x_datetime(breaks = date_vec,
                    labels = date_lab,
                    limits = c(min(date_vec), max(date_vec)))
+

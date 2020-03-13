@@ -115,6 +115,66 @@ ggsave('../data-raw/isglobal/img/italy_comparison.jpg')
 ggsave('../data-raw/isglobal/img/italy_comparison.pdf')
 
 
+library(covid19)
+library(ggplot2)
+library(lubridate)
+
+date_vec <- as.POSIXct(seq(as.Date('2020-03-02'),
+                           as.Date('2020-03-12'),
+                           by = 2))
+date_lab <- format(date_vec, '%b\n%d')
+
+ggplot(data = esp,
+       aes(x = date_time,
+           y = value)) +
+  geom_area(color = 'black', fill = 'red', alpha = 0.7) +
+  facet_wrap(~ccaa, scales = 'free_x') +
+  theme_simple() +
+  labs(x = '', y = 'Casos') +
+  geom_text(data = esp %>% filter(date_time == max(date_time)),
+            aes(label = value,
+                x = date_time - hours(50),
+                y = value + 50),
+            size = 3,
+            alpha = 0.6,
+            color = 'red') +
+  labs(title = 'Casos confirmados por CCAA',
+       subtitle = 'Datos: 17:00 12 de marzo 2020') +
+  ylim(0, 1600) +
+  theme(strip.text = element_text(size = 15)) +
+  scale_x_datetime(breaks = date_vec,
+                   labels = date_lab,
+                   limits = c(min(date_vec), max(date_vec)))
+
+ggsave('../data-raw/isglobal/img/ccaa.png')
+ggsave('../data-raw/isglobal/img/ccaa.jpg')
+ggsave('../data-raw/isglobal/img/ccaa.pdf')
+
+
+day0 = 50
+time_before = -5
+pd = esp %>%
+  mutate(date = as.Date(date_time)) %>%
+  group_by(date, ccaa) %>%
+  filter(date_time == max(date_time)) %>%
+  ungroup %>%
+  group_by(date, ccaa) %>%
+  summarise(confirmed_cases = sum(value)) %>%
+  mutate(day = date) %>%
+  ungroup %>%
+  group_by(ccaa) %>%
+  mutate(first_case = min(date[confirmed_cases >= day0])) %>%
+  ungroup %>%
+  mutate(days_since_first_case = date - first_case) %>%
+  filter(days_since_first_case >= time_before)
+# 
+ggplot(data = pd,
+       aes(x = days_since_first_case,
+           y = confirmed_cases,
+           group = ccaa,
+           color = ccaa)) +
+  geom_line()
+
 # World comparison
 # day0 = 150
 # time_before = -5
