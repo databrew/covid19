@@ -27,6 +27,9 @@ app_ui <- function(request) {
                footer = shiny::includeHTML(system.file('app/www/footer.html', package = 'covid19')),
                tabPanel('Epidemic curves',
                         fluidPage(
+                          shiny::actionButton(inputId='ab1', label="Mobile version", 
+                                              icon = icon("th"), 
+                                              onclick ="window.open('https://datacat.cc/covid', '_blank')"),
                           fluidRow(
                             shinydashboard::box(width = 12,
                                                 title = '"Critical mass" comparison plots',

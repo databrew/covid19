@@ -1,0 +1,239 @@
+2020-03-12 18:00:00
+Andalucía 115
+Aragón 64
+Asturias 49
+Baleares 22
+Canarias 51
+Cantabria 16
+CLM 115
+CyL 92
+Cataluña 260
+C.Valenciana 94
+Extremadura 19
+Galicia 35
+Madrid 1388
+Murcia 26
+Navarra 92
+País Vasco 346
+La Rioja 220
+
+2020-03-12 13:00:00
+Andalucía 115
+Aragón 64
+Asturias 47
+Baleares 22
+Canarias 51
+Cantabria 16
+CLM 115
+CyL 92
+Cataluña 260
+C.Valenciana 94
+Extremadura 19
+Galicia 35
+Madrid 1388
+Murcia 26
+Navarra 73
+País Vasco 346
+La Rioja 205
+
+2020-03-10 18:00:00
+Andalucía 71
+Aragón 38
+Asturias 28
+Baleares 13
+Canarias 25
+Cantabria 12
+CLM 39
+CyL 56
+Cataluña 124
+C.Valenciana 50
+Extremadura 8
+Galicia 22
+Madrid 782
+Murcia 9
+Navarra 12
+País Vasco 195
+La Rioja 155
+
+2020-03-10 13:00:00
+Andalucía 71
+Aragón 38
+Asturias 22
+Baleares 13
+Canarias 25
+Cantabria 12
+CLM 39
+CyL 56
+Cataluña 124
+C.Valenciana 50
+Extremadura 8
+Galicia 22
+Madrid 782
+Murcia 9
+Navarra 12
+País Vasco 195
+La Rioja 144
+
+2020-03-09 12:00:00
+Andalucía 54
+Aragón 13
+Asturias 7
+Baleares 11
+Canarias 22
+Cantabria 12
+CLM 26
+CyL 23
+Cataluña 75
+C.Valenciana 37
+Extremadura 7
+Galicia 6
+Madrid 469
+Murcia 4
+Navarra 3
+País Vasco 149
+La Rioja 81
+
+2020-03-08 12:00:00
+Andalucía 35
+Aragón 13
+Asturias 7
+Baleares 8
+Canarias 17
+Cantabria 12
+CLM 15
+CyL 22
+Cataluña 49
+C.Valenciana 37
+Extremadura 6
+Galicia 5
+Madrid 202
+Murcia 1
+Navarra 3
+País Vasco 102
+La Rioja 55
+
+2020-03-07 12:00:00
+Andalucía 27
+Aragón 11
+Asturias 5
+Baleares 6
+Canarias 18
+Cantabria 10 
+CLM 15
+CyL 14
+Cataluña 24
+C. Valenciana 30
+Extremadura 6
+Galicia 3
+Madrid 174
+Navarra 3
+País Vasco 45
+La Rioja 39
+
+2020-03-05 12:00:00
+Andalucía 12
+Aragón 1
+Asturias 5
+Baleares 6
+Canarias 8
+Cantabria 10
+CyL 11
+CLM 13
+Cataluña 15
+C. Valenciana 19
+Extremadura 6
+Galicia 1
+Madrid 70
+Navarra 1
+País Vasco 17
+La Rioja 11
+
+2020-03-04 12:00:00
+Andalucía 13
+Asturias 2
+Baleares 3
+Canarias 7
+Cantabria 10
+CyL 8
+CLM 7
+Cataluña 15
+C. Valenciana 19
+Extremadura 6
+Madrid 70
+Navarra 1
+País Vasco 15
+La Rioja 3
+
+2020-03-03 12:00:00
+Andalucía 13
+Asturias 1
+Baleares 2
+Canarias 7
+Cantabria 10
+CyL 8
+CLM 3
+Cataluña 15
+C. Valenciana 15
+Extremadura 6
+Madrid 34
+Navarra 1
+País Vasco 13
+La Rioja 1
+
+2020-03-02 18:00:00
+Andalucía 12
+Asturias 1
+Baleares 2
+Canarias 7
+Cantabria 10
+CyL 3
+CLM 3
+Cataluña 15
+C. Valenciana 15
+Extremadura 6
+Madrid 29
+Navarra 1
+País Vasco 9
+La Rioja 1
+
+2020-03-01 09:00:00
+Madrid 10
+C. Valenciana 15
+Canarias 7
+Cataluña 6
+Baleares 2
+Andalucía 12
+Castilla y León 3
+Extremadura 4
+País Vasco 3
+Asturias 1
+Cantabria 1
+Castilla-La Mancha 1
+Navarra 1
+
+2020-02-28 17:00:00
+Madrid 5
+C. Valenciana 9
+Canarias 6
+Cataluña 3
+Baleares 1
+Andalucía 7
+Aragón 1
+Castilla y León 2
+
+2020-02-28 12:00:00
+Madrid 5
+C. Valenciana 8
+Canarias 6
+Cataluña 3
+Baleares 1
+Andalucía 6
+Aragón 1
+Castilla y León 2
+
+2020-02-27 09:00:00
+Canarias 5
+Cataluña 2
+C. Valenciana 2
+Madrid 2
+Andalucía 1

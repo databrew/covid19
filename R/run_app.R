@@ -21,3 +21,13 @@ run_app_mini <- function(...) {
   )
 }
 
+#' @export
+#' @importFrom shiny shinyApp
+#' @importFrom golem with_golem_options
+run_app_mobile <- function(...) {
+  golem::with_golem_options(
+    app = mobile_app(),
+    golem_opts = list(...)
+  )
+}
+

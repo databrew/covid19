@@ -126,7 +126,8 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'France', 'US', 'Germa
          subtitle = paste0('Data as of ', max(df_country$date))) +
     theme_simple() +
     scale_x_continuous(breaks = seq(-100, 100, 2)) +
-    theme(plot.title = element_text(size = 14))
+    theme(plot.title = element_text(size = 14)) +
+    theme(legend.position = 'top')
   if(ylog){
     g <- g + scale_y_log10()
   }
