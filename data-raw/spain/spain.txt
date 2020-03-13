@@ -1,10 +1,30 @@
+2020-03-13 18:00:00
+Andalucía 219
+Aragón 80
+Asturias 73
+Baleares 30
+Canarias 70
+Cantabria 29
+CLM 194
+CyL 169
+Cataluña 316
+C.Valenciana 94
+Extremadura 39
+Galicia 85
+Madrid 1.990
+Melilla 2
+Murcia 35
+Navarra 130
+País Vasco 417
+La Rioja 259
+
 2020-03-13 12:00:00
 Andalucía 219
 Aragón 80
 Asturias 67
 Baleares 30
 Canarias 70
-Cantabria 29 
+Cantabria 29
 CLM 194
 CyL 169
 Cataluña 316
@@ -137,7 +157,7 @@ Aragón 11
 Asturias 5
 Baleares 6
 Canarias 18
-Cantabria 10 
+Cantabria 10
 CLM 15
 CyL 14
 Cataluña 24

@@ -221,3 +221,13 @@ ggsave('~/Desktop/y.png', width = 11, height = 6)
 # }
 # text_list <- unlist(text_list)
 # cat(paste0(text_list, collapse = '\n'))
+
+spain = pd %>% filter(country == 'Spain')
+x = rep(NA, nrow(spain))
+x[1] <- 165
+for(i in 2:nrow(spain)){
+  x[i] <- x[i-1] * 1.41425
+}
+
+cbind(x, spain$confirmed_cases)
+

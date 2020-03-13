@@ -2,6 +2,8 @@ library(dplyr)
 library(readr)
 library(tidyr)
 
+# Consider replacing pipeline with: https://cowid.netlify.com/data/new_deaths.csv
+
 # Datasets at https://github.com/CSSEGISandData/COVID-19
 if(!dir.exists('jhu')){
   dir.create('jhu')
