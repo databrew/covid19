@@ -9,68 +9,73 @@
 #' @import ggplot2
 #' @import shinyMobile
 mini_app_ui <- function(request) {
-  f7Page(
-    init = f7Init(
-      skin = 'auto', #  c("ios", "md", "auto", "aurora"),
-      theme = 'light', #c("dark", "light"),
-      filled = TRUE
-    ),
-    title = "Databrew's COVID-19 epidemic curve explorer",
-    f7SingleLayout(
-      navbar = f7Navbar(
-        title = "Databrew's COVID-19 epidemic curve explorer",
-        hairline = TRUE,
-        shadow = TRUE
+  
+  tagList(
+    mini_golem_add_external_resources(),
+    
+    f7Page(
+      init = f7Init(
+        skin = 'ios', #  c("ios", "md", "auto", "aurora"),
+        theme = 'light', #c("dark", "light"),
+        filled = TRUE
       ),
-      toolbar = f7Toolbar(
-        position = "bottom",
-        f7Link(label = "Databrew", src = "https://databrew.cc", external = TRUE),
-        f7Link(label = "Blog post on COVID-19 epidemic curves", src = "https://www.databrew.cc/posts/covid.html", external = TRUE)
-      ),
-      # main content
-      f7Shadow(
-        intensity = 10,
-        hover = TRUE,
-        f7Card(
-          plotOutput('day0')
-        )
-      ),
-      f7Shadow(
-        intensity = 10,
-        hover = TRUE,
-        f7Card(
-          selectInput('country', 'Country/Countries',
-                      multiple = TRUE,
-                      choices = sort(unique(sort(unique(covid19::df_country$country)))),
-                      selected = c('Italy', 'Spain', 'France', 'US')),
-          # f7Stepper('day0', '"Critical mass": number of cases to be considered start of outbreak (day 0)', min = 1, max = 500, value = 150, step = 5),
-          
-          sliderInput('day0', '"Critical mass" adjustment: Number of cases to be considered "day 0"',
-                   min = 1,
-                   max = 500,
-                   value = 150,
-                   # scale = TRUE,
-                   step = 1),
-          sliderInput('time_before', 'Number of days to show before "critical mass"',
-                   min = -20,
-                   max = 0,
-                   value = 0,
-                   # scale = TRUE,
-                   step = 1),
-          br(),
-          f7Toggle('ylog', 'Logarithmic y-axis?',
-                   checked = TRUE), 
-          br(),
-          f7Toggle('cumulative', 'Cumulative cases?',
-                   checked = TRUE),
-          br(),
-          f7Toggle('add_markers', 'Add visual markers at "critical mass"?',
-                   checked = TRUE),
-          br(),
-          f7Stepper('line_size', 'Line thickness', min = 0.5, max = 4, value = 1, step = 0.5),
-          br(),
-          
+      title = "Databrew's COVID-19 epidemic curve explorer",
+      f7SingleLayout(
+        navbar = f7Navbar(
+          title = "Databrew's COVID-19 epidemic curve explorer",
+          hairline = TRUE,
+          shadow = TRUE
+        ),
+        toolbar = f7Toolbar(
+          position = "bottom",
+          f7Link(label = "Databrew", src = "https://databrew.cc", external = TRUE),
+          f7Link(label = "Blog post on COVID-19 epidemic curves", src = "https://www.databrew.cc/posts/covid.html", external = TRUE)
+        ),
+        # main content
+        f7Shadow(
+          intensity = 10,
+          hover = TRUE,
+          f7Card(
+            plotOutput('day0')
           )
+        ),
+        f7Shadow(
+          intensity = 10,
+          hover = TRUE,
+          f7Card(
+            selectInput('country', 'Country/Countries',
+                        multiple = TRUE,
+                        choices = sort(unique(sort(unique(covid19::df_country$country)))),
+                        selected = c('Italy', 'Spain', 'France', 'US')),
+            # f7Stepper('day0', '"Critical mass": number of cases to be considered start of outbreak (day 0)', min = 1, max = 500, value = 150, step = 5),
+            
+            sliderInput('day0', '"Critical mass" adjustment: Number of cases to be considered "day 0"',
+                        min = 1,
+                        max = 500,
+                        value = 150,
+                        # scale = TRUE,
+                        step = 1),
+            sliderInput('time_before', 'Number of days to show before "critical mass"',
+                        min = -20,
+                        max = 0,
+                        value = 0,
+                        # scale = TRUE,
+                        step = 1),
+            br(),
+            f7Toggle('ylog', 'Logarithmic y-axis?',
+                     checked = TRUE), 
+            br(),
+            f7Toggle('cumulative', 'Cumulative cases?',
+                     checked = TRUE),
+            br(),
+            f7Toggle('add_markers', 'Add visual markers at "critical mass"?',
+                     checked = TRUE),
+            br(),
+            f7Stepper('line_size', 'Line thickness', min = 0.5, max = 4, value = 1, step = 0.5),
+            br(),
+            
+          )
+        )
       )
     )
   )
@@ -99,9 +104,6 @@ mini_golem_add_external_resources <- function(){
   
   tags$head(
     
-    # # Force to wide / non-mobile view to avoid cut-off
-    # HTML('<meta name="viewport" content="width=1024">'),
-    
     # Facebook OpenGraph tags
     tags$meta(property = "og:title", content = share$title),
     tags$meta(property = "og:type", content = "website"),
@@ -121,7 +123,7 @@ mini_golem_add_external_resources <- function(){
     # golem::favicon(),
     # Add here all the external resources
     # Google analytics script
-    includeHTML(system.file('app/www/google-analytics.html', package = 'covid19')),
+    includeHTML(system.file('app/www/google-analytics-mini.html', package = 'covid19')),
     includeScript(system.file('app/www/script.js', package = 'covid19')),
     includeScript(system.file('app/www/mobile.js', package = 'covid19')),
     # includeScript('inst/app/www/script.js'),
