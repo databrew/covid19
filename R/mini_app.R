@@ -15,7 +15,7 @@ mini_app_ui <- function(request) {
       theme = 'light', #c("dark", "light"),
       filled = TRUE
     ),
-    title = "My app",
+    title = "Databrew's COVID-19 epidemic curve explorer",
     f7SingleLayout(
       navbar = f7Navbar(
         title = "Databrew's COVID-19 epidemic curve explorer",
