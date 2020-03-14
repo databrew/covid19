@@ -74,18 +74,18 @@ df$confirmed_cases[df$country == 'Spain' & df$date == '2020-03-12'] <- 3050
 df$deaths[df$country == 'Spain' & df$date == '2020-03-12'] <- 84
 # df$recovered[df$country == 'Spain' & df$date == '2020-03-12']
 
-# Add a Spain row for March 13 (updating manually)
-if(length(df$confirmed_cases[df$country == 'Spain' & df$date == '2020-03-14']) == 0){
-  new_row <- tibble(district = NA,
-                    date = as.Date('2020-03-14'),
-                    country = 'Spain',
-                    lat = df$lat[df$country == 'Spain'][1],
-                    lng = df$lng[df$country == 'Spain'][1],
-                    confirmed_cases = 5753,
-                    deaths = 136,
-                    recovered = 517)
-  df <- df %>% bind_rows(new_row)
-}
+# # Add a Spain row for March 13 (updating manually)
+# if(length(df$confirmed_cases[df$country == 'Spain' & df$date == '2020-03-14']) == 0){
+#   new_row <- tibble(district = NA,
+#                     date = as.Date('2020-03-14'),
+#                     country = 'Spain',
+#                     lat = df$lat[df$country == 'Spain'][1],
+#                     lng = df$lng[df$country == 'Spain'][1],
+#                     confirmed_cases = 5753,
+#                     deaths = 136,
+#                     recovered = 517)
+#   df <- df %>% bind_rows(new_row)
+# }
 
 # Decumulate too
 df <- df %>%
@@ -171,7 +171,7 @@ esp <- bind_rows(out_list)
 esp$date_time <- as.POSIXct(esp$date_time,tz='Europe/Madrid')
 
 write_csv(esp, 'spain/ccaa.csv')
-write_csv(df_country, 'isglobal/ccaa.csv')
+write_csv(esp, 'isglobal/ccaa.csv')
 usethis::use_data(esp, overwrite = T)
 
 # Write a map

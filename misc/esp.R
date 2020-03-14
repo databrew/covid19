@@ -5,7 +5,7 @@ library(dplyr)
 Sys.timezone()
 
 date_vec <- (seq(as.Date('2020-03-02'),
-                           as.Date('2020-03-12'),
+                           Sys.Date(),
                            by = 2))
 date_lab <- format(date_vec, '%b\n%d')
 
@@ -20,20 +20,24 @@ ggplot(data = esp,
        aes(x = date,
            y = value,
            group = ccaa)) +
-  geom_line(color = 'black') +
+  # geom_line(color = 'black') +
+  geom_area( fill = 'darkorange', color = 'black') +
   facet_wrap(~ccaa, ncol = 3) +
   theme_simple() + 
-  scale_y_log10() +
+  # scale_y_log10() +
   labs(x = '', y = 'Casos') +
   geom_text(data = esp %>% filter(date == max(date)),
             aes(label = value,
-                x = date - 2,
-                y = value + 150),
-            size = 5,
+                # x = date - 2,
+                # y = value + 100
+                x = as.Date('2020-03-08'),
+                y = 2500),
+                # ),
+            size = 7,
             alpha = 0.6) +
   labs(title = 'Casos confirmados por CCAA',
-       subtitle = 'Datos: 18:00 13 de marzo 2020') +
-  # ylim(0, 1600) +
+       subtitle = 'Datos: 12:00 14 de marzo 2020') +
+  # ylim(0, 3500) +
   theme(strip.text = element_text(size = 15)) +
   scale_x_date(breaks = date_vec,
                    labels = date_lab)
@@ -85,9 +89,10 @@ ggsave('~/Desktop/cat.png')
 
 
 # ALL CCAA
-day0 = 50
+day0 = 1
 esp <- covid19::esp
 esp <- esp %>%
+  filter(ccaa %in% c('Navarra' )) %>%
   mutate(date = as.Date(date_time)) %>%
   group_by(ccaa, date) %>%
   filter(date_time == max(date_time)) %>%
@@ -101,15 +106,20 @@ esp <- esp %>%
   mutate(days_since_first_case = date - start_date) 
 
 # cols <- c('black', 'red')
-cols <- colorRampPalette(RColorBrewer::brewer.pal(n = 8, 'Set1'))(length(unique(esp$ccaa)))
+cols <- colorRampPalette(RColorBrewer::brewer.pal(n = 8, 'Set2'))(length(unique(esp$ccaa)))
+ccaas <- sort(unique(esp$ccaa))
+cols[which(ccaas == 'Madrid')] <- 'red'
+cols[2] <- 'black'
 
 ggplot(data = esp,
        aes(x = days_since_first_case,
            y = value,
            color = ccaa)) +
-  geom_line() +
-  geom_point() +
-  scale_y_log10() +
+  geom_line(lwd = 2) +
+  # geom_point() +
+  scale_y_log10(
+    # limits = c(50, 3000)
+    ) +
   xlim(0, 10) +
   scale_color_manual(name = '', values = cols) +
   theme_simple() +
@@ -123,9 +133,10 @@ ggplot(data = esp,
   #            color = 'darkgrey', 
   #            pch = 1,
   #            size = 20) +
-  labs(x = 'Dies des del primer dia amb > 50 casos',
+  labs(x = paste0('Días desde el primer día con >', day0, ' casos'),
        y = 'Casos acumulatius (escala logarítmica)',
-       title = 'Trajectòria del brot, ajustat per temps',
-       subtitle = 'Dia 0: primer dia amb 50 o més casos acumulatius') +
-  theme(legend.text = element_text(size = 20))
-ggsave('~/Desktop/cat.png')
+       title = 'Trayectoria del brote, ajustado por día de "inicio"',
+       subtitle = paste0('Día 0: primer día con ', day0,' o más casos acumulativos')) +
+  theme(legend.text = element_text(size = 20)) #+
+  # geom_hline(yintercept = seq(100, 3000, 100), alpha = 0.1)
+ggsave('~/Desktop/esp.png')
