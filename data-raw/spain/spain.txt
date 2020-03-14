@@ -1,3 +1,23 @@
+2020-03-14 17:30:00
+Andalucía 304
+Aragón 121
+Asturias 101
+Baleares 44
+Canarias 90
+Cantabria 31
+CLM 289
+CyL 223
+Cataluña 715
+C. Valenciana 192 
+Extremadura 66
+Galicia 136
+Madrid 2940
+Melilla 3
+Murcia 51
+Navarra 146
+País Vasco 521
+La Rioja 278
+
 2020-03-14 12:00:00
 Andalucía 269
 Aragón 80
