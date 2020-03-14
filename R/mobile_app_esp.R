@@ -8,10 +8,10 @@
 #' @import shiny
 #' @import ggplot2
 #' @import shinyMobile
-mini_app_ui <- function(request) {
+mobile_app_esp_ui <- function(request) {
   
   tagList(
-    mini_golem_add_external_resources(),
+    mobile_golem_add_external_resources(),
     
     f7Page(
       init = f7Init(
@@ -19,10 +19,10 @@ mini_app_ui <- function(request) {
         theme = 'light', #c("dark", "light"),
         filled = TRUE
       ),
-      title = "Databrew's COVID-19 epidemic curve explorer",
+      title = "COVID-19 epidemic curve explorer",
       f7SingleLayout(
         navbar = f7Navbar(
-          title = "Databrew's COVID-19 epidemic curve explorer",
+          title = "COVID-19 epidemic curve explorer",
           hairline = TRUE,
           shadow = TRUE
         ),
@@ -36,25 +36,26 @@ mini_app_ui <- function(request) {
           intensity = 10,
           hover = TRUE,
           f7Card(
-            plotOutput('day0')
+            plotOutput('day0'),
+            selectInput('ccaa', 'Comunidades autónomas',
+                        multiple = TRUE,
+                        choices = sort(unique(covid19::esp_df$ccaa)),
+                        selected = c('Cataluña', 'Madrid')),
+            # f7Stepper('day0', '"Critical mass": number of cases to be considered start of outbreak (day 0)', min = 1, max = 500, value = 150, step = 5),
+            
+            sliderInput('day0', '"Critical mass" adjustment: Number of cases to be considered "day 0"',
+                        min = 1,
+                        max = 250,
+                        value = 50,
+                        # scale = TRUE,
+                        step = 1),
+            height = 300,
           )
         ),
         f7Shadow(
           intensity = 10,
           hover = TRUE,
           f7Card(
-            selectInput('country', 'Country/Countries',
-                        multiple = TRUE,
-                        choices = sort(unique(sort(unique(covid19::df_country$country)))),
-                        selected = c('Italy', 'Spain', 'France', 'US')),
-            # f7Stepper('day0', '"Critical mass": number of cases to be considered start of outbreak (day 0)', min = 1, max = 500, value = 150, step = 5),
-            
-            sliderInput('day0', '"Critical mass" adjustment: Number of cases to be considered "day 0"',
-                        min = 1,
-                        max = 500,
-                        value = 150,
-                        # scale = TRUE,
-                        step = 1),
             sliderInput('time_before', 'Number of days to show before "critical mass"',
                         min = -20,
                         max = 0,
@@ -89,7 +90,7 @@ mini_app_ui <- function(request) {
 #' @import shiny
 #' @importFrom golem add_resource_path activate_js favicon bundle_resources
 #' @noRd
-mini_golem_add_external_resources <- function(){
+mobile_golem_add_external_resources <- function(){
   # addResourcePath(
   #   'www', system.file('app/www', package = 'covid19')
   # )
@@ -140,24 +141,23 @@ mini_golem_add_external_resources <- function(){
 ##################################################
 #' @import shiny
 #' @import leaflet
-mini_app_server <- function(input, output, session) {
+mobile_app_esp_server <- function(input, output, session) {
   
   output$day0 <- renderPlot({
-    plot_day_zero(countries = input$country,
+    plot_day_zero_esp(ccaa = input$ccaa,
                   ylog = input$ylog,
                   day0 = input$day0,
                   cumulative = input$cumulative,
                   time_before = input$time_before,
                   line_size = input$line_size,
                   add_markers = input$add_markers)
-  },
-  height = 400, width = 700)
+  })
 }
 
-mini_app <- function(){
+mobile_app_esp <- function(){
   # Detect the system. If on AWS, don't launch browswer
   is_aws <- grepl('aws', tolower(Sys.info()['release']))
-  shinyApp(ui = mini_app_ui,
-           server = mini_app_server,
+  shinyApp(ui = mobile_app_esp_ui,
+           server = mobile_app_esp_server,
            options = list('launch.browswer' = !is_aws))
 }

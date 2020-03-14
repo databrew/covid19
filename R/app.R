@@ -225,10 +225,14 @@ app_server <- function(input, output, session) {
   
   # Day zero adjustment chart
   output$plot0 <- renderPlot({
-    plot_day_zero(countries = input$country,
-                  ylog = input$ylog,
-                  day0 = input$day0,
-                  cumulative = input$cumulative)
+    ctr <- input$country
+    yl <- input$ylog
+    d0 <- input$day0
+    cumul <- input$cumulative
+    plot_day_zero(countries = ctr,
+                  ylog = yl,
+                  day0 = d0,
+                  cumulative = cumul)
   },
   height = 400, width = 700)
   

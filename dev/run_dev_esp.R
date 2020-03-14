@@ -19,5 +19,5 @@ if(refresh){
 }
 
 # Run the application
-run_app_mini()
+mobile_app_esp()
 

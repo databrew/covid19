@@ -170,8 +170,38 @@ for(i in 1:length(spain_lines)){
 esp <- bind_rows(out_list)
 esp$date_time <- as.POSIXct(esp$date_time,tz='Europe/Madrid')
 
-write_csv(esp, 'spain/ccaa.csv')
-write_csv(esp, 'isglobal/ccaa.csv')
-usethis::use_data(esp, overwrite = T)
+# Get in a format more similar to the country dataset
+esp <- esp %>%
+  mutate(confirmed_cases = value)
 
+# Create a day (rather than time-date) value
+esp_df <- esp %>%
+  mutate(date = as.Date(date_time)) %>%
+  arrange(ccaa, date) %>%
+  group_by(ccaa, date) %>%
+  filter(date_time == max(date_time)) %>%
+  ungroup
+
+# Get non cumulative cases
+esp_df <- esp_df %>%
+  ungroup %>%
+  arrange(ccaa, date) %>%
+  group_by(ccaa) %>%
+  mutate(confirmed_cases_non_cum = confirmed_cases - lag(confirmed_cases, default = 0)) %>%
+  ungroup
+# Spot corrections
+esp_df <- esp_df %>%
+  mutate(confirmed_cases_non_cum = ifelse(confirmed_cases_non_cum < 0,
+                                          0, 
+                                          confirmed_cases_non_cum))
+
+library(readr)
+write_csv(esp, 'spain/ccaa.csv')
+write_csv(esp_df, 'spain/ccaa_day.csv')
+
+write_csv(esp, 'isglobal/ccaa.csv')
+write_csv(esp_df, 'isglobal/ccaa_day.csv')
+
+usethis::use_data(esp, overwrite = T)
+usethis::use_data(esp_df, overwrite = T)
 # Write a map

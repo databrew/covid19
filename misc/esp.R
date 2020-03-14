@@ -2,6 +2,7 @@ library(covid19)
 library(ggplot2)
 library(lubridate)
 library(dplyr)
+library(ggplot2)
 Sys.timezone()
 
 date_vec <- (seq(as.Date('2020-03-02'),
@@ -36,7 +37,7 @@ ggplot(data = esp,
             size = 7,
             alpha = 0.6) +
   labs(title = 'Casos confirmados por CCAA',
-       subtitle = 'Datos: 12:00 14 de marzo 2020') +
+       subtitle = 'Datos: 17:00 14 de marzo 2020') +
   # ylim(0, 3500) +
   theme(strip.text = element_text(size = 15)) +
   scale_x_date(breaks = date_vec,
@@ -89,10 +90,10 @@ ggsave('~/Desktop/cat.png')
 
 
 # ALL CCAA
-day0 = 1
+day0 = 50
 esp <- covid19::esp
 esp <- esp %>%
-  filter(ccaa %in% c('Navarra' )) %>%
+  # filter(ccaa %in% c('Navarra' )) %>%
   mutate(date = as.Date(date_time)) %>%
   group_by(ccaa, date) %>%
   filter(date_time == max(date_time)) %>%
@@ -109,7 +110,7 @@ esp <- esp %>%
 cols <- colorRampPalette(RColorBrewer::brewer.pal(n = 8, 'Set2'))(length(unique(esp$ccaa)))
 ccaas <- sort(unique(esp$ccaa))
 cols[which(ccaas == 'Madrid')] <- 'red'
-cols[2] <- 'black'
+# cols[2] <- 'black'
 
 ggplot(data = esp,
        aes(x = days_since_first_case,
@@ -118,7 +119,7 @@ ggplot(data = esp,
   geom_line(lwd = 2) +
   # geom_point() +
   scale_y_log10(
-    # limits = c(50, 3000)
+    limits = c(50, 3000)
     ) +
   xlim(0, 10) +
   scale_color_manual(name = '', values = cols) +
