@@ -14,9 +14,9 @@ run_app <- function(...) {
 #' @export
 #' @importFrom shiny shinyApp
 #' @importFrom golem with_golem_options
-run_app_mini <- function(...) {
+run_app_network <- function(...) {
   golem::with_golem_options(
-    app = mini_app(),
+    app = network_app(),
     golem_opts = list(...)
   )
 }

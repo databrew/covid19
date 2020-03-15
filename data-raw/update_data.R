@@ -74,7 +74,7 @@ df$confirmed_cases[df$country == 'Spain' & df$date == '2020-03-12'] <- 3050
 df$deaths[df$country == 'Spain' & df$date == '2020-03-12'] <- 84
 # df$recovered[df$country == 'Spain' & df$date == '2020-03-12']
 
-# # Add a Spain row for March 13 (updating manually)
+# # Add a Spain row for March 14 (updating manually)
 # if(length(df$confirmed_cases[df$country == 'Spain' & df$date == '2020-03-14']) == 0){
 #   new_row <- tibble(district = NA,
 #                     date = as.Date('2020-03-14'),
@@ -205,3 +205,11 @@ write_csv(esp_df, 'isglobal/ccaa_day.csv')
 usethis::use_data(esp, overwrite = T)
 usethis::use_data(esp_df, overwrite = T)
 # Write a map
+
+# Cognoms
+cognoms <- read_csv('cognoms/cognoms.csv', skip = 7, locale = readr::locale(encoding = "latin1"))
+cognoms <- cognoms$Nombre[1:1000]
+surnames <- read_csv('cognoms/surnames.csv')
+surnames <- surnames$name[1:1000]
+usethis::use_data(cognoms, overwrite = T)
+usethis::use_data(surnames, overwrite = T)
