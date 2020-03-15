@@ -303,7 +303,7 @@ plot_day_zero_esp <- function(ccaa = c('Cataluña', 'Madrid'),
                     ifelse(ylog, '\n(Logarithmic scale)', '')),
          title = paste0('COVID-19 cases since country\'s\nfirst day with ',
                         day0, " or more ", ifelse(cumulative, "cumulative", "daily"),  " cases"),
-         subtitle = paste0('Data as of ', max(df_country$date))) +
+         subtitle = paste0('Data as of ', max(esp_df$date))) +
     theme_simple() +
     scale_x_continuous(breaks = seq(-100, 100, 2)) +
     theme(plot.title = element_text(size = 14)) +
