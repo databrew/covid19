@@ -70,6 +70,7 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'France', 'US
 #' 
 #' Generate a plot with time adjusted for the day at which the outbreak is considered to have started
 #' @param ccaa Character vector of country names
+#' @param deaths Whether to show deaths rather than cases
 #' @param day0 An integer, the number of cumulative cases at which the outbreak is considered to have started
 #' @param cumulative Whether to count cases cumulatively
 #' @param time_before How many days before outbreak to show
@@ -77,6 +78,7 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'France', 'US
 #' @import dplyr
 #' @export
 prepare_day_zero_data_esp <-  function(ccaa = c('Cataluña', 'Madrid'),
+                                       deaths = FALSE,
                                    day0 = 150,
                                    cumulative = TRUE,
                                    time_before = 0,
@@ -109,13 +111,28 @@ prepare_day_zero_data_esp <-  function(ccaa = c('Cataluña', 'Madrid'),
     filter(country %in% these_countries) %>%
     group_by(country, date) %>%
     summarise(confirmed_cases = sum(confirmed_cases),
-              confirmed_cases_non_cum = sum(confirmed_cases_non_cum)) %>%
-    ungroup %>%
-    group_by(country) %>%
-    mutate(first_case = min(date[confirmed_cases >= day0])) %>%
-    ungroup %>%
-    mutate(days_since_first_case = date - first_case) %>%
-    filter(days_since_first_case >= time_before)
+              confirmed_cases_non_cum = sum(confirmed_cases_non_cum),
+              deaths = sum(deaths),
+              deaths_non_cum = sum(deaths_non_cum)) %>%
+    ungroup
+  
+  if(deaths){
+    pd <- pd %>%
+      group_by(country) %>%
+      mutate(first_case = min(date[deaths >= day0])) %>%
+      ungroup %>%
+      mutate(days_since_first_case = date - first_case) %>%
+      filter(days_since_first_case >= time_before)
+      
+  } else {
+    pd <- pd %>%
+      group_by(country) %>%
+      mutate(first_case = min(date[confirmed_cases >= day0])) %>%
+      ungroup %>%
+      mutate(days_since_first_case = date - first_case) %>%
+      filter(days_since_first_case >= time_before)
+  }
+    
   
   
   if(length(these_countries) == 0){
@@ -241,6 +258,7 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'France', 'US', 'Germa
 #' 
 #' Generate a plot with time adjusted for the day at which the outbreak is considered to have started
 #' @param ccaa Character vector of ccaa names
+#' @param deaths Whether to show deaths rather than cases
 #' @param ylog Whether the y-axis should be on log scale
 #' @param day0 An integer, the number of cumulative cases at which the outbreak is considered to have started
 #' @param cumulative Whether to count cases cumulatively
@@ -253,6 +271,7 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'France', 'US', 'Germa
 #' @import RColorBrewer
 #' @export
 plot_day_zero_esp <- function(ccaa = c('Cataluña', 'Madrid'),
+                              deaths = FALSE,
                           ylog = TRUE,
                           day0 = 150,
                           cumulative = TRUE,
@@ -262,6 +281,7 @@ plot_day_zero_esp <- function(ccaa = c('Cataluña', 'Madrid'),
                           max_date = Sys.Date()){
   
   pd <- prepare_day_zero_data_esp(ccaa = ccaa,
+                                  deaths = deaths,
                               day0 = day0,
                               cumulative = cumulative,
                               time_before = time_before,

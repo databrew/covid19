@@ -6,6 +6,7 @@
 \usage{
 prepare_day_zero_data_esp(
   ccaa = c("Cataluña", "Madrid"),
+  deaths = FALSE,
   day0 = 150,
   cumulative = TRUE,
   time_before = 0,
@@ -14,6 +15,8 @@ prepare_day_zero_data_esp(
 }
 \arguments{
 \item{ccaa}{Character vector of country names}
+
+\item{deaths}{Whether to show deaths rather than cases}
 
 \item{day0}{An integer, the number of cumulative cases at which the outbreak is considered to have started}
 

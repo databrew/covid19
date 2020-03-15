@@ -6,6 +6,7 @@
 \usage{
 plot_day_zero_esp(
   ccaa = c("Cataluña", "Madrid"),
+  deaths = FALSE,
   ylog = TRUE,
   day0 = 150,
   cumulative = TRUE,
@@ -17,6 +18,8 @@ plot_day_zero_esp(
 }
 \arguments{
 \item{ccaa}{Character vector of ccaa names}
+
+\item{deaths}{Whether to show deaths rather than cases}
 
 \item{ylog}{Whether the y-axis should be on log scale}
 

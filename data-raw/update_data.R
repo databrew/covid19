@@ -131,69 +131,106 @@ write_csv(df, 'isglobal/world_region_data.csv')
 write_csv(df_country, 'isglobal/world_data.csv')
 
 
-# Spain
-spain_file <- 'spain/spain.txt'
-con <- file(spain_file,open="r")
-spain_lines <- readLines(con)
-close(con)
+### Now managing Spain data through 
+# google sheets
+# Code left here (commented out) for reproducibility purposes only
+# # Spain
+# spain_file <- 'spain/spain.txt'
+# con <- file(spain_file,open="r")
+# spain_lines <- readLines(con)
+# close(con)
+# 
+# # Process line function for Spain
+# out_list <- list()
+# date_time <- Sys.time()
+# counter <- 0
+# for(i in 1:length(spain_lines)){
+#   message(i)
+#   this_line <- spain_lines[i]
+#   if(this_line != ''){
+#     # Split at the spaces
+#     line_split <- strsplit(this_line, split = ' ', fixed = TRUE)
+#     line_split <- unlist(line_split)
+#     # See if date
+# 
+#     is_date <- substr(line_split[1], 1, 4) == '2020'
+#     if(is_date){
+#       this_date_time <- paste0(line_split[1], ' ',
+#                                line_split[2], ' CET')
+#       date_time <- this_date_time
+#     } else {
+#       counter <- counter + 1
+#       cases <- as.numeric(line_split[length(line_split)])
+#       ccaa <- paste0(line_split[1:(length(line_split)-1)], collapse = ' ')
+#       out <- tibble(date_time = date_time,
+#                     ccaa = ccaa,
+#                     value = cases)
+#       out_list[[counter]] <- out
+#     }
+#   }
+# 
+# }
+# esp <- bind_rows(out_list)
+# esp$date_time <- as.POSIXct(esp$date_time,tz='Europe/Madrid')
+# 
+# # Get in a format more similar to the country dataset
+# esp <- esp %>%
+#   mutate(confirmed_cases = value)
+# 
+# # Create a day (rather than time-date) value
+# esp_df <- esp %>%
+#   mutate(date = as.Date(date_time)) %>%
+#   arrange(ccaa, date) %>%
+#   group_by(ccaa, date) %>%
+#   filter(date_time == max(date_time)) %>%
+#   ungroup
+# 
+# # Read in deaths
+# esp_deaths <- read_csv('https://raw.githubusercontent.com/datadista/datasets/master/COVID%2019/ccaa_covid19_fallecidos.csv')
+# esp_deaths <- gather(esp_deaths,
+#                      date, deaths,
+#                      `03/03/2020`:`15/03/2020`)
+# esp_deaths <- esp_deaths %>%
+#   dplyr::rename(ccaa = CCAA) %>%
+#   filter(ccaa != 'Total') %>%
+#   mutate(ccaa = ifelse(ccaa == 'Castilla y León', 'CyL',
+#                        ifelse(ccaa == 'Castilla-La Mancha', 'CLM',
+#                               ccaa)))
+# esp_deaths$date <- as.Date(esp_deaths$date,
+#                            format = '%d/%m/%Y')
+# # Join deaths and cases
+# esp_df <- left_join(esp_df, esp_deaths)
+# esp_df$deaths <- ifelse(is.na(esp_df$deaths), 0,
+#                         esp_df$deaths)
+# # # write to google docs and manage from there
+# # from now on
+# write_csv(esp_df, '~/Desktop/esp.csv')
 
-# Process line function for Spain
-out_list <- list()
-date_time <- Sys.time()
-counter <- 0
-for(i in 1:length(spain_lines)){
-  message(i)
-  this_line <- spain_lines[i]
-  if(this_line != ''){
-    # Split at the spaces
-    line_split <- strsplit(this_line, split = ' ', fixed = TRUE)
-    line_split <- unlist(line_split)
-    # See if date
+library(gsheet)
+url <- 'https://docs.google.com/spreadsheets/d/15UJWpsW6G7sEImE8aiQ5JrLCtCnbprpztfoEwyTNTEY/edit#gid=810081118'
+esp_df <- gsheet::gsheet2tbl(url)
 
-    is_date <- substr(line_split[1], 1, 4) == '2020'
-    if(is_date){
-      this_date_time <- paste0(line_split[1], ' ',
-                               line_split[2], ' CET')
-      date_time <- this_date_time
-    } else {
-      counter <- counter + 1
-      cases <- as.numeric(line_split[length(line_split)])
-      ccaa <- paste0(line_split[1:(length(line_split)-1)], collapse = ' ')
-      out <- tibble(date_time = date_time,
-                    ccaa = ccaa,
-                    value = cases)
-      out_list[[counter]] <- out
-    }
-  }
-
-}
-esp <- bind_rows(out_list)
-esp$date_time <- as.POSIXct(esp$date_time,tz='Europe/Madrid')
-
-# Get in a format more similar to the country dataset
-esp <- esp %>%
-  mutate(confirmed_cases = value)
-
-# Create a day (rather than time-date) value
-esp_df <- esp %>%
-  mutate(date = as.Date(date_time)) %>%
-  arrange(ccaa, date) %>%
-  group_by(ccaa, date) %>%
-  filter(date_time == max(date_time)) %>%
-  ungroup
+# Process the Spain data a bit more
+esp_df <- esp_df %>%
+  mutate(value = cases,
+         confirmed_cases = cases)
 
 # Get non cumulative cases
 esp_df <- esp_df %>%
   ungroup %>%
   arrange(ccaa, date) %>%
   group_by(ccaa) %>%
-  mutate(confirmed_cases_non_cum = confirmed_cases - lag(confirmed_cases, default = 0)) %>%
+  mutate(confirmed_cases_non_cum = confirmed_cases - lag(confirmed_cases, default = 0),
+         deaths_non_cum = deaths - lag(deaths, default = 0)) %>%
   ungroup
+
 # Spot corrections
 esp_df <- esp_df %>%
   mutate(confirmed_cases_non_cum = ifelse(confirmed_cases_non_cum < 0,
                                           0, 
                                           confirmed_cases_non_cum))
+
+
 
 library(readr)
 write_csv(esp, 'spain/ccaa.csv')
