@@ -5,6 +5,7 @@
 #' @param contacts Average number of contacts between families
 #' @param sd Standard deviation in number of contacts
 #' @param sick Percent sick
+#' @param font_size Font size
 #' @import dplyr
 #' @import nd3
 #' @import dplyr
@@ -14,7 +15,8 @@ plot_network <- function(n = 100,
                          contacts = 1,
                          sd = 1,
                          save = NULL,
-                         sick = 1){
+                         sick = 1,
+                         font_size = 12){
   
   # Define helper function for sampling with a 0 floor
   rtruncnorm <- function(N, mean = 0, sd = 1, a = -Inf, b = Inf) {
@@ -23,7 +25,8 @@ plot_network <- function(n = 100,
     qnorm(U, mean, sd); }
   
   # Define vector of last names
-  last_names <- sample(surnames, size = n,
+  last_names <- sample(surnames,
+                       size = n,
                        replace = TRUE)
   
   # Vectors
@@ -92,15 +95,16 @@ plot_network <- function(n = 100,
   sick_ids <- sample(ids, size = n_sick, replace = FALSE)
   
   # Make a nodes dataframe
-  nodes <-tibble(name =last_names,
+  nodes <-tibble(name = ids,# as.character(ids), #last_names,
                  group = ifelse(ids %in% sick_ids,
                                 'Infected (primary)',
-                                'Safe')) %>%
+                                'Safe'),
+                 last_name = last_names) %>%
     mutate(size = 1)
   
   # Make a links dataframe
   if(nrow(done) > 0){
-    links <- done %>% dplyr::rename(a = from, b = to, value = n) 
+    links <- done %>% dplyr::rename(source = from, target = to, value = n) 
     
     # Define secondary sicks
     ss_ids <- sick_ids
@@ -119,16 +123,16 @@ plot_network <- function(n = 100,
     }
     ss_ids <- sort(unique(ss_ids))
     ss_ids <- ss_ids[!ss_ids %in% sick_ids]  
-    nodes$group <- ifelse(ids %in% ss_ids,
+    nodes$group <- ifelse(nodes$name %in% ss_ids,
                           'At risk',
                           nodes$group)
      
   } else {
-    links <- tibble(a = 0, b = 0, value = 0)
+    links <- tibble(source = 0, target = 0, value = 0)
   }
   
-  # arrange for coloring purposes
-  nodes <- nodes %>% arrange(group)
+  # # arrange for coloring purposes
+  # nodes <- nodes %>% arrange(group)
   
   # Define color scale
   ColourScale <- 'd3.scaleOrdinal()
@@ -139,15 +143,15 @@ plot_network <- function(n = 100,
                Nodes = nodes,
                Value = 'value',
                legend = TRUE,
-               NodeID = "name", Group = "group",
+               NodeID = "last_name", Group = "group",
                Nodesize="size",                                                    # column names that gives the size of nodes
-               radiusCalculation = JS(" d.nodesize^2+5"),                         # How to use this column to calculate radius of nodes? (Java script expression)
+               # radiusCalculation = JS(" d.nodesize^2+5"),                         # How to use this column to calculate radius of nodes? (Java script expression)
                opacity = 1,                                                      # Opacity of nodes when you hover it
                opacityNoHover = 0.8,     
                colourScale = JS(ColourScale),
                # Opacity of nodes you do not hover
                # colourScale = JS("d3.scaleOrdinal(d3.schemeCategory10);"),          # Javascript expression, schemeCategory10 and schemeCategory20 work
-               fontSize = 10,                                                      # Font size of labels
+               fontSize = font_size,                                                      # Font size of labels
                # fontFamily = "serif",                                               # Font family for labels
                
                # custom edges
@@ -157,11 +161,11 @@ plot_network <- function(n = 100,
                linkWidth = 0.2, #"function(d) { return (d.value^5)*0.4}",
                
                # layout
-               linkDistance = 150,                                                 # link size, if higher, more space between nodes
-               charge = -5,                                                       # if highly negative, more space betqeen nodes
+               linkDistance = 30,                                                 # link size, if higher, more space between nodes
+               charge = -1,                                                       # if highly negative, more space betqeen nodes
                
                # -- general parameters
-               height = NULL,                                                      # height of frame area in pixels
+               height = 500,                                                      # height of frame area in pixels
                width = NULL,
                zoom = TRUE,                                                        # Can you zoom on the figure
                # legend = TRUE,                                                      # add a legend?

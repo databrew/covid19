@@ -4,7 +4,14 @@
 \alias{plot_network}
 \title{Plot interactive network}
 \usage{
-plot_network(n = 100, contacts = 1, sd = 1, save = NULL, sick = 1)
+plot_network(
+  n = 100,
+  contacts = 1,
+  sd = 1,
+  save = NULL,
+  sick = 1,
+  font_size = 12
+)
 }
 \arguments{
 \item{n}{Number of units (families, for example)}
@@ -14,6 +21,8 @@ plot_network(n = 100, contacts = 1, sd = 1, save = NULL, sick = 1)
 \item{sd}{Standard deviation in number of contacts}
 
 \item{sick}{Percent sick}
+
+\item{font_size}{Font size}
 }
 \description{
 Generate a plot of network connections

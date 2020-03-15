@@ -37,8 +37,9 @@ network_app_ui <- function(request) {
           intensity = 10,
           hover = TRUE,
           f7Card(
-            forceNetworkOutput('fn'),
-            height = 300,
+            forceNetworkOutput('fn', height = '500px'),
+            f7Button('regen', 'Re-generate'),
+            height = 500,
           )
         ),
         f7Shadow(
@@ -47,13 +48,16 @@ network_app_ui <- function(request) {
           f7Card(
             
             sliderInput('n', 'Size of community',
-                        min = 10, max = 200, value = 50, step = 10),
+                        min = 10, max = 200, value = 100, step = 10),
             sliderInput('contacts', 'Average number of contacts',
-                        min = 0, max = 5, value = 1.5, step = 0.1),
+                        min = 0, max = 3, value = 0.7, step = 0.1),
             sliderInput('sd', 'Standard deviation in number of contacts',
                         min = 0.5, max = 3, value = 0.5),
+
             sliderInput('sick', 'Percent infected',
-                        min = 0, max = 100, value = 2, step = 1)
+                        min = 0, max = 100, value = 2, step = 1),
+            sliderInput('font_size', 'Font size',
+                        min = 6, max = 20, value = 14)
             
             
             
@@ -128,11 +132,14 @@ network_golem_add_external_resources <- function(){
 network_app_server <- function(input, output, session) {
   
   output$fn <- renderForceNetwork({
+    regen <- input$regen
     plot_network(n = input$n,
                  contacts = input$contacts,
+                 # sd = 1,
                  sd = input$sd,
                  save = NULL,
-                 sick = input$sick)
+                 sick = input$sick,
+                 font_size = input$font_size)
   })
 }
 
