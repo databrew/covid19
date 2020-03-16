@@ -29,9 +29,7 @@ library(ggplot2)
 library(lubridate)
 library(dplyr)
 library(ggplot2)
-```
 
-```{r}
 # Define vector of countries
 countries <- c('China','South Korea',
                'Italy',
@@ -170,8 +168,8 @@ joined <- joined %>%
 joined$value <- joined$deaths_per_k
 joined <- joined %>% arrange(value)
 joined$p <- joined$value / sum(joined$value) * 100
-joined$ccaa <- factor(joined$ccaa, 
-                      levels = joined$ccaa)
+# joined$ccaa <- factor(joined$ccaa, 
+#                       levels = joined$ccaa)
 text_size <- 10
 ggplot(data = joined,
        aes(x = ccaa,
@@ -182,8 +180,8 @@ ggplot(data = joined,
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
   labs(x = '',
        y = 'Deaths',
-       title = 'COVID-19 deaths in Spain',
-       subtitle = 'Data as of evening of Sunday, March 15',
+       title = 'COVID-19 deaths in Spain (per 100,000)',
+       # subtitle = 'Data as of evening of Sunday, March 15',
        caption = 'github.com/databrew/covid19 | joe@databrew.cc') +
   theme(legend.position = 'top',
         legend.text = element_text(size = text_size * 2),
@@ -219,8 +217,8 @@ joined <- joined %>%
 joined$value <- joined$cases_per_k
 joined <- joined %>% arrange(value)
 joined$p <- joined$value / sum(joined$value) * 100
-joined$ccaa <- factor(joined$ccaa, 
-                      levels = joined$ccaa)
+# joined$ccaa <- factor(joined$ccaa, 
+#                       levels = joined$ccaa)
 text_size <- 10
 ggplot(data = joined,
        aes(x = ccaa,
@@ -231,8 +229,8 @@ ggplot(data = joined,
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
   labs(x = '',
        y = 'Cases',
-       title = 'COVID-19 cases in Spain',
-       subtitle = 'Data as of evening of Sunday, March 15',
+       title = 'COVID-19 cases in Spain (per 100,000 people)',
+       # subtitle = 'Data as of evening of Sunday, March 15',
        caption = 'github.com/databrew/covid19 | joe@databrew.cc') +
   theme(legend.position = 'top',
         legend.text = element_text(size = text_size * 2),
@@ -247,11 +245,60 @@ ggplot(data = joined,
                 # label = paste0(deaths, '\n(',
                 #                round(p, digits = 1), '%)')),
             size = text_size * 0.25,
-            nudge_y = 15) +
+            nudge_y = 12) +
   ylim(0, 120)
 # ggsave('~/Desktop/spain.png')
 ```
 
+
+
+## CCAAs, UCI by population
+
+```{r, fig.height = 6.5, fig.width = 9}
+adj <- esp_df %>% filter(date == max(date))
+pop <- covid19::esp_pop
+joined <- left_join(adj, pop)
+# make vars
+joined <- joined %>%
+  mutate(cases_per_k = (cases / pop) * 100000,
+         deaths_per_k = (deaths / pop) * 100000,
+         uci_per_k = (uci / pop) * 100000)
+
+joined$value <- joined$uci_per_k
+joined <- joined %>% arrange(value)
+joined$p <- joined$value / sum(joined$value) * 100
+# joined$ccaa <- factor(joined$ccaa, 
+#                       levels = joined$ccaa)
+text_size <- 10
+ggplot(data = joined,
+       aes(x = ccaa,
+           y = value)) + 
+  geom_bar(stat = 'identity',
+           fill = 'black') +
+  theme_simple() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+  labs(x = '',
+       y = 'Cases',
+       title = 'COVID-19: intensive care patients per 100,000',
+       # subtitle = 'Data as of evening of Sunday, March 15',
+       caption = 'github.com/databrew/covid19 | joe@databrew.cc') +
+  theme(legend.position = 'top',
+        legend.text = element_text(size = text_size * 2),
+        axis.title = element_text(size = text_size * 2),
+        plot.title = element_text(size = text_size * 2.3),
+        axis.text.x = element_text(size = text_size * 1.5)) +
+  geom_text(data = joined,
+            aes(x = ccaa,
+                y = value,
+                label = paste0(uci, '\nadmissions per\n(',
+                               round(value, digits = 1), ' per\n100,000)')),
+                # label = paste0(deaths, '\n(',
+                #                round(p, digits = 1), '%)')),
+            size = text_size * 0.25,
+            nudge_y = 0.4) +
+  ylim(0, 5)
+# ggsave('~/Desktop/spain.png')
+```
 
 ## Spain and Italy
 
