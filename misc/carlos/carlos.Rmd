@@ -1,5 +1,5 @@
 ---
-title: "Charts for Carlos"
+title: "ISGlobal charts"
 author: "www.databrew.cc"
 date: "`r Sys.Date()`"
 output:
@@ -31,7 +31,7 @@ library(dplyr)
 library(ggplot2)
 
 # Define vector of countries
-countries <- c('China','South Korea',
+countries <- c('China','Korea, South',
                'Italy',
                'Spain',
                'UK',
