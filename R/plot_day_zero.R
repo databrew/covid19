@@ -143,10 +143,18 @@ prepare_day_zero_data_esp <-  function(ccaa = c('Cataluña', 'Madrid'),
   }
   
   # Assign which to plot
-  if(cumulative){
-    pd$value <- pd$confirmed_cases
+  if(deaths){
+    if(cumulative){
+      pd$value <- pd$deaths
+    } else {
+      pd$value <- pd$deaths_non_cum
+    }
   } else {
-    pd$value <- pd$confirmed_cases_non_cum
+    if(cumulative){
+      pd$value <- pd$confirmed_cases
+    } else {
+      pd$value <- pd$confirmed_cases_non_cum
+    }
   }
   return(pd)
 }
@@ -288,7 +296,7 @@ plot_day_zero_esp <- function(ccaa = c('Cataluña', 'Madrid'),
                               cumulative = cumulative,
                               time_before = time_before,
                               max_date = max_date)
-  these_countries <- ccaa
+  these_countries <- sort(unique(pd$country))
   
   
   # Get y scale
@@ -298,6 +306,8 @@ plot_day_zero_esp <- function(ccaa = c('Cataluña', 'Madrid'),
   if(length(these_countries) == 0){
     return(NULL)
   }
+  
+  
   if(length(these_countries) == 1){
     cols <- 'black'
   }
@@ -307,6 +317,9 @@ plot_day_zero_esp <- function(ccaa = c('Cataluña', 'Madrid'),
   if(length(these_countries) > 2){
     cols <- colorRampPalette(RColorBrewer::brewer.pal(n = 8,
                                                       name = 'Set1'))(length(these_countries))
+    if('Madrid' %in% these_countries){
+      cols[which(these_countries == 'Madrid')] <- 'red'
+    }
   }
   
   selfy <- function(x){abs(x)}
@@ -319,12 +332,15 @@ plot_day_zero_esp <- function(ccaa = c('Cataluña', 'Madrid'),
     theme_bw() +
     scale_color_manual(name = '',
                        values = cols) +
-    labs(x = paste0("Days since country's first day with ",
-                    day0, " or more cases"),
-         y = paste0(ifelse(cumulative, "Cumulative n", "N"), 'umber of confirmed cases',
+    labs(x = paste0("Days since region's first day with ",
+                    day0, " or more ", ifelse(deaths, 'deaths', 'cases')),
+         y = paste0(ifelse(cumulative, "Cumulative n", "N"), 'umber of confirmed ', 
+                    ifelse(deaths, 'deaths', 'cases'),
                     ifelse(ylog, '\n(Logarithmic scale)', '')),
-         title = paste0('COVID-19 cases since country\'s\nfirst day with ',
-                        day0, " or more ", ifelse(cumulative, "cumulative", "daily"),  " cases"),
+         title = paste0('COVID-19 cases since region\'s\nfirst day with ',
+                        day0, " or more ", ifelse(cumulative, "cumulative", "daily"),  ifelse(deaths,
+                                                                                              ' deaths',
+                                                                                              'cases')),
          subtitle = paste0('Data as of ', max(esp_df$date))) +
     theme_simple() +
     scale_x_continuous(breaks = seq(-100, 100, 2)) +

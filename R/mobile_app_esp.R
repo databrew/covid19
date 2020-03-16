@@ -43,12 +43,14 @@ mobile_app_esp_ui <- function(request) {
                         selected = c('Cataluña', 'Madrid')),
             # f7Stepper('day0', '"Critical mass": number of cases to be considered start of outbreak (day 0)', min = 1, max = 500, value = 150, step = 5),
             
-            sliderInput('day0', '"Critical mass" adjustment: Number of cases to be considered "day 0"',
+            sliderInput('day0', '"Critical mass" adjustment: Number of cases/deaths to be considered "day 0"',
                         min = 1,
                         max = 250,
                         value = 50,
                         # scale = TRUE,
                         step = 1),
+            f7Toggle('deaths', 'Deaths instead of cases?',
+                     checked = FALSE),
             height = 300,
           )
         ),
@@ -147,6 +149,7 @@ mobile_app_esp_server <- function(input, output, session) {
     plot_day_zero_esp(ccaa = input$ccaa,
                   ylog = input$ylog,
                   day0 = input$day0,
+                  deaths = input$deaths,
                   cumulative = input$cumulative,
                   time_before = input$time_before,
                   line_size = input$line_size,
