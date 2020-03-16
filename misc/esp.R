@@ -6,6 +6,154 @@ library(ggplot2)
 Sys.timezone()
 
 
+# Doubling time
+n_cases_start = 150
+countries = c('Italy', 'Spain', 'France', 'Germany', 'Italy', 'Switzerland', 'Denmark', 'US', 'United Kingdom', 'Norway')
+# countries <- sort(unique(df_country$country))
+out_list <- curve_list <-  list()
+counter <- 0
+for(i in 1:length(countries)){
+  message(i)
+  this_country <- countries[i]
+  sub_data <-df_country %>% filter(country == this_country)
+  # Only calculate on countries with n_cases_start or greater cases,
+  # starting at the first day at n_cases_start or greater
+  ok <- max(sub_data$confirmed_cases, na.rm = TRUE) >= n_cases_start
+  if(ok){
+    counter <- counter + 1
+    pd <- sub_data %>%
+      filter(!is.na(confirmed_cases)) %>%
+      mutate(start_date = min(date[confirmed_cases >= n_cases_start])) %>%
+      mutate(days_since = date - start_date) %>%
+      filter(days_since >= 0) %>%
+      mutate(days_since = as.numeric(days_since))
+    fit <- lm(log(confirmed_cases) ~ days_since, data = pd) 
+    # plot(pd$days_since, log(pd$cases))
+    # abline(fit)
+    ## Slope
+    # curve <- fit$coef[2]
+    
+    # Predict days ahead
+    fake <- tibble(days_since = seq(0, max(pd$days_since) + 5, by = 1))
+    fake <- left_join(fake, pd %>% dplyr::select(days_since, confirmed_cases, date))
+    fake$predicted <- exp(predict(fit, newdata = fake))
+    
+    # Doubling time
+    dt <- log(2)/fit$coef[2]
+    out <- tibble(country = this_country,
+                  doubling_time = dt)
+    out_list[[counter]] <- out
+    curve_list[[counter]] <- fake %>% mutate(country = this_country)
+  }
+}
+done <- bind_rows(out_list)
+curves <- bind_rows(curve_list)
+# Get curves back in exponential form
+# curves$curve <- exp(curves$curve)
+
+# Join doubling time to curves
+joined <- left_join(curves, done)
+
+# Get rid of Italy future (since it's the "leader")
+joined <- joined %>%
+  filter(country != 'Italy' |
+           date <= (Sys.Date() -1))
+
+
+# Make long format
+long <- joined %>% 
+  dplyr::select(date, days_since, country, confirmed_cases, predicted, doubling_time) %>%
+  tidyr::gather(key, value, confirmed_cases:predicted) %>%
+  mutate(key = Hmisc::capitalize(gsub('_', ' ', key))) %>%
+  mutate(key = ifelse(key == 'Predicted', 'Predicted (based on current doubling time)', key))
+
+
+
+cols <- c('red', 'black')
+ggplot(data = long,
+       aes(x = days_since,
+           y = value,
+           lty = key,
+           color = key)) +
+  geom_line(data = long %>% filter(key != 'Confirmed cases'),
+            size = 1.5, alpha = 0.8) +
+  geom_point(data = long %>% filter(key == 'Confirmed cases')) +
+  geom_line(data = long %>% filter(key == 'Confirmed cases'),
+            size = 0.8) +
+  facet_wrap(~paste0(country, '\n',
+                     '(doubling time: ', 
+                     round(doubling_time, digits = 1), ' days)'), scales = 'free') +
+  theme_simple() +
+  scale_linetype_manual(name ='',
+                        values = c(1,2)) +
+  scale_color_manual(name = '',
+                     values = cols) +
+  theme(legend.position = 'top') +
+  labs(x = 'Days since first day at >150 cumulative cases',
+       y = 'Cases',
+       title = 'COVID-19 case trajectories (assuming no changes in doubling time)',
+       caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
+       subtitle = '(Doubling time calculated since first day at >150 cumulative cases)')
+
+
+# Overlay Italy
+ol1 <- joined %>% filter(!country %in% 'Italy')
+ol2 <- joined %>% filter(country == 'Italy') %>% dplyr::rename(Italy = confirmed_cases) %>%
+  dplyr::select(Italy, days_since)
+ol <- left_join(ol1, ol2) %>%
+  dplyr::select(days_since, date, country, confirmed_cases, predicted, Italy,doubling_time)
+ol <- tidyr::gather(ol, key, value, confirmed_cases: Italy) %>%
+  mutate(key = Hmisc::capitalize(gsub('_', ' ', key))) %>%
+  mutate(key = ifelse(key == 'Predicted', 'Predicted (based on current doubling time)', key))
+
+
+
+cols <- c('red', 'blue', 'black')
+ggplot(data = ol,
+       aes(x = days_since,
+           y = value,
+           lty = key,
+           color = key)) +
+  geom_line(data = ol %>% filter(key != 'Confirmed cases'),
+            size = 1.2, alpha = 0.8) +
+  geom_point(data = ol %>% filter(key == 'Confirmed cases')) +
+  geom_line(data = ol %>% filter(key == 'Confirmed cases'),
+            size = 0.8) +
+  facet_wrap(~paste0(country, '\n',
+                     '(doubling time: ', 
+                     round(doubling_time, digits = 1), ' days)'), scales = 'free') +
+  theme_simple() +
+  scale_linetype_manual(name ='',
+                        values = c(1,2, 3)) +
+  scale_color_manual(name = '',
+                     values = cols) +
+  theme(legend.position = 'top') +
+  labs(x = 'Days since first day at >150 cumulative cases',
+       y = 'Cases',
+       title = 'COVID-19 case trajectories (assuming no changes in doubling time)',
+       caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
+       subtitle = '(Doubling time calculated since first day at >150 cumulative cases)') +
+  theme(strip.text = element_text(size = 15))
+
+
+
+pd <- df %>%
+  mutate(cases = confirmed_cases) %>%
+  arrange(date) %>%
+  group_by(country) %>%
+  mutate(start_date = min(date[cases >= n_cases_start])) %>%
+  ungroup %>%
+  mutate(days_since = date - start_date) %>%
+  filter(days_since > 0) %>%
+  filter(country %in% this_country)
+fit <- lm(log(cases) ~ days_since, data = pd) 
+plot(pd$days_since, log(pd$cases))
+abline(fit)
+# Slope
+fit$coef[2] 
+# Doubling time
+log(2)/fit$coef[2] 
+
 # Latest in Spain
 pd <- esp_df %>%
   filter(date == max(date)) %>%

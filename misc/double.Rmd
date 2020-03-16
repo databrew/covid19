@@ -1,0 +1,315 @@
+---
+title: "Doubling rates"
+author: "www.databrew.cc"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    code_folding: "hide"
+---
+
+
+```{r setup, include=FALSE, echo = FALSE}
+# Basic knitr options
+library(knitr)
+opts_chunk$set(comment = NA, 
+               # echo = FALSE, 
+               warning = FALSE, 
+               message = FALSE, 
+               error = TRUE, 
+               cache = FALSE,
+               fig.width = 8.64,
+               fig.height = 4.86,
+               fig.path = 'figures/')
+```
+
+## R-nought
+
+The factor that determines how quickly an infectious disease spreads is its basic reproductive number, what epidemiologists call R-nought. It’s the number of people that an infected person will infect. 
+
+So, if it’s 3, that means one sick person will get 3 others sick. And those 3 will each get 3 sick, bringing the number to 9. And those 3 will each get 3 sick, bringing the number to 27. Then 81. Then 243. Then 729.
+We’re never really sure of this number for two reasons:
+1. With some diseases we don’t know the actual number of cases
+2. And R-nought does not exist in a vacuum. Societies are organized in different ways, and that has an effect.
+
+An obvious example would be a jail on lockdown. If everyone is in their cell, it doesn’t matter if there is a disease with a high R-nought because nobody is in contact. 
+
+What social distancing does is lower a disease’s effective R-nought. And once you get it below 1, then the disease outbreak will end.
+
+## Doubling time
+
+A more simple, intuitively understandable concept than R-nought is “doubling time”. This is the number of days it takes for the number of infected people to double. If we look at the recent case numbers in Europe, the situation is pretty dire.
+
+We'll use data compiled by Johns Hopkins University, and a few R packages.
+
+(Click "code" to show the code for calculations and charts.)
+
+```{r}
+## Load libraries
+library(covid19)
+library(ggplot2)
+library(lubridate)
+library(dplyr)
+library(ggplot2)
+```
+
+Since trajectories are very unstable when cases are low, we'll exclude from our analysis the first few days, and will only count as "outbreak" once a country reaches 150 or more cumulative cases.
+
+```{r}
+# Doubling time
+n_cases_start = 150
+countries = c('Italy', 'Spain', 'France', 'Germany', 'Italy', 'Switzerland', 'Denmark', 'US', 'United Kingdom', 'Norway')
+# countries <- sort(unique(df_country$country))
+out_list <- curve_list <-  list()
+counter <- 0
+for(i in 1:length(countries)){
+  message(i)
+  this_country <- countries[i]
+  sub_data <-df_country %>% filter(country == this_country)
+  # Only calculate on countries with n_cases_start or greater cases,
+  # starting at the first day at n_cases_start or greater
+  ok <- max(sub_data$confirmed_cases, na.rm = TRUE) >= n_cases_start
+  if(ok){
+    counter <- counter + 1
+    pd <- sub_data %>%
+      filter(!is.na(confirmed_cases)) %>%
+      mutate(start_date = min(date[confirmed_cases >= n_cases_start])) %>%
+      mutate(days_since = date - start_date) %>%
+      filter(days_since >= 0) %>%
+      mutate(days_since = as.numeric(days_since))
+    fit <- lm(log(confirmed_cases) ~ days_since, data = pd) 
+    # plot(pd$days_since, log(pd$cases))
+    # abline(fit)
+    ## Slope
+    # curve <- fit$coef[2]
+    
+    # Predict days ahead
+    fake <- tibble(days_since = seq(0, max(pd$days_since) + 5, by = 1))
+    fake <- left_join(fake, pd %>% dplyr::select(days_since, confirmed_cases, date))
+    fake$predicted <- exp(predict(fit, newdata = fake))
+    
+    # Doubling time
+    dt <- log(2)/fit$coef[2]
+    out <- tibble(country = this_country,
+                  doubling_time = dt)
+    out_list[[counter]] <- out
+    curve_list[[counter]] <- fake %>% mutate(country = this_country)
+  }
+}
+done <- bind_rows(out_list)
+curves <- bind_rows(curve_list)
+# Get curves back in exponential form
+# curves$curve <- exp(curves$curve)
+
+# Join doubling time to curves
+joined <- left_join(curves, done)
+
+# Get rid of Italy future (since it's the "leader")
+joined <- joined %>%
+  filter(country != 'Italy' |
+           date <= (Sys.Date() -1))
+
+
+# Make long format
+long <- joined %>% 
+  dplyr::select(date, days_since, country, confirmed_cases, predicted, doubling_time) %>%
+  tidyr::gather(key, value, confirmed_cases:predicted) %>%
+  mutate(key = Hmisc::capitalize(gsub('_', ' ', key))) %>%
+  mutate(key = ifelse(key == 'Predicted', 'Predicted (based on current doubling time)', key))
+```
+
+
+The below chart shows the trajectories in terms of number of cases in Europe in red, and the predicted trajectories in black. The black line assumes that the doubling rate will stay constant.
+
+
+
+```{r, fig.height = 9}
+
+
+cols <- c('red', 'black')
+ggplot(data = long,
+       aes(x = days_since,
+           y = value,
+           lty = key,
+           color = key)) +
+  geom_line(data = long %>% filter(key != 'Confirmed cases'),
+            size = 1.2, alpha = 0.8) +
+  geom_point(data = long %>% filter(key == 'Confirmed cases')) +
+  geom_line(data = long %>% filter(key == 'Confirmed cases'),
+            size = 0.8) +
+  facet_wrap(~paste0(country, '\n',
+                     '(doubling time: ', 
+                     round(doubling_time, digits = 1), ' days)'), scales = 'free') +
+  theme_simple() +
+  scale_linetype_manual(name ='',
+                        values = c(1,2)) +
+  scale_color_manual(name = '',
+                     values = cols) +
+  theme(legend.position = 'top') +
+  labs(x = 'Days since first day at >150 cumulative cases',
+       y = 'Cases',
+       title = 'COVID-19 CASES: ("predicted" assumes no change in doubling time)',
+       caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
+       subtitle = '(Doubling time calculated since first day at >150 cumulative cases)') +
+    theme(strip.text = element_text(size = 13),
+          plot.title = element_text(size = 15))
+```
+
+Since Italy is "leading the way", it's helpful to also compare each country to Italy. Let's see that. 
+
+```{r, fig.height = 9}
+# Overlay Italy
+ol1 <- joined %>% filter(!country %in% 'Italy')
+ol2 <- joined %>% filter(country == 'Italy') %>% dplyr::rename(Italy = confirmed_cases) %>%
+  dplyr::select(Italy, days_since)
+ol <- left_join(ol1, ol2) %>%
+  dplyr::select(days_since, date, country, confirmed_cases, predicted, Italy,doubling_time)
+ol <- tidyr::gather(ol, key, value, confirmed_cases: Italy) %>%
+  mutate(key = Hmisc::capitalize(gsub('_', ' ', key))) %>%
+  mutate(key = ifelse(key == 'Predicted', 'Predicted (based on current doubling time)', key))
+
+cols <- c('red', 'blue', 'black')
+ggplot(data = ol,
+       aes(x = days_since,
+           y = value,
+           lty = key,
+           color = key)) +
+  geom_line(data = ol %>% filter(!key %in% c('Confirmed cases', 'Italy')),
+            size = 1.2, alpha = 0.8) +
+    geom_line(data = ol %>% filter(key %in% c('Italy')),
+            size = 0.8, alpha = 0.8) +
+  geom_point(data = ol %>% filter(key == 'Confirmed cases')) +
+  geom_line(data = ol %>% filter(key == 'Confirmed cases'),
+            size = 0.8) +
+  facet_wrap(~paste0(country, '\n',
+                     '(doubling time: ', 
+                     round(doubling_time, digits = 1), ' days)'), scales = 'free') +
+  theme_simple() +
+  scale_linetype_manual(name ='',
+                        values = c(1,6,2)) +
+  scale_color_manual(name = '',
+                     values = cols) +
+  theme(legend.position = 'top') +
+  labs(x = 'Days since first day at >150 cumulative cases',
+       y = 'Cases',
+       title = 'COVID-19 CASES: ("predicted" assumes no change in doubling time)',
+       caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
+       subtitle = '(Doubling time calculated since first day at >150 cumulative cases)') +
+    theme(strip.text = element_text(size = 13),
+          plot.title = element_text(size = 15))
+```
+
+In the above, what's striking is how many places have trajectories that are _worse_ than Italy's. Yes, Italy has more cases, but it's doubling time is less. Either that changes soon, or these other countries will soon have more cases than Italy.
+
+## Deaths or cases?
+
+The number of cases is not necessarily the best indicator for the severity of an outbreak of this nature. Why? Because (a) testing rates and protocols are different by place and (b) testing rates are different by time (since health services are changing their approaches as things develop). In other words, when we compare the number of cases by place and time, we are introducing significant bias.
+
+Using deaths to gauge the magnitude of the outbreak is also problematic. Death rates are differential by age, so the number of deaths depends on a country's population period, or age structure. Also, death rates will be a function of health services, which are not of the same quality every where. And, of course, like cases, we don't necessarily know about all of the deaths that occur because of COVID-19.
+
+Still, there's an argument that death rates have _less_ bias than case rates because deaths are easier to identify than cases. Let's accept that argument, for the time being, and have a look at death rates by country.
+
+```{r}
+# Doubling time
+n_deaths_start = 5
+countries = c('Italy', 'Spain', 'France', 'Italy', 'Switzerland', 'Denmark', 'US', 'United Kingdom', 'Norway')
+# countries <- sort(unique(df_country$country))
+out_list <- curve_list <-  list()
+counter <- 0
+for(i in 1:length(countries)){
+  message(i)
+  this_country <- countries[i]
+  sub_data <-df_country %>% filter(country == this_country)
+  # Only calculate on countries with n_cases_start or greater cases,
+  # starting at the first day at n_cases_start or greater
+  ok <- max(sub_data$deaths, na.rm = TRUE) >= n_deaths_start
+  if(ok){
+    counter <- counter + 1
+    pd <- sub_data %>%
+      filter(!is.na(deaths)) %>%
+      mutate(start_date = min(date[deaths >= n_deaths_start])) %>%
+      mutate(days_since = date - start_date) %>%
+      filter(days_since >= 0) %>%
+      mutate(days_since = as.numeric(days_since))
+    fit <- lm(log(deaths) ~ days_since, data = pd) 
+    # plot(pd$days_since, log(pd$cases))
+    # abline(fit)
+    ## Slope
+    # curve <- fit$coef[2]
+    
+    # Predict days ahead
+    fake <- tibble(days_since = seq(0, max(pd$days_since) + 5, by = 1))
+    fake <- left_join(fake, pd %>% dplyr::select(days_since, deaths, date))
+    fake$predicted <- exp(predict(fit, newdata = fake))
+    
+    # Doubling time
+    dt <- log(2)/fit$coef[2]
+    out <- tibble(country = this_country,
+                  doubling_time = dt)
+    out_list[[counter]] <- out
+    curve_list[[counter]] <- fake %>% mutate(country = this_country)
+  }
+}
+done <- bind_rows(out_list)
+curves <- bind_rows(curve_list)
+# Get curves back in exponential form
+# curves$curve <- exp(curves$curve)
+
+# Join doubling time to curves
+joined <- left_join(curves, done)
+
+# Get rid of Italy future (since it's the "leader")
+joined <- joined %>%
+  filter(country != 'Italy' |
+           date <= (Sys.Date() -1))
+
+
+# Make long format
+long <- joined %>% 
+  dplyr::select(date, days_since, country, deaths, predicted, doubling_time) %>%
+  tidyr::gather(key, value, deaths:predicted) %>%
+  mutate(key = Hmisc::capitalize(gsub('_', ' ', key))) %>%
+  mutate(key = ifelse(key == 'Predicted', 'Predicted (based on current doubling time)', key))
+```
+
+
+```{r, fig.height = 7}
+
+
+cols <- c('red', 'black')
+ggplot(data = long,
+       aes(x = days_since,
+           y = value,
+           lty = key,
+           color = key)) +
+  geom_line(data = long %>% filter(key != 'Deaths'),
+            size = 1.2, alpha = 0.8) +
+  geom_point(data = long %>% filter(key == 'Deaths')) +
+  geom_line(data = long %>% filter(key == 'Deaths'),
+            size = 0.8) +
+  facet_wrap(~paste0(country, '\n',
+                     '(doubling time: ', 
+                     round(doubling_time, digits = 1), ' days)'), scales = 'free') +
+  theme_simple() +
+  scale_linetype_manual(name ='',
+                        values = c(1,2)) +
+  scale_color_manual(name = '',
+                     values = cols) +
+  theme(legend.position = 'top') +
+  labs(x = 'Days since first day at >150 cumulative cases',
+       y = 'Deaths',
+       title = 'COVID-19 DEATHS: observed and predicted (assumes no change in doubling time)',
+       caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
+       subtitle = '(Doubling time calculated since first day at >5 cumulative deaths)') +
+    theme(strip.text = element_text(size = 13),
+          plot.title = element_text(size = 15))
+```
+
+## The importance of lag
+
+Things are changing very rapidly. And measures being taken by these countries will have an impact on the outbreak.
+
+But it's important to remember that there is a lag between when an intervention takes place and when its effect is notable. Because of the incubation period - the number of days between someone getting infected and becoming sick - what we do today won't really have an effect until next weekend. And the clinical cases that present today are among people who got infected a week ago. 
+
+Disease control measures work. We can see that clearly in the case of Hubei, Wuhan, Iran, Japan. And they will work in Europe too. But because many of these measures were implemented very recently, we won't likely see a major effect for at least a few more days.
+
+In the mean time, it's important to practice social distancing. Stay away from others to keep both you and others safe. Listen to Health Authorities. Take this very seriously.

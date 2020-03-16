@@ -257,13 +257,13 @@ usethis::use_data(ita, overwrite = T)
 
 
 library(readr)
-write_csv(esp, 'spain/ccaa.csv')
+# write_csv(esp, 'spain/ccaa.csv')
 write_csv(esp_df, 'spain/ccaa_day.csv')
 
-write_csv(esp, 'isglobal/ccaa.csv')
+# write_csv(esp, 'isglobal/ccaa.csv')
 write_csv(esp_df, 'isglobal/ccaa_day.csv')
 
-usethis::use_data(esp, overwrite = T)
+# usethis::use_data(esp, overwrite = T)
 usethis::use_data(esp_df, overwrite = T)
 # Write a map
 
