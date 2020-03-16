@@ -6,13 +6,15 @@
 #' @param cumulative Whether to count cases cumulatively
 #' @param time_before How many days before outbreak to show
 #' @param max_date The maximum date
+#' @param deaths Whether to use deaths instead of cases
 #' @import dplyr
 #' @export
 prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'France', 'US', 'Germany'),
                                    day0 = 150,
                                    cumulative = TRUE,
                                    time_before = 0,
-                                   max_date = Sys.Date()){
+                                   max_date = Sys.Date(),
+                                   deaths = FALSE){
   
   
   
@@ -36,19 +38,33 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'France', 'US
     cumulative <- TRUE
   }
   
-  pd <- df_country %>%
+  pd <- df %>%
+    mutate(country) %>%
     arrange(date, country) %>%
     filter(country %in% these_countries) %>%
     group_by(country, date) %>%
     summarise(confirmed_cases = sum(confirmed_cases),
-              confirmed_cases_non_cum = sum(confirmed_cases_non_cum)) %>%
-    ungroup %>%
-    group_by(country) %>%
-    mutate(first_case = min(date[confirmed_cases >= day0])) %>%
-    ungroup %>%
-    mutate(days_since_first_case = date - first_case) %>%
-    filter(days_since_first_case >= time_before)
+              confirmed_cases_non_cum = sum(confirmed_cases_non_cum),
+              deaths = sum(deaths),
+              deaths_non_cum = sum(deaths_non_cum)) %>%
+    ungroup
   
+  if(deaths){
+    pd <- pd %>%
+      group_by(country) %>%
+      mutate(first_case = min(date[deaths >= day0])) %>%
+      ungroup %>%
+      mutate(days_since_first_case = date - first_case) %>%
+      filter(days_since_first_case >= time_before)
+    
+  } else {
+    pd <- pd %>%
+      group_by(country) %>%
+      mutate(first_case = min(date[confirmed_cases >= day0])) %>%
+      ungroup %>%
+      mutate(days_since_first_case = date - first_case) %>%
+      filter(days_since_first_case >= time_before)
+  }
   
   if(length(these_countries) == 0){
     return(NULL)
@@ -58,10 +74,18 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'France', 'US
   }
  
   # Assign which to plot
-  if(cumulative){
-    pd$value <- pd$confirmed_cases
+  if(deaths){
+    if(cumulative){
+      pd$value <- pd$deaths
+    } else {
+      pd$value <- pd$deaths_non_cum
+    }
   } else {
-    pd$value <- pd$confirmed_cases_non_cum
+    if(cumulative){
+      pd$value <- pd$confirmed_cases
+    } else {
+      pd$value <- pd$confirmed_cases_non_cum
+    }
   }
   return(pd)
 }
@@ -174,6 +198,7 @@ prepare_day_zero_data_esp <-  function(ccaa = c('Cataluña', 'Madrid'),
 #' @param line_size Size of line
 #' @param max_date The maximum date
 #' @param calendar Whether to plot by calendar date
+#' @param deaths Whether to show deaths instead of cases
 #' @import dplyr
 #' @import ggplot2
 #' @import RColorBrewer
@@ -186,13 +211,14 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'France', 'US', 'Germa
                           add_markers = FALSE,
                           line_size = 1.5,
                           max_date = Sys.Date(),
-                          calendar = FALSE){
+                          calendar = FALSE, deaths = FALSE){
   
   pd <- prepare_day_zero_data(countries = countries,
                               day0 = day0,
                               cumulative = cumulative,
                               time_before = time_before,
-                              max_date = max_date)
+                              max_date = max_date,
+                              deaths = deaths)
   these_countries <- countries
   
  
@@ -225,11 +251,11 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'France', 'US', 'Germa
     scale_color_manual(name = '',
                        values = cols) +
     labs(x = paste0("Days since country's first day with ",
-                    day0, " or more cases"),
-         y = paste0(ifelse(cumulative, "Cumulative n", "N"), 'umber of confirmed cases',
+                    day0, " or more ", ifelse(deaths, 'deaths', 'cases')),
+         y = paste0(ifelse(cumulative, "Cumulative n", "N"), 'umber of confirmed ', ifelse(deaths, 'deaths', 'cases'),
                     ifelse(ylog, '\n(Logarithmic scale)', '')),
-         title = paste0('COVID-19 cases since country\'s\nfirst day with ',
-                        day0, " or more ", ifelse(cumulative, "cumulative", "daily"),  " cases"),
+         title = paste0('COVID-19 ', ifelse(deaths, 'deaths', 'cases'), ' since country\'s\nfirst day with ',
+                        day0, " or more ", ifelse(cumulative, "cumulative", "daily"),  ifelse(deaths, 'deaths', 'cases')),
          subtitle = paste0('Data as of ', max(df_country$date))) +
     theme_simple() +
     scale_x_continuous(breaks = seq(-100, 100, 2)) +
