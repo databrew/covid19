@@ -472,6 +472,7 @@ ggplot(data = long,
           plot.title = element_text(size = 15))
 ```
 
+
 Let's overlay Lombardy
 
 
@@ -551,7 +552,7 @@ ggplot(data = ol,
            lty = key,
            color = key)) +
   scale_y_log10() +
-  geom_line(data = ol %>% filter(!key %in% c('Deaths', 'Italy')),
+  geom_line(data = ol %>% filter(!key %in% c('Deaths', 'Lombardia')),
             size = 1.2, alpha = 0.8) +
     geom_line(data = ol %>% filter(key %in% c('Lombardia')),
             size = 0.5, alpha = 0.8) +
@@ -578,39 +579,92 @@ ggplot(data = ol,
 
 Same plot but overlayed
 
-```{r}
 
-ggplot(data = ol,
+Same as above, but overlaid
+
+```{r, fig.height = 7}
+text_size <- 12
+
+# cols <- c('red', 'black')
+long <- long %>% filter(country %in% c('Lombardia',
+                                       'Emilia Romagna') |
+                          country %in% esp_df$ccaa) %>%
+  filter(country != 'Aragón')
+places <- sort(unique(long$country))
+
+cols <- colorRampPalette(RColorBrewer::brewer.pal(n = 7, 'Spectral'))(length(places))
+cols[which(places == 'Madrid')] <- 'red'
+cols[which(places == 'Cataluña')] <- 'purple'
+cols[which(places == 'Lombardia')] <- 'darkorange'
+cols[which(places == 'Emilia Romagna')] <- 'darkgreen'
+
+long$key <- ifelse(long$key != 'Deaths', 'Predicted', long$key)
+long$key <- ifelse(long$key == 'Predicted', 'Muertes\nprevistas',
+                   'Muertes\nobservadas')
+ggplot(data = long,
        aes(x = days_since,
            y = value,
            lty = key,
-           color = key)) +
-  scale_y_log10() +
-  geom_line(aes(color = country))
-  
-  geom_line(data = ol %>% filter(!key %in% c('Deaths', 'Italy')),
-            size = 1.2, alpha = 0.8) +
-    geom_line(data = ol %>% filter(key %in% c('Lombardia')),
-            size = 0.5, alpha = 0.8) +
-  geom_point(data = ol %>% filter(key == 'Deaths')) +
-  geom_line(data = ol %>% filter(key == 'Deaths'),
-            size = 0.8) +
-  facet_wrap(~paste0(country, '\n',
-                     '(doubling time: ', 
-                     round(doubling_time, digits = 1), ' days)'), scales = 'free') +
+           color = country)) +
+  geom_point(data = long %>% filter(key == 'Muertes\nprevistas'), size = 2, alpha = 0.8) +
+  geom_line(data = long %>% filter(key == 'Muertes\nprevistas'), size = 1, alpha = 0.7) +
+  geom_line(data = long %>% filter(key != 'Muertes\nprevistas'), size = 0.8) +
   theme_simple() +
+  scale_y_log10() +
   scale_linetype_manual(name ='',
-                        values = c(1,6,2)) +
+                        values = c(1,4)) +
   scale_color_manual(name = '',
                      values = cols) +
   theme(legend.position = 'top') +
-  labs(x = 'Days since first day at >5 deaths',
-       y = 'Deaths',
-       title = 'COVID-19 DEATHS: ("predicted" assumes no change in doubling time)',
+  # labs(x = 'Days since first day at 5 or more cumulative deaths',
+  #      y = 'Deaths',
+  #      title = 'COVID-19 DEATHS: ("predicted" assumes no change in doubling time)',
+  #      caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
+  #      subtitle = '(Doubling time calculated since first day at >5 cumulative deaths)') +
+    labs(x = 'Días desde el primer día a 5 o más muertes acumuladas',
+       y = 'Muertes (escala logarítmica)',
+       title = 'Muertes por COVID-19',
        caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
-       subtitle = '(Doubling time calculated since first day at >5 cumulative deaths)') +
-    theme(strip.text = element_text(size = text_size * 1),
-          plot.title = element_text(size = 15))
+       subtitle = '(Tasa de crecimiento / doubling time calculado desde el primer día a 5 o más muertes acumuladas)\n("Predicted": suponiendo que no hay cambios en la tasa de crecimiento)') +
+    theme(strip.text = element_text(size = text_size * 0.75),
+          plot.title = element_text(size = text_size * 3),
+          legend.text = element_text(size = text_size * 2),
+          axis.title = element_text(size = text_size * 2),
+          axis.text = element_text(size = text_size * 2))
+```
+
+
+
+```{r}
+# cols <- c(cols, 'darkorange')
+# ggplot(data = ol,
+#        aes(x = days_since,
+#            y = value,
+#            lty = key,
+#            color = key)) +
+#   scale_y_log10() +
+#   geom_line(aes(color = country)) +
+#   
+#   # geom_line(data = ol %>% filter(!key %in% c('Deaths', 'Italy')),
+#   #           size = 1.2, alpha = 0.8) +
+#   #   geom_line(data = ol %>% filter(key %in% c('Lombardia')),
+#   #           size = 0.5, alpha = 0.8) +
+#   # geom_point(data = ol %>% filter(key == 'Deaths')) +
+#   # geom_line(data = ol %>% filter(key == 'Deaths'),
+#   #           size = 0.8) +
+#   theme_simple() +
+#   scale_linetype_manual(name ='',
+#                         values = c(1,6,2)) +
+#   scale_color_manual(name = '',
+#                      values = cols) +
+#   theme(legend.position = 'top') +
+#   labs(x = 'Days since first day at >5 deaths',
+#        y = 'Deaths',
+#        title = 'COVID-19 DEATHS: ("predicted" assumes no change in doubling time)',
+#        caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
+#        subtitle = '(Doubling time calculated since first day at >5 cumulative deaths)') +
+#     theme(strip.text = element_text(size = text_size * 1),
+#           plot.title = element_text(size = 15))
 ```
 
 

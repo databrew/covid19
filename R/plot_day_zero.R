@@ -255,7 +255,7 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'France', 'US', 'Germa
          y = paste0(ifelse(cumulative, "Cumulative n", "N"), 'umber of confirmed ', ifelse(deaths, 'deaths', 'cases'),
                     ifelse(ylog, '\n(Logarithmic scale)', '')),
          title = paste0('COVID-19 ', ifelse(deaths, 'deaths', 'cases'), ' since country\'s\nfirst day with ',
-                        day0, " or more ", ifelse(cumulative, "cumulative", "daily"),  ifelse(deaths, 'deaths', 'cases')),
+                        day0, " or more ", ifelse(cumulative, "cumulative ", "daily "),  ifelse(deaths, 'deaths', 'cases')),
          subtitle = paste0('Data as of ', max(df_country$date))) +
     theme_simple() +
     scale_x_continuous(breaks = seq(-100, 100, 2)) +
@@ -364,7 +364,7 @@ plot_day_zero_esp <- function(ccaa = c('Cataluña', 'Madrid'),
                     ifelse(deaths, 'deaths', 'cases'),
                     ifelse(ylog, '\n(Logarithmic scale)', '')),
          title = paste0('COVID-19 cases since region\'s\nfirst day with ',
-                        day0, " or more ", ifelse(cumulative, "cumulative", "daily"),  ifelse(deaths,
+                        day0, " or more ", ifelse(cumulative, "cumulative ", "daily "),  ifelse(deaths,
                                                                                               ' deaths',
                                                                                               'cases')),
          subtitle = paste0('Data as of ', max(esp_df$date))) +

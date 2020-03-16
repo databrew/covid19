@@ -206,9 +206,70 @@ write_csv(df_country, 'isglobal/world_data.csv')
 # # from now on
 # write_csv(esp_df, '~/Desktop/esp.csv')
 
+# # Read UCI data
+# esp_uci <- read_csv('https://raw.githubusercontent.com/datadista/datasets/master/COVID%2019/ccaa_covid19_uci.csv')
+# esp_uci <- gather(esp_uci,
+#                      date, uci,
+#                      `04/03/2020`:`16/03/2020`)
+# esp_uci <- esp_uci %>%
+#   dplyr::rename(ccaa = CCAA) %>%
+#   filter(ccaa != 'Total') %>%
+#   mutate(ccaa = ifelse(ccaa == 'Castilla y León', 'CyL',
+#                        ifelse(ccaa == 'Castilla-La Mancha', 'CLM',
+#                               ccaa)))
+# esp_uci$date <- as.Date(esp_uci$date,
+#                            format = '%d/%m/%Y')
+# usethis::use_data(esp_uci, overwrite = TRUE)
+
+# Read population data
+esp_pop <- tibble(ccaa = c("Andalucía",
+                           "Aragón",
+                           "Asturias",
+                           "Baleares",
+                           "C. Valenciana",
+                           "Canarias",
+                           "Cantabria",
+                           "Cataluña",
+                           "Ceuta",
+                           "CLM",
+                           "CyL",
+                           "Extremadura",
+                           "Galicia",
+                           "La Rioja",
+                           "Madrid",
+                           "Melilla",
+                           "Murcia",
+                           "Navarra",
+                           "País Vasco"),
+                  pop = c(8414240,#  "Andalucía",
+                            1319291,#"Aragón",
+                            1022800,#"Asturias",
+                            1149460,#"Baleares",
+                            5003769,#"C. Valenciana",
+                            2153389,#"Canarias",
+                            581078,#"Cantabria",
+                            7675217,#"Cataluña",
+                            84777,#"Ceuta",
+                          2032863, #"CLM",
+                            2399548,#"CyL",
+                            1067710,#"Extremadura",
+                            2699499,#"Galicia",
+                            316798,#"La Rioja",
+                            6663394,#"Madrid",
+                            86487,#"Melilla",
+                            1493898,#"Murcia",
+                            654214,#"Navarra",
+                            2207776))#"País Vasco"))
+usethis::use_data(esp_pop, overwrite = TRUE)
+
+
+
 library(gsheet)
 url <- 'https://docs.google.com/spreadsheets/d/15UJWpsW6G7sEImE8aiQ5JrLCtCnbprpztfoEwyTNTEY/edit#gid=810081118'
 esp_df <- gsheet::gsheet2tbl(url)
+
+# # Join with uci
+# esp_df <- left_join(esp_df, esp_uci)
 
 # Process the Spain data a bit more
 esp_df <- esp_df %>%
@@ -221,14 +282,15 @@ esp_df <- esp_df %>%
   arrange(ccaa, date) %>%
   group_by(ccaa) %>%
   mutate(confirmed_cases_non_cum = confirmed_cases - lag(confirmed_cases, default = 0),
-         deaths_non_cum = deaths - lag(deaths, default = 0)) %>%
+         deaths_non_cum = deaths - lag(deaths, default = 0),
+         uci_non_cum = uci - lag(uci, default = 0)) %>%
   ungroup
 
 # Spot corrections
 esp_df <- esp_df %>%
   mutate(confirmed_cases_non_cum = ifelse(confirmed_cases_non_cum < 0,
                                           0, 
-                                          confirmed_cases_non_cum))
+                                          confirmed_cases_non_cum)) 
 
 
 # Look into using France / Italy data too
@@ -252,18 +314,19 @@ ita <- ita %>%
          deaths_non_cum = deaths - lag(deaths, default = 0)) %>%
   ungroup
 
+# By province
+# https://docs.google.com/spreadsheets/d/1qxbKnU39yn6yYcNkBqQ0mKnIXmKfPQ4lgpNglpJ9frE/edit#gid=0
+
 usethis::use_data(ita, overwrite = T)
 
 
 
 library(readr)
-# write_csv(esp, 'spain/ccaa.csv')
 write_csv(esp_df, 'spain/ccaa_day.csv')
-
-# write_csv(esp, 'isglobal/ccaa.csv')
 write_csv(esp_df, 'isglobal/ccaa_day.csv')
+write_csv(esp_pop, 'isglobal/esp_pop.csv')
+write_csv(esp_uci, 'isglobal/esp_uci.csv')
 
-# usethis::use_data(esp, overwrite = T)
 usethis::use_data(esp_df, overwrite = T)
 # Write a map
 

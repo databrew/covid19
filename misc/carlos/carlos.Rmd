@@ -1,0 +1,287 @@
+---
+title: "Charts for Carlos"
+author: "www.databrew.cc"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    code_folding: "hide"
+---
+
+
+```{r setup, include=FALSE, echo = FALSE}
+# Basic knitr options
+library(knitr)
+opts_chunk$set(comment = NA, 
+               # echo = FALSE, 
+               warning = FALSE, 
+               message = FALSE, 
+               error = TRUE, 
+               cache = FALSE,
+               fig.width = 8.64,
+               fig.height = 4.86,
+               fig.path = 'figures/')
+```
+
+```{r}
+## Load libraries
+library(covid19)
+library(ggplot2)
+library(lubridate)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+# Define vector of countries
+countries <- c('China','South Korea',
+               'Italy',
+               'Spain',
+               'UK',
+               'Germany',
+               'South Africa',
+               'Ghana',
+               'Kenya')
+```
+
+## All countries
+
+### Cumulative cases
+
+#### "Start date" of 150 cases
+
+Logarithmic: 
+
+```{r}
+plot_day_zero(countries = countries, day0 = 150)
+```
+
+Linear: 
+
+```{r}
+plot_day_zero(countries = countries, day0 = 150, ylog = F)
+```
+
+
+#### "Start date" of 25 cases
+
+Logarithmic:
+
+```{r}
+plot_day_zero(countries = countries, day0 = 25)
+```
+
+Linear:
+
+```{r}
+plot_day_zero(countries = countries, day0 = 25, ylog = F)
+```
+
+
+
+
+
+### Cumulative deaths
+
+#### "Start date" of 15 deaths
+
+Logarithmic: 
+
+```{r}
+plot_day_zero(countries = countries, day0 = 15, deaths = T)
+```
+
+Linear: 
+
+```{r}
+plot_day_zero(countries = countries, day0 = 15, ylog = F, deaths = T)
+```
+
+
+#### "Start date" of 5 deaths
+
+Logarithmic:
+
+```{r}
+plot_day_zero(countries = countries, day0 = 25, 5, deaths = T)
+```
+
+Linear:
+
+```{r}
+plot_day_zero(countries = countries, day0 = 5, ylog = F, deaths = T)
+```
+
+
+
+## Spain's CCAAs
+
+### Cumulative cases
+
+#### "Start date" of 50 cases
+
+Logarithmic:
+
+```{r}
+plot_day_zero_esp(ccaa = sort(unique(esp_df$ccaa)),
+                  day0 = 50)
+```
+
+Linear:
+
+```{r}
+plot_day_zero_esp(ccaa = sort(unique(esp_df$ccaa)),
+                  day0 = 50,
+                  ylog = F)
+```
+
+
+### Cumulative deaths
+
+#### "Start date" of 5 deaths
+
+Logarithmic:
+
+```{r}
+plot_day_zero_esp(ccaa = sort(unique(esp_df$ccaa)),
+                  day0 = 5,
+                  deaths = T)
+```
+
+Linear:
+
+```{r}
+plot_day_zero_esp(ccaa = sort(unique(esp_df$ccaa)),
+                  day0 = 5,
+                  deaths = T,
+                  ylog = F)
+```
+
+## CCAAs, deaths adjusted by population
+
+```{r, fig.height = 6.5, fig.width = 9}
+adj <- esp_df %>% filter(date == max(date))
+pop <- covid19::esp_pop
+joined <- left_join(adj, pop)
+# make vars
+joined <- joined %>%
+  mutate(cases_per_k = (cases / pop) * 100000,
+         deaths_per_k = (deaths / pop) * 100000)
+
+joined$value <- joined$deaths_per_k
+joined <- joined %>% arrange(value)
+joined$p <- joined$value / sum(joined$value) * 100
+joined$ccaa <- factor(joined$ccaa, 
+                      levels = joined$ccaa)
+text_size <- 10
+ggplot(data = joined,
+       aes(x = ccaa,
+           y = value)) + 
+  geom_bar(stat = 'identity',
+           fill = 'black') +
+  theme_simple() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+  labs(x = '',
+       y = 'Deaths',
+       title = 'COVID-19 deaths in Spain',
+       subtitle = 'Data as of evening of Sunday, March 15',
+       caption = 'github.com/databrew/covid19 | joe@databrew.cc') +
+  theme(legend.position = 'top',
+        legend.text = element_text(size = text_size * 2),
+        axis.title = element_text(size = text_size * 2),
+        plot.title = element_text(size = text_size * 2.3),
+        axis.text.x = element_text(size = text_size * 1.5)) +
+  geom_text(data = joined,
+            aes(x = ccaa,
+                y = value,
+                label = paste0(deaths, ' deaths\n(',
+                               round(value, digits = 1), ' per\n100,000)')),
+                # label = paste0(deaths, '\n(',
+                #                round(p, digits = 1), '%)')),
+            size = text_size * 0.25,
+            nudge_y = 0.35) +
+  ylim(0, 4)
+# ggsave('~/Desktop/spain.png')
+```
+
+
+
+## CCAAs, cases adjusted by population
+
+```{r, fig.height = 6.5, fig.width = 9}
+adj <- esp_df %>% filter(date == max(date))
+pop <- covid19::esp_pop
+joined <- left_join(adj, pop)
+# make vars
+joined <- joined %>%
+  mutate(cases_per_k = (cases / pop) * 100000,
+         deaths_per_k = (deaths / pop) * 100000)
+
+joined$value <- joined$cases_per_k
+joined <- joined %>% arrange(value)
+joined$p <- joined$value / sum(joined$value) * 100
+joined$ccaa <- factor(joined$ccaa, 
+                      levels = joined$ccaa)
+text_size <- 10
+ggplot(data = joined,
+       aes(x = ccaa,
+           y = value)) + 
+  geom_bar(stat = 'identity',
+           fill = 'black') +
+  theme_simple() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+  labs(x = '',
+       y = 'Cases',
+       title = 'COVID-19 cases in Spain',
+       subtitle = 'Data as of evening of Sunday, March 15',
+       caption = 'github.com/databrew/covid19 | joe@databrew.cc') +
+  theme(legend.position = 'top',
+        legend.text = element_text(size = text_size * 2),
+        axis.title = element_text(size = text_size * 2),
+        plot.title = element_text(size = text_size * 2.3),
+        axis.text.x = element_text(size = text_size * 1.5)) +
+  geom_text(data = joined,
+            aes(x = ccaa,
+                y = value,
+                label = paste0(cases, ' cases\n(',
+                               round(value, digits = 1), ' per\n100,000)')),
+                # label = paste0(deaths, '\n(',
+                #                round(p, digits = 1), '%)')),
+            size = text_size * 0.25,
+            nudge_y = 15) +
+  ylim(0, 120)
+# ggsave('~/Desktop/spain.png')
+```
+
+
+## Spain and Italy
+
+### National comparison
+
+Start date of 150 cases, cases, logarithmic scale
+
+```{r}
+plot_day_zero(countries = c('Spain', 'Italy'))
+```
+
+
+Start date of 150 cases, cases, linear scale
+
+```{r}
+plot_day_zero(countries = c('Spain', 'Italy'), ylog = F)
+```
+
+Start date of 50 deaths, deahs, logarithmic scale
+
+```{r}
+plot_day_zero(countries = c('Spain', 'Italy'), deaths = T, day0 = 50)
+```
+
+
+Start date of 150 cases, cases, linear scale
+
+```{r}
+plot_day_zero(countries = c('Spain', 'Italy'), deaths = T, day0  = 50, ylog = F)
+```
+
+
+
