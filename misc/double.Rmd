@@ -271,6 +271,40 @@ long <- joined %>%
   mutate(key = ifelse(key == 'Predicted', 'Predicted (based on current doubling time)', key))
 ```
 
+```{r, fig.height = 7}
+
+
+cols <- c('red', 'black')
+ggplot(data = long,
+       aes(x = days_since,
+           y = value,
+           lty = key,
+           color = key)) +
+  geom_line(data = long %>% filter(key != 'Deaths'),
+            size = 1.2, alpha = 0.8) +
+  geom_point(data = long %>% filter(key == 'Deaths')) +
+  geom_line(data = long %>% filter(key == 'Deaths'),
+            size = 0.8) +
+  facet_wrap(~paste0(country, '\n',
+                     '(doubling time: ', 
+                     round(doubling_time, digits = 1), ' days)'), scales = 'free') +
+  theme_simple() +
+  scale_linetype_manual(name ='',
+                        values = c(1,2)) +
+  scale_color_manual(name = '',
+                     values = cols) +
+  theme(legend.position = 'top') +
+  labs(x = 'Days since first day at >150 cumulative cases',
+       y = 'Deaths',
+       title = 'COVID-19 DEATHS: observed and predicted (assumes no change in doubling time)',
+       caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
+       subtitle = '(Doubling time calculated since first day at >5 cumulative deaths)') +
+    theme(strip.text = element_text(size = 13),
+          plot.title = element_text(size = 15))
+```
+
+
+
 
 Let's again overlay Italy.
 
@@ -316,37 +350,6 @@ ggplot(data = ol,
           plot.title = element_text(size = 15))
 ```
 
-```{r, fig.height = 7}
-
-
-cols <- c('red', 'black')
-ggplot(data = long,
-       aes(x = days_since,
-           y = value,
-           lty = key,
-           color = key)) +
-  geom_line(data = long %>% filter(key != 'Deaths'),
-            size = 1.2, alpha = 0.8) +
-  geom_point(data = long %>% filter(key == 'Deaths')) +
-  geom_line(data = long %>% filter(key == 'Deaths'),
-            size = 0.8) +
-  facet_wrap(~paste0(country, '\n',
-                     '(doubling time: ', 
-                     round(doubling_time, digits = 1), ' days)'), scales = 'free') +
-  theme_simple() +
-  scale_linetype_manual(name ='',
-                        values = c(1,2)) +
-  scale_color_manual(name = '',
-                     values = cols) +
-  theme(legend.position = 'top') +
-  labs(x = 'Days since first day at >150 cumulative cases',
-       y = 'Deaths',
-       title = 'COVID-19 DEATHS: observed and predicted (assumes no change in doubling time)',
-       caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
-       subtitle = '(Doubling time calculated since first day at >5 cumulative deaths)') +
-    theme(strip.text = element_text(size = 13),
-          plot.title = element_text(size = 15))
-```
 
 ## The importance of lag
 
