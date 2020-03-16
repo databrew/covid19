@@ -231,6 +231,21 @@ esp_df <- esp_df %>%
                                           confirmed_cases_non_cum))
 
 
+# Look into using France / Italy data too
+# https://code.montera34.com:4443/numeroteca/covid19
+ita <- read.delim("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv",sep = ",")  
+
+# Process data
+library(dplyr)
+ita$date <-  as.Date(ita$data)
+ita <- ita %>%
+  dplyr::select(ccaa = denominazione_regione,
+                date,
+                cases = totale_casi,
+                deaths = deceduti)
+usethis::use_data(ita, overwrite = T)
+
+
 
 library(readr)
 write_csv(esp, 'spain/ccaa.csv')

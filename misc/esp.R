@@ -5,6 +5,10 @@ library(dplyr)
 library(ggplot2)
 Sys.timezone()
 
+# Madrid vs Lombardy deaths
+pd <- esp
+
+
 date_vec <- (seq(as.Date('2020-03-02'),
                            Sys.Date(),
                            by = 2))
