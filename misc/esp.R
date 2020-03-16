@@ -65,7 +65,7 @@ ggplot(data = pd,
            color = ccaa)) +
   geom_line(size = 1.5) +
   theme_simple() +
-  # scale_y_log10() +
+  scale_y_log10() +
   scale_color_manual(name = '',
                      values = cols) +
   xlim(0, 15) +
