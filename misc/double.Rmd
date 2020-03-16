@@ -296,7 +296,7 @@ ggplot(data = long,
   theme(legend.position = 'top') +
   labs(x = 'Days since first day at >150 cumulative cases',
        y = 'Deaths',
-       title = 'COVID-19 DEATHS: observed and predicted (assumes no change in doubling time)',
+       title = 'COVID-19 DEATHS: ("predicted" assumes no change in doubling time)',
        caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
        subtitle = '(Doubling time calculated since first day at >5 cumulative deaths)') +
     theme(strip.text = element_text(size = 13),
@@ -308,7 +308,7 @@ ggplot(data = long,
 
 Let's again overlay Italy.
 
-```{r, fig.height = 9}
+```{r, fig.height = 7}
 # Overlay Italy
 ol1 <- joined %>% filter(!country %in% 'Italy')
 ol2 <- joined %>% filter(country == 'Italy') %>% dplyr::rename(Italy = deaths) %>%
