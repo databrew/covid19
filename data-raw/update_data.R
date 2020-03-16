@@ -1,8 +1,16 @@
 library(dplyr)
 library(readr)
 library(tidyr)
+library(readxl)
 
-# Consider replacing pipeline with: https://cowid.netlify.com/data/new_deaths.csv
+# Get world populationd data
+world_pop <- read_csv('unpop/API_SP.POP.TOTL_DS2_en_csv_v2_866861.csv',
+                      skip = 4)
+world_pop <- world_pop %>%
+  dplyr::select(country = `Country Name`,
+                iso = `Country Code`,
+                pop = `2018`)
+usethis::use_data(world_pop, overwrite = TRUE)
 
 # Datasets at https://github.com/CSSEGISandData/COVID-19
 if(!dir.exists('jhu')){
@@ -116,6 +124,13 @@ df_country <- df %>%
          deaths_non_cum = deaths - lag(deaths, default = 0),
          recovered_non_cum = recovered - lag(recovered, default = 0)) %>%
   ungroup
+
+# Get the iso code for each country
+countries <- sort(unique(df$country))
+country_codes <- tibble(country = countries)
+library(passport)
+country_codes$iso <- parse_country(x = countries, to = 'iso3c')
+df <- left_join(df, country_codes)
 
 
 usethis::use_data(df, overwrite = T)
@@ -319,12 +334,62 @@ ita <- ita %>%
 
 usethis::use_data(ita, overwrite = T)
 
-
+# Get Italian populations
+ita_pop <- tibble(
+  ccaa = c('Abruzzo',
+           'Basilicata',
+           'Calabria',
+           'Campania',
+           'Emilia Romagna',
+           'Friuli Venezia Giulia',
+           'Lazio',
+           'Liguria',
+           'Lombardia',
+           'Marche',
+           'Molise',
+           'P.A. Bolzano',
+           'P.A. Trento',
+           'Piemonte',
+           'Puglia',
+           'Sardegna',
+           'Sicilia',
+           'Toscana',
+           'Umbria',
+           'Valle d\'Aosta',
+'Veneto'),
+pop = c(
+  1315000,#'Abruzzo',
+  567118,#'Basilicata',
+  1957000,#'Calabria',
+  5827000,#'Campania',
+  4453000,#'Emilia Romagna',
+  1216000,#'Friuli Venezia Giulia',
+  5897000,#'Lazio',
+  1557000,#'Liguria',
+  10040000,#'Lombardia',
+  1532000,#'Marche',
+  308493,#'Molise',
+  520891,#'P.A. Bolzano',
+  538223,#'P.A. Trento',
+  4376000,#'Piemonte',
+  4048000,#'Puglia',
+  1648000,#'Sardegna',
+  5027000,#'Sicilia',
+  3737000,#'Toscana',
+  884640,#'Umbria',
+  126202,#'Valle d\'Aosta',
+  4905000#'Veneto'
+)
+)
+usethis::use_data(ita_pop, overwrite = T)
 
 library(readr)
 write_csv(esp_df, 'spain/ccaa_day.csv')
 write_csv(esp_df, 'isglobal/ccaa_day.csv')
 write_csv(esp_pop, 'isglobal/esp_pop.csv')
+write_csv(world_pop, 'isglobal/world_pop.csv')
+write_csv(ita_pop, 'isglobal/ita_pop.csv')
+
 write_csv(esp_uci, 'isglobal/esp_uci.csv')
 
 usethis::use_data(esp_df, overwrite = T)

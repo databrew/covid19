@@ -80,7 +80,7 @@ for(i in 1:length(countries)){
     # plot(pd$days_since, log(pd$cases))
     # abline(fit)
     ## Slope
-    # curve <- fit$coef[2]
+    curve <- fit$coef[2]
     
     # Predict days ahead
     fake <- tibble(days_since = seq(0, max(pd$days_since) + 5, by = 1))
@@ -90,12 +90,14 @@ for(i in 1:length(countries)){
     # Doubling time
     dt <- log(2)/fit$coef[2]
     out <- tibble(country = this_country,
-                  doubling_time = dt)
+                  doubling_time = dt,
+                  slope = curve)
     out_list[[counter]] <- out
     curve_list[[counter]] <- fake %>% mutate(country = this_country)
   }
 }
 done <- bind_rows(out_list)
+print(done)
 curves <- bind_rows(curve_list)
 # Get curves back in exponential form
 # curves$curve <- exp(curves$curve)
