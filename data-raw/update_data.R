@@ -243,6 +243,15 @@ ita <- ita %>%
                 date,
                 cases = totale_casi,
                 deaths = deceduti)
+# De-cumulate
+ita <- ita %>%
+  ungroup %>%
+  arrange(ccaa, date) %>%
+  group_by(ccaa) %>%
+  mutate(cases_non_cum = cases - lag(cases, default = 0),
+         deaths_non_cum = deaths - lag(deaths, default = 0)) %>%
+  ungroup
+
 usethis::use_data(ita, overwrite = T)
 
 

@@ -5,8 +5,83 @@ library(dplyr)
 library(ggplot2)
 Sys.timezone()
 
+
+# Latest in Spain
+pd <- esp_df %>%
+  filter(date == max(date)) %>%
+  mutate(p = deaths / sum(deaths) * 100)
+text_size <- 12
+
+# deaths
+ggplot(data = pd,
+       aes(x = ccaa,
+           y = deaths)) +
+  geom_bar(stat = 'identity',
+           fill = 'black') +
+  theme_simple() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+  labs(x = '',
+       y = 'Deaths | Muertes',
+       title = 'COVID-19 deaths in Spain',
+       subtitle = 'Data as of evening of Sunday, March 15',
+       caption = 'github.com/databrew/covid19 | joe@databrew.cc') +
+  theme(legend.position = 'top',
+        legend.text = element_text(size = text_size * 2),
+        axis.title = element_text(size = text_size * 2),
+        plot.title = element_text(size = text_size * 2.3),
+        axis.text.x = element_text(size = text_size * 1.5)) +
+  geom_text(data = pd %>% filter(deaths > 0),
+            aes(x = ccaa,
+                y = deaths,
+                label = paste0(deaths, '\n(',
+                               round(p, digits = 1), '%)')),
+            size = text_size * 0.3,
+            nudge_y = 15) +
+  ylim(0, 230)
+ggsave('~/Desktop/spain.png')
+
+
+
 # Madrid vs Lombardy deaths
-pd <- esp
+n_death_start <- 5
+text_size <- 12
+pd <- esp_df %>%
+  filter(ccaa == 'Madrid') %>%
+  dplyr::select(date, ccaa, cases, deaths) %>%
+  bind_rows(ita %>%
+              filter(ccaa == 'Lombardia') %>%
+              dplyr::select(date, ccaa, cases, deaths)) %>%
+  arrange(date) %>%
+  group_by(ccaa) %>%
+  mutate(first_n_death = min(date[deaths >= n_death_start])) %>%
+  ungroup %>%
+  mutate(days_since_n_deaths = date - first_n_death) 
+
+cols <- colorRampPalette(RColorBrewer::brewer.pal(n = 8, 'Spectral'))(length(unique(pd$ccaa)))
+cols <- c('black', 'red')
+ggplot(data = pd,
+       aes(x = days_since_n_deaths,
+           y = deaths,
+           color = ccaa)) +
+  geom_line(size = 1.5) +
+  theme_simple() +
+  # scale_y_log10() +
+  scale_color_manual(name = '',
+                     values = cols) +
+  xlim(0, 15) +
+  labs(x = paste0('DAYS\n(day 0 = first day with >', n_death_start, ' cumulative deaths)'),
+       y = 'CUMULATIVE DEATHS\n(logarithmic scale)',
+       title = 'COVID-19 deaths. Lombardy and Madrid',
+       subtitle = paste0('Time-adjusted for first day with >', n_death_start, ' cumulative deaths'),
+       caption = 'github.com/databrew/covid19 | joe@databrew.cc') +
+  theme(legend.position = 'top',
+        legend.text = element_text(size = text_size * 2),
+        axis.title = element_text(size = text_size * 2),
+        plot.title = element_text(size = text_size * 2.3))
+ggsave('~/Desktop/italy.png')
+
+
+plot_day_zero(countries = c('Italy', 'Spain'),ylog = T)
 
 
 date_vec <- (seq(as.Date('2020-03-02'),

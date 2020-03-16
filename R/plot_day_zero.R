@@ -165,6 +165,7 @@ prepare_day_zero_data_esp <-  function(ccaa = c('Cataluña', 'Madrid'),
 #' @param add_markets Whether to show lines / circle at outbreak start
 #' @param line_size Size of line
 #' @param max_date The maximum date
+#' @param calendar Whether to plot by calendar date
 #' @import dplyr
 #' @import ggplot2
 #' @import RColorBrewer
@@ -176,7 +177,8 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'France', 'US', 'Germa
                           time_before = 0,
                           add_markers = FALSE,
                           line_size = 1.5,
-                          max_date = Sys.Date()){
+                          max_date = Sys.Date(),
+                          calendar = FALSE){
   
   pd <- prepare_day_zero_data(countries = countries,
                               day0 = day0,
