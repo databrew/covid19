@@ -51,6 +51,8 @@ mobile_app_esp_ui <- function(request) {
                         step = 1),
             f7Toggle('deaths', 'Deaths instead of cases?',
                      checked = FALSE),
+            f7Toggle('pop', 'Adjust by population?',
+                     checked = FALSE),
             height = 300,
           )
         ),
@@ -153,7 +155,8 @@ mobile_app_esp_server <- function(input, output, session) {
                   cumulative = input$cumulative,
                   time_before = input$time_before,
                   line_size = input$line_size,
-                  add_markers = input$add_markers)
+                  add_markers = input$add_markers,
+                  pop = input$pop)
   })
 }
 

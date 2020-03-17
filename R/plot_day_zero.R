@@ -7,6 +7,7 @@
 #' @param time_before How many days before outbreak to show
 #' @param max_date The maximum date
 #' @param deaths Whether to use deaths instead of cases
+#' @param pop Adjust by population
 #' @import dplyr
 #' @export
 prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'France', 'US', 'Germany'),
@@ -14,7 +15,8 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'France', 'US
                                    cumulative = TRUE,
                                    time_before = 0,
                                    max_date = Sys.Date(),
-                                   deaths = FALSE){
+                                   deaths = FALSE,
+                                   pop = FALSE){
   
   
   
@@ -87,6 +89,13 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'France', 'US
       pd$value <- pd$confirmed_cases_non_cum
     }
   }
+  
+  # Adjust by population
+  if(pop){
+   pd <- pd %>%
+     left_join(world_pop) %>%
+     mutate(value = (value / pop) * 100000)
+  }
   return(pd)
 }
 
@@ -99,6 +108,7 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'France', 'US
 #' @param cumulative Whether to count cases cumulatively
 #' @param time_before How many days before outbreak to show
 #' @param max_date The maximum date
+#' @param pop Adjust by population
 #' @import dplyr
 #' @export
 prepare_day_zero_data_esp <-  function(ccaa = c('Cataluña', 'Madrid'),
@@ -106,7 +116,8 @@ prepare_day_zero_data_esp <-  function(ccaa = c('Cataluña', 'Madrid'),
                                    day0 = 150,
                                    cumulative = TRUE,
                                    time_before = 0,
-                                   max_date = Sys.Date()){
+                                   max_date = Sys.Date(),
+                                   pop = FALSE){
   
   
   if(time_before > 0){
@@ -180,6 +191,15 @@ prepare_day_zero_data_esp <-  function(ccaa = c('Cataluña', 'Madrid'),
       pd$value <- pd$confirmed_cases_non_cum
     }
   }
+  
+  # Adjust by population
+  if(pop){
+    pd <- pd %>%
+      left_join(esp_pop %>%
+                  dplyr::rename(country = ccaa)) %>%
+      mutate(value = (value / pop) * 100000)
+  }
+  
   return(pd)
 }
 
@@ -199,6 +219,7 @@ prepare_day_zero_data_esp <-  function(ccaa = c('Cataluña', 'Madrid'),
 #' @param max_date The maximum date
 #' @param calendar Whether to plot by calendar date
 #' @param deaths Whether to show deaths instead of cases
+#' @param pop Adjust by population
 #' @import dplyr
 #' @import ggplot2
 #' @import RColorBrewer
@@ -211,14 +232,16 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'France', 'US', 'Germa
                           add_markers = FALSE,
                           line_size = 1.5,
                           max_date = Sys.Date(),
-                          calendar = FALSE, deaths = FALSE){
+                          calendar = FALSE, deaths = FALSE,
+                          pop = FALSE){
   
   pd <- prepare_day_zero_data(countries = countries,
                               day0 = day0,
                               cumulative = cumulative,
                               time_before = time_before,
                               max_date = max_date,
-                              deaths = deaths)
+                              deaths = deaths,
+                              pop = pop)
   these_countries <- countries
   
  
@@ -242,6 +265,9 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'France', 'US', 'Germa
   
   selfy <- function(x){abs(x)}
   
+  # Define pop_text
+  pop_text <- ifelse(pop, ' per 100,000 population. ', '')
+  
   g <- ggplot(data = pd,
               aes(x = as.numeric(days_since_first_case),
                   y = value)) +
@@ -253,10 +279,11 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'France', 'US', 'Germa
     labs(x = paste0("Days since country's first day with ",
                     day0, " or more ", ifelse(deaths, 'deaths', 'cases')),
          y = paste0(ifelse(cumulative, "Cumulative n", "N"), 'umber of confirmed ', ifelse(deaths, 'deaths', 'cases'),
+                    pop_text,
                     ifelse(ylog, '\n(Logarithmic scale)', '')),
          title = paste0('COVID-19 ', ifelse(deaths, 'deaths', 'cases'), ' since country\'s\nfirst day with ',
                         day0, " or more ", ifelse(cumulative, "cumulative ", "daily "),  ifelse(deaths, 'deaths', 'cases')),
-         subtitle = paste0('Data as of ', max(df_country$date))) +
+         subtitle = paste0(pop_text, 'Data as of ', max(df_country$date))) +
     theme_simple() +
     scale_x_continuous(breaks = seq(-100, 100, 2)) +
     theme(plot.title = element_text(size = 14)) +
@@ -302,6 +329,7 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'France', 'US', 'Germa
 #' @param add_markets Whether to show lines / circle at outbreak start
 #' @param line_size Size of line
 #' @param max_date The maximum date
+#' @param pop Adjust for population
 #' @import dplyr
 #' @import ggplot2
 #' @import RColorBrewer
@@ -314,14 +342,16 @@ plot_day_zero_esp <- function(ccaa = c('Cataluña', 'Madrid'),
                           time_before = 0,
                           add_markers = FALSE,
                           line_size = 1.5,
-                          max_date = Sys.Date()){
+                          max_date = Sys.Date(),
+                          pop = FALSE){
   
   pd <- prepare_day_zero_data_esp(ccaa = ccaa,
                                   deaths = deaths,
                               day0 = day0,
                               cumulative = cumulative,
                               time_before = time_before,
-                              max_date = max_date)
+                              max_date = max_date,
+                              pop = pop)
   these_countries <- sort(unique(pd$country))
   
   
@@ -350,6 +380,10 @@ plot_day_zero_esp <- function(ccaa = c('Cataluña', 'Madrid'),
   
   selfy <- function(x){abs(x)}
   
+  
+  # Define pop_text
+  pop_text <- ifelse(pop, ' per 100,000 population. ', '')
+  
   g <- ggplot(data = pd,
               aes(x = as.numeric(days_since_first_case),
                   y = value)) +
@@ -362,12 +396,13 @@ plot_day_zero_esp <- function(ccaa = c('Cataluña', 'Madrid'),
                     day0, " or more ", ifelse(deaths, 'deaths', 'cases')),
          y = paste0(ifelse(cumulative, "Cumulative n", "N"), 'umber of confirmed ', 
                     ifelse(deaths, 'deaths', 'cases'),
+                    ' ', pop_text, 
                     ifelse(ylog, '\n(Logarithmic scale)', '')),
          title = paste0('COVID-19 cases since region\'s\nfirst day with ',
                         day0, " or more ", ifelse(cumulative, "cumulative ", "daily "),  ifelse(deaths,
                                                                                               ' deaths',
                                                                                               'cases')),
-         subtitle = paste0('Data as of ', max(esp_df$date))) +
+         subtitle = paste0(pop_text, 'Data as of ', max(esp_df$date))) +
     theme_simple() +
     scale_x_continuous(breaks = seq(-100, 100, 2)) +
     theme(plot.title = element_text(size = 14)) +

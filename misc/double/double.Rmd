@@ -202,6 +202,7 @@ ggplot(data = ol,
 
 In the above, what's striking is how many places have trajectories that are _worse_ than Italy's. Yes, Italy has more cases, but it's doubling time is less. Either that changes soon, or these other countries will soon have more cases than Italy.
 
+
 ## Deaths or cases?
 
 The number of cases is not necessarily the best indicator for the severity of an outbreak of this nature. Why? Because (a) testing rates and protocols are different by place and (b) testing rates are different by time (since health services are changing their approaches as things develop). In other words, when we compare the number of cases by place and time, we are introducing significant bias.
@@ -274,8 +275,6 @@ long <- joined %>%
 ```
 
 ```{r, fig.height = 7}
-
-
 cols <- c('red', 'black')
 ggplot(data = long,
        aes(x = days_since,
@@ -296,7 +295,7 @@ ggplot(data = long,
   scale_color_manual(name = '',
                      values = cols) +
   theme(legend.position = 'top') +
-  labs(x = 'Days since first day at >150 cumulative cases',
+  labs(x = 'Days since first day at >5 cumulative deaths',
        y = 'Deaths',
        title = 'COVID-19 DEATHS: ("predicted" assumes no change in doubling time)',
        caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
@@ -351,6 +350,61 @@ ggplot(data = ol,
     theme(strip.text = element_text(size = 13),
           plot.title = element_text(size = 15))
 ```
+
+
+
+
+Let's look just at Spain
+
+```{r, fig.height = 7}
+# Overlay Italy
+ol1 <- joined %>% filter(!country %in% 'Italy',
+                         country == 'Spain')
+ol2 <- joined %>% filter(country == 'Italy') %>% dplyr::rename(Italy = deaths) %>%
+  dplyr::select(Italy, days_since)
+ol <- left_join(ol1, ol2) %>%
+  dplyr::select(days_since, date, country, deaths, predicted, Italy,doubling_time)
+ol <- tidyr::gather(ol, key, value, deaths: Italy) %>%
+  mutate(key = Hmisc::capitalize(gsub('_', ' ', key))) %>%
+  mutate(key = ifelse(key == 'Predicted', 'Predicted (based on current doubling time)', 
+                      ifelse(key == 'Deaths', 'Spain', key)))
+
+cols <- c('blue',  'black', 'red')
+ggplot(data = ol,
+       aes(x = days_since,
+           y = value,
+           lty = key,
+           color = key)) +
+  geom_line(data = ol %>% filter(!key %in% c('Deaths', 'Italy')),
+            size = 1.2, alpha = 0.8) +
+    geom_line(data = ol %>% filter(key %in% c('Italy')),
+            size = 0.8, alpha = 0.8) +
+  # geom_point(data = ol %>% filter(key == 'Deaths')) +
+    geom_point(data = ol %>% filter(country == 'Spain',
+                                    key == 'Spain'), size = 4, alpha = 0.6) +
+
+  geom_line(data = ol %>% filter(key == 'Deaths'),
+            size = 0.8) +
+  # facet_wrap(~paste0(country, '\n',
+  #                    '(doubling time: ', 
+  #                    round(doubling_time, digits = 1), ' days)'), scales = 'free') +
+  theme_simple() +
+  scale_linetype_manual(name ='',
+                        values = c(1,6,1)) +
+  scale_color_manual(name = '',
+                     values = cols) +
+  scale_y_log10() +
+  theme(legend.position = 'top') +
+  labs(x = 'Days since first day at >5 deaths',
+       y = 'Deaths',
+       title = 'COVID-19 DEATHS: ("predicted" assumes no change in doubling time)',
+       caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
+       subtitle = '(Doubling time calculated since first day at >5 cumulative deaths)') +
+    theme(strip.text = element_text(size = 13),
+          plot.title = element_text(size = 15),
+          axis.title = element_text(size = 18))
+```
+
 
 
 ## The importance of lag
@@ -585,7 +639,7 @@ Same plot but overlayed
 Same as above, but overlaid
 
 ```{r, fig.height = 7}
-text_size <- 12
+text_size <-10
 
 # cols <- c('red', 'black')
 long <- long %>% filter(country %in% c('Lombardia',
@@ -603,12 +657,20 @@ cols[which(places == 'Emilia Romagna')] <- 'darkgreen'
 long$key <- ifelse(long$key != 'Deaths', 'Predicted', long$key)
 long$key <- ifelse(long$key == 'Predicted', 'Muertes\nprevistas',
                    'Muertes\nobservadas')
+
+
+# Keep only Madrid, Lombardy, Emilia Romagna
+long <- long %>%
+  filter(country %in% c('Madrid',
+                        'Lombardia',
+                        'Emilia Romagna'))
+
 ggplot(data = long,
        aes(x = days_since,
            y = value,
            lty = key,
            color = country)) +
-  geom_point(data = long %>% filter(key == 'Muertes\nprevistas'), size = 2, alpha = 0.8) +
+  geom_point(data = long %>% filter(key == 'Muertes\nobservadas'), size = 2, alpha = 0.8) +
   geom_line(data = long %>% filter(key == 'Muertes\nprevistas'), size = 1, alpha = 0.7) +
   geom_line(data = long %>% filter(key != 'Muertes\nprevistas'), size = 0.8) +
   theme_simple() +
@@ -627,10 +689,10 @@ ggplot(data = long,
        y = 'Muertes (escala logarítmica)',
        title = 'Muertes por COVID-19',
        caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
-       subtitle = '(Tasa de crecimiento / doubling time calculado desde el primer día a 5 o más muertes acumuladas)\n("Predicted": suponiendo que no hay cambios en la tasa de crecimiento)') +
+       subtitle = '(Tasa de crecimiento calculada desde el primer día a 5 o más muertes acumuladas)\n(Muertes "previstas": suponiendo que no hay cambios en la tasa de crecimiento)') +
     theme(strip.text = element_text(size = text_size * 0.75),
           plot.title = element_text(size = text_size * 3),
-          legend.text = element_text(size = text_size * 2),
+          legend.text = element_text(size = text_size * 1.5),
           axis.title = element_text(size = text_size * 2),
           axis.text = element_text(size = text_size * 2))
 ```
