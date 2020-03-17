@@ -80,6 +80,22 @@ plot_day_zero(countries = countries, day0 = 25, ylog = F)
 
 ### Cumulative deaths
 
+
+#### "Start date" of 50 deaths
+
+Logarithmic: 
+
+```{r}
+plot_day_zero(countries = countries, day0 = 50, deaths = T)
+```
+
+Linear: 
+
+```{r}
+plot_day_zero(countries = countries, day0 = 50, ylog = F, deaths = T)
+```
+
+
 #### "Start date" of 15 deaths
 
 Logarithmic: 
@@ -196,8 +212,7 @@ ggplot(data = joined,
                 # label = paste0(deaths, '\n(',
                 #                round(p, digits = 1), '%)')),
             size = text_size * 0.25,
-            nudge_y = 0.35) +
-  ylim(0, 4)
+            nudge_y = 0.35)
 # ggsave('~/Desktop/spain.png')
 ```
 
@@ -245,8 +260,7 @@ ggplot(data = joined,
                 # label = paste0(deaths, '\n(',
                 #                round(p, digits = 1), '%)')),
             size = text_size * 0.25,
-            nudge_y = 12) +
-  ylim(0, 120)
+            nudge_y = 12)
 # ggsave('~/Desktop/spain.png')
 ```
 
@@ -295,8 +309,7 @@ ggplot(data = joined,
                 # label = paste0(deaths, '\n(',
                 #                round(p, digits = 1), '%)')),
             size = text_size * 0.25,
-            nudge_y = 0.4) +
-  ylim(0, 5)
+            nudge_y = 0.4)
 # ggsave('~/Desktop/spain.png')
 ```
 

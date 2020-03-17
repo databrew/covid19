@@ -373,9 +373,6 @@ plot_day_zero_esp <- function(ccaa = c('Cataluña', 'Madrid'),
   if(length(these_countries) > 2){
     cols <- colorRampPalette(RColorBrewer::brewer.pal(n = 8,
                                                       name = 'Set1'))(length(these_countries))
-    if('Madrid' %in% these_countries){
-      cols[which(these_countries == 'Madrid')] <- 'red'
-    }
   }
   
   selfy <- function(x){abs(x)}
