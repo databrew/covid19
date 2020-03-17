@@ -82,16 +82,19 @@ df$confirmed_cases[df$country == 'Spain' & df$date == '2020-03-12'] <- 3050
 df$deaths[df$country == 'Spain' & df$date == '2020-03-12'] <- 84
 # df$recovered[df$country == 'Spain' & df$date == '2020-03-12']
 
-# # Add a Spain row for March 14 (updating manually)
-# if(length(df$confirmed_cases[df$country == 'Spain' & df$date == '2020-03-14']) == 0){
+df$confirmed_cases[df$country == 'Spain' & df$date == '2020-03-16'] <- 11178
+df$deaths[df$country == 'Spain' & df$date == '2020-03-16'] <- 491
+
+# # Add a Spain row for March 17 (updating manually)
+# if(length(df$confirmed_cases[df$country == 'Spain' & df$date == '2020-03-17']) == 0){
 #   new_row <- tibble(district = NA,
-#                     date = as.Date('2020-03-14'),
+#                     date = as.Date('2020-03-17'),
 #                     country = 'Spain',
 #                     lat = df$lat[df$country == 'Spain'][1],
 #                     lng = df$lng[df$country == 'Spain'][1],
-#                     confirmed_cases = 5753,
-#                     deaths = 136,
-#                     recovered = 517)
+#                     confirmed_cases = 11178,
+#                     deaths = 491,
+#                     recovered = NA) #?
 #   df <- df %>% bind_rows(new_row)
 # }
 
@@ -104,6 +107,8 @@ df <- df %>%
          deaths_non_cum = deaths - lag(deaths, default = 0),
          recovered_non_cum = recovered - lag(recovered, default = 0)) %>%
   ungroup
+
+
 
 
 # Join all together but by country
@@ -390,7 +395,7 @@ write_csv(esp_pop, 'isglobal/esp_pop.csv')
 write_csv(world_pop, 'isglobal/world_pop.csv')
 write_csv(ita_pop, 'isglobal/ita_pop.csv')
 
-write_csv(esp_uci, 'isglobal/esp_uci.csv')
+# write_csv(esp_uci, 'isglobal/esp_uci.csv')
 
 usethis::use_data(esp_df, overwrite = T)
 # Write a map

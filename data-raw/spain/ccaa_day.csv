@@ -15,7 +15,7 @@ date,ccaa,cases,deaths,uci,comment,value,confirmed_cases,confirmed_cases_non_cum
 2020-03-13,Andalucía,219,0,8,NA,219,219,104,0,4
 2020-03-14,Andalucía,304,2,NA,NA,304,304,85,2,NA
 2020-03-15,Andalucía,437,6,NA,NA,437,437,133,4,NA
-2020-03-16,Andalucía,554,7,11,Comunicado 13:00,554,554,117,1,NA
+2020-03-16,Andalucía,683,11,13,https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov-China/documentos/Actualizacion_47_COVID-19.pdf,683,683,246,5,NA
 2020-02-28,Aragón,1,0,NA,NA,1,1,1,0,NA
 2020-03-05,Aragón,1,0,1,NA,1,1,0,0,NA
 2020-03-07,Aragón,11,0,NA,NA,11,11,10,0,NA
@@ -27,7 +27,7 @@ date,ccaa,cases,deaths,uci,comment,value,confirmed_cases,confirmed_cases_non_cum
 2020-03-13,Aragón,80,7,3,NA,80,80,16,1,0
 2020-03-14,Aragón,121,7,NA,NA,121,121,41,0,NA
 2020-03-15,Aragón,147,7,NA,NA,147,147,26,0,NA
-2020-03-16,Aragón,174,11,7,Comunicado 13:00,174,174,27,4,NA
+2020-03-16,Aragón,207,12,9,https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov-China/documentos/Actualizacion_47_COVID-19.pdf,207,207,60,5,NA
 2020-03-01,Asturias,1,0,NA,NA,1,1,1,0,NA
 2020-03-02,Asturias,1,0,NA,NA,1,1,0,0,NA
 2020-03-03,Asturias,1,0,NA,NA,1,1,0,0,NA
@@ -42,7 +42,7 @@ date,ccaa,cases,deaths,uci,comment,value,confirmed_cases,confirmed_cases_non_cum
 2020-03-13,Asturias,73,1,2,NA,73,73,24,0,0
 2020-03-14,Asturias,101,1,NA,NA,101,101,28,0,NA
 2020-03-15,Asturias,137,1,NA,NA,137,137,36,0,NA
-2020-03-16,Asturias,177,1,3,Comunicado 13:00,177,177,40,0,NA
+2020-03-16,Asturias,193,1,5,https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov-China/documentos/Actualizacion_47_COVID-19.pdf,193,193,56,0,NA
 2020-02-28,Baleares,1,0,NA,NA,1,1,1,0,NA
 2020-03-01,Baleares,2,0,NA,NA,2,2,1,0,NA
 2020-03-02,Baleares,2,0,NA,NA,2,2,0,0,NA
@@ -58,7 +58,7 @@ date,ccaa,cases,deaths,uci,comment,value,confirmed_cases,confirmed_cases_non_cum
 2020-03-13,Baleares,30,1,2,NA,30,30,8,0,0
 2020-03-14,Baleares,44,1,NA,NA,44,44,14,0,NA
 2020-03-15,Baleares,55,1,NA,NA,55,55,11,0,NA
-2020-03-16,Baleares,73,1,4,Comunicado 13:00,73,73,18,0,NA
+2020-03-16,Baleares,92,1,4,https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov-China/documentos/Actualizacion_47_COVID-19.pdf,92,92,37,0,NA
 2020-02-27,C. Valenciana,2,0,NA,NA,2,2,2,0,NA
 2020-02-28,C. Valenciana,9,0,NA,NA,9,9,7,0,NA
 2020-03-01,C. Valenciana,15,0,NA,NA,15,15,6,0,NA
@@ -75,7 +75,7 @@ date,ccaa,cases,deaths,uci,comment,value,confirmed_cases,confirmed_cases_non_cum
 2020-03-13,C. Valenciana,94,1,2,NA,94,94,0,0,0
 2020-03-14,C. Valenciana,192,4,NA,NA,192,192,98,3,NA
 2020-03-15,C. Valenciana,409,5,NA,NA,409,409,217,1,NA
-2020-03-16,C. Valenciana,409,5,4,Comunicado 13:00,409,409,0,0,NA
+2020-03-16,C. Valenciana,541,13,27,https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov-China/documentos/Actualizacion_47_COVID-19.pdf,541,541,132,8,NA
 2020-02-27,Canarias,5,0,NA,NA,5,5,5,0,NA
 2020-02-28,Canarias,6,0,NA,NA,6,6,1,0,NA
 2020-03-01,Canarias,7,0,NA,NA,7,7,1,0,NA
@@ -92,7 +92,7 @@ date,ccaa,cases,deaths,uci,comment,value,confirmed_cases,confirmed_cases_non_cum
 2020-03-13,Canarias,70,0,2,NA,70,70,19,0,-1
 2020-03-14,Canarias,90,1,NA,NA,90,90,20,1,NA
 2020-03-15,Canarias,109,1,NA,NA,109,109,19,0,NA
-2020-03-16,Canarias,119,1,9,Comunicado 13:00,119,119,10,0,NA
+2020-03-16,Canarias,148,2,13,https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov-China/documentos/Actualizacion_47_COVID-19.pdf,148,148,39,1,NA
 2020-03-01,Cantabria,1,0,NA,NA,1,1,1,0,NA
 2020-03-02,Cantabria,10,0,NA,NA,10,10,9,0,NA
 2020-03-03,Cantabria,10,0,NA,NA,10,10,0,0,NA
@@ -107,7 +107,7 @@ date,ccaa,cases,deaths,uci,comment,value,confirmed_cases,confirmed_cases_non_cum
 2020-03-13,Cantabria,29,0,0,NA,29,29,13,0,0
 2020-03-14,Cantabria,31,0,NA,NA,31,31,2,0,NA
 2020-03-15,Cantabria,51,0,NA,NA,51,51,20,0,NA
-2020-03-16,Cantabria,58,0,2,Comunicado 13:00,58,58,7,0,NA
+2020-03-16,Cantabria,58,0,2,https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov-China/documentos/Actualizacion_47_COVID-19.pdf,58,58,7,0,NA
 2020-02-27,Cataluña,2,0,NA,NA,2,2,2,0,NA
 2020-02-28,Cataluña,3,0,NA,NA,3,3,1,0,NA
 2020-03-01,Cataluña,6,0,NA,NA,6,6,3,0,NA
@@ -124,7 +124,7 @@ date,ccaa,cases,deaths,uci,comment,value,confirmed_cases,confirmed_cases_non_cum
 2020-03-13,Cataluña,316,4,25,NA,316,316,56,0,25
 2020-03-14,Cataluña,715,6,NA,NA,715,715,399,2,NA
 2020-03-15,Cataluña,903,8,NA,NA,903,903,188,2,NA
-2020-03-16,Cataluña,903,12,33,Comunicado 13:00,903,903,0,4,NA
+2020-03-16,Cataluña,1394,18,33,https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov-China/documentos/Actualizacion_47_COVID-19.pdf,1394,1394,491,10,NA
 2020-03-01,CLM,1,0,NA,NA,1,1,1,0,NA
 2020-03-02,CLM,3,0,NA,NA,3,3,2,0,NA
 2020-03-03,CLM,3,0,NA,NA,3,3,0,0,NA
@@ -139,7 +139,7 @@ date,ccaa,cases,deaths,uci,comment,value,confirmed_cases,confirmed_cases_non_cum
 2020-03-13,CLM,194,5,10,NA,194,194,79,4,1
 2020-03-14,CLM,289,6,NA,NA,289,289,95,1,NA
 2020-03-15,CLM,401,10,NA,NA,401,401,112,4,NA
-2020-03-16,CLM,567,17,23,Comunicado 13:00,567,567,166,7,NA
+2020-03-16,CLM,567,17,23,https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov-China/documentos/Actualizacion_47_COVID-19.pdf,567,567,166,7,NA
 2020-02-28,CyL,2,0,NA,NA,2,2,2,0,NA
 2020-03-01,CyL,3,0,NA,NA,3,3,1,0,NA
 2020-03-02,CyL,3,0,NA,NA,3,3,0,0,NA
@@ -155,7 +155,7 @@ date,ccaa,cases,deaths,uci,comment,value,confirmed_cases,confirmed_cases_non_cum
 2020-03-13,CyL,169,1,8,NA,169,169,77,1,4
 2020-03-14,CyL,223,3,NA,NA,223,223,54,2,NA
 2020-03-15,CyL,292,6,NA,NA,292,292,69,3,NA
-2020-03-16,CyL,334,9,24,Comunicado 13:00,334,334,42,3,NA
+2020-03-16,CyL,431,12,24,https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov-China/documentos/Actualizacion_47_COVID-19.pdf,431,431,139,6,NA
 2020-03-01,Extremadura,4,0,NA,NA,4,4,4,0,NA
 2020-03-02,Extremadura,6,0,NA,NA,6,6,2,0,NA
 2020-03-03,Extremadura,6,0,NA,NA,6,6,0,0,NA
@@ -170,7 +170,7 @@ date,ccaa,cases,deaths,uci,comment,value,confirmed_cases,confirmed_cases_non_cum
 2020-03-13,Extremadura,39,1,1,NA,39,39,20,0,0
 2020-03-14,Extremadura,66,2,NA,NA,66,66,27,1,NA
 2020-03-15,Extremadura,95,2,NA,NA,95,95,29,0,NA
-2020-03-16,Extremadura,111,2,1,Comunicado 13:00,111,111,16,0,NA
+2020-03-16,Extremadura,153,3,2,https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov-China/documentos/Actualizacion_47_COVID-19.pdf,153,153,58,1,NA
 2020-03-05,Galicia,1,0,0,NA,1,1,1,0,0
 2020-03-07,Galicia,3,0,NA,NA,3,3,2,0,NA
 2020-03-08,Galicia,5,0,NA,NA,5,5,2,0,NA
@@ -181,7 +181,7 @@ date,ccaa,cases,deaths,uci,comment,value,confirmed_cases,confirmed_cases_non_cum
 2020-03-13,Galicia,85,0,2,NA,85,85,50,0,0
 2020-03-14,Galicia,136,0,NA,NA,136,136,51,0,NA
 2020-03-15,Galicia,195,2,NA,NA,195,195,59,2,NA
-2020-03-16,Galicia,245,2,9,Comunicado 13:00,245,245,50,0,NA
+2020-03-16,Galicia,292,3,9,https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov-China/documentos/Actualizacion_47_COVID-19.pdf,292,292,97,1,NA
 2020-03-02,La Rioja,1,0,NA,NA,1,1,1,0,NA
 2020-03-03,La Rioja,1,0,NA,NA,1,1,0,0,NA
 2020-03-04,La Rioja,3,0,0,NA,3,3,2,0,NA
@@ -195,7 +195,7 @@ date,ccaa,cases,deaths,uci,comment,value,confirmed_cases,confirmed_cases_non_cum
 2020-03-13,La Rioja,259,2,2,NA,259,259,39,0,1
 2020-03-14,La Rioja,278,3,NA,NA,278,278,19,1,NA
 2020-03-15,La Rioja,300,3,NA,NA,300,300,22,0,NA
-2020-03-16,La Rioja,312,4,13,Comunicado 13:00,312,312,12,1,NA
+2020-03-16,La Rioja,355,5,13,https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov-China/documentos/Actualizacion_47_COVID-19.pdf,355,355,55,2,NA
 2020-02-27,Madrid,2,0,NA,NA,2,2,2,0,NA
 2020-02-28,Madrid,5,0,NA,NA,5,5,3,0,NA
 2020-03-01,Madrid,10,0,NA,NA,10,10,5,0,NA
@@ -212,11 +212,11 @@ date,ccaa,cases,deaths,uci,comment,value,confirmed_cases,confirmed_cases_non_cum
 2020-03-13,Madrid,1990,81,180,NA,1990,1990,602,25,45
 2020-03-14,Madrid,2940,86,NA,NA,2940,2940,950,5,NA
 2020-03-15,Madrid,3544,213,NA,NA,3544,3544,604,127,NA
-2020-03-16,Madrid,4165,213,253,Comunicado 13:00,4165,4165,621,0,NA
+2020-03-16,Madrid,4871,355,340,https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov-China/documentos/Actualizacion_47_COVID-19.pdf,4871,4871,1327,142,NA
 2020-03-13,Melilla,2,0,0,NA,2,2,2,0,0
 2020-03-14,Melilla,3,0,NA,NA,3,3,1,0,NA
 2020-03-15,Melilla,8,0,NA,NA,8,8,5,0,NA
-2020-03-16,Melilla,8,0,0,Comunicado 13:00,8,8,0,0,NA
+2020-03-16,Melilla,17,0,0,https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov-China/documentos/Actualizacion_47_COVID-19.pdf,17,17,9,0,NA
 2020-03-08,Murcia,1,0,NA,NA,1,1,1,0,NA
 2020-03-09,Murcia,4,0,0,NA,4,4,3,0,NA
 2020-03-10,Murcia,9,0,0,NA,9,9,5,0,0
@@ -225,7 +225,7 @@ date,ccaa,cases,deaths,uci,comment,value,confirmed_cases,confirmed_cases_non_cum
 2020-03-13,Murcia,35,0,1,NA,35,35,9,0,0
 2020-03-14,Murcia,51,0,NA,NA,51,51,16,0,NA
 2020-03-15,Murcia,78,0,NA,NA,78,78,27,0,NA
-2020-03-16,Murcia,77,0,2,Comunicado 13:00,77,77,0,0,NA
+2020-03-16,Murcia,97,0,3,https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov-China/documentos/Actualizacion_47_COVID-19.pdf,97,97,19,0,NA
 2020-03-01,Navarra,1,0,NA,NA,1,1,1,0,NA
 2020-03-02,Navarra,1,0,NA,NA,1,1,0,0,NA
 2020-03-03,Navarra,1,0,NA,NA,1,1,0,0,NA
@@ -240,7 +240,7 @@ date,ccaa,cases,deaths,uci,comment,value,confirmed_cases,confirmed_cases_non_cum
 2020-03-13,Navarra,130,0,4,NA,130,130,38,0,1
 2020-03-14,Navarra,146,0,NA,NA,146,146,16,0,NA
 2020-03-15,Navarra,196,0,NA,NA,196,196,50,0,NA
-2020-03-16,Navarra,274,1,5,Comunicado 13:00,274,274,78,1,NA
+2020-03-16,Navarra,313,2,10,https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov-China/documentos/Actualizacion_47_COVID-19.pdf,313,313,117,2,NA
 2020-03-01,País Vasco,3,0,NA,NA,3,3,3,0,NA
 2020-03-02,País Vasco,9,0,NA,NA,9,9,6,0,NA
 2020-03-03,País Vasco,13,0,NA,NA,13,13,4,0,NA
@@ -255,4 +255,4 @@ date,ccaa,cases,deaths,uci,comment,value,confirmed_cases,confirmed_cases_non_cum
 2020-03-13,País Vasco,417,14,20,NA,417,417,71,3,2
 2020-03-14,País Vasco,521,14,NA,NA,521,521,104,0,NA
 2020-03-15,País Vasco,630,23,NA,NA,630,630,109,9,NA
-2020-03-16,País Vasco,630,23,29,Comunicado 13:00,630,630,0,0,NA
+2020-03-16,País Vasco,765,36,33,https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov-China/documentos/Actualizacion_47_COVID-19.pdf,765,765,135,13,NA

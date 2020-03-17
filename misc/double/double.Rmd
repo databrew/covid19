@@ -214,7 +214,7 @@ Still, there's an argument that death rates have _less_ bias than case rates bec
 ```{r}
 # Doubling time
 n_deaths_start = 5
-countries = c('Italy', 'Spain', 'France', 'Italy', 'Switzerland', 'Denmark', 'US', 'United Kingdom', 'Norway')
+countries = c('Italy', 'Spain', 'France', 'Italy', 'Switzerland', 'Denmark', 'US', 'United Kingdom', 'Norway', 'Germany')
 # countries <- sort(unique(df_country$country))
 out_list <- curve_list <-  list()
 counter <- 0
@@ -276,15 +276,16 @@ long <- joined %>%
 
 ```{r, fig.height = 7}
 cols <- c('red', 'black')
-ggplot(data = long,
+sub_data <-  long %>% filter(country != 'US')
+ggplot(data = sub_data,
        aes(x = days_since,
            y = value,
            lty = key,
            color = key)) +
-  geom_line(data = long %>% filter(key != 'Deaths'),
+  geom_line(data = sub_data %>% filter(key != 'Deaths'),
             size = 1.2, alpha = 0.8) +
-  geom_point(data = long %>% filter(key == 'Deaths')) +
-  geom_line(data = long %>% filter(key == 'Deaths'),
+  geom_point(data = sub_data %>% filter(key == 'Deaths')) +
+  geom_line(data = sub_data %>% filter(key == 'Deaths'),
             size = 0.8) +
   facet_wrap(~paste0(country, '\n',
                      '(doubling time: ', 
@@ -321,17 +322,21 @@ ol <- tidyr::gather(ol, key, value, deaths: Italy) %>%
   mutate(key = ifelse(key == 'Predicted', 'Predicted (based on current doubling time)', key))
 
 cols <- c('red', 'blue', 'black')
-ggplot(data = ol,
+sub_data <- ol %>% 
+  filter(!(key == 'Predicted (based on current doubling time)' &
+             country == 'Spain' &
+             days_since > 13))
+ggplot(data = sub_data,
        aes(x = days_since,
            y = value,
            lty = key,
            color = key)) +
-  geom_line(data = ol %>% filter(!key %in% c('Deaths', 'Italy')),
+  geom_line(data = sub_data %>% filter(!key %in% c('Deaths', 'Italy')),
             size = 1.2, alpha = 0.8) +
-    geom_line(data = ol %>% filter(key %in% c('Italy')),
+    geom_line(data = sub_data %>% filter(key %in% c('Italy')),
             size = 0.8, alpha = 0.8) +
-  geom_point(data = ol %>% filter(key == 'Deaths')) +
-  geom_line(data = ol %>% filter(key == 'Deaths'),
+  geom_point(data = sub_data %>% filter(key == 'Deaths')) +
+  geom_line(data = sub_data %>% filter(key == 'Deaths'),
             size = 0.8) +
   facet_wrap(~paste0(country, '\n',
                      '(doubling time: ', 
@@ -341,14 +346,15 @@ ggplot(data = ol,
                         values = c(1,6,2)) +
   scale_color_manual(name = '',
                      values = cols) +
+  scale_y_log10() +
   theme(legend.position = 'top') +
   labs(x = 'Days since first day at >5 deaths',
        y = 'Deaths',
        title = 'COVID-19 DEATHS: ("predicted" assumes no change in doubling time)',
        caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
-       subtitle = '(Doubling time calculated since first day at >150 cumulative cases)') +
+       subtitle = '(Doubling time calculated since first day at >5 cumulative deaths)') +
     theme(strip.text = element_text(size = 13),
-          plot.title = element_text(size = 15))
+          plot.title = element_text(size = 15)) 
 ```
 
 
