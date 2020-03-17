@@ -125,6 +125,8 @@ The below chart shows the trajectories in terms of number of cases in Europe in 
 
 
 ```{r, fig.height = 9}
+
+
 cols <- c('red', 'black')
 ggplot(data = long,
        aes(x = days_since,
