@@ -29,10 +29,10 @@ pd <- df %>%
 
 
 cols <- colorRampPalette(brewer.pal(n = 8, 'Set1'))(length(unique(pd$country)))
-cols[4] <- adjustcolor('grey', alpha.f = 0.6)
+cols[4] <- adjustcolor('black', alpha.f = 0.4)
 
 
-
+# CHINA CASES
 ggplot() +
   theme_simple() +
   geom_line(data = pd,
@@ -44,12 +44,12 @@ ggplot() +
   scale_y_log10() +
   scale_color_manual(name = '',
                      values = cols) +
-  labs(x = 'Days since first case in country/province',
+  labs(x = 'Days since first 150 cases in country/province',
        y = 'Cumulative cases (log scale)',
-       title = 'COVID-19: Western countries vs. (non-Hubei) Chinese provinces',
+       title = 'CASES: Western countries vs. (non-Hubei) Chinese provinces',
        subtitle = '"DAY 0": First day with > 150 cases. Grey lines: Chinese provinces',
        caption = 'Data from: https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data\nChart by Joe Brew, @joethebrew, www.databrew.cc') +
-  xlim(-5, 20) +
+  xlim(-2, 20) +
   geom_hline(yintercept = day0, lty = 2, alpha = 0.7) +
   geom_vline(xintercept = 0, lty = 2, alpha = 0.7) +
   geom_point(data = tibble(days_since_first_case = 0,
@@ -59,6 +59,64 @@ ggplot() +
              color = 'red', 
              pch = 1,
              size = 20) 
+ggsave('~/a.png')
+
+# CHINA DEATHS
+day0 = 5
+time_before = -5
+pd <- df %>%
+  filter(country %in% c('China',
+                        'Italy',
+                        'Spain',
+                        'Germany',
+                        'France',
+                        'US', 
+                        'Switzerland')) %>%
+  filter(!district %in% 'Hubei') %>%
+  mutate(district = ifelse(country == 'China', district, country)) %>%
+  group_by(date, district, country) %>%
+  summarise(deaths = sum(deaths)) %>%
+  mutate(day = date) %>%
+  mutate(country = ifelse(country == 'China', 'Provinces of China', country)) %>%
+  ungroup %>%
+  group_by(district) %>%
+  mutate(first_death = min(date[deaths >= day0])) %>%
+  ungroup %>%
+  mutate(days_since_first_death = date - first_death) %>%
+  filter(days_since_first_death >= time_before)
+
+ggplot() +
+  theme_simple() +
+  geom_line(data = pd,
+            aes(x = days_since_first_death,
+                y = deaths,
+                color = country,
+                group = district),
+            lwd = 1) +
+  scale_y_log10() +
+  scale_color_manual(name = '',
+                     values = cols) +
+  labs(x = 'Days since first 5 deaths in country/province',
+       y = 'Cumulative deaths (log scale)',
+       title = 'DEATHS: Western countries vs. (non-Hubei) Chinese provinces',
+       subtitle = '"DAY 0": First day with > 5 deaths Grey lines: Chinese provinces',
+       caption = 'Data from: https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data\nChart by Joe Brew, @joethebrew, www.databrew.cc') +
+  xlim(-2, 20) +
+  geom_hline(yintercept = day0, lty = 2, alpha = 0.7) +
+  geom_vline(xintercept = 0, lty = 2, alpha = 0.7) +
+  geom_point(data = tibble(days_since_first_case = 0,
+                           confirmed_cases = day0),
+             aes(x = days_since_first_case,
+                 y = confirmed_cases),
+             color = 'red', 
+             pch = 1,
+             size = 20) 
+ggsave('~/b.png')
+
+
+
+
+
 ggsave('../data-raw/isglobal/img/china_comparison.png')
 ggsave('../data-raw/isglobal/img/china_comparison.jpg')
 ggsave('../data-raw/isglobal/img/china_comparison.pdf')

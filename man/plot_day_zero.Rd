@@ -14,7 +14,8 @@ plot_day_zero(
   line_size = 1.5,
   max_date = Sys.Date(),
   calendar = FALSE,
-  deaths = FALSE
+  deaths = FALSE,
+  pop = FALSE
 )
 }
 \arguments{
@@ -35,6 +36,8 @@ plot_day_zero(
 \item{calendar}{Whether to plot by calendar date}
 
 \item{deaths}{Whether to show deaths instead of cases}
+
+\item{pop}{Adjust by population}
 
 \item{add_markets}{Whether to show lines / circle at outbreak start}
 }

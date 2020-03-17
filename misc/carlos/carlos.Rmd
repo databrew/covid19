@@ -331,4 +331,41 @@ plot_day_zero(countries = c('Spain', 'Italy'), deaths = T, day0  = 50, ylog = F)
 ```
 
 
+#### Spain
+
+Ratio of deaths to cases
+
+```{r}
+pd <- esp_df %>%
+  filter(date == '2020-03-15') %>%
+  dplyr::select(ccaa, deaths, cases) %>%
+  mutate(deaths_per_case = deaths / cases * 1000)
+text_size = 10
+ggplot(data = pd,
+       aes(x = ccaa,
+           y = deaths_per_case)) +
+    geom_bar(stat = 'identity',
+           fill = 'black') +
+  theme_simple() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+  labs(x = '',
+       y = 'Deaths per 1.000 confirmed cases',
+       title = 'COVID-19: deaths per 1.000 cases',
+       # subtitle = 'Data as of evening of Sunday, March 15',
+       caption = 'github.com/databrew/covid19 | joe@databrew.cc') +
+  theme(legend.position = 'top',
+        legend.text = element_text(size = text_size * 2),
+        axis.title = element_text(size = text_size * 2),
+        plot.title = element_text(size = text_size * 2.3),
+        axis.text.x = element_text(size = text_size * 1.5)) +
+  geom_text(data = pd,
+            aes(x = ccaa,
+                y = deaths_per_case,
+                label = paste0(deaths, ' deaths\n(', round(deaths_per_case, digits = 1), 
+                                ' per\n1.000)')),
+                # label = paste0(deaths, '\n(',
+                #                round(p, digits = 1), '%)')),
+            size = text_size * 0.35,
+            nudge_y = 5)
+```
 

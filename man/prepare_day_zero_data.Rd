@@ -10,7 +10,8 @@ prepare_day_zero_data(
   cumulative = TRUE,
   time_before = 0,
   max_date = Sys.Date(),
-  deaths = FALSE
+  deaths = FALSE,
+  pop = FALSE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ prepare_day_zero_data(
 \item{max_date}{The maximum date}
 
 \item{deaths}{Whether to use deaths instead of cases}
+
+\item{pop}{Adjust by population}
 }
 \description{
 Generate a plot with time adjusted for the day at which the outbreak is considered to have started

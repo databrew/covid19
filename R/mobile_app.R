@@ -156,7 +156,7 @@ mobile_app_server <- function(input, output, session) {
                   line_size = input$line_size,
                   add_markers = input$add_markers,
                   deaths = input$deaths,
-                  input$pop)
+                  pop = input$pop)
   })
 }
 

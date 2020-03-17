@@ -10,7 +10,8 @@ prepare_day_zero_data_esp(
   day0 = 150,
   cumulative = TRUE,
   time_before = 0,
-  max_date = Sys.Date()
+  max_date = Sys.Date(),
+  pop = FALSE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ prepare_day_zero_data_esp(
 \item{time_before}{How many days before outbreak to show}
 
 \item{max_date}{The maximum date}
+
+\item{pop}{Adjust by population}
 }
 \description{
 Generate a plot with time adjusted for the day at which the outbreak is considered to have started

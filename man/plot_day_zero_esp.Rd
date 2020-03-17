@@ -13,7 +13,8 @@ plot_day_zero_esp(
   time_before = 0,
   add_markers = FALSE,
   line_size = 1.5,
-  max_date = Sys.Date()
+  max_date = Sys.Date(),
+  pop = FALSE
 )
 }
 \arguments{
@@ -32,6 +33,8 @@ plot_day_zero_esp(
 \item{line_size}{Size of line}
 
 \item{max_date}{The maximum date}
+
+\item{pop}{Adjust for population}
 
 \item{add_markets}{Whether to show lines / circle at outbreak start}
 }
