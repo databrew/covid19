@@ -125,6 +125,168 @@ Linear:
 plot_day_zero(countries = countries, day0 = 5, ylog = F, deaths = T)
 ```
 
+## Only Spain
+
+### Cumulative cases by population
+
+```{r}
+pd <- df %>% filter(country == 'Spain')
+pd <- pd %>% left_join(world_pop)
+pd$value <- pd$confirmed_cases / pd$pop * 100000
+pd <- pd %>% filter(value > 0)
+
+ggplot(data = pd,
+       aes(x = date,
+           y = value)) +
+  theme_simple() +
+  geom_line() +
+  geom_point() +
+  labs(x = '',
+       y = '',
+       title = 'Spain: Confirmed COVID-19 cases per 100,000 population',
+       subtitle = paste0('Data as of ', max(pd$date))) +
+  theme(axis.title = element_blank(),
+        axis.text = element_text(size = 20)) +
+  geom_text(data = pd %>% filter(date == max(date)),
+            aes(x = date - 2,
+                y = value,
+                label = round(value, digits = 1)),
+            alpha = 0.7)
+```
+
+
+
+### Cumulative deaths by population
+
+```{r}
+pd <- df %>% filter(country == 'Spain')
+pd <- pd %>% left_join(world_pop)
+pd$value <- pd$deaths / pd$pop * 100000
+pd <- pd %>% filter(value > 0)
+
+ggplot(data = pd,
+       aes(x = date,
+           y = value)) +
+  theme_simple() +
+  geom_line() +
+  geom_point() +
+  labs(x = '',
+       y = '',
+       title = 'Spain: Confirmed COVID-19 cases per 100,000 population',
+       subtitle = paste0('Data as of ', max(pd$date))) +
+  theme(axis.title = element_blank(),
+        axis.text = element_text(size = 20)) +
+  geom_text(data = pd %>% filter(date == max(date)),
+            aes(x = date - 1,
+                y = value,
+                label = round(value, digits = 1)),
+            alpha = 0.7)
+```
+
+
+### Cumulative deaths by population comparison with Italy
+
+```{r}
+pd <- df %>% filter(country %in% c('Spain', 'Italy'))
+pd <- pd %>% left_join(world_pop)
+pd$value <- pd$deaths / pd$pop * 100000
+pd <- pd %>% filter(value > 0)
+
+cols <- (c('black', 'red'))
+
+ggplot(data = pd,
+       aes(x = date,
+           y = value)) +
+  theme_simple() +
+  geom_line(aes(color = country)) +
+  scale_y_log10() +
+  geom_point(aes(color = country)) +
+  labs(x = '',
+       y = '',
+       title = 'Spain: COVID-19 deaths per 100,000 population',
+       subtitle = paste0('Data as of ', max(pd$date))) +
+  theme(axis.title = element_blank(),
+        axis.text = element_text(size = 20)) +
+  geom_text(data = pd %>% filter(date == max(date)),
+            aes(x = date - 1,
+                y = value,
+                label = round(value, digits = 1)),
+            alpha = 0.7) +
+  scale_color_manual(name = '',
+                     values = cols)
+```
+
+
+
+### Cumulative deaths NOT by population comparison with Italy
+
+```{r}
+pd <- df %>% filter(country %in% c('Spain', 'Italy'))
+pd$value <- pd$deaths
+pd <- pd %>% filter(value > 0)
+
+cols <- (c('black', 'red'))
+
+ggplot(data = pd,
+       aes(x = date,
+           y = value)) +
+  theme_simple() +
+  geom_line(aes(color = country)) +
+  scale_y_log10() +
+  geom_point(aes(color = country)) +
+  labs(x = '',
+       y = '',
+       title = 'Spain: COVID-19 deaths',
+       subtitle = paste0('Data as of ', max(pd$date))) +
+  theme(axis.title = element_blank(),
+        axis.text = element_text(size = 20)) +
+  geom_text(data = pd %>% filter(date == max(date)),
+            aes(x = date - 1,
+                y = value,
+                label = round(value, digits = 1)),
+            alpha = 0.7) +
+  scale_color_manual(name = '',
+                     values = cols)
+```
+
+### Cumulative deaths by population comparison with Europe
+
+```{r}
+the_countries <- sort(unique(c('Spain', 'Italy', 'France', 'Germany', 'Switzerland',
+                                   'Denmark', 'Netherlands', 'Norway', 'Sweden')))
+pd <- df %>% filter(country %in% the_countries)
+pd <- pd %>% left_join(world_pop)
+pd$value <- pd$deaths / pd$pop * 100000
+pd <- pd %>% filter(value > 0)
+
+# cols <- rev(c('black', 'red'))
+cols <- colorRampPalette(RColorBrewer::brewer.pal(n = 8, 'Set1'))(length(unique(pd$country)))
+
+ggplot(data = pd,
+       aes(x = date,
+           y = value)) +
+  theme_simple() +
+  geom_line(aes(color = country), size = 2) +
+  geom_point(aes(color = country)) +
+  labs(x = '',
+       y = '',
+       title = 'Spain: Confirmed COVID-19 deaths per 100,000 population',
+       subtitle = paste0('Data as of ', max(pd$date))) +
+  theme(axis.title = element_blank(),
+        axis.text = element_text(size = 20)) +
+  geom_text(data = pd %>% filter(date == max(date)),
+            aes(x = date +3,
+                color = country,
+                y = value,
+                label =paste0(country, ": ",  round(value, digits = 2))),
+            alpha = 0.9) +
+  scale_color_manual(name = '',
+                     values = cols) +
+  scale_y_log10() +
+  theme(legend.position = 'none') +
+  xlim(min(pd$date),
+       max(pd$date) +5)
+```
 
 
 ## Spain's CCAAs
