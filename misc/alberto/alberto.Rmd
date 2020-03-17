@@ -160,7 +160,7 @@ g4
 ```
 
 ```{r, fig.height = 9, fig.width = 12}
-small_text_size = 10
+small_text_size = 9
 Rmisc::multiplot(g1 + theme(axis.title = element_text(size = small_text_size),
         axis.text = element_text(size = small_text_size), plot.title = element_text(size = small_text_size * 1.4)), 
         g2  + theme(axis.title = element_text(size = small_text_size),
@@ -308,7 +308,7 @@ g4
 ### 4-panel chart
 
 ```{r, fig.height = 9, fig.width = 12}
-small_text_size = 10
+small_text_size = 9
 Rmisc::multiplot(g1 + theme(axis.title = element_text(size = small_text_size),
         axis.text = element_text(size = small_text_size), plot.title = element_text(size = small_text_size * 1.4)), 
         g2  + theme(axis.title = element_text(size = small_text_size),
