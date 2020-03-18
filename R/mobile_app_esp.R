@@ -72,9 +72,9 @@ mobile_app_esp_ui <- function(request) {
             br(),
             f7Toggle('cumulative', 'Cumulative cases?',
                      checked = TRUE),
-            br(),
-            f7Toggle('add_markers', 'Add visual markers at "critical mass"?',
-                     checked = TRUE),
+            # br(),
+            # f7Toggle('add_markers', 'Add visual markers at "critical mass"?',
+            #          checked = TRUE),
             br(),
             f7Stepper('line_size', 'Line thickness', min = 0.5, max = 4, value = 1, step = 0.5),
             br(),
@@ -155,7 +155,8 @@ mobile_app_esp_server <- function(input, output, session) {
                   cumulative = input$cumulative,
                   time_before = input$time_before,
                   line_size = input$line_size,
-                  add_markers = input$add_markers,
+                  add_markers = FALSE,
+                  # add_markers = input$add_markers,
                   pop = input$pop)
   })
 }

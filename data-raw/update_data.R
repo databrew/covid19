@@ -78,12 +78,12 @@ df <- df %>%
            !grepl(', ', district))
 
 # Manual update for Spain (JHU data behind)
-df$confirmed_cases[df$country == 'Spain' & df$date == '2020-03-12'] <- 3050
-df$deaths[df$country == 'Spain' & df$date == '2020-03-12'] <- 84
+# df$confirmed_cases[df$country == 'Spain' & df$date == '2020-03-12'] <- 3050
+# df$deaths[df$country == 'Spain' & df$date == '2020-03-12'] <- 84
 # df$recovered[df$country == 'Spain' & df$date == '2020-03-12']
 
-df$confirmed_cases[df$country == 'Spain' & df$date == '2020-03-16'] <- 11178
-df$deaths[df$country == 'Spain' & df$date == '2020-03-16'] <- 491
+# df$confirmed_cases[df$country == 'Spain' & df$date == '2020-03-16'] <- 11178
+# df$deaths[df$country == 'Spain' & df$date == '2020-03-16'] <- 491
 
 # # Add a Spain row for March 17 (updating manually)
 # if(length(df$confirmed_cases[df$country == 'Spain' & df$date == '2020-03-17']) == 0){
