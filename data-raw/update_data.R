@@ -82,8 +82,12 @@ df <- df %>%
 # df$deaths[df$country == 'Spain' & df$date == '2020-03-12'] <- 84
 # df$recovered[df$country == 'Spain' & df$date == '2020-03-12']
 
-# df$confirmed_cases[df$country == 'Spain' & df$date == '2020-03-16'] <- 11178
-# df$deaths[df$country == 'Spain' & df$date == '2020-03-16'] <- 491
+if(Sys.Date() == '2020-03-18'){
+  df$confirmed_cases[df$country == 'Spain' & df$date == '2020-03-17'] <- 13716
+  df$deaths[df$country == 'Spain' & df$date == '2020-03-17'] <- 598
+  df$recovered[df$country == 'Spain' & df$date == '2020-03-17'] <- NA
+}
+
 
 # # Add a Spain row for March 17 (updating manually)
 # if(length(df$confirmed_cases[df$country == 'Spain' & df$date == '2020-03-17']) == 0){
