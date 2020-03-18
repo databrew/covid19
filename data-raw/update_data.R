@@ -155,7 +155,7 @@ isglobal <- df_country %>%
                 cases = confirmed_cases,
                 deaths) %>%
   left_join(country_codes)
-write_csv(df, 'isglobal/isglobal.csv')
+write_csv(isglobal, 'isglobal/isglobal.csv')
 
 
 if(!dir.exists('isglobal')){

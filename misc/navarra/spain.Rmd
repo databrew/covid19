@@ -1,0 +1,348 @@
+---
+title: "Spain charts"
+author: "www.databrew.cc"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    code_folding: "hide"
+---
+
+
+```{r setup, include=FALSE, echo = FALSE}
+# Basic knitr options
+library(knitr)
+opts_chunk$set(comment = NA, 
+               # echo = FALSE, 
+               warning = FALSE, 
+               message = FALSE, 
+               error = TRUE, 
+               cache = FALSE,
+               # fig.width = 8.64,
+               # fig.height = 4.86,
+               fig.path = 'figures/')
+```
+
+```{r}
+## Load libraries
+library(covid19)
+library(ggplot2)
+library(lubridate)
+library(dplyr)
+library(ggplot2)
+library(sp)
+library(raster)
+library(viridis)
+library(ggthemes)
+```
+
+## Maps of Spain
+
+```{r}
+
+if(!'map.RData' %in% dir()){
+  esp1 <- getData(name = 'GADM', country = 'ESP', level = 1)
+# Remove canary
+esp1 <- esp1[esp1@data$NAME_1 != 'Islas Canarias',]
+espf <- fortify(esp1, region = 'NAME_1')
+
+# Standardize names
+# Convert names
+map_names <- esp1@data$NAME_1
+data_names <- sort(unique(esp_df$ccaa))
+names_df <- tibble(NAME_1 = c('Andalucía',
+ 'Aragón',
+ 'Cantabria',
+ 'Castilla-La Mancha',
+ 'Castilla y León',
+ 'Cataluña',
+ 'Ceuta y Melilla',
+ 'Comunidad de Madrid',
+ 'Comunidad Foral de Navarra',
+ 'Comunidad Valenciana',
+ 'Extremadura',
+ 'Galicia',
+ 'Islas Baleares',
+ 'La Rioja',
+ 'País Vasco',
+ 'Principado de Asturias',
+ 'Región de Murcia'),
+ ccaa = c('Andalucía',
+ 'Aragón',
+ 'Cantabria',
+ 'CLM',
+ 'CyL',
+ 'Cataluña',
+ 'Melilla',
+ 'Madrid',
+ 'Navarra',
+ 'C. Valenciana',
+ 'Extremadura',
+ 'Galicia',
+ 'Baleares',
+ 'La Rioja',
+ 'País Vasco',
+ 'Asturias',
+ 'Murcia'))
+
+
+espf <- left_join(espf %>% dplyr::rename(NAME_1 = id), names_df)
+centroids <- data.frame(coordinates(esp1))
+names(centroids) <- c('long', 'lat')
+centroids$NAME_1 <- esp1$NAME_1
+centroids <- centroids %>% left_join(names_df)
+
+# Get random sampling points
+
+  random_list <- list()
+  for(i in 1:nrow(esp1)){
+    message(i)
+    shp <- esp1[i,]
+    # bb <- bbox(shp)
+    this_ccaa <- esp1@data$NAME_1[i]
+    # xs <- runif(n = 500, min = bb[1,1], max = bb[1,2])
+    # ys <- runif(n = 500, min = bb[2,1], max = bb[2,2])
+    # random_points <- expand.grid(long = xs, lat = ys) %>%
+    #   mutate(x = long,
+    #          y = lat)
+    # coordinates(random_points) <- ~x+y
+    # proj4string(random_points) <- proj4string(shp)
+    # get ccaa
+    message('getting locations of randomly generated points')
+    # polys <- over(random_points,polygons(shp))
+    # polys <- as.numeric(polys)
+    random_points <- spsample(shp, n = 20000, type = 'random')
+    random_points <- data.frame(random_points)
+    random_points$NAME_1 <-  this_ccaa
+    random_points <- left_join(random_points, names_df) %>% dplyr::select(-NAME_1)
+    random_list[[i]] <- random_points
+  }
+  random_points <- bind_rows(random_list)
+  random_points <- random_points %>% mutate(long = x,
+                                            lat = y)
+
+save(espf,
+     esp1,
+     names_df,
+     centroids,
+     random_points,
+     file = 'map.RData')
+} else {
+  load('map.RData')
+}
+
+make_map <- function(var = 'deaths',
+                     date = NULL,
+                     pop = FALSE,
+                     pop_factor = 100000,
+                     points = FALSE){
+  if(is.null(date)){
+    the_date <- max(esp_df$date)
+  } else {
+    the_date <- date
+  }
+  left <- espf
+  right <- esp_df[esp_df$date == the_date,c('ccaa', var)]
+
+  names(right)[ncol(right)] <- 'var'
+  if(pop){
+    right <- left_join(right, esp_pop)
+    right$var <- right$var / right$pop * pop_factor
+  }
+  map <- left_join(left, right)
+  
+  if(points){
+    the_points <- centroids %>%
+      left_join(right)
+    g <- ggplot() +
+      geom_polygon(data = map,
+         aes(x = long,
+             y = lat,
+             group = group),
+         fill = 'black',
+         color = 'white',
+         lwd = 0.4, alpha = 0.8) +
+      geom_point(data = the_points,
+                 aes(x = long,
+                     y = lat,
+                     size = var),
+                 color = 'red',
+                 alpha = 0.7) +
+      scale_size_area(name = '', max_size = 20)
+  } else {
+    cols <- c('#008080','#70a494','#b4c8a8','#f6edbd','#edbb8a','#de8a5a','#ca562c')
+    g <- ggplot(data = map,
+         aes(x = long,
+             y = lat,
+             group = group)) +
+    geom_polygon(aes(fill = var),
+                 lwd = 0.3,
+                 color = 'white') +
+      scale_fill_gradientn(name = '',
+                           colours = cols)
+    # scale_fill_viridis(name = '' ,option = 'magma',
+    #                    direction = -1) 
+  }
+  g +
+    theme_map() +
+    labs(subtitle = paste0('Data as of ', max(esp_df$date)))
+  
+}
+
+
+make_dot_map <- function(var = 'deaths',
+                     date = NULL,
+                     pop = FALSE,
+                     pop_factor = 100,
+                     point_factor = 1,
+                     points = FALSE,
+                     point_color = 'darkred',
+                     point_size = 0.6,
+                     point_alpha = 0.5){
+  
+  
+  if(is.null(date)){
+    the_date <- max(esp_df$date)
+  } else {
+    the_date <- date
+  }
+    right <- esp_df[esp_df$date == the_date,c('ccaa', var)]
+   names(right)[ncol(right)] <- 'var'
+  if(pop){
+    right <- left_join(right, esp_pop)
+    right$var <- right$var / right$pop * pop_factor
+  }
+  map_data <- esp1@data %>%
+    left_join(names_df) %>%
+      left_join(right)
+  map_data$var <- map_data$var / point_factor
+  out_list <- list()
+  for(i in 1:nrow(map_data)){
+    sub_data <- map_data[i,]
+    this_value = round(sub_data$var)
+
+    if(this_value >= 1){
+      this_ccaa = sub_data$ccaa
+      # get some points
+      sub_points <- random_points %>% filter(ccaa == this_ccaa)
+      sampled_points <- sub_points %>% dplyr::sample_n(this_value)
+      out_list[[i]] <- sampled_points
+    }
+  }
+  the_points <- bind_rows(out_list)
+  
+  g <- ggplot() +
+    geom_polygon(data = espf,
+         aes(x = long,
+             y = lat,
+             group = group),
+         fill = 'white',
+         color = 'black',
+         lwd = 0.4, alpha = 0.8) +
+    geom_point(data = the_points,
+               aes(x = long,
+                   y = lat),
+               color = point_color,
+               size = point_size,
+               alpha = point_alpha)
+  g +
+    theme_map() +
+    labs(subtitle = paste0('Data as of ', max(esp_df$date)))
+  
+}
+
+```
+
+### Deaths
+
+#### Absolute number of deaths: points
+
+```{r}
+make_map(var = 'deaths',
+       points = T) +
+  labs(title = 'Number of deaths',
+       caption = '@joethebrew')
+```
+
+#### Absolute number of deaths: choropleth
+
+```{r}
+make_map(var = 'deaths',
+       points = F) +
+  labs(title = 'Number of deaths',
+       caption = '@joethebrew')
+```
+
+
+#### Number of deaths adjusted by population: points
+
+```{r}
+make_map(var = 'deaths', pop = TRUE, points = T) +
+  labs(title = 'Number of deaths per 100,000',
+       caption = '@joethebrew')
+```
+
+
+#### Number of deaths adjusted by population: polygons
+
+```{r}
+make_map(var = 'deaths', pop = TRUE, points = F) +
+  labs(title = 'Number of deaths per 100,000',
+       caption = '@joethebrew')
+```
+
+#### Number of deaths: 1 dot per death
+
+```{r}
+make_dot_map(var = 'deaths', point_size = 0.25) +
+  labs(title = 'COVID-19 deaths: 1 point = 1 death\nImportant: points are random within each CCAA; do not reflect exact location',
+       caption = '@joethebrew')
+```
+
+
+### Cases
+
+#### Absolute number of cases: points
+
+```{r}
+make_map(var = 'confirmed_cases',
+       points = T) +
+  labs(title = 'Number of confirmed cases',
+       caption = '@joethebrew')
+```
+
+#### Absolute number of cases: choropleth
+
+```{r}
+make_map(var = 'confirmed_cases',
+       points = F) +
+  labs(title = 'Number of confirmed cases',
+       caption = '@joethebrew')
+```
+
+
+#### Number of cases adjusted by population: points
+
+```{r}
+make_map(var = 'confirmed_cases', pop = TRUE, points = T) +
+  labs(title = 'Number of confirmed cases per 100,000',
+       caption = '@joethebrew')
+```
+
+
+#### Number of cases adjusted by population: polygons
+
+```{r}
+make_map(var = 'confirmed_cases', pop = TRUE, points = F) +
+  labs(title = 'Number of confirmed cases per 100,000',
+       caption = '@joethebrew')
+```
+
+#### Number of cases: points
+
+```{r}
+make_dot_map(var = 'confirmed_cases',
+             point_size = 0.05, point_alpha = 0.5, point_factor = 10) +
+  labs(title = 'COVID-19 cases: 1 point = 10 cases\nImportant: points are random within each CCAA; do not reflect exact location',
+       caption = '@joethebrew')
+```
+
