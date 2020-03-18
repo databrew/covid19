@@ -20,6 +20,7 @@ opts_chunk$set(comment = NA,
                # fig.width = 8.64,
                # fig.height = 4.86,
                fig.path = 'figures/')
+options(scipen = '999')
 ```
 
 ```{r}
@@ -310,7 +311,7 @@ ggplot(data = longx,
   #      title = 'COVID-19 caseS: ("predicted" assumes no change in doubling time)',
   #      caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
   #      subtitle = '(Doubling time calculated since first day at >5 cumulative cases)') +
-    labs(x = 'Días desde el primer día a 5 o más muertes acumuladas',
+    labs(x = 'Días desde el primer día a 10 o más casos acumulados',
        y = 'Muertes (escala logarítmica)',
        title = 'CASOS de COVID-19',
        caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
@@ -319,7 +320,9 @@ ggplot(data = longx,
           plot.title = element_text(size = text_size * 3),
           legend.text = element_text(size = text_size * 1),
           axis.title = element_text(size = text_size * 1),
-          axis.text = element_text(size = text_size * 1))
+          axis.text = element_text(size = text_size * 1)) +
+  guides(color = guide_legend(nrow = 2),
+         linetype = guide_legend(nrow = 2))
 ```
 
 
@@ -328,7 +331,7 @@ ggplot(data = longx,
 
 ```{r}
 # Madrid vs Lombardy deaths
-n_death_start <- 5
+n_deaths_start <- 5
 pd <- esp_df %>%
   # filter(ccaa == 'Madrid') %>%
   dplyr::select(date, ccaa, cases, deaths) %>%
@@ -337,7 +340,7 @@ pd <- esp_df %>%
               dplyr::select(date, ccaa, cases, deaths)) %>%
   arrange(date) %>%
   group_by(ccaa) %>%
-  mutate(first_n_death = min(date[deaths >= n_death_start])) %>%
+  mutate(first_n_death = min(date[deaths >= n_deaths_start])) %>%
   ungroup %>%
   mutate(days_since_n_deaths = date - first_n_death) %>%
   filter(is.finite(days_since_n_deaths))
@@ -605,6 +608,8 @@ ggplot(data = long,
           plot.title = element_text(size = text_size * 3),
           legend.text = element_text(size = text_size * 1),
           axis.title = element_text(size = text_size * 1),
-          axis.text = element_text(size = text_size * 1))
+          axis.text = element_text(size = text_size * 1)) +
+  guides(color = guide_legend(nrow = 2),
+         linetype = guide_legend(nrow = 2))
 ```
 

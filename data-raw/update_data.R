@@ -151,16 +151,18 @@ usethis::use_data(df_country, overwrite = T)
 # Make spreadsheet for ISGlobal
 isglobal <- df_country %>%
   filter(date == max(date)) %>%
-  dplyr::select(date, country, 
+  dplyr::select(date, 
+                country, 
                 cases = confirmed_cases,
                 deaths) %>%
   left_join(country_codes)
-write_csv(isglobal, 'isglobal/isglobal.csv')
 
 
 if(!dir.exists('isglobal')){
   dir.create('isglobal')
 }
+write_csv(isglobal, 'isglobal/isglobal.csv')
+
 write_csv(df, 'isglobal/world_region_data.csv')
 write_csv(df_country, 'isglobal/world_data.csv')
 
