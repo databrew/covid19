@@ -1,153 +1,153 @@
-country,cases,deaths,iso
-Afghanistan,22,0,AFG
-Albania,55,1,ALB
-Algeria,60,4,DZA
-Andorra,39,0,AND
-Antigua and Barbuda,1,0,ATG
-Argentina,68,2,ARG
-Armenia,78,0,ARM
-Aruba,3,0,ABW
-Australia,452,5,AUS
-Austria,1332,3,AUT
-Azerbaijan,28,1,AZE
-Bahrain,228,1,BHR
-Bangladesh,10,0,BGD
-Barbados,2,0,BRB
-Belarus,36,0,BLR
-Belgium,1243,10,BEL
-Benin,1,0,BEN
-Bhutan,1,0,BTN
-Bolivia,11,0,BOL
-Bosnia and Herzegovina,26,0,BIH
-Brazil,321,1,BRA
-Brunei,56,0,BRN
-Bulgaria,67,2,BGR
-Burkina Faso,15,0,BFA
-Cambodia,33,0,KHM
-Cameroon,10,0,CMR
-Canada,478,5,CAN
-Central African Republic,1,0,CAF
-Chile,201,0,CHL
-China,81058,3230,CHN
-Colombia,65,0,COL
-Congo (Brazzaville),1,0,COG
-Congo (Kinshasa),3,0,COD
-Costa Rica,41,0,CRI
-Cote d'Ivoire,5,0,CIV
-Croatia,65,0,HRV
-Cruise Ship,696,7,NA
-Cuba,5,0,CUB
-Cyprus,46,0,CYP
-Czechia,396,0,CZE
-Denmark,1024,4,DNK
-Dominican Republic,21,1,DOM
-Ecuador,58,2,ECU
-Egypt,196,4,EGY
-Equatorial Guinea,1,0,GNQ
-Estonia,225,0,EST
-Eswatini,1,0,NA
-Ethiopia,5,0,ETH
-Finland,321,0,FIN
-France,7699,148,FRA
-Gabon,1,0,GAB
-Georgia,34,0,GEO
-Germany,9257,24,DEU
-Ghana,7,0,GHA
-Greece,387,5,GRC
-Greenland,1,0,GRL
-Guatemala,6,1,GTM
-Guernsey,1,0,GGY
-Guinea,1,0,GIN
-Guyana,7,1,GUY
-Holy See,1,0,VAT
-Honduras,8,0,HND
-Hungary,50,1,HUN
-Iceland,220,1,ISL
-India,142,3,IND
-Indonesia,172,5,IDN
-Iran,16169,988,IRN
-Iraq,154,11,IRQ
-Ireland,223,2,IRL
-Israel,337,0,ISR
-Italy,31506,2503,ITA
-Jamaica,12,0,JAM
-Japan,878,29,JPN
-Jersey,2,0,JEY
-Jordan,34,0,JOR
-Kazakhstan,33,0,KAZ
-Kenya,3,0,KEN
-"Korea, South",8320,81,KOR
-Kosovo,2,0,XKS
-Kuwait,130,0,KWT
-Latvia,49,0,LVA
-Lebanon,120,3,LBN
-Liberia,1,0,LBR
-Liechtenstein,7,0,LIE
-Lithuania,25,0,LTU
-Luxembourg,140,1,LUX
-Malaysia,673,2,MYS
-Maldives,13,0,MDV
-Malta,38,0,MLT
-Martinique,16,1,MTQ
-Mauritania,1,0,MRT
-Mexico,82,0,MEX
-Moldova,30,0,MDA
-Monaco,7,0,MCO
-Mongolia,5,0,MNG
-Montenegro,2,0,MNE
-Morocco,38,2,MAR
-Namibia,2,0,NAM
-Nepal,1,0,NPL
-Netherlands,1708,43,NLD
-New Zealand,12,0,NZL
-Nigeria,3,0,NGA
-North Macedonia,26,0,MKD
-Norway,1463,3,NOR
-Oman,24,0,OMN
-Pakistan,236,0,PAK
-Panama,69,1,PAN
-Paraguay,9,0,PRY
-Peru,117,0,PER
-Philippines,187,12,PHL
-Poland,238,5,POL
-Portugal,448,1,PRT
-Qatar,439,0,QAT
-Republic of the Congo,1,0,COG
-Romania,184,0,ROU
-Russia,114,0,RUS
-Rwanda,7,0,RWA
-Saint Lucia,2,0,LCA
-Saint Vincent and the Grenadines,1,0,VCT
-San Marino,109,7,SMR
-Saudi Arabia,171,0,SAU
-Senegal,26,0,SEN
-Serbia,65,0,SRB
-Seychelles,4,0,SYC
-Singapore,266,0,SGP
-Slovakia,72,0,SVK
-Slovenia,275,1,SVN
-Somalia,1,0,SOM
-South Africa,62,0,ZAF
-Spain,13716,598,ESP
-Sri Lanka,44,0,LKA
-Sudan,1,1,SDN
-Suriname,1,0,SUR
-Sweden,1190,7,SWE
-Switzerland,2700,27,CHE
-Taiwan*,77,1,TWN
-Tanzania,1,0,TZA
-Thailand,177,1,THA
-The Bahamas,1,0,BHS
-The Gambia,1,0,GMB
-Togo,1,0,TGO
-Trinidad and Tobago,5,0,TTO
-Tunisia,24,0,TUN
-Turkey,47,1,TUR
-Ukraine,14,2,UKR
-United Arab Emirates,98,0,ARE
-United Kingdom,1960,56,GBR
-Uruguay,29,0,URY
-US,6421,108,USA
-Uzbekistan,10,0,UZB
-Venezuela,33,0,VEN
-Vietnam,66,0,VNM
+date,country,cases,deaths,iso
+2020-03-17,Afghanistan,22,0,AFG
+2020-03-17,Albania,55,1,ALB
+2020-03-17,Algeria,60,4,DZA
+2020-03-17,Andorra,39,0,AND
+2020-03-17,Antigua and Barbuda,1,0,ATG
+2020-03-17,Argentina,68,2,ARG
+2020-03-17,Armenia,78,0,ARM
+2020-03-17,Aruba,3,0,ABW
+2020-03-17,Australia,452,5,AUS
+2020-03-17,Austria,1332,3,AUT
+2020-03-17,Azerbaijan,28,1,AZE
+2020-03-17,Bahrain,228,1,BHR
+2020-03-17,Bangladesh,10,0,BGD
+2020-03-17,Barbados,2,0,BRB
+2020-03-17,Belarus,36,0,BLR
+2020-03-17,Belgium,1243,10,BEL
+2020-03-17,Benin,1,0,BEN
+2020-03-17,Bhutan,1,0,BTN
+2020-03-17,Bolivia,11,0,BOL
+2020-03-17,Bosnia and Herzegovina,26,0,BIH
+2020-03-17,Brazil,321,1,BRA
+2020-03-17,Brunei,56,0,BRN
+2020-03-17,Bulgaria,67,2,BGR
+2020-03-17,Burkina Faso,15,0,BFA
+2020-03-17,Cambodia,33,0,KHM
+2020-03-17,Cameroon,10,0,CMR
+2020-03-17,Canada,478,5,CAN
+2020-03-17,Central African Republic,1,0,CAF
+2020-03-17,Chile,201,0,CHL
+2020-03-17,China,81058,3230,CHN
+2020-03-17,Colombia,65,0,COL
+2020-03-17,Congo (Brazzaville),1,0,COG
+2020-03-17,Congo (Kinshasa),3,0,COD
+2020-03-17,Costa Rica,41,0,CRI
+2020-03-17,Cote d'Ivoire,5,0,CIV
+2020-03-17,Croatia,65,0,HRV
+2020-03-17,Cruise Ship,696,7,NA
+2020-03-17,Cuba,5,0,CUB
+2020-03-17,Cyprus,46,0,CYP
+2020-03-17,Czechia,396,0,CZE
+2020-03-17,Denmark,1024,4,DNK
+2020-03-17,Dominican Republic,21,1,DOM
+2020-03-17,Ecuador,58,2,ECU
+2020-03-17,Egypt,196,4,EGY
+2020-03-17,Equatorial Guinea,1,0,GNQ
+2020-03-17,Estonia,225,0,EST
+2020-03-17,Eswatini,1,0,NA
+2020-03-17,Ethiopia,5,0,ETH
+2020-03-17,Finland,321,0,FIN
+2020-03-17,France,7699,148,FRA
+2020-03-17,Gabon,1,0,GAB
+2020-03-17,Georgia,34,0,GEO
+2020-03-17,Germany,9257,24,DEU
+2020-03-17,Ghana,7,0,GHA
+2020-03-17,Greece,387,5,GRC
+2020-03-17,Greenland,1,0,GRL
+2020-03-17,Guatemala,6,1,GTM
+2020-03-17,Guernsey,1,0,GGY
+2020-03-17,Guinea,1,0,GIN
+2020-03-17,Guyana,7,1,GUY
+2020-03-17,Holy See,1,0,VAT
+2020-03-17,Honduras,8,0,HND
+2020-03-17,Hungary,50,1,HUN
+2020-03-17,Iceland,220,1,ISL
+2020-03-17,India,142,3,IND
+2020-03-17,Indonesia,172,5,IDN
+2020-03-17,Iran,16169,988,IRN
+2020-03-17,Iraq,154,11,IRQ
+2020-03-17,Ireland,223,2,IRL
+2020-03-17,Israel,337,0,ISR
+2020-03-17,Italy,31506,2503,ITA
+2020-03-17,Jamaica,12,0,JAM
+2020-03-17,Japan,878,29,JPN
+2020-03-17,Jersey,2,0,JEY
+2020-03-17,Jordan,34,0,JOR
+2020-03-17,Kazakhstan,33,0,KAZ
+2020-03-17,Kenya,3,0,KEN
+2020-03-17,"Korea, South",8320,81,KOR
+2020-03-17,Kosovo,2,0,XKS
+2020-03-17,Kuwait,130,0,KWT
+2020-03-17,Latvia,49,0,LVA
+2020-03-17,Lebanon,120,3,LBN
+2020-03-17,Liberia,1,0,LBR
+2020-03-17,Liechtenstein,7,0,LIE
+2020-03-17,Lithuania,25,0,LTU
+2020-03-17,Luxembourg,140,1,LUX
+2020-03-17,Malaysia,673,2,MYS
+2020-03-17,Maldives,13,0,MDV
+2020-03-17,Malta,38,0,MLT
+2020-03-17,Martinique,16,1,MTQ
+2020-03-17,Mauritania,1,0,MRT
+2020-03-17,Mexico,82,0,MEX
+2020-03-17,Moldova,30,0,MDA
+2020-03-17,Monaco,7,0,MCO
+2020-03-17,Mongolia,5,0,MNG
+2020-03-17,Montenegro,2,0,MNE
+2020-03-17,Morocco,38,2,MAR
+2020-03-17,Namibia,2,0,NAM
+2020-03-17,Nepal,1,0,NPL
+2020-03-17,Netherlands,1708,43,NLD
+2020-03-17,New Zealand,12,0,NZL
+2020-03-17,Nigeria,3,0,NGA
+2020-03-17,North Macedonia,26,0,MKD
+2020-03-17,Norway,1463,3,NOR
+2020-03-17,Oman,24,0,OMN
+2020-03-17,Pakistan,236,0,PAK
+2020-03-17,Panama,69,1,PAN
+2020-03-17,Paraguay,9,0,PRY
+2020-03-17,Peru,117,0,PER
+2020-03-17,Philippines,187,12,PHL
+2020-03-17,Poland,238,5,POL
+2020-03-17,Portugal,448,1,PRT
+2020-03-17,Qatar,439,0,QAT
+2020-03-17,Republic of the Congo,1,0,COG
+2020-03-17,Romania,184,0,ROU
+2020-03-17,Russia,114,0,RUS
+2020-03-17,Rwanda,7,0,RWA
+2020-03-17,Saint Lucia,2,0,LCA
+2020-03-17,Saint Vincent and the Grenadines,1,0,VCT
+2020-03-17,San Marino,109,7,SMR
+2020-03-17,Saudi Arabia,171,0,SAU
+2020-03-17,Senegal,26,0,SEN
+2020-03-17,Serbia,65,0,SRB
+2020-03-17,Seychelles,4,0,SYC
+2020-03-17,Singapore,266,0,SGP
+2020-03-17,Slovakia,72,0,SVK
+2020-03-17,Slovenia,275,1,SVN
+2020-03-17,Somalia,1,0,SOM
+2020-03-17,South Africa,62,0,ZAF
+2020-03-17,Spain,13716,598,ESP
+2020-03-17,Sri Lanka,44,0,LKA
+2020-03-17,Sudan,1,1,SDN
+2020-03-17,Suriname,1,0,SUR
+2020-03-17,Sweden,1190,7,SWE
+2020-03-17,Switzerland,2700,27,CHE
+2020-03-17,Taiwan*,77,1,TWN
+2020-03-17,Tanzania,1,0,TZA
+2020-03-17,Thailand,177,1,THA
+2020-03-17,The Bahamas,1,0,BHS
+2020-03-17,The Gambia,1,0,GMB
+2020-03-17,Togo,1,0,TGO
+2020-03-17,Trinidad and Tobago,5,0,TTO
+2020-03-17,Tunisia,24,0,TUN
+2020-03-17,Turkey,47,1,TUR
+2020-03-17,Ukraine,14,2,UKR
+2020-03-17,United Arab Emirates,98,0,ARE
+2020-03-17,United Kingdom,1960,56,GBR
+2020-03-17,Uruguay,29,0,URY
+2020-03-17,US,6421,108,USA
+2020-03-17,Uzbekistan,10,0,UZB
+2020-03-17,Venezuela,33,0,VEN
+2020-03-17,Vietnam,66,0,VNM

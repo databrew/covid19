@@ -151,7 +151,7 @@ usethis::use_data(df_country, overwrite = T)
 # Make spreadsheet for ISGlobal
 isglobal <- df_country %>%
   filter(date == max(date)) %>%
-  dplyr::select(country, 
+  dplyr::select(date, country, 
                 cases = confirmed_cases,
                 deaths) %>%
   left_join(country_codes)
