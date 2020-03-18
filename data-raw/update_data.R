@@ -148,6 +148,16 @@ usethis::use_data(confirmed_cases, overwrite = T)
 usethis::use_data(recovered, overwrite = T)
 usethis::use_data(df_country, overwrite = T)
 
+# Make spreadsheet for ISGlobal
+isglobal <- df_country %>%
+  filter(date == max(date)) %>%
+  dplyr::select(country, 
+                cases = confirmed_cases,
+                deaths) %>%
+  left_join(country_codes)
+write_csv(df, 'isglobal/isglobal.csv')
+
+
 if(!dir.exists('isglobal')){
   dir.create('isglobal')
 }
