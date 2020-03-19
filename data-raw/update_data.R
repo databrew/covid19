@@ -87,6 +87,7 @@ right <- esp_df %>%
             deaths  = sum(deaths, na.rm = TRUE))
 
 # Overwrite Spanish data with more accurate ministry data
+overwrite_spain = TRUE
 if(overwrite_spain){
   dfx <- df %>% filter(country == 'Spain' & date >= '2020-03-16') 
   dfy <- df %>% filter(country != 'Spain' | date < '2020-03-16')

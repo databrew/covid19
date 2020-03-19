@@ -6,7 +6,6 @@ date,country,cases,deaths,iso
 2020-03-18,Antigua and Barbuda,1,0,ATG
 2020-03-18,Argentina,79,2,ARG
 2020-03-18,Armenia,84,0,ARM
-2020-03-18,Aruba,4,0,ABW
 2020-03-18,Australia,568,6,AUS
 2020-03-18,Austria,1646,4,AUT
 2020-03-18,Azerbaijan,28,1,AZE
@@ -49,8 +48,7 @@ date,country,cases,deaths,iso
 2020-03-18,Eswatini,1,0,NA
 2020-03-18,Ethiopia,6,0,ETH
 2020-03-18,Finland,336,0,FIN
-2020-03-18,France,9052,148,FRA
-2020-03-18,French Guiana,11,0,GUF
+2020-03-18,France,9105,148,FRA
 2020-03-18,Gabon,1,0,GAB
 2020-03-18,"Gambia, The",1,0,GMB
 2020-03-18,Georgia,38,0,GEO
@@ -58,10 +56,7 @@ date,country,cases,deaths,iso
 2020-03-18,Ghana,7,0,GHA
 2020-03-18,Greece,418,5,GRC
 2020-03-18,Greenland,1,0,GRL
-2020-03-18,Guadeloupe,27,0,GLP
-2020-03-18,Guam,0,0,GUM
 2020-03-18,Guatemala,6,1,GTM
-2020-03-18,Guernsey,0,0,GGY
 2020-03-18,Guinea,1,0,GIN
 2020-03-18,Guyana,7,1,GUY
 2020-03-18,Holy See,1,0,VAT
@@ -77,7 +72,6 @@ date,country,cases,deaths,iso
 2020-03-18,Italy,35713,2978,ITA
 2020-03-18,Jamaica,13,0,JAM
 2020-03-18,Japan,889,29,JPN
-2020-03-18,Jersey,0,0,JEY
 2020-03-18,Jordan,52,0,JOR
 2020-03-18,Kazakhstan,35,0,KAZ
 2020-03-18,Kenya,3,0,KEN
@@ -97,7 +91,6 @@ date,country,cases,deaths,iso
 2020-03-18,Martinique,19,1,MTQ
 2020-03-18,Mauritania,1,0,MRT
 2020-03-18,Mauritius,3,0,MUS
-2020-03-18,Mayotte,3,0,MYT
 2020-03-18,Mexico,93,0,MEX
 2020-03-18,Moldova,30,1,MDA
 2020-03-18,Monaco,7,0,MCO
@@ -106,7 +99,7 @@ date,country,cases,deaths,iso
 2020-03-18,Morocco,49,2,MAR
 2020-03-18,Namibia,2,0,NAM
 2020-03-18,Nepal,1,0,NPL
-2020-03-18,Netherlands,2056,58,NLD
+2020-03-18,Netherlands,2058,58,NLD
 2020-03-18,New Zealand,20,0,NZL
 2020-03-18,Nigeria,8,0,NGA
 2020-03-18,North Macedonia,35,0,MKD
@@ -119,10 +112,7 @@ date,country,cases,deaths,iso
 2020-03-18,Philippines,202,19,PHL
 2020-03-18,Poland,251,5,POL
 2020-03-18,Portugal,448,2,PRT
-2020-03-18,Puerto Rico,0,0,PRI
 2020-03-18,Qatar,452,0,QAT
-2020-03-18,Republic of the Congo,0,0,COG
-2020-03-18,Reunion,12,0,REU
 2020-03-18,Romania,260,0,ROU
 2020-03-18,Russia,147,0,RUS
 2020-03-18,Rwanda,8,0,RWA
@@ -138,6 +128,7 @@ date,country,cases,deaths,iso
 2020-03-18,Slovenia,275,1,SVN
 2020-03-18,Somalia,1,0,SOM
 2020-03-18,South Africa,116,0,ZAF
+2020-03-18,Spain,17146,767,ESP
 2020-03-18,Sri Lanka,51,0,LKA
 2020-03-18,Sudan,2,1,SDN
 2020-03-18,Suriname,1,0,SUR
@@ -147,7 +138,6 @@ date,country,cases,deaths,iso
 2020-03-18,Tanzania,3,0,TZA
 2020-03-18,Thailand,212,1,THA
 2020-03-18,The Bahamas,1,0,BHS
-2020-03-18,The Gambia,0,0,GMB
 2020-03-18,Togo,1,0,TGO
 2020-03-18,Trinidad and Tobago,7,0,TTO
 2020-03-18,Tunisia,29,0,TUN
@@ -156,7 +146,7 @@ date,country,cases,deaths,iso
 2020-03-18,United Arab Emirates,113,0,ARE
 2020-03-18,United Kingdom,2642,72,GBR
 2020-03-18,Uruguay,50,0,URY
-2020-03-18,US,7786,118,USA
+2020-03-18,US,7783,118,USA
 2020-03-18,Uzbekistan,15,0,UZB
 2020-03-18,Venezuela,36,0,VEN
 2020-03-18,Vietnam,75,0,VNM

@@ -38,6 +38,151 @@ library(rnaturalearth)
 library(rnaturalearthdata)
 ```
 
+## World at large
+
+```{r}
+pd <- df_country %>%
+  group_by(date) %>%
+  summarise(n = sum(confirmed_cases)) %>%
+  filter(date < max(date))
+ggplot(data = pd,
+       aes(x = date,
+           y = n)) +
+  geom_point() +
+  theme_simple() +
+  labs(x = 'Date',
+       y = 'Cases',
+       title = 'COVID-19 cases')
+ggsave('~/Videos/update/a.png',
+       width = 1280 / 150,
+       height = 720 / 150)
+```
+
+
+## China vs world
+
+```{r}
+pd <- df_country %>%
+  group_by(date,
+           country = ifelse(country == 'China', 'China', 'Other countries')) %>%
+  summarise(n = sum(confirmed_cases))  %>%
+  ungroup %>%
+  filter(date < max(date))
+ggplot(data = pd,
+       aes(x = date,
+           y = n,
+           color = country)) +
+  geom_line(size = 2) +
+  # geom_point() +
+  theme_simple() +
+  labs(x = 'Date',
+       y = 'Cases',
+       title = 'COVID-19 cases') +
+  scale_color_manual(name = '',
+                     values = c('red', 'black')) +
+  theme(legend.text = element_text(size = 25),
+        legend.position = 'top')
+ggsave('~/Videos/update/b.png',
+       width = 1280 / 150,
+       height = 720 / 150)
+```
+
+## NOn china only
+
+
+```{r}
+pd <- df_country %>%
+  group_by(date,
+           country = ifelse(country == 'China', 'China', 'Other countries')) %>%
+  summarise(n = sum(confirmed_cases)) %>%
+  filter(country == 'Other countries')  %>%
+  ungroup %>%
+  filter(date < max(date))
+ggplot(data = pd,
+       aes(x = date,
+           y = n)) +
+  geom_line(size = 2) +
+  # geom_point() +
+  theme_simple() +
+  labs(x = 'Date',
+       y = 'Cases',
+       title = 'COVID-19 cases, outside of China') 
+ggsave('~/Videos/update/c.png',
+       width = 1280 / 150,
+       height = 720 / 150)
+```
+
+## Case numbers across countries
+
+```{r}
+plot_day_zero(countries = c('France', 'Germany', 'Italy', 'Spain', 'Switzerland', 'Sweden', 'Norway', 'Netherlands'))
+ggsave('~/Videos/update/d.png',
+       width = 1280 / 150,
+       height = 720 / 150)
+```
+
+
+## World at large - deaths
+
+```{r}
+pd <- df_country %>%
+  group_by(date) %>%
+  summarise(n = sum(deaths)) %>%
+  filter(date < max(date))
+ggplot(data = pd,
+       aes(x = date,
+           y = n)) +
+  geom_point() +
+  theme_simple() +
+  labs(x = 'Date',
+       y = 'Deaths',
+       title = 'COVID-19 deaths')
+ggsave('~/Videos/update/e.png',
+       width = 1280 / 150,
+       height = 720 / 150)
+```
+
+
+
+
+## China vs world deaths
+
+```{r}
+pd <- df_country %>%
+  group_by(date,
+           country = ifelse(country == 'China', 'China', 'Other countries')) %>%
+  summarise(n = sum(deaths))  %>%
+  ungroup %>%
+  filter(date < max(date))
+ggplot(data = pd,
+       aes(x = date,
+           y = n,
+           color = country)) +
+  geom_line(size = 2) +
+  # geom_point() +
+  theme_simple() +
+  labs(x = 'Date',
+       y = 'Deaths',
+       title = 'COVID-19 deaths') +
+  scale_color_manual(name = '',
+                     values = c('red', 'black')) +
+  theme(legend.text = element_text(size = 25),
+        legend.position = 'top')
+ggsave('~/Videos/update/f.png',
+       width = 1280 / 150,
+       height = 720 / 150)
+```
+
+
+## Asian hope
+
+```{r}
+plot_day_zero(countries = c('Korea, South', 'Japan', 'China', 'Singapore'))
+ggsave('~/Videos/update/g.png',
+       width = 1280 / 150,
+       height = 720 / 150)
+```
+
 
 
 Since trajectories are very unstable when cases are low, we'll exclude from our analysis the first few days, and will only count as "outbreak" once a country reaches 150 or more cumulative cases.
@@ -219,6 +364,7 @@ make_double_time <- function(the_country = 'Spain',
       filter(days_since >= 0) %>%
       mutate(days_since = as.numeric(days_since))
     fit <- lm(log(deaths) ~ days_since, data = pd) 
+    # fitlo <- loess(deaths ~ days_since, data = pd)
     # plot(pd$days_since, log(pd$cases))
     # abline(fit)
     ## Slope
@@ -230,9 +376,14 @@ make_double_time <- function(the_country = 'Spain',
     fake <- fake %>%mutate(date = seq(day0, day0+max(fake$days_since), by = 1))
     fake <- left_join(fake, pd %>% dplyr::select(days_since, deaths, date))
     fake$predicted <- exp(predict(fit, newdata = fake))
+    # fake$predictedlo <- predict(fitlo, newdata = fake)
     ci <- exp(predict(fit, newdata = fake, interval = 'prediction'))
+    # cilo <- predict(fitlo, newdata = fake, interval = 'prediction')
+
     fake$lwr <- ci[,'lwr']
     fake$upr <- ci[,'upr']
+    # fake$lwrlo <- ci[,'lwr']
+    # fake$uprlo <- ci[,'upr']
     # Doubling time
     dt <- log(2)/fit$coef[2]
     fake %>% mutate(country = the_country) %>% mutate(doubling_time = dt)
@@ -242,8 +393,7 @@ make_double_time <- function(the_country = 'Spain',
 plot_double_time <- function(data, ylog = F){
   the_labs <- labs(x = 'Date',
                    y = 'Deaths',
-                   title = paste0('Predicted deaths in ', data$country[1]),
-                   subtitle = 'Basic log-linear model assuming no change in growth trajectory since first day at >5 deaths')
+                   title = paste0('Predicted deaths in ', data$country[1]))
   long <- data %>%
     tidyr::gather(key, value, deaths:predicted) %>%
     mutate(key = Hmisc::capitalize(key))
@@ -263,7 +413,7 @@ plot_double_time <- function(data, ylog = F){
                aes(x = date,
                    y = value)) +
     theme_simple() +
-    theme(legend.position = 'none',
+    theme(legend.position = 'right',
           legend.title = element_blank()) +
     the_labs
   if(ylog){
@@ -271,10 +421,31 @@ plot_double_time <- function(data, ylog = F){
   }
   return(g)
 }
-data <- make_double_time(n_deaths_start = 130)
-plot_double_time(data)
+data <- make_double_time(n_deaths_start = 100)
+data
+plot_double_time(data, ylog = F) +
+  labs(subtitle = 'Basic log-linear model assuming no change in growth trajectory since first day at >100 deaths')
+
+
+
 
 ```
+
+```{r}
+# all_countries <- sort(unique(df_country$country))
+# for(i in 1:length(all_countries)){
+#   this_country <- all_countries[i]
+#   data <- make_double_time(the_country = this_country, n_deaths_start = 5)
+#   if(!is.null(data)){
+#     # print(this_country)
+#     g <- plot_double_time(data, ylog = F) +
+#   labs(subtitle = 'Basic log-linear model assuming no change in growth trajectory since first day at >5 deaths')
+#     ggsave(paste0('~/Desktop/', this_country, '.png'), height = 5, width = 8)
+#     print(data)
+#   }
+# }
+```
+
 
 ```{r}
 out_list <- curve_list <-  list()
@@ -1165,7 +1336,7 @@ make_map(var = 'deaths', pop = TRUE, points = F) +
 #### Number of deaths: 1 dot per death
 
 ```{r}
-make_dot_map(var = 'deaths', point_size = 0.25) +
+make_dot_map(var = 'deaths', point_size = 0.15) +
   labs(title = 'COVID-19 deaths: 1 point = 1 death\nImportant: points are random within each CCAA; do not reflect exact location',
        caption = '@joethebrew')
 ```
