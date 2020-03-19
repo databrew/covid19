@@ -81,19 +81,19 @@ df <- df %>%
 library(gsheet)
 url <- 'https://docs.google.com/spreadsheets/d/15UJWpsW6G7sEImE8aiQ5JrLCtCnbprpztfoEwyTNTEY/edit#gid=810081118'
 esp_df <- gsheet::gsheet2tbl(url)
-
+right <- esp_df %>%
+  group_by(date) %>%
+  summarise(confirmed_cases = sum(cases, na.rm = TRUE),
+            deaths  = sum(deaths, na.rm = TRUE))
 
 # Overwrite Spanish data with more accurate ministry data
 if(overwrite_spain){
-  dfx <- df %>% filter(country == 'Spain' & date >= '2020-03-15') 
-  dfy <- df %>% filter(country != 'Spain' | date < '2020-03-15')
+  dfx <- df %>% filter(country == 'Spain' & date >= '2020-03-16') 
+  dfy <- df %>% filter(country != 'Spain' | date < '2020-03-16')
   dfz <- dfx %>% dplyr::select(date, district, country, lat, lng, recovered) %>%
     # dont get ahead of ministry
-    filter(date <= max(esp_df$date))
-  right <- esp_df %>%
-    group_by(date) %>%
-    summarise(confirmed_cases = sum(cases, na.rm = TRUE),
-              deaths  = sum(deaths, na.rm = TRUE))
+    filter(date <= max(right$date))
+  
   dfz <- left_join(dfz, right)
   df <- bind_rows(dfz, dfy)
   df <- df %>% arrange(country, district, date)  
