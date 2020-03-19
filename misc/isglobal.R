@@ -29,7 +29,7 @@ cc
 ggsave('~/Desktop/isglobal/c.png')
 
 
-d = plot_day_zero(countries = c('Italy', 'Spain', 'France', 'Germany',
+d = plot_day_zero(countries = c('Italy', 'Spain', 'France', 'Germany', 'Switzerland', 'Norway',
                             'US', 'UK'),
               day0 = 150,
               cumulative = TRUE,

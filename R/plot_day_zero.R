@@ -41,10 +41,10 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'France', 'US
   }
   
   pd <- df %>%
-    mutate(country) %>%
+    mutate(iso, country) %>%
     arrange(date, country) %>%
     filter(country %in% these_countries) %>%
-    group_by(country, date) %>%
+    group_by(iso, country, date) %>%
     summarise(confirmed_cases = sum(confirmed_cases),
               confirmed_cases_non_cum = sum(confirmed_cases_non_cum),
               deaths = sum(deaths),
@@ -93,7 +93,7 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'France', 'US
   # Adjust by population
   if(pop){
    pd <- pd %>%
-     left_join(world_pop) %>%
+     left_join(world_pop %>% dplyr::select(-country)) %>%
      mutate(value = (value / pop) * 100000)
   }
   return(pd)

@@ -152,7 +152,7 @@ country_codes <- tibble(country = countries)
 library(passport)
 country_codes$iso <- parse_country(x = countries, to = 'iso3c')
 df <- left_join(df, country_codes)
-
+df_country <- left_join(df_country, country_codes)
 
 usethis::use_data(df, overwrite = T)
 usethis::use_data(deaths, overwrite = T)

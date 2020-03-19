@@ -38,6 +38,105 @@ library(rnaturalearth)
 library(rnaturalearthdata)
 ```
 
+## Rolling average new events
+
+```{r}
+roll_curve <- function(data,
+                       n = 4,
+                       deaths = FALSE,
+                       scales = 'fixed',
+                       nrow = NULL,
+                       ncol = NULL){
+
+  # Create the n day rolling avg
+  ma <- function(x, n = 5){stats::filter(x, rep(1 / n, n), sides = 1)}
+  
+  pd <- data
+  if(deaths){
+    pd$var <- pd$deaths_non_cum
+  } else {
+    pd$var <- pd$confirmed_cases_non_cum
+  }
+  pd <- pd %>%
+    arrange(date) %>%
+    group_by(geo) %>%
+    mutate(with_lag = ma(var, n = n))
+  
+  
+  ggplot() +
+    geom_bar(data = pd,
+         aes(x = date,
+             y = var),
+             stat = 'identity',
+         fill = 'grey',
+         alpha = 0.8) +
+    geom_area(data = pd,
+              aes(x = date,
+                  y = with_lag),
+              color = 'red',
+              fill = 'red',
+              alpha = 0.6) +
+    facet_wrap(~geo, scales = scales, nrow = nrow, ncol = ncol) +
+    theme_simple() +
+    labs(x = '',
+         y = ifelse(deaths, 'Deaths', 'Cases'),
+         title = paste0('Daily (non-cumulative) ', ifelse(deaths, 'deaths', 'cases')),
+         subtitle = paste0('Data as of ', max(data$date),
+                           '.\nRed line = ', n, ' day rolling average. Grey bar = day-specific value.')) +
+    theme(axis.text.x = element_text(size = 7,
+                                     angle = 90,
+                                     hjust = 0.5, vjust = 1)) #+
+    # scale_x_date(name ='',
+    #              breaks = sort(unique(pd$date)),
+    #              labels = format(sort(unique(pd$date)), '%b %d'))
+    # scale_y_log10()
+}
+
+plot_data <- esp_df %>% mutate(geo = ccaa) %>% filter(!ccaa %in% c('Melilla'))
+roll_curve(plot_data, scales = 'fixed')
+ggsave('~/Desktop/a.png',
+       width = 1280 / 150,
+       height = 720 / 150)
+```
+
+```{r}
+plot_data <- esp_df %>% mutate(geo = ccaa) %>% filter(!ccaa %in% c('Melilla'))
+roll_curve(plot_data, scales = 'free_y')
+ggsave('~/Desktop/b.png',
+       width = 1280 / 150,
+       height = 720 / 150)
+```
+
+```{r}
+plot_data <- esp_df %>% mutate(geo = ccaa) %>% filter(!ccaa %in% c('Melilla'))
+roll_curve(plot_data, deaths = T, scales = 'free_y')
+ggsave('~/Desktop/c.png',
+       width = 1280 / 150,
+       height = 720 / 150)
+```
+
+
+```{r}
+plot_data <- esp_df %>% mutate(geo = ccaa) %>% filter(!ccaa %in% c('Melilla'))
+roll_curve(plot_data, deaths = T, scales = 'fixed')
+ggsave('~/Desktop/d.png',
+       width = 1280 / 150,
+       height = 720 / 150)
+```
+
+
+```{r}
+plot_data <- df_country %>% filter(country %in% c('Spain', 'Italy', 'Germany', 'France', 'US',
+                                                  'China', 'Korea, South', 'Japan', 'Singapore')) %>% mutate(geo = country)
+roll_curve(plot_data, scales = 'free_y')
+ggsave('~/Desktop/z.png',
+       width = 1280 / 150,
+       height = 720 / 150)
+
+```
+
+
+
 ## World at large
 
 ```{r}
@@ -116,9 +215,9 @@ ggsave('~/Videos/update/c.png',
 
 ```{r}
 plot_day_zero(countries = c('France', 'Germany', 'Italy', 'Spain', 'Switzerland', 'Sweden', 'Norway', 'Netherlands'))
-ggsave('~/Videos/update/d.png',
-       width = 1280 / 150,
-       height = 720 / 150)
+# ggsave('~/Videos/update/d.png',
+#        width = 1280 / 150,
+#        height = 720 / 150)
 ```
 
 
@@ -137,9 +236,9 @@ ggplot(data = pd,
   labs(x = 'Date',
        y = 'Deaths',
        title = 'COVID-19 deaths')
-ggsave('~/Videos/update/e.png',
-       width = 1280 / 150,
-       height = 720 / 150)
+# ggsave('~/Videos/update/e.png',
+#        width = 1280 / 150,
+#        height = 720 / 150)
 ```
 
 
@@ -168,9 +267,9 @@ ggplot(data = pd,
                      values = c('red', 'black')) +
   theme(legend.text = element_text(size = 25),
         legend.position = 'top')
-ggsave('~/Videos/update/f.png',
-       width = 1280 / 150,
-       height = 720 / 150)
+# ggsave('~/Videos/update/f.png',
+#        width = 1280 / 150,
+#        height = 720 / 150)
 ```
 
 
@@ -178,9 +277,9 @@ ggsave('~/Videos/update/f.png',
 
 ```{r}
 plot_day_zero(countries = c('Korea, South', 'Japan', 'China', 'Singapore'))
-ggsave('~/Videos/update/g.png',
-       width = 1280 / 150,
-       height = 720 / 150)
+# ggsave('~/Videos/update/g.png',
+#        width = 1280 / 150,
+#        height = 720 / 150)
 ```
 
 
