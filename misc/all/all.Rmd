@@ -1,0 +1,1220 @@
+---
+title: "All charts"
+author: "www.databrew.cc"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    code_folding: "hide"
+---
+
+
+```{r setup, include=FALSE, echo = FALSE}
+# Basic knitr options
+library(knitr)
+opts_chunk$set(comment = NA, 
+               # echo = FALSE, 
+               warning = FALSE, 
+               message = FALSE, 
+               error = TRUE, 
+               cache = FALSE,
+               # fig.width = 8.64,
+               # fig.height = 4.86,
+               fig.path = 'figures/')
+```
+
+```{r}
+## Load libraries
+library(covid19)
+library(ggplot2)
+library(lubridate)
+library(dplyr)
+library(ggplot2)
+library(sp)
+library(raster)
+library(viridis)
+library(ggthemes)
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+```
+
+
+
+Since trajectories are very unstable when cases are low, we'll exclude from our analysis the first few days, and will only count as "outbreak" once a country reaches 150 or more cumulative cases.
+
+```{r}
+# Doubling time
+n_cases_start = 150
+countries = c('Italy', 'Spain', 'France', 'Germany', 'Italy', 'Switzerland', 'Denmark', 'US', 'United Kingdom', 'Norway')
+# countries <- sort(unique(df_country$country))
+out_list <- curve_list <-  list()
+counter <- 0
+for(i in 1:length(countries)){
+  message(i)
+  this_country <- countries[i]
+  sub_data <-df_country %>% filter(country == this_country)
+  # Only calculate on countries with n_cases_start or greater cases,
+  # starting at the first day at n_cases_start or greater
+  ok <- max(sub_data$confirmed_cases, na.rm = TRUE) >= n_cases_start
+  if(ok){
+    counter <- counter + 1
+    pd <- sub_data %>%
+      filter(!is.na(confirmed_cases)) %>%
+      mutate(start_date = min(date[confirmed_cases >= n_cases_start])) %>%
+      mutate(days_since = date - start_date) %>%
+      filter(days_since >= 0) %>%
+      mutate(days_since = as.numeric(days_since))
+    fit <- lm(log(confirmed_cases) ~ days_since, data = pd) 
+    # plot(pd$days_since, log(pd$cases))
+    # abline(fit)
+    ## Slope
+    curve <- fit$coef[2]
+    
+    # Predict days ahead
+    fake <- tibble(days_since = seq(0, max(pd$days_since) + 5, by = 1))
+    fake <- left_join(fake, pd %>% dplyr::select(days_since, confirmed_cases, date))
+    fake$predicted <- exp(predict(fit, newdata = fake))
+    
+    # Doubling time
+    dt <- log(2)/fit$coef[2]
+    out <- tibble(country = this_country,
+                  doubling_time = dt,
+                  slope = curve)
+    out_list[[counter]] <- out
+    curve_list[[counter]] <- fake %>% mutate(country = this_country)
+  }
+}
+done <- bind_rows(out_list)
+print(done)
+curves <- bind_rows(curve_list)
+# Get curves back in exponential form
+# curves$curve <- exp(curves$curve)
+
+# Join doubling time to curves
+joined <- left_join(curves, done)
+
+# Get rid of Italy future (since it's the "leader")
+joined <- joined %>%
+  filter(country != 'Italy' |
+           date <= (Sys.Date() -1))
+
+
+# Make long format
+long <- joined %>% 
+  dplyr::select(date, days_since, country, confirmed_cases, predicted, doubling_time) %>%
+  tidyr::gather(key, value, confirmed_cases:predicted) %>%
+  mutate(key = Hmisc::capitalize(gsub('_', ' ', key))) %>%
+  mutate(key = ifelse(key == 'Predicted', 'Predicted (based on current doubling time)', key))
+```
+
+
+The below chart shows the trajectories in terms of number of cases in Europe in red, and the predicted trajectories in black. The black line assumes that the doubling rate will stay constant.
+
+
+
+```{r, fig.height = 9}
+cols <- c('red', 'black')
+ggplot(data = long,
+       aes(x = days_since,
+           y = value,
+           lty = key,
+           color = key)) +
+  geom_line(data = long %>% filter(key != 'Confirmed cases'),
+            size = 1.2, alpha = 0.8) +
+  geom_point(data = long %>% filter(key == 'Confirmed cases')) +
+  geom_line(data = long %>% filter(key == 'Confirmed cases'),
+            size = 0.8) +
+  facet_wrap(~paste0(country, '\n',
+                     '(doubling time: ', 
+                     round(doubling_time, digits = 1), ' days)'), scales = 'free') +
+  theme_simple() +
+  scale_linetype_manual(name ='',
+                        values = c(1,2)) +
+  scale_color_manual(name = '',
+                     values = cols) +
+  theme(legend.position = 'top') +
+  labs(x = 'Days since first day at >150 cumulative cases',
+       y = 'Cases',
+       title = 'COVID-19 CASES: ("predicted" assumes no change in doubling time)',
+       caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
+       subtitle = '(Doubling time calculated since first day at >150 cumulative cases)') +
+    theme(strip.text = element_text(size = 13),
+          plot.title = element_text(size = 15))
+```
+
+Since Italy is "leading the way", it's helpful to also compare each country to Italy. Let's see that. 
+
+```{r, fig.height = 9}
+# Overlay Italy
+ol1 <- joined %>% filter(!country %in% 'Italy')
+ol2 <- joined %>% filter(country == 'Italy') %>% dplyr::rename(Italy = confirmed_cases) %>%
+  dplyr::select(Italy, days_since)
+ol <- left_join(ol1, ol2) %>%
+  dplyr::select(days_since, date, country, confirmed_cases, predicted, Italy,doubling_time)
+ol <- tidyr::gather(ol, key, value, confirmed_cases: Italy) %>%
+  mutate(key = Hmisc::capitalize(gsub('_', ' ', key))) %>%
+  mutate(key = ifelse(key == 'Predicted', 'Predicted (based on current doubling time)', key))
+
+cols <- c('red', 'blue', 'black')
+ggplot(data = ol,
+       aes(x = days_since,
+           y = value,
+           lty = key,
+           color = key)) +
+  geom_line(data = ol %>% filter(!key %in% c('Confirmed cases', 'Italy')),
+            size = 1.2, alpha = 0.8) +
+    geom_line(data = ol %>% filter(key %in% c('Italy')),
+            size = 0.8, alpha = 0.8) +
+  geom_point(data = ol %>% filter(key == 'Confirmed cases')) +
+  geom_line(data = ol %>% filter(key == 'Confirmed cases'),
+            size = 0.8) +
+  facet_wrap(~paste0(country, '\n',
+                     '(doubling time: ', 
+                     round(doubling_time, digits = 1), ' days)'), scales = 'free') +
+  theme_simple() +
+  scale_linetype_manual(name ='',
+                        values = c(1,6,2)) +
+  scale_color_manual(name = '',
+                     values = cols) +
+  theme(legend.position = 'top') +
+  labs(x = 'Days since first day at >150 cumulative cases',
+       y = 'Cases',
+       title = 'COVID-19 CASES: ("predicted" assumes no change in doubling time)',
+       caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
+       subtitle = '(Doubling time calculated since first day at >150 cumulative cases)') +
+    theme(strip.text = element_text(size = 13),
+          plot.title = element_text(size = 15))
+```
+
+In the above, what's striking is how many places have trajectories that are _worse_ than Italy's. Yes, Italy has more cases, but it's doubling time is less. Either that changes soon, or these other countries will soon have more cases than Italy.
+
+
+## Deaths or cases?
+
+The number of cases is not necessarily the best indicator for the severity of an outbreak of this nature. Why? Because (a) testing rates and protocols are different by place and (b) testing rates are different by time (since health services are changing their approaches as things develop). In other words, when we compare the number of cases by place and time, we are introducing significant bias.
+
+Using deaths to gauge the magnitude of the outbreak is also problematic. Death rates are differential by age, so the number of deaths depends on a country's population period, or age structure. Also, death rates will be a function of health services, which are not of the same quality every where. And, of course, like cases, we don't necessarily know about all of the deaths that occur because of COVID-19.
+
+Still, there's an argument that death rates have _less_ bias than case rates because deaths are easier to identify than cases. Let's accept that argument, for the time being, and have a look at death rates by country.
+
+```{r}
+# Doubling time
+n_deaths_start = 5
+countries = c('Italy', 'Spain', 'France', 'Italy', 'Switzerland', 'Denmark', 'US', 'United Kingdom', 'Norway', 'Germany')
+# countries <- sort(unique(df_country$country))
+
+make_double_time <- function(the_country = 'Spain',
+                             n_deaths_start = 5,
+                             time_ahead = 5){
+   sub_data <-df_country %>% filter(country == the_country)
+  # Only calculate on countries with n_cases_start or greater cases,
+  # starting at the first day at n_cases_start or greater
+  ok <- max(sub_data$deaths, na.rm = TRUE) >= n_deaths_start
+  if(ok){
+    counter <- counter + 1
+    pd <- sub_data %>%
+      filter(!is.na(deaths)) %>%
+      mutate(start_date = min(date[deaths >= n_deaths_start])) %>%
+      mutate(days_since = date - start_date) %>%
+      filter(days_since >= 0) %>%
+      mutate(days_since = as.numeric(days_since))
+    fit <- lm(log(deaths) ~ days_since, data = pd) 
+    # plot(pd$days_since, log(pd$cases))
+    # abline(fit)
+    ## Slope
+    # curve <- fit$coef[2]
+    
+    # Predict days ahead
+    day0 <- pd$date[pd$days_since == 0]
+    fake <- tibble(days_since = seq(0, max(pd$days_since) + time_ahead, by = 1))
+    fake <- fake %>%mutate(date = seq(day0, day0+max(fake$days_since), by = 1))
+    fake <- left_join(fake, pd %>% dplyr::select(days_since, deaths, date))
+    fake$predicted <- exp(predict(fit, newdata = fake))
+    ci <- exp(predict(fit, newdata = fake, interval = 'prediction'))
+    fake$lwr <- ci[,'lwr']
+    fake$upr <- ci[,'upr']
+    # Doubling time
+    dt <- log(2)/fit$coef[2]
+    fake %>% mutate(country = the_country) %>% mutate(doubling_time = dt)
+  }
+}
+
+plot_double_time <- function(data, ylog = F){
+  the_labs <- labs(x = 'Date',
+                   y = 'Deaths',
+                   title = paste0('Predicted deaths in ', data$country[1]),
+                   subtitle = 'Basic log-linear model assuming no change in growth trajectory since first day at >5 deaths')
+  long <- data %>%
+    tidyr::gather(key, value, deaths:predicted) %>%
+    mutate(key = Hmisc::capitalize(key))
+  g <- ggplot() +
+        geom_ribbon(data = data %>% filter(date > max(long$date[!is.na(long$value) & long$key == 'Deaths'])),
+                aes(x = date,
+                    ymax = upr,
+                    ymin = lwr),
+                alpha =0.6,
+                fill = 'darkorange') +
+    geom_line(data = long,
+              aes(x = date,
+                  y = value,
+                  group = key,
+                  lty = key)) +
+    geom_point(data = long %>% filter(key == 'Deaths'),
+               aes(x = date,
+                   y = value)) +
+    theme_simple() +
+    theme(legend.position = 'none',
+          legend.title = element_blank()) +
+    the_labs
+  if(ylog){
+    g <- g + scale_y_log10()
+  }
+  return(g)
+}
+data <- make_double_time(n_deaths_start = 130)
+plot_double_time(data)
+
+```
+
+```{r}
+out_list <- curve_list <-  list()
+counter <- 0
+for(i in 1:length(countries)){
+  message(i)
+  this_country <- countries[i]
+  sub_data <-df_country %>% filter(country == this_country)
+  # Only calculate on countries with n_cases_start or greater cases,
+  # starting at the first day at n_cases_start or greater
+  ok <- max(sub_data$deaths, na.rm = TRUE) >= n_deaths_start
+  if(ok){
+    counter <- counter + 1
+    pd <- sub_data %>%
+      filter(!is.na(deaths)) %>%
+      mutate(start_date = min(date[deaths >= n_deaths_start])) %>%
+      mutate(days_since = date - start_date) %>%
+      filter(days_since >= 0) %>%
+      mutate(days_since = as.numeric(days_since))
+    fit <- lm(log(deaths) ~ days_since, data = pd) 
+    # plot(pd$days_since, log(pd$cases))
+    # abline(fit)
+    ## Slope
+    # curve <- fit$coef[2]
+    
+    # Predict days ahead
+    fake <- tibble(days_since = seq(0, max(pd$days_since) + 5, by = 1))
+    fake <- left_join(fake, pd %>% dplyr::select(days_since, deaths, date))
+    fake$predicted <- exp(predict(fit, newdata = fake))
+    
+    # Doubling time
+    dt <- log(2)/fit$coef[2]
+    out <- tibble(country = this_country,
+                  doubling_time = dt)
+    out_list[[counter]] <- out
+    curve_list[[counter]] <- fake %>% mutate(country = this_country)
+  }
+}
+done <- bind_rows(out_list)
+curves <- bind_rows(curve_list)
+# Get curves back in exponential form
+# curves$curve <- exp(curves$curve)
+
+# Join doubling time to curves
+joined <- left_join(curves, done)
+
+# Get rid of Italy future (since it's the "leader")
+joined <- joined %>%
+  filter(country != 'Italy' |
+           date <= (Sys.Date() -1))
+
+
+# Make long format
+long <- joined %>% 
+  dplyr::select(date, days_since, country, deaths, predicted, doubling_time) %>%
+  tidyr::gather(key, value, deaths:predicted) %>%
+  mutate(key = Hmisc::capitalize(gsub('_', ' ', key))) %>%
+  mutate(key = ifelse(key == 'Predicted', 'Predicted (based on current doubling time)', key))
+```
+
+```{r, fig.height = 7}
+cols <- c('red', 'black')
+sub_data <-  long %>% filter(country != 'US')
+ggplot(data = sub_data,
+       aes(x = days_since,
+           y = value,
+           lty = key,
+           color = key)) +
+  geom_line(data = sub_data %>% filter(key != 'Deaths'),
+            size = 1.2, alpha = 0.8) +
+  geom_point(data = sub_data %>% filter(key == 'Deaths')) +
+  geom_line(data = sub_data %>% filter(key == 'Deaths'),
+            size = 0.8) +
+  facet_wrap(~paste0(country, '\n',
+                     '(doubling time: ', 
+                     round(doubling_time, digits = 1), ' days)'), scales = 'free') +
+  theme_simple() +
+  scale_linetype_manual(name ='',
+                        values = c(1,2)) +
+  scale_color_manual(name = '',
+                     values = cols) +
+  theme(legend.position = 'top') +
+  labs(x = 'Days since first day at >5 cumulative deaths',
+       y = 'Deaths',
+       title = 'COVID-19 DEATHS: ("predicted" assumes no change in doubling time)',
+       caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
+       subtitle = '(Doubling time calculated since first day at >5 cumulative deaths)') +
+    theme(strip.text = element_text(size = 13),
+          plot.title = element_text(size = 15))
+```
+
+
+
+
+Let's again overlay Italy.
+
+```{r, fig.height = 7}
+# Overlay Italy
+ol1 <- joined %>% filter(!country %in% 'Italy')
+ol2 <- joined %>% filter(country == 'Italy') %>% dplyr::rename(Italy = deaths) %>%
+  dplyr::select(Italy, days_since)
+ol <- left_join(ol1, ol2) %>%
+  dplyr::select(days_since, date, country, deaths, predicted, Italy,doubling_time)
+ol <- tidyr::gather(ol, key, value, deaths: Italy) %>%
+  mutate(key = Hmisc::capitalize(gsub('_', ' ', key))) %>%
+  mutate(key = ifelse(key == 'Predicted', 'Predicted (based on current doubling time)', key))
+
+cols <- c('red', 'blue', 'black')
+sub_data <- ol %>% 
+  filter(!(key == 'Predicted (based on current doubling time)' &
+             country == 'Spain' &
+             days_since > 13))
+ggplot(data = sub_data,
+       aes(x = days_since,
+           y = value,
+           lty = key,
+           color = key)) +
+  geom_line(data = sub_data %>% filter(!key %in% c('Deaths', 'Italy')),
+            size = 1.2, alpha = 0.8) +
+    geom_line(data = sub_data %>% filter(key %in% c('Italy')),
+            size = 0.8, alpha = 0.8) +
+  geom_point(data = sub_data %>% filter(key == 'Deaths')) +
+  geom_line(data = sub_data %>% filter(key == 'Deaths'),
+            size = 0.8) +
+  facet_wrap(~paste0(country, '\n',
+                     '(doubling time: ', 
+                     round(doubling_time, digits = 1), ' days)'), scales = 'free') +
+  theme_simple() +
+  scale_linetype_manual(name ='',
+                        values = c(1,6,2)) +
+  scale_color_manual(name = '',
+                     values = cols) +
+  scale_y_log10() +
+  theme(legend.position = 'top') +
+  labs(x = 'Days since first day at >5 deaths',
+       y = 'Deaths',
+       title = 'COVID-19 DEATHS: ("predicted" assumes no change in doubling time)',
+       caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
+       subtitle = '(Doubling time calculated since first day at >5 cumulative deaths)') +
+    theme(strip.text = element_text(size = 13),
+          plot.title = element_text(size = 15)) 
+```
+
+
+
+
+Let's look just at Spain
+
+```{r, fig.height = 7}
+# Overlay Italy
+ol1 <- joined %>% filter(!country %in% 'Italy',
+                         country == 'Spain')
+ol2 <- joined %>% filter(country == 'Italy') %>% dplyr::rename(Italy = deaths) %>%
+  dplyr::select(Italy, days_since)
+ol <- left_join(ol1, ol2) %>%
+  dplyr::select(days_since, date, country, deaths, predicted, Italy,doubling_time)
+ol <- tidyr::gather(ol, key, value, deaths: Italy) %>%
+  mutate(key = Hmisc::capitalize(gsub('_', ' ', key))) %>%
+  mutate(key = ifelse(key == 'Predicted', 'Predicted (based on current doubling time)', 
+                      ifelse(key == 'Deaths', 'Spain', key)))
+
+cols <- c('blue',  'black', 'red')
+ggplot(data = ol,
+       aes(x = days_since,
+           y = value,
+           lty = key,
+           color = key)) +
+  geom_line(data = ol %>% filter(!key %in% c('Deaths', 'Italy')),
+            size = 1.2, alpha = 0.8) +
+    geom_line(data = ol %>% filter(key %in% c('Italy')),
+            size = 0.8, alpha = 0.8) +
+  # geom_point(data = ol %>% filter(key == 'Deaths')) +
+    geom_point(data = ol %>% filter(country == 'Spain',
+                                    key == 'Spain'), size = 4, alpha = 0.6) +
+
+  geom_line(data = ol %>% filter(key == 'Deaths'),
+            size = 0.8) +
+  # facet_wrap(~paste0(country, '\n',
+  #                    '(doubling time: ', 
+  #                    round(doubling_time, digits = 1), ' days)'), scales = 'free') +
+  theme_simple() +
+  scale_linetype_manual(name ='',
+                        values = c(1,6,1)) +
+  scale_color_manual(name = '',
+                     values = cols) +
+  scale_y_log10() +
+  theme(legend.position = 'top') +
+  labs(x = 'Days since first day at >5 deaths',
+       y = 'Deaths',
+       title = 'COVID-19 DEATHS: ("predicted" assumes no change in doubling time)',
+       caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
+       subtitle = '(Doubling time calculated since first day at >5 cumulative deaths)') +
+    theme(strip.text = element_text(size = 13),
+          plot.title = element_text(size = 15),
+          axis.title = element_text(size = 18))
+```
+
+
+
+## The importance of lag
+
+Things are changing very rapidly. And measures being taken by these countries will have an impact on the outbreak.
+
+But it's important to remember that there is a lag between when an intervention takes place and when its effect is notable. Because of the incubation period - the number of days between someone getting infected and becoming sick - what we do today won't really have an effect until next weekend. And the clinical cases that present today are among people who got infected a week ago. 
+
+Disease control measures work. We can see that clearly in the case of Hubei, Wuhan, Iran, Japan. And they will work in Europe too. But because many of these measures were implemented very recently, we won't likely see a major effect for at least a few more days.
+
+In the mean time, it's important to practice social distancing. Stay away from others to keep both you and others safe. Listen to Health Authorities. Take this very seriously.
+
+# Spain and Italy regions
+
+```{r}
+# Madrid vs Lombardy deaths
+n_death_start <- 5
+pd <- esp_df %>%
+  # filter(ccaa == 'Madrid') %>%
+  dplyr::select(date, ccaa, cases, deaths) %>%
+  bind_rows(ita %>%
+              # filter(ccaa == 'Lombardia') %>%
+              dplyr::select(date, ccaa, cases, deaths)) %>%
+  arrange(date) %>%
+  group_by(ccaa) %>%
+  mutate(first_n_death = min(date[deaths >= n_death_start])) %>%
+  ungroup %>%
+  mutate(days_since_n_deaths = date - first_n_death) %>%
+  filter(is.finite(days_since_n_deaths))
+
+pd$country <- pd$ccaa
+pd$confirmed_cases <- pd$cases
+countries <- sort(unique(pd$country))
+out_list <- curve_list <-  list()
+counter <- 0
+for(i in 1:length(countries)){
+  message(i)
+  this_country <- countries[i]
+  sub_data <- pd %>% filter(country == this_country)
+  # Only calculate on countries with n_cases_start or greater cases,
+  # starting at the first day at n_cases_start or greater
+  # ok <- max(sub_data$deaths, na.rm = TRUE) >= n_deaths_start
+  ok <- length(which(sub_data$deaths >= n_deaths_start))
+  if(ok){
+    counter <- counter + 1
+    sub_pd <- sub_data %>%
+      filter(!is.na(deaths)) %>%
+      mutate(start_date = min(date[deaths >= n_deaths_start])) %>%
+      mutate(days_since = date - start_date) %>%
+      filter(days_since >= 0) %>%
+      mutate(days_since = as.numeric(days_since))
+    fit <- lm(log(deaths) ~ days_since, data = sub_pd) 
+    # plot(pd$days_since, log(pd$cases))
+    # abline(fit)
+    ## Slope
+    # curve <- fit$coef[2]
+    
+    # Predict days ahead
+    fake <- tibble(days_since = seq(0, max(sub_pd$days_since) + 5, by = 1))
+    fake <- left_join(fake, sub_pd %>% dplyr::select(days_since, deaths, date))
+    fake$predicted <- exp(predict(fit, newdata = fake))
+    
+    # Doubling time
+    dt <- log(2)/fit$coef[2]
+    out <- tibble(country = this_country,
+                  doubling_time = dt)
+    out_list[[counter]] <- out
+    curve_list[[counter]] <- fake %>% mutate(country = this_country)
+  }
+}
+done <- bind_rows(out_list)
+curves <- bind_rows(curve_list)
+# Get curves back in exponential form
+# curves$curve <- exp(curves$curve)
+
+# Join doubling time to curves
+joined <- left_join(curves, done)
+
+
+# Make long format
+long <- joined %>% 
+  dplyr::select(date, days_since, country, deaths, predicted, doubling_time) %>%
+  tidyr::gather(key, value, deaths:predicted) %>%
+  mutate(key = Hmisc::capitalize(gsub('_', ' ', key))) %>%
+  mutate(key = ifelse(key == 'Predicted', 'Predicted (based on current doubling time)', key))
+
+# Remove those with not enough data to have a doubling time yet
+long <- long %>% filter(!is.na(doubling_time))
+```
+
+```{r, fig.height = 7}
+text_size <- 12
+
+cols <- c('red', 'black')
+ggplot(data = long,
+       aes(x = days_since,
+           y = value,
+           lty = key,
+           color = key)) +
+  geom_line(data = long %>% filter(key != 'Deaths'),
+            size = 1.2, alpha = 0.8) +
+  geom_point(data = long %>% filter(key == 'Deaths')) +
+  geom_line(data = long %>% filter(key == 'Deaths'),
+            size = 0.8) +
+  facet_wrap(~paste0(country, '\n',
+                     '(doubling time: ', 
+                     round(doubling_time, digits = 1), ' days)'), scales = 'free') +
+  theme_simple() +
+  scale_y_log10() +
+  scale_linetype_manual(name ='',
+                        values = c(1,2)) +
+  scale_color_manual(name = '',
+                     values = cols) +
+  theme(legend.position = 'top') +
+  labs(x = 'Days since first day at >150 cumulative cases',
+       y = 'Deaths',
+       title = 'COVID-19 DEATHS: ("predicted" assumes no change in doubling time)',
+       caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
+       subtitle = '(Doubling time calculated since first day at >5 cumulative deaths)') +
+    theme(strip.text = element_text(size = text_size * 0.75),
+          plot.title = element_text(size = 15))
+```
+
+
+Let's overlay Lombardy
+
+
+```{r, fig.height = 9, fig.width = 10}
+# Overlay Italy
+ol1 <- joined %>% filter(!country %in% 'Lombardia')
+ol2 <- joined %>% filter(country == 'Lombardia') %>% dplyr::rename(Lombardia = deaths) %>%
+  dplyr::select(Lombardia, days_since)
+ol <- left_join(ol1, ol2) %>%
+  dplyr::select(days_since, date, country, deaths, predicted, Lombardia,doubling_time)
+ol <- tidyr::gather(ol, key, value, deaths: Lombardia) %>%
+  mutate(key = Hmisc::capitalize(gsub('_', ' ', key))) %>%
+  mutate(key = ifelse(key == 'Predicted', 'Predicted (based on current doubling time)', key))
+
+# Remove those with not enough data to have a doubling time yet
+ol <- ol %>% filter(!is.na(doubling_time))
+
+cols <- c('red', 'blue', 'black')
+ggplot(data = ol,
+       aes(x = days_since,
+           y = value,
+           lty = key,
+           color = key)) +
+  scale_y_log10() +
+  geom_line(data = ol %>% filter(!key %in% c('Deaths', 'Italy')),
+            size = 1.2, alpha = 0.8) +
+    geom_line(data = ol %>% filter(key %in% c('Lombardia')),
+            size = 0.5, alpha = 0.8) +
+  geom_point(data = ol %>% filter(key == 'Deaths')) +
+  geom_line(data = ol %>% filter(key == 'Deaths'),
+            size = 0.8) +
+  facet_wrap(~paste0(country, '\n',
+                     '(doubling time: ', 
+                     round(doubling_time, digits = 1), ' days)'), scales = 'free') +
+  theme_simple() +
+  scale_linetype_manual(name ='',
+                        values = c(1,6,2)) +
+  scale_color_manual(name = '',
+                     values = cols) +
+  theme(legend.position = 'top') +
+  labs(x = 'Days since first day at >5 deaths',
+       y = 'Deaths',
+       title = 'COVID-19 DEATHS: ("predicted" assumes no change in doubling time)',
+       caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
+       subtitle = '(Doubling time calculated since first day at >5 cumulative deaths)') +
+    theme(strip.text = element_text(size = text_size * 0.75),
+          plot.title = element_text(size = 15))
+```
+
+Show only Spanish regions vs. Lombardy
+
+
+```{r, fig.height = 9, fig.width = 10}
+text_size <- 14
+
+# Overlay Italy
+ol1 <- joined %>% filter(!country %in% 'Lombardia')
+ol2 <- joined %>% filter(country == 'Lombardia') %>% dplyr::rename(Lombardia = deaths) %>%
+  dplyr::select(Lombardia, days_since)
+ol <- left_join(ol1, ol2) %>%
+  dplyr::select(days_since, date, country, deaths, predicted, Lombardia,doubling_time)
+ol <- tidyr::gather(ol, key, value, deaths: Lombardia) %>%
+  mutate(key = Hmisc::capitalize(gsub('_', ' ', key))) %>%
+  mutate(key = ifelse(key == 'Predicted', 'Predicted (based on current doubling time)', key))
+
+# Remove those with not enough data to have a doubling time yet
+ol <- ol %>% filter(!is.na(doubling_time))
+
+# Only Spain
+ol <- ol %>% filter(country %in% esp_df$ccaa) %>%
+  filter(!country %in% 'Aragón')
+
+cols <- c('red', 'blue', 'black')
+ggplot(data = ol,
+       aes(x = days_since,
+           y = value,
+           lty = key,
+           color = key)) +
+  scale_y_log10() +
+  geom_line(data = ol %>% filter(!key %in% c('Deaths', 'Lombardia')),
+            size = 1.2, alpha = 0.8) +
+    geom_line(data = ol %>% filter(key %in% c('Lombardia')),
+            size = 0.5, alpha = 0.8) +
+  geom_point(data = ol %>% filter(key == 'Deaths')) +
+  geom_line(data = ol %>% filter(key == 'Deaths'),
+            size = 0.8) +
+  facet_wrap(~paste0(country, '\n',
+                     '(doubling time: ', 
+                     round(doubling_time, digits = 1), ' days)'), scales = 'free') +
+  theme_simple() +
+  scale_linetype_manual(name ='',
+                        values = c(1,6,2)) +
+  scale_color_manual(name = '',
+                     values = cols) +
+  theme(legend.position = 'top') +
+  labs(x = 'Days since first day at >5 deaths',
+       y = 'Deaths',
+       title = 'COVID-19 DEATHS: ("predicted" assumes no change in doubling time)',
+       caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
+       subtitle = '(Doubling time calculated since first day at >5 cumulative deaths)') +
+    theme(strip.text = element_text(size = text_size * 1),
+          plot.title = element_text(size = 15))
+```
+
+Same plot but overlayed
+
+
+Same as above, but overlaid
+
+```{r, fig.height = 7}
+text_size <-10
+
+# cols <- c('red', 'black')
+long <- long %>% filter(country %in% c('Lombardia',
+                                       'Emilia Romagna') |
+                          country %in% esp_df$ccaa) %>%
+  filter(country != 'Aragón')
+places <- sort(unique(long$country))
+
+cols <- colorRampPalette(RColorBrewer::brewer.pal(n = 7, 'Spectral'))(length(places))
+cols[which(places == 'Madrid')] <- 'red'
+cols[which(places == 'Cataluña')] <- 'purple'
+cols[which(places == 'Lombardia')] <- 'darkorange'
+cols[which(places == 'Emilia Romagna')] <- 'darkgreen'
+
+long$key <- ifelse(long$key != 'Deaths', 'Predicted', long$key)
+long$key <- ifelse(long$key == 'Predicted', 'Muertes\nprevistas',
+                   'Muertes\nobservadas')
+
+
+# Keep only Madrid, Lombardy, Emilia Romagna
+long <- long %>%
+  filter(country %in% c('Madrid',
+                        'Lombardia',
+                        'Emilia Romagna'))
+
+ggplot(data = long,
+       aes(x = days_since,
+           y = value,
+           lty = key,
+           color = country)) +
+  geom_point(data = long %>% filter(key == 'Muertes\nobservadas'), size = 2, alpha = 0.8) +
+  geom_line(data = long %>% filter(key == 'Muertes\nprevistas'), size = 1, alpha = 0.7) +
+  geom_line(data = long %>% filter(key != 'Muertes\nprevistas'), size = 0.8) +
+  theme_simple() +
+  scale_y_log10() +
+  scale_linetype_manual(name ='',
+                        values = c(1,4)) +
+  scale_color_manual(name = '',
+                     values = cols) +
+  theme(legend.position = 'top') +
+  # labs(x = 'Days since first day at 5 or more cumulative deaths',
+  #      y = 'Deaths',
+  #      title = 'COVID-19 DEATHS: ("predicted" assumes no change in doubling time)',
+  #      caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
+  #      subtitle = '(Doubling time calculated since first day at >5 cumulative deaths)') +
+    labs(x = 'Días desde el primer día a 5 o más muertes acumuladas',
+       y = 'Muertes (escala logarítmica)',
+       title = 'Muertes por COVID-19',
+       caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
+       subtitle = '(Tasa de crecimiento calculada desde el primer día a 5 o más muertes acumuladas)\n(Muertes "previstas": suponiendo que no hay cambios en la tasa de crecimiento)') +
+    theme(strip.text = element_text(size = text_size * 0.75),
+          plot.title = element_text(size = text_size * 3),
+          legend.text = element_text(size = text_size * 1.5),
+          axis.title = element_text(size = text_size * 2),
+          axis.text = element_text(size = text_size * 2))
+```
+
+
+
+```{r}
+# cols <- c(cols, 'darkorange')
+# ggplot(data = ol,
+#        aes(x = days_since,
+#            y = value,
+#            lty = key,
+#            color = key)) +
+#   scale_y_log10() +
+#   geom_line(aes(color = country)) +
+#   
+#   # geom_line(data = ol %>% filter(!key %in% c('Deaths', 'Italy')),
+#   #           size = 1.2, alpha = 0.8) +
+#   #   geom_line(data = ol %>% filter(key %in% c('Lombardia')),
+#   #           size = 0.5, alpha = 0.8) +
+#   # geom_point(data = ol %>% filter(key == 'Deaths')) +
+#   # geom_line(data = ol %>% filter(key == 'Deaths'),
+#   #           size = 0.8) +
+#   theme_simple() +
+#   scale_linetype_manual(name ='',
+#                         values = c(1,6,2)) +
+#   scale_color_manual(name = '',
+#                      values = cols) +
+#   theme(legend.position = 'top') +
+#   labs(x = 'Days since first day at >5 deaths',
+#        y = 'Deaths',
+#        title = 'COVID-19 DEATHS: ("predicted" assumes no change in doubling time)',
+#        caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
+#        subtitle = '(Doubling time calculated since first day at >5 cumulative deaths)') +
+#     theme(strip.text = element_text(size = text_size * 1),
+#           plot.title = element_text(size = 15))
+```
+
+
+
+
+
+
+
+```{r}
+# Map data preparation
+
+if(!'map.RData' %in% dir()){
+  esp1 <- getData(name = 'GADM', country = 'ESP', level = 1)
+# Remove canary
+esp1 <- esp1[esp1@data$NAME_1 != 'Islas Canarias',]
+espf <- fortify(esp1, region = 'NAME_1')
+
+# Standardize names
+# Convert names
+map_names <- esp1@data$NAME_1
+data_names <- sort(unique(esp_df$ccaa))
+names_df <- tibble(NAME_1 = c('Andalucía',
+ 'Aragón',
+ 'Cantabria',
+ 'Castilla-La Mancha',
+ 'Castilla y León',
+ 'Cataluña',
+ 'Ceuta y Melilla',
+ 'Comunidad de Madrid',
+ 'Comunidad Foral de Navarra',
+ 'Comunidad Valenciana',
+ 'Extremadura',
+ 'Galicia',
+ 'Islas Baleares',
+ 'La Rioja',
+ 'País Vasco',
+ 'Principado de Asturias',
+ 'Región de Murcia'),
+ ccaa = c('Andalucía',
+ 'Aragón',
+ 'Cantabria',
+ 'CLM',
+ 'CyL',
+ 'Cataluña',
+ 'Melilla',
+ 'Madrid',
+ 'Navarra',
+ 'C. Valenciana',
+ 'Extremadura',
+ 'Galicia',
+ 'Baleares',
+ 'La Rioja',
+ 'País Vasco',
+ 'Asturias',
+ 'Murcia'))
+
+
+espf <- left_join(espf %>% dplyr::rename(NAME_1 = id), names_df)
+centroids <- data.frame(coordinates(esp1))
+names(centroids) <- c('long', 'lat')
+centroids$NAME_1 <- esp1$NAME_1
+centroids <- centroids %>% left_join(names_df)
+
+# Get random sampling points
+
+  random_list <- list()
+  for(i in 1:nrow(esp1)){
+    message(i)
+    shp <- esp1[i,]
+    # bb <- bbox(shp)
+    this_ccaa <- esp1@data$NAME_1[i]
+    # xs <- runif(n = 500, min = bb[1,1], max = bb[1,2])
+    # ys <- runif(n = 500, min = bb[2,1], max = bb[2,2])
+    # random_points <- expand.grid(long = xs, lat = ys) %>%
+    #   mutate(x = long,
+    #          y = lat)
+    # coordinates(random_points) <- ~x+y
+    # proj4string(random_points) <- proj4string(shp)
+    # get ccaa
+    message('getting locations of randomly generated points')
+    # polys <- over(random_points,polygons(shp))
+    # polys <- as.numeric(polys)
+    random_points <- spsample(shp, n = 20000, type = 'random')
+    random_points <- data.frame(random_points)
+    random_points$NAME_1 <-  this_ccaa
+    random_points <- left_join(random_points, names_df) %>% dplyr::select(-NAME_1)
+    random_list[[i]] <- random_points
+  }
+  random_points <- bind_rows(random_list)
+  random_points <- random_points %>% mutate(long = x,
+                                            lat = y)
+
+save(espf,
+     esp1,
+     names_df,
+     centroids,
+     random_points,
+     file = 'map.RData')
+} else {
+  load('map.RData')
+}
+
+# Define a function for adding zerio
+add_zero <- 
+  function (x, n) 
+  {
+    x <- as.character(x)
+    adders <- n - nchar(x)
+    adders <- ifelse(adders < 0, 0, adders)
+    for (i in 1:length(x)) {
+      if (!is.na(x[i])) {
+        x[i] <- paste0(paste0(rep("0", adders[i]), collapse = ""), 
+                       x[i], collapse = "")
+      }
+    }
+    return(x)
+  }
+```
+
+
+```{r}
+remake_world_map <- FALSE
+options(scipen = '999')
+if(remake_world_map){
+  # World map animation
+  world <- map_data('world')
+  # world <- ne_countries(scale = "medium", returnclass = "sf")
+  
+  # Get plotting data
+  pd <- df_country %>%
+    dplyr::select(date, lng, lat, n = confirmed_cases)
+  dates <- sort(unique(pd$date))
+  n_days <- length(dates)
+  # # Define vectors for projection
+  # vec_lon <- seq(30, -20, length = n_days)
+  # vec_lat <- seq(25, 15, length = n_days)
+  
+  dir.create('animation')
+  for(i in 1:n_days){
+    message(i, ' of ', n_days)
+    this_date <- dates[i]
+    # this_lon <- vec_lon[i]
+    # this_lat <- vec_lat[i]
+    # the_crs <-
+    #   paste0("+proj=laea +lat_0=", this_lat,
+    #          " +lon_0=",
+    #          this_lon,
+    #          " +x_0=4321000 +y_0=3210000 +ellps=GRS80 +units=m +no_defs ")
+    sub_data <- pd %>%
+      filter(date == this_date)
+    # coordinates(sub_data) <- ~lng+lat
+    # proj4string(sub_data) <- proj4string(esp1)
+    # # sub_data <- spTransform(sub_data,
+    # #                         the_crs)
+    # coordy <- coordinates(sub_data)
+    # sub_data@data$long <- coordy[,1]
+    # sub_data@data$lat <- coordy[,2]
+  
+    g <- ggplot() +
+      geom_polygon(data = world,
+                   aes(x = long,
+                       y = lat,
+                       group = group),
+                   fill = 'black',
+                   color = 'white',
+                   size = 0.1) +
+      theme_map() +
+          geom_point(data = sub_data %>% filter(n > 0) %>% mutate(Deaths = n),
+                 aes(x = lng,
+                     y = lat,
+                     size = Deaths),
+                 color = 'red',
+                 alpha = 0.6) +
+      geom_point(data = tibble(x = c(0,0), y = c(0,0), Deaths = c(1, 100000)),
+                 aes(x = x,
+                     y = y,
+                     size = Deaths),
+                 color = 'red',
+                 alpha =0.001) +
+      scale_size_area(name = '', breaks = c(100, 1000, 10000, 100000),
+                      max_size = 25
+                      ) +
+    # scale_size_area(name = '', limits = c(1, 10), breaks = c(0, 10, 30, 50, 70, 100, 200, 500)) +
+      labs(title = this_date) +
+      theme(plot.title = element_text(size = 30),
+            legend.text = element_text(size = 15),
+            legend.position = 'left')
+  
+    plot_number <- add_zero(i, 3)
+    ggsave(filename = paste0('animation/', plot_number, '.png'),
+           plot = g,
+           width = 9.5,
+           height = 5.1)
+  }
+  setwd('animation')
+  system('convert -delay 30x100 -loop 0 *.png result.gif')
+  setwd('..')
+
+}
+
+```
+
+## Maps of Spain
+
+```{r}
+
+make_map <- function(var = 'deaths',
+                     date = NULL,
+                     pop = FALSE,
+                     pop_factor = 100000,
+                     points = FALSE){
+  if(is.null(date)){
+    the_date <- max(esp_df$date)
+  } else {
+    the_date <- date
+  }
+  left <- espf
+  right <- esp_df[esp_df$date == the_date,c('ccaa', var)]
+
+  names(right)[ncol(right)] <- 'var'
+  if(pop){
+    right <- left_join(right, esp_pop)
+    right$var <- right$var / right$pop * pop_factor
+  }
+  map <- left_join(left, right)
+  
+  if(points){
+    the_points <- centroids %>%
+      left_join(right)
+    g <- ggplot() +
+      geom_polygon(data = map,
+         aes(x = long,
+             y = lat,
+             group = group),
+         fill = 'black',
+         color = 'white',
+         lwd = 0.4, alpha = 0.8) +
+      geom_point(data = the_points,
+                 aes(x = long,
+                     y = lat,
+                     size = var),
+                 color = 'red',
+                 alpha = 0.7) +
+      scale_size_area(name = '', max_size = 20)
+  } else {
+    cols <- c('#008080','#70a494','#b4c8a8','#f6edbd','#edbb8a','#de8a5a','#ca562c')
+    g <- ggplot(data = map,
+         aes(x = long,
+             y = lat,
+             group = group)) +
+    geom_polygon(aes(fill = var),
+                 lwd = 0.3,
+                 color = 'white') +
+      scale_fill_gradientn(name = '',
+                           colours = cols)
+    # scale_fill_viridis(name = '' ,option = 'magma',
+    #                    direction = -1) 
+  }
+  g +
+    theme_map() +
+    labs(subtitle = paste0('Data as of ', max(esp_df$date)))
+  
+}
+
+
+make_dot_map <- function(var = 'deaths',
+                     date = NULL,
+                     pop = FALSE,
+                     pop_factor = 100,
+                     point_factor = 1,
+                     points = FALSE,
+                     point_color = 'darkred',
+                     point_size = 0.6,
+                     point_alpha = 0.5){
+  
+  
+  if(is.null(date)){
+    the_date <- max(esp_df$date)
+  } else {
+    the_date <- date
+  }
+    right <- esp_df[esp_df$date == the_date,c('ccaa', var)]
+   names(right)[ncol(right)] <- 'var'
+  if(pop){
+    right <- left_join(right, esp_pop)
+    right$var <- right$var / right$pop * pop_factor
+  }
+  map_data <- esp1@data %>%
+    left_join(names_df) %>%
+      left_join(right)
+  map_data$var <- map_data$var / point_factor
+  out_list <- list()
+  for(i in 1:nrow(map_data)){
+    sub_data <- map_data[i,]
+    this_value = round(sub_data$var)
+
+    if(this_value >= 1){
+      this_ccaa = sub_data$ccaa
+      # get some points
+      sub_points <- random_points %>% filter(ccaa == this_ccaa)
+      sampled_points <- sub_points %>% dplyr::sample_n(this_value)
+      out_list[[i]] <- sampled_points
+    }
+  }
+  the_points <- bind_rows(out_list)
+  
+  g <- ggplot() +
+    geom_polygon(data = espf,
+         aes(x = long,
+             y = lat,
+             group = group),
+         fill = 'white',
+         color = 'black',
+         lwd = 0.4, alpha = 0.8) +
+    geom_point(data = the_points,
+               aes(x = long,
+                   y = lat),
+               color = point_color,
+               size = point_size,
+               alpha = point_alpha)
+  g +
+    theme_map() +
+    labs(subtitle = paste0('Data as of ', max(esp_df$date)))
+  
+}
+
+```
+
+### Deaths
+
+#### Absolute number of deaths: points
+
+```{r}
+make_map(var = 'deaths',
+       points = T) +
+  labs(title = 'Number of deaths',
+       caption = '@joethebrew')
+```
+
+#### Absolute number of deaths: choropleth
+
+```{r}
+make_map(var = 'deaths',
+       points = F) +
+  labs(title = 'Number of deaths',
+       caption = '@joethebrew')
+```
+
+
+#### Number of deaths adjusted by population: points
+
+```{r}
+make_map(var = 'deaths', pop = TRUE, points = T) +
+  labs(title = 'Number of deaths per 100,000',
+       caption = '@joethebrew')
+```
+
+
+#### Number of deaths adjusted by population: polygons
+
+```{r}
+make_map(var = 'deaths', pop = TRUE, points = F) +
+  labs(title = 'Number of deaths per 100,000',
+       caption = '@joethebrew')
+```
+
+#### Number of deaths: 1 dot per death
+
+```{r}
+make_dot_map(var = 'deaths', point_size = 0.25) +
+  labs(title = 'COVID-19 deaths: 1 point = 1 death\nImportant: points are random within each CCAA; do not reflect exact location',
+       caption = '@joethebrew')
+```
+
+
+### Cases
+
+#### Absolute number of cases: points
+
+```{r}
+make_map(var = 'confirmed_cases',
+       points = T) +
+  labs(title = 'Number of confirmed cases',
+       caption = '@joethebrew')
+```
+
+#### Absolute number of cases: choropleth
+
+```{r}
+make_map(var = 'confirmed_cases',
+       points = F) +
+  labs(title = 'Number of confirmed cases',
+       caption = '@joethebrew')
+```
+
+
+#### Number of cases adjusted by population: points
+
+```{r}
+make_map(var = 'confirmed_cases', pop = TRUE, points = T) +
+  labs(title = 'Number of confirmed cases per 100,000',
+       caption = '@joethebrew')
+```
+
+
+#### Number of cases adjusted by population: polygons
+
+```{r}
+make_map(var = 'confirmed_cases', pop = TRUE, points = F) +
+  labs(title = 'Number of confirmed cases per 100,000',
+       caption = '@joethebrew')
+```
+
+#### Number of cases: points
+
+```{r}
+make_dot_map(var = 'confirmed_cases',
+             point_size = 0.05, point_alpha = 0.5, point_factor = 10) +
+  labs(title = 'COVID-19 cases: 1 point = 10 cases\nImportant: points are random within each CCAA; do not reflect exact location',
+       caption = '@joethebrew')
+```
+

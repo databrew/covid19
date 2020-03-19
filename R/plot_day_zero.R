@@ -385,7 +385,7 @@ plot_day_zero_esp <- function(ccaa = c('Cataluña', 'Madrid'),
               aes(x = as.numeric(days_since_first_case),
                   y = value)) +
     geom_line(aes(color = country),  alpha = 0.85, size = line_size) +
-    geom_point(aes(color = country), size = line_size, alpha = 0.6) +
+    # geom_point(aes(color = country), size = line_size, alpha = 0.6) +
     theme_bw() +
     scale_color_manual(name = '',
                        values = cols) +

@@ -77,15 +77,26 @@ df <- df %>%
            date < '2020-03-10' |
            !grepl(', ', district))
 
-# Manual update for Spain (JHU data behind)
-# df$confirmed_cases[df$country == 'Spain' & df$date == '2020-03-12'] <- 3050
-# df$deaths[df$country == 'Spain' & df$date == '2020-03-12'] <- 84
-# df$recovered[df$country == 'Spain' & df$date == '2020-03-12']
+# Get most recent Spanish ministry data
+library(gsheet)
+url <- 'https://docs.google.com/spreadsheets/d/15UJWpsW6G7sEImE8aiQ5JrLCtCnbprpztfoEwyTNTEY/edit#gid=810081118'
+esp_df <- gsheet::gsheet2tbl(url)
 
-if(Sys.Date() == '2020-03-18'){
-  df$confirmed_cases[df$country == 'Spain' & df$date == '2020-03-17'] <- 13716
-  df$deaths[df$country == 'Spain' & df$date == '2020-03-17'] <- 598
-  df$recovered[df$country == 'Spain' & df$date == '2020-03-17'] <- NA
+
+# Overwrite Spanish data with more accurate ministry data
+if(overwrite_spain){
+  dfx <- df %>% filter(country == 'Spain' & date >= '2020-03-15') 
+  dfy <- df %>% filter(country != 'Spain' | date < '2020-03-15')
+  dfz <- dfx %>% dplyr::select(date, district, country, lat, lng, recovered) %>%
+    # dont get ahead of ministry
+    filter(date <= max(esp_df$date))
+  right <- esp_df %>%
+    group_by(date) %>%
+    summarise(confirmed_cases = sum(cases, na.rm = TRUE),
+              deaths  = sum(deaths, na.rm = TRUE))
+  dfz <- left_join(dfz, right)
+  df <- bind_rows(dfz, dfy)
+  df <- df %>% arrange(country, district, date)  
 }
 
 
@@ -300,9 +311,6 @@ usethis::use_data(esp_pop, overwrite = TRUE)
 
 
 
-library(gsheet)
-url <- 'https://docs.google.com/spreadsheets/d/15UJWpsW6G7sEImE8aiQ5JrLCtCnbprpztfoEwyTNTEY/edit#gid=810081118'
-esp_df <- gsheet::gsheet2tbl(url)
 
 # # Join with uci
 # esp_df <- left_join(esp_df, esp_uci)
