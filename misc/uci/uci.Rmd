@@ -4,24 +4,51 @@ author: "Brew, Chaccour, García-Basteiro, others?"
 date: "`r Sys.Date()`"
 output:
   html_document:
-    code_folding: "show"
+    code_folding: "hide"
 ---
 
 
 ## Read first: Implicit non-exclusivity agreement
 
 - I (Joe) am working right now only under conditions of non-exclusivity.
-- This means that if a collaborator (you) is working with me, (s)he understands that I may publish, share, or disseminate any ideas we generate together to whomever I deem suitable
-- The condition goes both ways: the collaborator (you) also can share anything I do publicly, or with whomever you deem suitable
+- This means that if a collaborator (you) is working with me, you understand that I may publish, share, or disseminate any COVID-19 info (other than that which is related to private, personal data) to whomever I deem suitable
+- The condition goes both ways: the collaborator (you) also can share publicly anything I do with you, or with whomever you deem suitable
 - The reason for this non-exclusivity pact is principle: the COVID-19 crisis requires extremely fast action, and any delays in publication or dissemination for the purposes of getting an "exclusive" publication, authorship, ownership, recognition, etc. is unacceptable
-- If you don't like non-exclusivity (that is, you want me to "keep secret" any ideas we generate or work on together), that's fine. But find somebody else to work on.
-- Just to be clear: If you are working with me, this means all of our code / data is public and can be shared by any of the collaborators (you and me) with anybody else.
+- If you don't like non-exclusivity (that is, you want me to "keep secret" any ideas we generate or work on together), that's fine. But find somebody else to work with.
+- Just to be clear: If you are working with me, this means all of our code / data is public and can be shared by any of the collaborators (you and me) with anybody else, at any time.
 
-## Question: How soon until Spain runs out of UCI beds?
+## This document
+
+This document seeks to answer the question: how soon until Spain runs out of ICU beds?
+
+Click "Code" to see code snippets.
+
+## The question?
+
+How soon until Spain runs out of UCI beds?
 
 ## Methods
 
-We define some parameters at the state level, generate a simple log-linear predictive model for daily UCI admissions weighted by days ago, and compare the capacity "ceiling" with prediction
+We define some parameters at the state level, generate a simple log-linear predictive model for daily UCI admissions weighted by days ago, and compare the capacity "ceiling" with prediction.
+
+Here are the parameters:
+
+```
+  beds_public = 3508,
+  beds_private = 896,
+  normal_occupancy = 50,
+  need_hospitalization = 15, # percent which requires hospitalization
+  need_uci = 5, # percent which requires uci
+  beds = 4404,
+  average_days_in_uci = 10 # total rough estimate
+```
+
+Here is pseudo-code of model definition:
+
+```
+model = log(daily UCI admission) ~ days, weights = 1 / (1 + today - date)
+```
+
 
 ## Code 
 
@@ -63,9 +90,7 @@ library(rnaturalearthdata)
 p <- list(
   beds_public = 3508,
   beds_private = 896,
-  normal_occupancy = 60,
-  normal_occupancy_public = 60,
-  normal_occupancy_private = 44,
+  normal_occupancy = 50,
   need_hospitalization = 15, # percent which requires hospitalization
   need_uci = 5, # percent which requires uci
   beds = 4404,
@@ -201,6 +226,8 @@ spill_over <- function(data,
 pd <- pd %>% spill_over(days = p$average_days_in_uci)
 ```
 
+# Results
+
 ```{r, fig.height = 7, fig.width = 10}
 already_occupied <- (p$normal_occupancy/100) * p$beds
 total_beds <- p$beds
@@ -260,12 +287,25 @@ ggplot() +
   scale_fill_manual(name = '',
                      values = c('red', 'black')) +
   labs(x = 'Date',
-       y = 'Value',
+       y = 'UCI beds',
        title = 'UCI bed capacity, Spain',
        subtitle = paste0('Based on simple log-linear growth model in daily UCI admissions.\nAssumes an average of ', p$average_days_in_uci, ' days in ICU.'),
-       caption = paste0('Code at https://github.com/databrew/covid19/blob/master/misc/uci/uci.Rmd\nAssumes: ', total_beds, ' total beds, and a', p$normal_occupancy, ' non-COVID19 occupancy rate.')) +
+       caption = paste0('Code at https://github.com/databrew/covid19/blob/master/misc/uci/uci.Rmd\nAssumes: ', total_beds, ' total beds, and a ', p$normal_occupancy, ' non-COVID19 occupancy rate.')) +
   scale_x_date(breaks = sort(unique(plot_data$date)),
                labels = format(sort(unique(plot_data$date)), '%d\n%b'))
 ggsave('~/Desktop/uci.png',
        height = 7, width = 10)
+```
+
+Table of results:
+
+Note: `Predicted including stay-over time` means that amount of people in the UCI taking into account the fact that they stay for `p$average_days_in_uci` days.
+
+```{r}
+pd %>%
+  dplyr::select(date, 
+                `Observed daily admissions` = var,
+                `Predicted daily admissions based on model` = predicted,
+                `Predicted including stay-over time` = predicted_spilled_over) %>%
+  kable
 ```
