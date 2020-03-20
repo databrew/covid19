@@ -441,18 +441,15 @@ summary {
 </div>
 
 
-<div id="read-first-implicit-non-exclusivity-agreement" class="section level2">
-<h2>Read first: Implicit non-exclusivity agreement</h2>
-<ul>
-<li>I (Joe) am working right now only under conditions of non-exclusivity.</li>
-<li>This means that if a collaborator (you) is working with me, you understand that I may publish, share, or disseminate any COVID-19 info (other than that which is related to private, personal data) to whomever I deem suitable</li>
-<li>The condition goes both ways: the collaborator (you) also can share publicly anything I do with you, or with whomever you deem suitable</li>
-<li>The reason for this non-exclusivity pact is principle: the COVID-19 crisis requires extremely fast action, and any delays in publication or dissemination for the purposes of getting an “exclusive” publication, authorship, ownership, recognition, etc. is unacceptable</li>
-<li>This non-exclusivity principile applies to everything we work on together, unless explicitly stated otherwise.</li>
-<li>If you don’t like non-exclusivity (that is, you want me to “keep secret” any ideas we generate or work on together), that’s fine. But find somebody else to work with.</li>
-<li>Just to be clear: If you are working with me, this means all of our code / data is public and can be shared by any of the collaborators (you and me) with anybody else, at any time.</li>
-</ul>
-</div>
+<pre class="r"><code># ## Read first: Implicit non-exclusivity agreement
+# 
+# - I (Joe) am working right now only under conditions of non-exclusivity.
+# - This means that if a collaborator (you) is working with me, you understand that I may publish, share, or disseminate any COVID-19 info (other than that which is related to private, personal data) to whomever I deem suitable
+# - The condition goes both ways: the collaborator (you) also can share publicly anything I do with you, or with whomever you deem suitable
+# - The reason for this non-exclusivity pact is principle: the COVID-19 crisis requires extremely fast action, and any delays in publication or dissemination for the purposes of getting an &quot;exclusive&quot; publication, authorship, ownership, recognition, etc. is unacceptable
+# - This non-exclusivity principile applies to everything we work on together, unless explicitly stated otherwise.
+# - If you don't like non-exclusivity (that is, you want me to &quot;keep secret&quot; any ideas we generate or work on together), that's fine. But find somebody else to work with.
+# - Just to be clear: If you are working with me, this means all of our code / data is public and can be shared by any of the collaborators (you and me) with anybody else, at any time.</code></pre>
 <div id="this-document" class="section level2">
 <h2>This document</h2>
 <p>This document seeks to answer the question: how soon until Spain runs out of ICU beds?</p>
@@ -479,7 +476,7 @@ summary {
 <div id="code" class="section level2">
 <h2>Code</h2>
 <pre class="r"><code>## Load libraries
-library(covid19) #devtools::install_github('databrew/covid19')
+library(covid19)  #devtools::install_github('databrew/covid19')
 library(ggplot2)
 library(lubridate)
 library(dplyr)
@@ -702,12 +699,8 @@ ggplot() +
        height = 7, width = 10)</code></pre>
 <p>Table of results:</p>
 <p>Note: <code>Predicted including stay-over time</code> means that amount of people in the UCI taking into account the fact that they stay for <code>p$average_days_in_uci</code> days.</p>
-<pre class="r"><code>pd %&gt;%
-  dplyr::select(date, 
-                `Observed daily admissions` = var,
-                `Predicted daily admissions based on model` = predicted,
-                `Predicted including stay-over time` = predicted_spilled_over) %&gt;%
-  kable</code></pre>
+<pre class="r"><code>pd %&gt;% dplyr::select(date, `Observed daily admissions` = var, `Predicted daily admissions based on model` = predicted, 
+    `Predicted including stay-over time` = predicted_spilled_over) %&gt;% kable</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -877,7 +870,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeCodeFolding("hide" === "show");
+  window.initializeCodeFolding("show" === "show");
 });
 </script>
 

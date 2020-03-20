@@ -4,19 +4,22 @@ author: "Brew, Chaccour, García-Basteiro, others?"
 date: "`r Sys.Date()`"
 output:
   html_document:
-    code_folding: "hide"
+    code_folding: show
+  pdf_document: default
+  word_document: default
 ---
 
-
-## Read first: Implicit non-exclusivity agreement
-
-- I (Joe) am working right now only under conditions of non-exclusivity.
-- This means that if a collaborator (you) is working with me, you understand that I may publish, share, or disseminate any COVID-19 info (other than that which is related to private, personal data) to whomever I deem suitable
-- The condition goes both ways: the collaborator (you) also can share publicly anything I do with you, or with whomever you deem suitable
-- The reason for this non-exclusivity pact is principle: the COVID-19 crisis requires extremely fast action, and any delays in publication or dissemination for the purposes of getting an "exclusive" publication, authorship, ownership, recognition, etc. is unacceptable
-- This non-exclusivity principile applies to everything we work on together, unless explicitly stated otherwise.
-- If you don't like non-exclusivity (that is, you want me to "keep secret" any ideas we generate or work on together), that's fine. But find somebody else to work with.
-- Just to be clear: If you are working with me, this means all of our code / data is public and can be shared by any of the collaborators (you and me) with anybody else, at any time.
+```{r, eval = FALSE}
+# ## Read first: Implicit non-exclusivity agreement
+# 
+# - I (Joe) am working right now only under conditions of non-exclusivity.
+# - This means that if a collaborator (you) is working with me, you understand that I may publish, share, or disseminate any COVID-19 info (other than that which is related to private, personal data) to whomever I deem suitable
+# - The condition goes both ways: the collaborator (you) also can share publicly anything I do with you, or with whomever you deem suitable
+# - The reason for this non-exclusivity pact is principle: the COVID-19 crisis requires extremely fast action, and any delays in publication or dissemination for the purposes of getting an "exclusive" publication, authorship, ownership, recognition, etc. is unacceptable
+# - This non-exclusivity principile applies to everything we work on together, unless explicitly stated otherwise.
+# - If you don't like non-exclusivity (that is, you want me to "keep secret" any ideas we generate or work on together), that's fine. But find somebody else to work with.
+# - Just to be clear: If you are working with me, this means all of our code / data is public and can be shared by any of the collaborators (you and me) with anybody else, at any time.
+```
 
 ## This document
 
@@ -63,6 +66,9 @@ opts_chunk$set(comment = NA,
                message = FALSE, 
                error = TRUE, 
                cache = FALSE,
+               tidy = TRUE,
+              # tidy.opts=list(width.cutoff=60),
+              # tidy=TRUE,
                # fig.width = 8.64,
                # fig.height = 4.86,
                fig.path = 'figures/')
