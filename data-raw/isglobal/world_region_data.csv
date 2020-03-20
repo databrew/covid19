@@ -11366,6 +11366,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Spain,40,-4,530,11177,491,3379,202,13,ESP
 2020-03-17,NA,Spain,40,-4,1028,13715,598,2538,107,498,ESP
 2020-03-18,NA,Spain,40,-4,1081,17146,767,3431,169,53,ESP
+2020-03-19,NA,Spain,40,-4,1107,19980,1002,2834,235,26,ESP
 2020-01-22,NA,Sri Lanka,7,81,0,0,0,0,0,0,LKA
 2020-01-23,NA,Sri Lanka,7,81,0,0,0,0,0,0,LKA
 2020-01-24,NA,Sri Lanka,7,81,0,0,0,0,0,0,LKA

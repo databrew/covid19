@@ -321,6 +321,12 @@ esp_df <- esp_df %>%
   mutate(value = cases,
          confirmed_cases = cases)
 
+# Interpret missing UCI cases
+esp_df <- esp_df %>%
+  arrange(date) %>%
+  group_by(ccaa) %>%
+  mutate(uci = zoo::na.approx(uci, na.rm = F))
+
 # Get non cumulative cases
 esp_df <- esp_df %>%
   ungroup %>%

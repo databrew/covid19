@@ -38,6 +38,13 @@ library(rnaturalearth)
 library(rnaturalearthdata)
 ```
 
+
+## Camas UCI
+
+```{r}
+
+```
+
 ## Rolling average new events
 
 ```{r}
@@ -46,10 +53,21 @@ roll_curve <- function(data,
                        deaths = FALSE,
                        scales = 'fixed',
                        nrow = NULL,
-                       ncol = NULL){
+                       ncol = NULL,
+                       pop = FALSE){
 
   # Create the n day rolling avg
-  ma <- function(x, n = 5){stats::filter(x, rep(1 / n, n), sides = 1)}
+  ma <- function(x, n = 5){
+    
+    if(length(x) >= n){
+      stats::filter(x, rep(1 / n, n), sides = 1)
+    } else {
+      new_n <- length(x)
+      stats::filter(x, rep(1 / new_n, new_n), sides = 1)
+    }
+    
+    
+  }
   
   pd <- data
   if(deaths){
@@ -57,6 +75,27 @@ roll_curve <- function(data,
   } else {
     pd$var <- pd$confirmed_cases_non_cum
   }
+  
+  if('ccaa' %in% names(pd)){
+    pd$geo <- pd$ccaa
+  } else {
+    pd$geo <- pd$iso
+  }
+  
+  if(pop){
+    # try to get population
+    if(any(pd$geo %in% unique(esp_df$ccaa))){
+      right <- esp_pop
+      right_var <- 'ccaa'
+    } else {
+      right <- world_pop
+      right_var <- 'iso'
+    }
+    pd <- pd %>% left_join(right %>% dplyr::select(all_of(right_var), pop),
+                           by = c('geo' = right_var)) %>%
+      mutate(var = var / pop * 100000)
+  }
+  
   pd <- pd %>%
     arrange(date) %>%
     group_by(geo) %>%
@@ -80,7 +119,8 @@ roll_curve <- function(data,
     theme_simple() +
     labs(x = '',
          y = ifelse(deaths, 'Deaths', 'Cases'),
-         title = paste0('Daily (non-cumulative) ', ifelse(deaths, 'deaths', 'cases')),
+         title = paste0('Daily (non-cumulative) ', ifelse(deaths, 'deaths', 'cases'),
+                        ifelse(pop, ' (per 100,000)', '')),
          subtitle = paste0('Data as of ', max(data$date),
                            '.\nRed line = ', n, ' day rolling average. Grey bar = day-specific value.')) +
     theme(axis.text.x = element_text(size = 7,
@@ -94,10 +134,70 @@ roll_curve <- function(data,
 ```
 
 ```{r}
+plot_data <- df_country %>% filter(country %in% c('Spain', 'France', 'Italy', 'Germany', 'Belgium', 'Norway')) %>% mutate(geo = country)
+
+roll_curve(plot_data, pop = T)
+
+```
+
+```{r}
 plot_data <- df_country %>% filter(country == 'Spain') %>% mutate(geo = country)
 
 roll_curve(plot_data)
 ```
+
+
+```{r}
+plot_data <- esp_df  %>% mutate(geo = ccaa)
+
+roll_curve(plot_data, pop = T, deaths = T)
+```
+
+
+```{r}
+plot_data <- df_country %>% filter(country == 'Spain') %>% mutate(geo = country)
+
+roll_curve(plot_data, deaths = T)
+```
+
+```{r}
+
+# Latest in Spain
+pd <- esp_df %>%
+  filter(date == max(date)) %>%
+  mutate(p = deaths / sum(deaths) * 100)
+text_size <- 12
+
+# deaths
+ggplot(data = pd,
+       aes(x = ccaa,
+           y = deaths)) +
+  geom_bar(stat = 'identity',
+           fill = 'black') +
+  theme_simple() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+  labs(x = '',
+       y = 'Deaths | Muertes',
+       title = 'COVID-19 deaths in Spain',
+       subtitle = paste0('Data as of ', max(pd$date)),
+       caption = 'github.com/databrew/covid19 | joe@databrew.cc') +
+  theme(legend.position = 'top',
+        legend.text = element_text(size = text_size * 2),
+        axis.title = element_text(size = text_size * 2),
+        plot.title = element_text(size = text_size * 2.3),
+        axis.text.x = element_text(size = text_size * 1.5)) +
+  geom_text(data = pd %>% filter(deaths > 0),
+            aes(x = ccaa,
+                y = deaths,
+                label = paste0(deaths, '\n(',
+                               round(p, digits = 1), '%)')),
+            size = text_size * 0.3,
+            nudge_y = 80) +
+  ylim(0, 800)
+ggsave('~/Desktop/spain.png')
+
+```
+
 
 ```{r}
 plot_data <- esp_df %>% mutate(geo = ccaa) %>% filter(!ccaa %in% c('Melilla'))
@@ -107,7 +207,51 @@ ggsave('~/Desktop/a.png',
        height = 720 / 150)
 ```
 
+Loop for everywhere (see desktop)
 
+```{r}
+dir.create('~/Desktop/ccaas')
+ccaas <- sort(unique(esp_df$ccaa))
+for(i in 1:length(ccaas)){
+  this_ccaa <- ccaas[i]
+  plot_data <- esp_df %>% mutate(geo = ccaa) %>% filter(ccaa == this_ccaa)
+  roll_curve(plot_data, scales = 'fixed')  + theme(strip.text = element_text(size = 30))
+  ggsave(paste0('~/Desktop/ccaas/', i, this_ccaa, '_cases.png'),
+         width = 1280 / 150,
+         height = 720 / 150)
+}
+
+ccaas <- sort(unique(esp_df$ccaa))
+for(i in 1:length(ccaas)){
+  this_ccaa <- ccaas[i]
+  plot_data <- esp_df %>% mutate(geo = ccaa) %>% filter(ccaa == this_ccaa)
+  roll_curve(plot_data, scales = 'fixed', pop = TRUE)  + theme(strip.text = element_text(size = 30))
+  ggsave(paste0('~/Desktop/ccaas/', i, this_ccaa, '_cases_pop.png'),
+         width = 1280 / 150,
+         height = 720 / 150)
+}
+
+# Deaths too
+for(i in 1:length(ccaas)){
+  this_ccaa <- ccaas[i]
+  plot_data <- esp_df %>% mutate(geo = ccaa) %>% filter(ccaa == this_ccaa)
+  roll_curve(plot_data, deaths = T, scales = 'fixed') + theme(strip.text = element_text(size = 30))
+  ggsave(paste0('~/Desktop/ccaas/', i, this_ccaa, '_deaths.png'),
+         width = 1280 / 150,
+         height = 720 / 150)
+}
+
+# Deaths too
+for(i in 1:length(ccaas)){
+  this_ccaa <- ccaas[i]
+  plot_data <- esp_df %>% mutate(geo = ccaa) %>% filter(ccaa == this_ccaa)
+  roll_curve(plot_data, deaths = T, scales = 'fixed', pop = TRUE)  + theme(strip.text = element_text(size = 30))
+  ggsave(paste0('~/Desktop/ccaas/', i, this_ccaa, '_deaths_pop.png'),
+         width = 1280 / 150,
+         height = 720 / 150)
+}
+
+```
 
 
 ```{r}
@@ -458,10 +602,11 @@ n_deaths_start = 5
 countries = c('Italy', 'Spain', 'France', 'Italy', 'Switzerland', 'Denmark', 'US', 'United Kingdom', 'Norway', 'Germany')
 # countries <- sort(unique(df_country$country))
 
-make_double_time <- function(the_country = 'Spain',
+make_double_time <- function(data = df_country,
+                             the_country = 'Spain',
                              n_deaths_start = 5,
-                             time_ahead = 15){
-   sub_data <-df_country %>% filter(country == the_country)
+                             time_ahead = 7){
+   sub_data <-data %>% filter(country == the_country)
   # Only calculate on countries with n_cases_start or greater cases,
   # starting at the first day at n_cases_start or greater
   ok <- max(sub_data$deaths, na.rm = TRUE) >= n_deaths_start
@@ -472,8 +617,11 @@ make_double_time <- function(the_country = 'Spain',
       mutate(start_date = min(date[deaths >= n_deaths_start])) %>%
       mutate(days_since = date - start_date) %>%
       filter(days_since >= 0) %>%
-      mutate(days_since = as.numeric(days_since))
-    fit <- lm(log(deaths) ~ days_since, data = pd) 
+      mutate(days_since = as.numeric(days_since)) %>%
+      mutate(the_weight = 1/(1 + (as.numeric(max(date) - date))))
+    fit <- lm(log(deaths) ~ days_since,
+              weights = the_weight,
+              data = pd) 
     # fitlo <- loess(deaths ~ days_since, data = pd)
     # plot(pd$days_since, log(pd$cases))
     # abline(fit)
@@ -531,13 +679,35 @@ plot_double_time <- function(data, ylog = F){
   }
   return(g)
 }
-data <- make_double_time(n_deaths_start = 100)
+options(scipen = '999')
+data <- make_double_time(n_deaths_start = 150, time_ahead = 7)
 data
-plot_double_time(data, ylog = F) +
-  labs(subtitle = 'Basic log-linear model assuming no change in growth trajectory since first day at >100 deaths')
+dir.create('~/Desktop/ccaa_predictions')
 
+plot_double_time(data, ylog = T) +
+  labs(subtitle = 'Basic log-linear model weighted at (1 + (1/ days ago)), assuming no change in growth trajectory since first day at >150 deaths')
+ggsave('~/Desktop/ccaa_predictions/spain.png')
+# All ccaas
+ccaas <- sort(unique(esp_df$ccaa))
+for(i in 1:length(ccaas)){
+  message(i)
+  this_ccaa <- ccaas[i]
+  sub_data <- esp_df %>% mutate(country = ccaa) 
+  try({
+    data <- make_double_time(
+    data = sub_data,
+    the_country = this_ccaa,
+    n_deaths_start = 5,
+    time_ahead = 7)
+  plot_double_time(data, ylog = T) +
+  labs(subtitle = 'Basic log-linear model weighted at (1 + (1/ days ago)), assuming no change in growth trajectory since first day at >5 deaths')
+  ggsave(paste0('~/Desktop/ccaa_predictions/',
+                this_ccaa, '.png'),
+         height = 4.9,
+         width = 8.5)
+  })
 
-
+}
 
 ```
 
@@ -1287,7 +1457,8 @@ make_map <- function(var = 'deaths',
                      date = NULL,
                      pop = FALSE,
                      pop_factor = 100000,
-                     points = FALSE){
+                     points = FALSE,
+                     line_color = 'white'){
   if(is.null(date)){
     the_date <- max(esp_df$date)
   } else {
@@ -1312,7 +1483,7 @@ make_map <- function(var = 'deaths',
              y = lat,
              group = group),
          fill = 'black',
-         color = 'white',
+         color = line_color,
          lwd = 0.4, alpha = 0.8) +
       geom_point(data = the_points,
                  aes(x = long,
@@ -1322,14 +1493,15 @@ make_map <- function(var = 'deaths',
                  alpha = 0.7) +
       scale_size_area(name = '', max_size = 20)
   } else {
-    cols <- c('#008080','#70a494','#b4c8a8','#f6edbd','#edbb8a','#de8a5a','#ca562c')
+    # cols <- c('#008080','#70a494','#b4c8a8','#f6edbd','#edbb8a','#de8a5a','#ca562c')
+    cols <- RColorBrewer::brewer.pal(n = 8, name = 'Blues')
     g <- ggplot(data = map,
          aes(x = long,
              y = lat,
              group = group)) +
     geom_polygon(aes(fill = var),
                  lwd = 0.3,
-                 color = 'white') +
+                 color = line_color) +
       scale_fill_gradientn(name = '',
                            colours = cols)
     # scale_fill_viridis(name = '' ,option = 'magma',
@@ -1485,7 +1657,8 @@ make_map(var = 'confirmed_cases', pop = TRUE, points = T) +
 #### Number of cases adjusted by population: polygons
 
 ```{r}
-make_map(var = 'confirmed_cases', pop = TRUE, points = F) +
+make_map(var = 'confirmed_cases', pop = TRUE, points = F,
+         line_color = 'darkgrey') +
   labs(title = 'Number of confirmed cases per 100,000',
        caption = '@joethebrew')
 ```
