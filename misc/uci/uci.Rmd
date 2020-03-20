@@ -69,7 +69,7 @@ p <- list(
   need_hospitalization = 15, # percent which requires hospitalization
   need_uci = 5, # percent which requires uci
   beds = 4404,
-  average_days_in_uci = 3 # total rough estimate
+  average_days_in_uci = 10 # total rough estimate
 )
 options(scipen = '999')
 
@@ -167,33 +167,41 @@ spain_data <-
 pd <- make_prediction(data = spain_data,
                       n_start = 20,
                       cumulative = FALSE,
-                      time_ahead = 5,
+                      time_ahead = 10,
                       var = 'uci')
 # Get the number of daily admissions to "spillover" for the number of days they need to be in UCI
 # this function not estimating confidence bounds at this point
 spill_over <- function(data,
                        days = p$average_days_in_uci){
   out <- data
-  out$predicted_spilled_over <- out$var_spilled_over <- NA
+  out$predicted_spilled_over <- NA
+  out_list <- list()
   for(i in 1:nrow(out)){
     # Get the sub data for up to days days before
     sub_data <- out %>%
       filter(date >= out$date[i] -( days-1),
              date <= out$date[i])
     # Get the sum of ingresado people during that window
-    sum_ingresado <- sum(sub_data$var, na.rm = TRUE)
+    sum_ingresado <- sum(sub_data$var, na.rm = T)
     # Get the predicted sum too
-    sum_predicted <- mean(sum(sub_data$predicted), na.rm = TRUE) * days
+    sum_predicted <- mean(sub_data$predicted, na.rm = TRUE) * nrow(sub_data)
+    # Manually replace with observed
+    out_predicted <- ifelse(!is.na(sub_data$var[i]),
+                            sum_ingresado,
+                            sum_predicted)
+    message(i, ": ", round(out_predicted))
     # pop back into dataframe
-    out$predicted_spilled_over[i] <- sum_predicted
-    out$var_spilled_over[i] <- sum_ingresado
+    # out_list[[i]] <- out_predicted
+    out$predicted_spilled_over[i] <- out_predicted
   }
+  # out <- unlist(out_list)
   return(out)
 }
+# preds <- spill_over(pd)
 pd <- pd %>% spill_over(days = p$average_days_in_uci)
 ```
 
-```{r}
+```{r, fig.height = 7, fig.width = 10}
 already_occupied <- (p$normal_occupancy/100) * p$beds
 total_beds <- p$beds
 
@@ -208,14 +216,29 @@ plot_data <- pd %>%
                              'Predicted COVID-19 UCI beds',
                              key)))
 
-ggplot() +
-  geom_bar(data = plot_data %>%
+basic_data <- plot_data %>%
              filter(key %in% c('UCI beds occupied (normal)',
-                               'Predicted COVID-19 UCI beds')),
+                               'Predicted COVID-19 UCI beds'))
+# basic_data$key <- factor(basic_data$key,
+#                          levels = rev(c('UCI beds occupied (normal)',
+#                                'Predicted COVID-19 UCI beds')))
+
+ggplot() +
+  geom_bar(data = basic_data,
            aes(x = date,
                y = value,
                fill = key),
            stat = 'identity',
+           position = position_stack(),
+           alpha = 0.7, width = 1,
+           color = 'white',
+           lwd = 0.1) +
+  geom_text(data = basic_data %>% filter(key == 'Predicted COVID-19 UCI beds'),
+           aes(x = date,
+               y = value + already_occupied * 1.05,
+               label = round(value, digits = 0)),
+           # stat = 'identity',
+           position = position_stack(),
            alpha = 0.7) +
   # scale_y_log10() +
   geom_hline(yintercept = total_beds,
@@ -226,16 +249,23 @@ ggplot() +
             aes(x = x,
                 y = y,
                 label = label)) +
+  geom_text(data = tibble(x = min(plot_data$date) +2,
+                          y = already_occupied - 500,
+                          label = paste0('Regular UCI occupancy:\n', round(already_occupied), ' (', p$normal_occupancy, '%)')),
+            aes(x = x,
+                y = y,
+                label = label)) +
   theme_simple() +
   theme(legend.position = 'top') +
   scale_fill_manual(name = '',
-                     values = rev(c('black', 'red'))) +
+                     values = c('red', 'black')) +
   labs(x = 'Date',
        y = 'Value',
        title = 'UCI bed capacity, Spain',
-       subtitle = paste0('Assumes an average of ', p$average_days_in_uci, ' days in UCI.\nBased on simple log-linear growth model in daily UCI admissions',
-                         caption = 'Code at github.com/databrew/covid19'))
-
-
-
+       subtitle = paste0('Based on simple log-linear growth model in daily UCI admissions.\nAssumes an average of ', p$average_days_in_uci, ' days in ICU.'),
+       caption = paste0('Code at https://github.com/databrew/covid19/blob/master/misc/uci/uci.Rmd\nAssumes: ', total_beds, ' total beds, and a', p$normal_occupancy, ' non-COVID19 occupancy rate.')) +
+  scale_x_date(breaks = sort(unique(plot_data$date)),
+               labels = format(sort(unique(plot_data$date)), '%d\n%b'))
+ggsave('~/Desktop/uci.png',
+       height = 7, width = 10)
 ```
