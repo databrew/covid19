@@ -91,13 +91,24 @@ roll_curve <- function(data,
     #              labels = format(sort(unique(pd$date)), '%b %d'))
     # scale_y_log10()
 }
+```
 
+```{r}
+plot_data <- df_country %>% filter(country == 'Spain') %>% mutate(geo = country)
+
+roll_curve(plot_data)
+```
+
+```{r}
 plot_data <- esp_df %>% mutate(geo = ccaa) %>% filter(!ccaa %in% c('Melilla'))
 roll_curve(plot_data, scales = 'fixed')
 ggsave('~/Desktop/a.png',
        width = 1280 / 150,
        height = 720 / 150)
 ```
+
+
+
 
 ```{r}
 plot_data <- esp_df %>% mutate(geo = ccaa) %>% filter(!ccaa %in% c('Melilla'))
@@ -449,7 +460,7 @@ countries = c('Italy', 'Spain', 'France', 'Italy', 'Switzerland', 'Denmark', 'US
 
 make_double_time <- function(the_country = 'Spain',
                              n_deaths_start = 5,
-                             time_ahead = 5){
+                             time_ahead = 15){
    sub_data <-df_country %>% filter(country == the_country)
   # Only calculate on countries with n_cases_start or greater cases,
   # starting at the first day at n_cases_start or greater

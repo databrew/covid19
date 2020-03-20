@@ -56,6 +56,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Afghanistan,33,65,1,21,0,5,0,1,AFG
 2020-03-17,NA,Afghanistan,33,65,1,22,0,1,0,0,AFG
 2020-03-18,NA,Afghanistan,33,65,1,22,0,0,0,0,AFG
+2020-03-19,NA,Afghanistan,33,65,1,22,0,0,0,0,AFG
 2020-01-22,NA,Albania,41.1533,20.1683,0,0,0,0,0,0,ALB
 2020-01-23,NA,Albania,41.1533,20.1683,0,0,0,0,0,0,ALB
 2020-01-24,NA,Albania,41.1533,20.1683,0,0,0,0,0,0,ALB
@@ -113,6 +114,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Albania,41.1533,20.1683,0,51,1,9,0,0,ALB
 2020-03-17,NA,Albania,41.1533,20.1683,0,55,1,4,0,0,ALB
 2020-03-18,NA,Albania,41.1533,20.1683,0,59,2,4,1,0,ALB
+2020-03-19,NA,Albania,41.1533,20.1683,0,64,2,5,0,0,ALB
 2020-01-22,NA,Algeria,28.0339,1.6596,0,0,0,0,0,0,DZA
 2020-01-23,NA,Algeria,28.0339,1.6596,0,0,0,0,0,0,DZA
 2020-01-24,NA,Algeria,28.0339,1.6596,0,0,0,0,0,0,DZA
@@ -170,6 +172,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Algeria,28.0339,1.6596,12,54,4,6,0,0,DZA
 2020-03-17,NA,Algeria,28.0339,1.6596,12,60,4,6,0,0,DZA
 2020-03-18,NA,Algeria,28.0339,1.6596,12,74,7,14,3,0,DZA
+2020-03-19,NA,Algeria,28.0339,1.6596,32,87,9,13,2,20,DZA
 2020-01-22,NA,Andorra,42.5063,1.5218,0,0,0,0,0,0,AND
 2020-01-23,NA,Andorra,42.5063,1.5218,0,0,0,0,0,0,AND
 2020-01-24,NA,Andorra,42.5063,1.5218,0,0,0,0,0,0,AND
@@ -227,6 +230,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Andorra,42.5063,1.5218,1,2,0,1,0,0,AND
 2020-03-17,NA,Andorra,42.5063,1.5218,1,39,0,37,0,0,AND
 2020-03-18,NA,Andorra,42.5063,1.5218,1,39,0,0,0,0,AND
+2020-03-19,NA,Andorra,42.5063,1.5218,1,53,0,14,0,0,AND
 2020-01-22,NA,Antigua and Barbuda,17.0608,-61.7964,0,0,0,0,0,0,ATG
 2020-01-23,NA,Antigua and Barbuda,17.0608,-61.7964,0,0,0,0,0,0,ATG
 2020-01-24,NA,Antigua and Barbuda,17.0608,-61.7964,0,0,0,0,0,0,ATG
@@ -284,6 +288,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Antigua and Barbuda,17.0608,-61.7964,0,1,0,0,0,0,ATG
 2020-03-17,NA,Antigua and Barbuda,17.0608,-61.7964,0,1,0,0,0,0,ATG
 2020-03-18,NA,Antigua and Barbuda,17.0608,-61.7964,0,1,0,0,0,0,ATG
+2020-03-19,NA,Antigua and Barbuda,17.0608,-61.7964,0,1,0,0,0,0,ATG
 2020-01-22,NA,Argentina,-38.4161,-63.6167,0,0,0,0,0,0,ARG
 2020-01-23,NA,Argentina,-38.4161,-63.6167,0,0,0,0,0,0,ARG
 2020-01-24,NA,Argentina,-38.4161,-63.6167,0,0,0,0,0,0,ARG
@@ -341,6 +346,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Argentina,-38.4161,-63.6167,1,56,2,11,0,0,ARG
 2020-03-17,NA,Argentina,-38.4161,-63.6167,3,68,2,12,0,2,ARG
 2020-03-18,NA,Argentina,-38.4161,-63.6167,3,79,2,11,0,0,ARG
+2020-03-19,NA,Argentina,-38.4161,-63.6167,3,97,3,18,1,0,ARG
 2020-01-22,NA,Armenia,40.0691,45.0382,0,0,0,0,0,0,ARM
 2020-01-23,NA,Armenia,40.0691,45.0382,0,0,0,0,0,0,ARM
 2020-01-24,NA,Armenia,40.0691,45.0382,0,0,0,0,0,0,ARM
@@ -398,6 +404,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Armenia,40.0691,45.0382,0,52,0,26,0,0,ARM
 2020-03-17,NA,Armenia,40.0691,45.0382,1,78,0,26,0,1,ARM
 2020-03-18,NA,Armenia,40.0691,45.0382,1,84,0,6,0,0,ARM
+2020-03-19,NA,Armenia,40.0691,45.0382,1,115,0,31,0,0,ARM
 2020-01-22,Australian Capital Territory,Australia,-35.4735,149.0124,0,0,0,0,0,0,AUS
 2020-01-23,Australian Capital Territory,Australia,-35.4735,149.0124,0,0,0,0,0,0,AUS
 2020-01-24,Australian Capital Territory,Australia,-35.4735,149.0124,0,0,0,0,0,0,AUS
@@ -455,6 +462,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Australian Capital Territory,Australia,-35.4735,149.0124,0,2,0,1,0,0,AUS
 2020-03-17,Australian Capital Territory,Australia,-35.4735,149.0124,0,2,0,0,0,0,AUS
 2020-03-18,Australian Capital Territory,Australia,-35.4735,149.0124,0,3,0,1,0,0,AUS
+2020-03-19,Australian Capital Territory,Australia,-35.4735,149.0124,0,4,0,1,0,0,AUS
 2020-01-22,From Diamond Princess,Australia,35.4437,139.638,0,0,0,0,0,0,AUS
 2020-01-23,From Diamond Princess,Australia,35.4437,139.638,0,0,0,0,0,0,AUS
 2020-01-24,From Diamond Princess,Australia,35.4437,139.638,0,0,0,0,0,0,AUS
@@ -512,6 +520,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,From Diamond Princess,Australia,35.4437,139.638,0,0,0,0,0,0,AUS
 2020-03-17,From Diamond Princess,Australia,35.4437,139.638,0,0,0,0,0,0,AUS
 2020-03-18,From Diamond Princess,Australia,35.4437,139.638,0,0,0,0,0,0,AUS
+2020-03-19,From Diamond Princess,Australia,35.4437,139.638,0,0,0,0,0,0,AUS
 2020-01-22,New South Wales,Australia,-33.8688,151.2093,0,0,0,0,0,0,AUS
 2020-01-23,New South Wales,Australia,-33.8688,151.2093,0,0,0,0,0,0,AUS
 2020-01-24,New South Wales,Australia,-33.8688,151.2093,0,0,0,0,0,0,AUS
@@ -569,6 +578,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,New South Wales,Australia,-33.8688,151.2093,4,171,2,37,0,0,AUS
 2020-03-17,New South Wales,Australia,-33.8688,151.2093,4,210,4,39,2,0,AUS
 2020-03-18,New South Wales,Australia,-33.8688,151.2093,4,267,5,57,1,0,AUS
+2020-03-19,New South Wales,Australia,-33.8688,151.2093,4,307,5,40,0,0,AUS
 2020-01-22,Northern Territory,Australia,-12.4634,130.8456,0,0,0,0,0,0,AUS
 2020-01-23,Northern Territory,Australia,-12.4634,130.8456,0,0,0,0,0,0,AUS
 2020-01-24,Northern Territory,Australia,-12.4634,130.8456,0,0,0,0,0,0,AUS
@@ -626,6 +636,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Northern Territory,Australia,-12.4634,130.8456,0,1,0,0,0,0,AUS
 2020-03-17,Northern Territory,Australia,-12.4634,130.8456,0,1,0,0,0,0,AUS
 2020-03-18,Northern Territory,Australia,-12.4634,130.8456,0,1,0,0,0,0,AUS
+2020-03-19,Northern Territory,Australia,-12.4634,130.8456,0,1,0,0,0,0,AUS
 2020-01-22,Queensland,Australia,-28.0167,153.4,0,0,0,0,0,0,AUS
 2020-01-23,Queensland,Australia,-28.0167,153.4,0,0,0,0,0,0,AUS
 2020-01-24,Queensland,Australia,-28.0167,153.4,0,0,0,0,0,0,AUS
@@ -683,6 +694,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Queensland,Australia,-28.0167,153.4,8,68,0,7,0,0,AUS
 2020-03-17,Queensland,Australia,-28.0167,153.4,8,78,0,10,0,0,AUS
 2020-03-18,Queensland,Australia,-28.0167,153.4,8,94,0,16,0,0,AUS
+2020-03-19,Queensland,Australia,-28.0167,153.4,8,144,0,50,0,0,AUS
 2020-01-22,South Australia,Australia,-34.9285,138.6007,0,0,0,0,0,0,AUS
 2020-01-23,South Australia,Australia,-34.9285,138.6007,0,0,0,0,0,0,AUS
 2020-01-24,South Australia,Australia,-34.9285,138.6007,0,0,0,0,0,0,AUS
@@ -740,6 +752,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,South Australia,Australia,-34.9285,138.6007,3,29,0,9,0,0,AUS
 2020-03-17,South Australia,Australia,-34.9285,138.6007,3,29,0,0,0,0,AUS
 2020-03-18,South Australia,Australia,-34.9285,138.6007,3,37,0,8,0,0,AUS
+2020-03-19,South Australia,Australia,-34.9285,138.6007,3,42,0,5,0,0,AUS
 2020-01-22,Tasmania,Australia,-41.4545,145.9707,0,0,0,0,0,0,AUS
 2020-01-23,Tasmania,Australia,-41.4545,145.9707,0,0,0,0,0,0,AUS
 2020-01-24,Tasmania,Australia,-41.4545,145.9707,0,0,0,0,0,0,AUS
@@ -797,6 +810,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Tasmania,Australia,-41.4545,145.9707,0,7,0,1,0,0,AUS
 2020-03-17,Tasmania,Australia,-41.4545,145.9707,0,7,0,0,0,0,AUS
 2020-03-18,Tasmania,Australia,-41.4545,145.9707,0,10,0,3,0,0,AUS
+2020-03-19,Tasmania,Australia,-41.4545,145.9707,3,10,0,0,0,3,AUS
 2020-01-22,Victoria,Australia,-37.8136,144.9631,0,0,0,0,0,0,AUS
 2020-01-23,Victoria,Australia,-37.8136,144.9631,0,0,0,0,0,0,AUS
 2020-01-24,Victoria,Australia,-37.8136,144.9631,0,0,0,0,0,0,AUS
@@ -854,6 +868,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Victoria,Australia,-37.8136,144.9631,8,71,0,14,0,0,AUS
 2020-03-17,Victoria,Australia,-37.8136,144.9631,8,94,0,23,0,0,AUS
 2020-03-18,Victoria,Australia,-37.8136,144.9631,8,121,0,27,0,0,AUS
+2020-03-19,Victoria,Australia,-37.8136,144.9631,8,121,0,0,0,0,AUS
 2020-01-22,Western Australia,Australia,-31.9505,115.8605,0,0,0,0,0,0,AUS
 2020-01-23,Western Australia,Australia,-31.9505,115.8605,0,0,0,0,0,0,AUS
 2020-01-24,Western Australia,Australia,-31.9505,115.8605,0,0,0,0,0,0,AUS
@@ -911,6 +926,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Western Australia,Australia,-31.9505,115.8605,0,28,1,11,0,0,AUS
 2020-03-17,Western Australia,Australia,-31.9505,115.8605,0,31,1,3,0,0,AUS
 2020-03-18,Western Australia,Australia,-31.9505,115.8605,0,35,1,4,0,0,AUS
+2020-03-19,Western Australia,Australia,-31.9505,115.8605,0,52,1,17,0,0,AUS
 2020-01-22,NA,Austria,47.5162,14.5501,0,0,0,0,0,0,AUT
 2020-01-23,NA,Austria,47.5162,14.5501,0,0,0,0,0,0,AUT
 2020-01-24,NA,Austria,47.5162,14.5501,0,0,0,0,0,0,AUT
@@ -968,6 +984,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Austria,47.5162,14.5501,6,1018,3,158,2,0,AUT
 2020-03-17,NA,Austria,47.5162,14.5501,1,1332,3,314,0,-5,AUT
 2020-03-18,NA,Austria,47.5162,14.5501,9,1646,4,314,1,8,AUT
+2020-03-19,NA,Austria,47.5162,14.5501,9,2013,6,367,2,0,AUT
 2020-01-22,NA,Azerbaijan,40.1431,47.5769,0,0,0,0,0,0,AZE
 2020-01-23,NA,Azerbaijan,40.1431,47.5769,0,0,0,0,0,0,AZE
 2020-01-24,NA,Azerbaijan,40.1431,47.5769,0,0,0,0,0,0,AZE
@@ -1025,6 +1042,65 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Azerbaijan,40.1431,47.5769,6,15,1,-8,0,0,AZE
 2020-03-17,NA,Azerbaijan,40.1431,47.5769,6,28,1,13,0,0,AZE
 2020-03-18,NA,Azerbaijan,40.1431,47.5769,6,28,1,0,0,0,AZE
+2020-03-19,NA,Azerbaijan,40.1431,47.5769,6,44,1,16,0,0,AZE
+2020-01-22,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-01-23,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-01-24,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-01-25,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-01-26,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-01-27,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-01-28,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-01-29,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-01-30,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-01-31,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-01,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-02,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-03,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-04,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-05,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-06,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-07,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-08,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-09,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-10,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-11,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-12,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-13,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-14,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-15,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-16,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-17,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-18,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-19,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-20,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-21,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-22,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-23,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-24,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-25,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-26,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-27,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-28,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-02-29,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-03-01,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-03-02,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-03-03,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-03-04,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-03-05,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-03-06,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-03-07,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-03-08,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-03-09,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-03-10,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-03-11,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-03-12,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-03-13,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-03-14,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-03-15,NA,"Bahamas, The",25.034300000000002,-77.3963,0,0,0,0,0,0,BHS
+2020-03-16,NA,"Bahamas, The",25.034300000000002,-77.3963,0,1,0,1,0,0,BHS
+2020-03-17,NA,"Bahamas, The",25.034300000000002,-77.3963,0,1,0,0,0,0,BHS
+2020-03-18,NA,"Bahamas, The",25.034300000000002,-77.3963,0,1,0,0,0,0,BHS
+2020-03-19,NA,"Bahamas, The",25.034300000000002,-77.3963,0,3,0,2,0,0,BHS
 2020-01-22,NA,Bahrain,26.0275,50.55,0,0,0,0,0,0,BHR
 2020-01-23,NA,Bahrain,26.0275,50.55,0,0,0,0,0,0,BHR
 2020-01-24,NA,Bahrain,26.0275,50.55,0,0,0,0,0,0,BHR
@@ -1082,6 +1158,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Bahrain,26.0275,50.55,77,214,1,0,1,17,BHR
 2020-03-17,NA,Bahrain,26.0275,50.55,81,228,1,14,0,4,BHR
 2020-03-18,NA,Bahrain,26.0275,50.55,88,256,1,28,0,7,BHR
+2020-03-19,NA,Bahrain,26.0275,50.55,100,278,1,22,0,12,BHR
 2020-01-22,NA,Bangladesh,23.685,90.3563,0,0,0,0,0,0,BGD
 2020-01-23,NA,Bangladesh,23.685,90.3563,0,0,0,0,0,0,BGD
 2020-01-24,NA,Bangladesh,23.685,90.3563,0,0,0,0,0,0,BGD
@@ -1139,6 +1216,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Bangladesh,23.685,90.3563,2,8,0,3,0,2,BGD
 2020-03-17,NA,Bangladesh,23.685,90.3563,3,10,0,2,0,1,BGD
 2020-03-18,NA,Bangladesh,23.685,90.3563,3,14,1,4,1,0,BGD
+2020-03-19,NA,Bangladesh,23.685,90.3563,3,17,1,3,0,0,BGD
 2020-01-22,NA,Barbados,13.1939,-59.5432,0,0,0,0,0,0,BRB
 2020-01-23,NA,Barbados,13.1939,-59.5432,0,0,0,0,0,0,BRB
 2020-01-24,NA,Barbados,13.1939,-59.5432,0,0,0,0,0,0,BRB
@@ -1196,6 +1274,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Barbados,13.1939,-59.5432,0,0,0,0,0,0,BRB
 2020-03-17,NA,Barbados,13.1939,-59.5432,0,2,0,2,0,0,BRB
 2020-03-18,NA,Barbados,13.1939,-59.5432,0,2,0,0,0,0,BRB
+2020-03-19,NA,Barbados,13.1939,-59.5432,0,5,0,3,0,0,BRB
 2020-01-22,NA,Belarus,53.7098,27.9534,0,0,0,0,0,0,BLR
 2020-01-23,NA,Belarus,53.7098,27.9534,0,0,0,0,0,0,BLR
 2020-01-24,NA,Belarus,53.7098,27.9534,0,0,0,0,0,0,BLR
@@ -1253,6 +1332,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Belarus,53.7098,27.9534,3,36,0,9,0,0,BLR
 2020-03-17,NA,Belarus,53.7098,27.9534,3,36,0,0,0,0,BLR
 2020-03-18,NA,Belarus,53.7098,27.9534,5,51,0,15,0,2,BLR
+2020-03-19,NA,Belarus,53.7098,27.9534,5,51,0,0,0,0,BLR
 2020-01-22,NA,Belgium,50.8333,4,0,0,0,0,0,0,BEL
 2020-01-23,NA,Belgium,50.8333,4,0,0,0,0,0,0,BEL
 2020-01-24,NA,Belgium,50.8333,4,0,0,0,0,0,0,BEL
@@ -1310,6 +1390,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Belgium,50.8333,4,1,1058,5,172,1,0,BEL
 2020-03-17,NA,Belgium,50.8333,4,1,1243,10,185,5,0,BEL
 2020-03-18,NA,Belgium,50.8333,4,31,1486,14,243,4,30,BEL
+2020-03-19,NA,Belgium,50.8333,4,31,1795,21,309,7,0,BEL
 2020-01-22,NA,Benin,9.3077,2.3158,0,0,0,0,0,0,BEN
 2020-01-23,NA,Benin,9.3077,2.3158,0,0,0,0,0,0,BEN
 2020-01-24,NA,Benin,9.3077,2.3158,0,0,0,0,0,0,BEN
@@ -1367,6 +1448,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Benin,9.3077,2.3158,0,1,0,1,0,0,BEN
 2020-03-17,NA,Benin,9.3077,2.3158,0,1,0,0,0,0,BEN
 2020-03-18,NA,Benin,9.3077,2.3158,0,2,0,1,0,0,BEN
+2020-03-19,NA,Benin,9.3077,2.3158,0,2,0,0,0,0,BEN
 2020-01-22,NA,Bhutan,27.5142,90.4336,0,0,0,0,0,0,BTN
 2020-01-23,NA,Bhutan,27.5142,90.4336,0,0,0,0,0,0,BTN
 2020-01-24,NA,Bhutan,27.5142,90.4336,0,0,0,0,0,0,BTN
@@ -1424,6 +1506,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Bhutan,27.5142,90.4336,0,1,0,0,0,0,BTN
 2020-03-17,NA,Bhutan,27.5142,90.4336,0,1,0,0,0,0,BTN
 2020-03-18,NA,Bhutan,27.5142,90.4336,0,1,0,0,0,0,BTN
+2020-03-19,NA,Bhutan,27.5142,90.4336,0,1,0,0,0,0,BTN
 2020-01-22,NA,Bolivia,-16.2902,-63.5887,0,0,0,0,0,0,BOL
 2020-01-23,NA,Bolivia,-16.2902,-63.5887,0,0,0,0,0,0,BOL
 2020-01-24,NA,Bolivia,-16.2902,-63.5887,0,0,0,0,0,0,BOL
@@ -1481,6 +1564,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Bolivia,-16.2902,-63.5887,0,11,0,1,0,0,BOL
 2020-03-17,NA,Bolivia,-16.2902,-63.5887,0,11,0,0,0,0,BOL
 2020-03-18,NA,Bolivia,-16.2902,-63.5887,0,12,0,1,0,0,BOL
+2020-03-19,NA,Bolivia,-16.2902,-63.5887,0,12,0,0,0,0,BOL
 2020-01-22,NA,Bosnia and Herzegovina,43.9159,17.6791,0,0,0,0,0,0,BIH
 2020-01-23,NA,Bosnia and Herzegovina,43.9159,17.6791,0,0,0,0,0,0,BIH
 2020-01-24,NA,Bosnia and Herzegovina,43.9159,17.6791,0,0,0,0,0,0,BIH
@@ -1538,6 +1622,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Bosnia and Herzegovina,43.9159,17.6791,0,25,0,1,0,0,BIH
 2020-03-17,NA,Bosnia and Herzegovina,43.9159,17.6791,2,26,0,1,0,2,BIH
 2020-03-18,NA,Bosnia and Herzegovina,43.9159,17.6791,2,38,0,12,0,0,BIH
+2020-03-19,NA,Bosnia and Herzegovina,43.9159,17.6791,2,63,0,25,0,0,BIH
 2020-01-22,NA,Brazil,-14.235,-51.9253,0,0,0,0,0,0,BRA
 2020-01-23,NA,Brazil,-14.235,-51.9253,0,0,0,0,0,0,BRA
 2020-01-24,NA,Brazil,-14.235,-51.9253,0,0,0,0,0,0,BRA
@@ -1595,6 +1680,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Brazil,-14.235,-51.9253,1,200,0,38,0,1,BRA
 2020-03-17,NA,Brazil,-14.235,-51.9253,2,321,1,121,1,1,BRA
 2020-03-18,NA,Brazil,-14.235,-51.9253,2,372,3,51,2,0,BRA
+2020-03-19,NA,Brazil,-14.235,-51.9253,2,621,6,249,3,0,BRA
 2020-01-22,NA,Brunei,4.5353,114.7277,0,0,0,0,0,0,BRN
 2020-01-23,NA,Brunei,4.5353,114.7277,0,0,0,0,0,0,BRN
 2020-01-24,NA,Brunei,4.5353,114.7277,0,0,0,0,0,0,BRN
@@ -1652,6 +1738,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Brunei,4.5353,114.7277,0,54,0,4,0,0,BRN
 2020-03-17,NA,Brunei,4.5353,114.7277,0,56,0,2,0,0,BRN
 2020-03-18,NA,Brunei,4.5353,114.7277,0,68,0,12,0,0,BRN
+2020-03-19,NA,Brunei,4.5353,114.7277,0,75,0,7,0,0,BRN
 2020-01-22,NA,Bulgaria,42.7339,25.4858,0,0,0,0,0,0,BGR
 2020-01-23,NA,Bulgaria,42.7339,25.4858,0,0,0,0,0,0,BGR
 2020-01-24,NA,Bulgaria,42.7339,25.4858,0,0,0,0,0,0,BGR
@@ -1709,6 +1796,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Bulgaria,42.7339,25.4858,0,52,2,1,0,0,BGR
 2020-03-17,NA,Bulgaria,42.7339,25.4858,0,67,2,15,0,0,BGR
 2020-03-18,NA,Bulgaria,42.7339,25.4858,0,92,2,25,0,0,BGR
+2020-03-19,NA,Bulgaria,42.7339,25.4858,0,94,3,2,1,0,BGR
 2020-01-22,NA,Burkina Faso,12.2383,-1.5616,0,0,0,0,0,0,BFA
 2020-01-23,NA,Burkina Faso,12.2383,-1.5616,0,0,0,0,0,0,BFA
 2020-01-24,NA,Burkina Faso,12.2383,-1.5616,0,0,0,0,0,0,BFA
@@ -1766,6 +1854,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Burkina Faso,12.2383,-1.5616,0,15,0,12,0,0,BFA
 2020-03-17,NA,Burkina Faso,12.2383,-1.5616,0,15,0,0,0,0,BFA
 2020-03-18,NA,Burkina Faso,12.2383,-1.5616,0,20,1,5,1,0,BFA
+2020-03-19,NA,Burkina Faso,12.2383,-1.5616,0,33,1,13,0,0,BFA
 2020-01-22,NA,Cambodia,11.55,104.9167,0,0,0,0,0,0,KHM
 2020-01-23,NA,Cambodia,11.55,104.9167,0,0,0,0,0,0,KHM
 2020-01-24,NA,Cambodia,11.55,104.9167,0,0,0,0,0,0,KHM
@@ -1823,6 +1912,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Cambodia,11.55,104.9167,1,7,0,0,0,0,KHM
 2020-03-17,NA,Cambodia,11.55,104.9167,1,33,0,26,0,0,KHM
 2020-03-18,NA,Cambodia,11.55,104.9167,1,35,0,2,0,0,KHM
+2020-03-19,NA,Cambodia,11.55,104.9167,1,37,0,2,0,0,KHM
 2020-01-22,NA,Cameroon,3.848,11.5021,0,0,0,0,0,0,CMR
 2020-01-23,NA,Cameroon,3.848,11.5021,0,0,0,0,0,0,CMR
 2020-01-24,NA,Cameroon,3.848,11.5021,0,0,0,0,0,0,CMR
@@ -1880,6 +1970,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Cameroon,3.848,11.5021,0,4,0,2,0,0,CMR
 2020-03-17,NA,Cameroon,3.848,11.5021,0,10,0,6,0,0,CMR
 2020-03-18,NA,Cameroon,3.848,11.5021,0,10,0,0,0,0,CMR
+2020-03-19,NA,Cameroon,3.848,11.5021,0,13,0,3,0,0,CMR
 2020-01-22,Alberta,Canada,53.9333,-116.5765,0,0,0,0,0,0,CAN
 2020-01-23,Alberta,Canada,53.9333,-116.5765,0,0,0,0,0,0,CAN
 2020-01-24,Alberta,Canada,53.9333,-116.5765,0,0,0,0,0,0,CAN
@@ -1937,6 +2028,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Alberta,Canada,53.9333,-116.5765,0,56,0,17,0,0,CAN
 2020-03-17,Alberta,Canada,53.9333,-116.5765,0,74,0,18,0,0,CAN
 2020-03-18,Alberta,Canada,53.9333,-116.5765,0,97,0,23,0,0,CAN
+2020-03-19,Alberta,Canada,53.9333,-116.5765,0,119,0,22,0,0,CAN
 2020-01-22,British Columbia,Canada,49.2827,-123.1207,0,0,0,0,0,0,CAN
 2020-01-23,British Columbia,Canada,49.2827,-123.1207,0,0,0,0,0,0,CAN
 2020-01-24,British Columbia,Canada,49.2827,-123.1207,0,0,0,0,0,0,CAN
@@ -1994,6 +2086,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,British Columbia,Canada,49.2827,-123.1207,4,103,4,30,3,0,CAN
 2020-03-17,British Columbia,Canada,49.2827,-123.1207,4,103,4,0,0,0,CAN
 2020-03-18,British Columbia,Canada,49.2827,-123.1207,4,186,7,83,3,0,CAN
+2020-03-19,British Columbia,Canada,49.2827,-123.1207,4,231,7,45,0,0,CAN
 2020-01-22,Grand Princess,Canada,37.6489,-122.6655,0,0,0,0,0,0,CAN
 2020-01-23,Grand Princess,Canada,37.6489,-122.6655,0,0,0,0,0,0,CAN
 2020-01-24,Grand Princess,Canada,37.6489,-122.6655,0,0,0,0,0,0,CAN
@@ -2051,6 +2144,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Grand Princess,Canada,37.6489,-122.6655,0,2,0,0,0,0,CAN
 2020-03-17,Grand Princess,Canada,37.6489,-122.6655,0,8,0,6,0,0,CAN
 2020-03-18,Grand Princess,Canada,37.6489,-122.6655,0,9,0,1,0,0,CAN
+2020-03-19,Grand Princess,Canada,37.6489,-122.6655,0,9,0,0,0,0,CAN
 2020-01-22,Manitoba,Canada,53.7609,-98.8139,0,0,0,0,0,0,CAN
 2020-01-23,Manitoba,Canada,53.7609,-98.8139,0,0,0,0,0,0,CAN
 2020-01-24,Manitoba,Canada,53.7609,-98.8139,0,0,0,0,0,0,CAN
@@ -2108,6 +2202,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Manitoba,Canada,53.7609,-98.8139,0,7,0,3,0,0,CAN
 2020-03-17,Manitoba,Canada,53.7609,-98.8139,0,8,0,1,0,0,CAN
 2020-03-18,Manitoba,Canada,53.7609,-98.8139,0,15,0,7,0,0,CAN
+2020-03-19,Manitoba,Canada,53.7609,-98.8139,0,17,0,2,0,0,CAN
 2020-01-22,New Brunswick,Canada,46.5653,-66.4619,0,0,0,0,0,0,CAN
 2020-01-23,New Brunswick,Canada,46.5653,-66.4619,0,0,0,0,0,0,CAN
 2020-01-24,New Brunswick,Canada,46.5653,-66.4619,0,0,0,0,0,0,CAN
@@ -2165,6 +2260,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,New Brunswick,Canada,46.5653,-66.4619,0,6,0,4,0,0,CAN
 2020-03-17,New Brunswick,Canada,46.5653,-66.4619,0,8,0,2,0,0,CAN
 2020-03-18,New Brunswick,Canada,46.5653,-66.4619,0,11,0,3,0,0,CAN
+2020-03-19,New Brunswick,Canada,46.5653,-66.4619,0,11,0,0,0,0,CAN
 2020-01-22,Newfoundland and Labrador,Canada,53.1355,-57.6604,0,0,0,0,0,0,CAN
 2020-01-23,Newfoundland and Labrador,Canada,53.1355,-57.6604,0,0,0,0,0,0,CAN
 2020-01-24,Newfoundland and Labrador,Canada,53.1355,-57.6604,0,0,0,0,0,0,CAN
@@ -2222,6 +2318,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Newfoundland and Labrador,Canada,53.1355,-57.6604,0,1,0,0,0,0,CAN
 2020-03-17,Newfoundland and Labrador,Canada,53.1355,-57.6604,0,3,0,2,0,0,CAN
 2020-03-18,Newfoundland and Labrador,Canada,53.1355,-57.6604,0,3,0,0,0,0,CAN
+2020-03-19,Newfoundland and Labrador,Canada,53.1355,-57.6604,0,3,0,0,0,0,CAN
 2020-01-22,Nova Scotia,Canada,44.682,-63.7443,0,0,0,0,0,0,CAN
 2020-01-23,Nova Scotia,Canada,44.682,-63.7443,0,0,0,0,0,0,CAN
 2020-01-24,Nova Scotia,Canada,44.682,-63.7443,0,0,0,0,0,0,CAN
@@ -2279,6 +2376,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Nova Scotia,Canada,44.682,-63.7443,0,5,0,5,0,0,CAN
 2020-03-17,Nova Scotia,Canada,44.682,-63.7443,0,7,0,2,0,0,CAN
 2020-03-18,Nova Scotia,Canada,44.682,-63.7443,0,12,0,5,0,0,CAN
+2020-03-19,Nova Scotia,Canada,44.682,-63.7443,0,14,0,2,0,0,CAN
 2020-01-22,Ontario,Canada,51.2538,-85.3232,0,0,0,0,0,0,CAN
 2020-01-23,Ontario,Canada,51.2538,-85.3232,0,0,0,0,0,0,CAN
 2020-01-24,Ontario,Canada,51.2538,-85.3232,0,0,0,0,0,0,CAN
@@ -2336,6 +2434,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Ontario,Canada,51.2538,-85.3232,5,177,0,73,0,1,CAN
 2020-03-17,Ontario,Canada,51.2538,-85.3232,5,185,1,8,1,0,CAN
 2020-03-18,Ontario,Canada,51.2538,-85.3232,5,221,1,36,0,0,CAN
+2020-03-19,Ontario,Canada,51.2538,-85.3232,5,257,1,36,0,0,CAN
 2020-01-22,Prince Edward Island,Canada,46.5107,-63.4168,0,0,0,0,0,0,CAN
 2020-01-23,Prince Edward Island,Canada,46.5107,-63.4168,0,0,0,0,0,0,CAN
 2020-01-24,Prince Edward Island,Canada,46.5107,-63.4168,0,0,0,0,0,0,CAN
@@ -2393,6 +2492,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Prince Edward Island,Canada,46.5107,-63.4168,0,1,0,0,0,0,CAN
 2020-03-17,Prince Edward Island,Canada,46.5107,-63.4168,0,1,0,0,0,0,CAN
 2020-03-18,Prince Edward Island,Canada,46.5107,-63.4168,0,1,0,0,0,0,CAN
+2020-03-19,Prince Edward Island,Canada,46.5107,-63.4168,0,2,0,1,0,0,CAN
 2020-01-22,Quebec,Canada,52.9399,-73.5491,0,0,0,0,0,0,CAN
 2020-01-23,Quebec,Canada,52.9399,-73.5491,0,0,0,0,0,0,CAN
 2020-01-24,Quebec,Canada,52.9399,-73.5491,0,0,0,0,0,0,CAN
@@ -2450,6 +2550,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Quebec,Canada,52.9399,-73.5491,0,50,0,26,0,0,CAN
 2020-03-17,Quebec,Canada,52.9399,-73.5491,0,74,0,24,0,0,CAN
 2020-03-18,Quebec,Canada,52.9399,-73.5491,0,94,0,20,0,0,CAN
+2020-03-19,Quebec,Canada,52.9399,-73.5491,0,121,1,27,1,0,CAN
 2020-01-22,Saskatchewan,Canada,52.9399,-106.4509,0,0,0,0,0,0,CAN
 2020-01-23,Saskatchewan,Canada,52.9399,-106.4509,0,0,0,0,0,0,CAN
 2020-01-24,Saskatchewan,Canada,52.9399,-106.4509,0,0,0,0,0,0,CAN
@@ -2507,6 +2608,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Saskatchewan,Canada,52.9399,-106.4509,0,7,0,5,0,0,CAN
 2020-03-17,Saskatchewan,Canada,52.9399,-106.4509,0,7,0,0,0,0,CAN
 2020-03-18,Saskatchewan,Canada,52.9399,-106.4509,0,8,0,1,0,0,CAN
+2020-03-19,Saskatchewan,Canada,52.9399,-106.4509,0,16,0,8,0,0,CAN
 2020-01-22,NA,Central African Republic,6.6111,20.9394,0,0,0,0,0,0,CAF
 2020-01-23,NA,Central African Republic,6.6111,20.9394,0,0,0,0,0,0,CAF
 2020-01-24,NA,Central African Republic,6.6111,20.9394,0,0,0,0,0,0,CAF
@@ -2564,6 +2666,65 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Central African Republic,6.6111,20.9394,0,1,0,0,0,0,CAF
 2020-03-17,NA,Central African Republic,6.6111,20.9394,0,1,0,0,0,0,CAF
 2020-03-18,NA,Central African Republic,6.6111,20.9394,0,1,0,0,0,0,CAF
+2020-03-19,NA,Central African Republic,6.6111,20.9394,0,1,0,0,0,0,CAF
+2020-01-22,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-01-23,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-01-24,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-01-25,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-01-26,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-01-27,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-01-28,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-01-29,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-01-30,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-01-31,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-01,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-02,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-03,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-04,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-05,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-06,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-07,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-08,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-09,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-10,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-11,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-12,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-13,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-14,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-15,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-16,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-17,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-18,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-19,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-20,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-21,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-22,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-23,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-24,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-25,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-26,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-27,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-28,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-02-29,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-03-01,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-03-02,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-03-03,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-03-04,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-03-05,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-03-06,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-03-07,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-03-08,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-03-09,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-03-10,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-03-11,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-03-12,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-03-13,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-03-14,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-03-15,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-03-16,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-03-17,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-03-18,NA,Chad,15.4542,18.7322,0,0,0,0,0,0,TCD
+2020-03-19,NA,Chad,15.4542,18.7322,0,1,0,1,0,0,TCD
 2020-01-22,NA,Chile,-35.6751,-71.543,0,0,0,0,0,0,CHL
 2020-01-23,NA,Chile,-35.6751,-71.543,0,0,0,0,0,0,CHL
 2020-01-24,NA,Chile,-35.6751,-71.543,0,0,0,0,0,0,CHL
@@ -2621,6 +2782,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Chile,-35.6751,-71.543,0,155,0,81,0,0,CHL
 2020-03-17,NA,Chile,-35.6751,-71.543,0,201,0,46,0,0,CHL
 2020-03-18,NA,Chile,-35.6751,-71.543,0,238,0,37,0,0,CHL
+2020-03-19,NA,Chile,-35.6751,-71.543,0,238,0,0,0,0,CHL
 2020-01-22,Anhui,China,31.8257,117.2264,0,1,0,1,0,0,CHN
 2020-01-23,Anhui,China,31.8257,117.2264,0,9,0,8,0,0,CHN
 2020-01-24,Anhui,China,31.8257,117.2264,0,15,0,6,0,0,CHN
@@ -2678,6 +2840,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Anhui,China,31.8257,117.2264,984,990,6,0,0,0,CHN
 2020-03-17,Anhui,China,31.8257,117.2264,984,990,6,0,0,0,CHN
 2020-03-18,Anhui,China,31.8257,117.2264,984,990,6,0,0,0,CHN
+2020-03-19,Anhui,China,31.8257,117.2264,984,990,6,0,0,0,CHN
 2020-01-22,Beijing,China,40.1824,116.4142,0,14,0,14,0,0,CHN
 2020-01-23,Beijing,China,40.1824,116.4142,0,22,0,8,0,0,CHN
 2020-01-24,Beijing,China,40.1824,116.4142,1,36,0,14,0,1,CHN
@@ -2735,6 +2898,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Beijing,China,40.1824,116.4142,360,452,8,10,0,7,CHN
 2020-03-17,Beijing,China,40.1824,116.4142,369,456,8,4,0,9,CHN
 2020-03-18,Beijing,China,40.1824,116.4142,378,469,8,13,0,9,CHN
+2020-03-19,Beijing,China,40.1824,116.4142,380,480,8,11,0,2,CHN
 2020-01-22,Chongqing,China,30.0572,107.874,0,6,0,6,0,0,CHN
 2020-01-23,Chongqing,China,30.0572,107.874,0,9,0,3,0,0,CHN
 2020-01-24,Chongqing,China,30.0572,107.874,0,27,0,18,0,0,CHN
@@ -2792,6 +2956,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Chongqing,China,30.0572,107.874,570,576,6,0,0,0,CHN
 2020-03-17,Chongqing,China,30.0572,107.874,570,576,6,0,0,0,CHN
 2020-03-18,Chongqing,China,30.0572,107.874,570,576,6,0,0,0,CHN
+2020-03-19,Chongqing,China,30.0572,107.874,570,576,6,0,0,0,CHN
 2020-01-22,Fujian,China,26.0789,117.9874,0,1,0,1,0,0,CHN
 2020-01-23,Fujian,China,26.0789,117.9874,0,5,0,4,0,0,CHN
 2020-01-24,Fujian,China,26.0789,117.9874,0,10,0,5,0,0,CHN
@@ -2849,6 +3014,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Fujian,China,26.0789,117.9874,295,296,1,0,0,0,CHN
 2020-03-17,Fujian,China,26.0789,117.9874,295,296,1,0,0,0,CHN
 2020-03-18,Fujian,China,26.0789,117.9874,295,296,1,0,0,0,CHN
+2020-03-19,Fujian,China,26.0789,117.9874,295,296,1,0,0,0,CHN
 2020-01-22,Gansu,China,37.8099,101.0583,0,0,0,0,0,0,CHN
 2020-01-23,Gansu,China,37.8099,101.0583,0,2,0,2,0,0,CHN
 2020-01-24,Gansu,China,37.8099,101.0583,0,2,0,0,0,0,CHN
@@ -2906,6 +3072,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Gansu,China,37.8099,101.0583,91,133,2,0,0,0,CHN
 2020-03-17,Gansu,China,37.8099,101.0583,91,133,2,0,0,0,CHN
 2020-03-18,Gansu,China,37.8099,101.0583,91,133,2,0,0,0,CHN
+2020-03-19,Gansu,China,37.8099,101.0583,91,134,2,1,0,0,CHN
 2020-01-22,Guangdong,China,23.3417,113.4244,0,26,0,26,0,0,CHN
 2020-01-23,Guangdong,China,23.3417,113.4244,2,32,0,6,0,2,CHN
 2020-01-24,Guangdong,China,23.3417,113.4244,2,53,0,21,0,0,CHN
@@ -2963,6 +3130,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Guangdong,China,23.3417,113.4244,1306,1361,8,1,0,2,CHN
 2020-03-17,Guangdong,China,23.3417,113.4244,1307,1364,8,3,0,1,CHN
 2020-03-18,Guangdong,China,23.3417,113.4244,1313,1370,8,6,0,6,CHN
+2020-03-19,Guangdong,China,23.3417,113.4244,1318,1378,8,8,0,5,CHN
 2020-01-22,Guangxi,China,23.8298,108.7881,0,2,0,2,0,0,CHN
 2020-01-23,Guangxi,China,23.8298,108.7881,0,5,0,3,0,0,CHN
 2020-01-24,Guangxi,China,23.8298,108.7881,0,23,0,18,0,0,CHN
@@ -3020,6 +3188,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Guangxi,China,23.8298,108.7881,248,252,2,0,0,5,CHN
 2020-03-17,Guangxi,China,23.8298,108.7881,248,253,2,1,0,0,CHN
 2020-03-18,Guangxi,China,23.8298,108.7881,250,253,2,0,0,2,CHN
+2020-03-19,Guangxi,China,23.8298,108.7881,250,253,2,0,0,0,CHN
 2020-01-22,Guizhou,China,26.8154,106.8748,0,1,0,1,0,0,CHN
 2020-01-23,Guizhou,China,26.8154,106.8748,0,3,0,2,0,0,CHN
 2020-01-24,Guizhou,China,26.8154,106.8748,0,3,0,0,0,0,CHN
@@ -3077,6 +3246,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Guizhou,China,26.8154,106.8748,144,146,2,0,0,1,CHN
 2020-03-17,Guizhou,China,26.8154,106.8748,144,147,2,1,0,0,CHN
 2020-03-18,Guizhou,China,26.8154,106.8748,144,146,2,-1,0,0,CHN
+2020-03-19,Guizhou,China,26.8154,106.8748,144,146,2,0,0,0,CHN
 2020-01-22,Hainan,China,19.1959,109.7453,0,4,0,4,0,0,CHN
 2020-01-23,Hainan,China,19.1959,109.7453,0,5,0,1,0,0,CHN
 2020-01-24,Hainan,China,19.1959,109.7453,0,8,0,3,0,0,CHN
@@ -3134,6 +3304,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Hainan,China,19.1959,109.7453,161,168,6,0,0,1,CHN
 2020-03-17,Hainan,China,19.1959,109.7453,161,168,6,0,0,0,CHN
 2020-03-18,Hainan,China,19.1959,109.7453,161,168,6,0,0,0,CHN
+2020-03-19,Hainan,China,19.1959,109.7453,161,168,6,0,0,0,CHN
 2020-01-22,Hebei,China,39.549,116.1306,0,1,0,1,0,0,CHN
 2020-01-23,Hebei,China,39.549,116.1306,0,1,1,0,1,0,CHN
 2020-01-24,Hebei,China,39.549,116.1306,0,2,1,1,0,0,CHN
@@ -3191,6 +3362,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Hebei,China,39.549,116.1306,310,318,6,0,0,0,CHN
 2020-03-17,Hebei,China,39.549,116.1306,310,318,6,0,0,0,CHN
 2020-03-18,Hebei,China,39.549,116.1306,310,318,6,0,0,0,CHN
+2020-03-19,Hebei,China,39.549,116.1306,310,318,6,0,0,0,CHN
 2020-01-22,Heilongjiang,China,47.862,127.7615,0,0,0,0,0,0,CHN
 2020-01-23,Heilongjiang,China,47.862,127.7615,0,2,0,2,0,0,CHN
 2020-01-24,Heilongjiang,China,47.862,127.7615,0,4,1,2,1,0,CHN
@@ -3248,6 +3420,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Heilongjiang,China,47.862,127.7615,455,482,13,0,0,2,CHN
 2020-03-17,Heilongjiang,China,47.862,127.7615,456,482,13,0,0,1,CHN
 2020-03-18,Heilongjiang,China,47.862,127.7615,459,482,13,0,0,3,CHN
+2020-03-19,Heilongjiang,China,47.862,127.7615,460,483,13,1,0,1,CHN
 2020-01-22,Henan,China,33.882,113.614,0,5,0,5,0,0,CHN
 2020-01-23,Henan,China,33.882,113.614,0,5,0,0,0,0,CHN
 2020-01-24,Henan,China,33.882,113.614,0,9,0,4,0,0,CHN
@@ -3305,6 +3478,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Henan,China,33.882,113.614,1250,1273,22,0,0,0,CHN
 2020-03-17,Henan,China,33.882,113.614,1250,1273,22,0,0,0,CHN
 2020-03-18,Henan,China,33.882,113.614,1250,1273,22,0,0,0,CHN
+2020-03-19,Henan,China,33.882,113.614,1250,1273,22,0,0,0,CHN
 2020-01-22,Hong Kong,China,22.3,114.2,0,0,0,0,0,0,CHN
 2020-01-23,Hong Kong,China,22.3,114.2,0,2,0,2,0,0,CHN
 2020-01-24,Hong Kong,China,22.3,114.2,0,2,0,0,0,0,CHN
@@ -3362,6 +3536,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Hong Kong,China,22.3,114.2,84,155,4,10,0,3,CHN
 2020-03-17,Hong Kong,China,22.3,114.2,88,162,4,7,0,4,CHN
 2020-03-18,Hong Kong,China,22.3,114.2,92,181,4,19,0,4,CHN
+2020-03-19,Hong Kong,China,22.3,114.2,95,208,4,27,0,3,CHN
 2020-01-22,Hubei,China,30.9756,112.2707,28,444,17,444,17,28,CHN
 2020-01-23,Hubei,China,30.9756,112.2707,28,444,17,0,0,0,CHN
 2020-01-24,Hubei,China,30.9756,112.2707,31,549,24,105,7,3,CHN
@@ -3419,6 +3594,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Hubei,China,30.9756,112.2707,55142,67798,3099,4,14,854,CHN
 2020-03-17,Hubei,China,30.9756,112.2707,56003,67799,3111,1,12,861,CHN
 2020-03-18,Hubei,China,30.9756,112.2707,56927,67800,3122,1,11,924,CHN
+2020-03-19,Hubei,China,30.9756,112.2707,57682,67800,3130,0,8,755,CHN
 2020-01-22,Hunan,China,27.6104,111.7088,0,4,0,4,0,0,CHN
 2020-01-23,Hunan,China,27.6104,111.7088,0,9,0,5,0,0,CHN
 2020-01-24,Hunan,China,27.6104,111.7088,0,24,0,15,0,0,CHN
@@ -3476,6 +3652,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Hunan,China,27.6104,111.7088,1014,1018,4,0,0,0,CHN
 2020-03-17,Hunan,China,27.6104,111.7088,1014,1018,4,0,0,0,CHN
 2020-03-18,Hunan,China,27.6104,111.7088,1014,1018,4,0,0,0,CHN
+2020-03-19,Hunan,China,27.6104,111.7088,1014,1018,4,0,0,0,CHN
 2020-01-22,Inner Mongolia,China,44.0935,113.9448,0,0,0,0,0,0,CHN
 2020-01-23,Inner Mongolia,China,44.0935,113.9448,0,0,0,0,0,0,CHN
 2020-01-24,Inner Mongolia,China,44.0935,113.9448,0,1,0,1,0,0,CHN
@@ -3533,6 +3710,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Inner Mongolia,China,44.0935,113.9448,73,75,1,0,0,2,CHN
 2020-03-17,Inner Mongolia,China,44.0935,113.9448,73,75,1,0,0,0,CHN
 2020-03-18,Inner Mongolia,China,44.0935,113.9448,73,75,1,0,0,0,CHN
+2020-03-19,Inner Mongolia,China,44.0935,113.9448,74,75,1,0,0,1,CHN
 2020-01-22,Jiangsu,China,32.9711,119.455,0,1,0,1,0,0,CHN
 2020-01-23,Jiangsu,China,32.9711,119.455,0,5,0,4,0,0,CHN
 2020-01-24,Jiangsu,China,32.9711,119.455,0,9,0,4,0,0,CHN
@@ -3590,6 +3768,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Jiangsu,China,32.9711,119.455,631,631,0,0,0,0,CHN
 2020-03-17,Jiangsu,China,32.9711,119.455,631,631,0,0,0,0,CHN
 2020-03-18,Jiangsu,China,32.9711,119.455,631,631,0,0,0,0,CHN
+2020-03-19,Jiangsu,China,32.9711,119.455,631,631,0,0,0,0,CHN
 2020-01-22,Jiangxi,China,27.614,115.7221,0,2,0,2,0,0,CHN
 2020-01-23,Jiangxi,China,27.614,115.7221,0,7,0,5,0,0,CHN
 2020-01-24,Jiangxi,China,27.614,115.7221,0,18,0,11,0,0,CHN
@@ -3647,6 +3826,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Jiangxi,China,27.614,115.7221,934,935,1,0,0,0,CHN
 2020-03-17,Jiangxi,China,27.614,115.7221,934,935,1,0,0,0,CHN
 2020-03-18,Jiangxi,China,27.614,115.7221,934,935,1,0,0,0,CHN
+2020-03-19,Jiangxi,China,27.614,115.7221,934,935,1,0,0,0,CHN
 2020-01-22,Jilin,China,43.6661,126.1923,0,0,0,0,0,0,CHN
 2020-01-23,Jilin,China,43.6661,126.1923,0,1,0,1,0,0,CHN
 2020-01-24,Jilin,China,43.6661,126.1923,0,3,0,2,0,0,CHN
@@ -3704,6 +3884,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Jilin,China,43.6661,126.1923,92,93,1,0,0,1,CHN
 2020-03-17,Jilin,China,43.6661,126.1923,92,93,1,0,0,0,CHN
 2020-03-18,Jilin,China,43.6661,126.1923,92,93,1,0,0,0,CHN
+2020-03-19,Jilin,China,43.6661,126.1923,92,93,1,0,0,0,CHN
 2020-01-22,Liaoning,China,41.2956,122.6085,0,2,0,2,0,0,CHN
 2020-01-23,Liaoning,China,41.2956,122.6085,0,3,0,1,0,0,CHN
 2020-01-24,Liaoning,China,41.2956,122.6085,0,4,0,1,0,0,CHN
@@ -3761,6 +3942,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Liaoning,China,41.2956,122.6085,115,125,1,0,0,1,CHN
 2020-03-17,Liaoning,China,41.2956,122.6085,120,125,1,0,0,5,CHN
 2020-03-18,Liaoning,China,41.2956,122.6085,122,125,1,0,0,2,CHN
+2020-03-19,Liaoning,China,41.2956,122.6085,122,125,1,0,0,0,CHN
 2020-01-22,Macau,China,22.1667,113.55,0,1,0,1,0,0,CHN
 2020-01-23,Macau,China,22.1667,113.55,0,2,0,1,0,0,CHN
 2020-01-24,Macau,China,22.1667,113.55,0,2,0,0,0,0,CHN
@@ -3818,6 +4000,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Macau,China,22.1667,113.55,10,11,0,1,0,0,CHN
 2020-03-17,Macau,China,22.1667,113.55,10,12,0,1,0,0,CHN
 2020-03-18,Macau,China,22.1667,113.55,10,15,0,3,0,0,CHN
+2020-03-19,Macau,China,22.1667,113.55,10,17,0,2,0,0,CHN
 2020-01-22,Ningxia,China,37.2692,106.1655,0,1,0,1,0,0,CHN
 2020-01-23,Ningxia,China,37.2692,106.1655,0,1,0,0,0,0,CHN
 2020-01-24,Ningxia,China,37.2692,106.1655,0,2,0,1,0,0,CHN
@@ -3875,6 +4058,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Ningxia,China,37.2692,106.1655,75,75,0,0,0,2,CHN
 2020-03-17,Ningxia,China,37.2692,106.1655,75,75,0,0,0,0,CHN
 2020-03-18,Ningxia,China,37.2692,106.1655,75,75,0,0,0,0,CHN
+2020-03-19,Ningxia,China,37.2692,106.1655,75,75,0,0,0,0,CHN
 2020-01-22,Qinghai,China,35.7452,95.9956,0,0,0,0,0,0,CHN
 2020-01-23,Qinghai,China,35.7452,95.9956,0,0,0,0,0,0,CHN
 2020-01-24,Qinghai,China,35.7452,95.9956,0,0,0,0,0,0,CHN
@@ -3932,6 +4116,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Qinghai,China,35.7452,95.9956,18,18,0,0,0,0,CHN
 2020-03-17,Qinghai,China,35.7452,95.9956,18,18,0,0,0,0,CHN
 2020-03-18,Qinghai,China,35.7452,95.9956,18,18,0,0,0,0,CHN
+2020-03-19,Qinghai,China,35.7452,95.9956,18,18,0,0,0,0,CHN
 2020-01-22,Shaanxi,China,35.1917,108.8701,0,0,0,0,0,0,CHN
 2020-01-23,Shaanxi,China,35.1917,108.8701,0,3,0,3,0,0,CHN
 2020-01-24,Shaanxi,China,35.1917,108.8701,0,5,0,2,0,0,CHN
@@ -3989,6 +4174,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Shaanxi,China,35.1917,108.8701,233,245,2,0,0,1,CHN
 2020-03-17,Shaanxi,China,35.1917,108.8701,236,246,3,1,1,3,CHN
 2020-03-18,Shaanxi,China,35.1917,108.8701,237,246,3,0,0,1,CHN
+2020-03-19,Shaanxi,China,35.1917,108.8701,237,246,3,0,0,0,CHN
 2020-01-22,Shandong,China,36.3427,118.1498,0,2,0,2,0,0,CHN
 2020-01-23,Shandong,China,36.3427,118.1498,0,6,0,4,0,0,CHN
 2020-01-24,Shandong,China,36.3427,118.1498,0,15,0,9,0,0,CHN
@@ -4046,6 +4232,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Shandong,China,36.3427,118.1498,746,760,7,0,0,5,CHN
 2020-03-17,Shandong,China,36.3427,118.1498,746,761,7,1,0,0,CHN
 2020-03-18,Shandong,China,36.3427,118.1498,746,761,7,0,0,0,CHN
+2020-03-19,Shandong,China,36.3427,118.1498,747,761,7,0,0,1,CHN
 2020-01-22,Shanghai,China,31.202,121.4491,0,9,0,9,0,0,CHN
 2020-01-23,Shanghai,China,31.202,121.4491,0,16,0,7,0,0,CHN
 2020-01-24,Shanghai,China,31.202,121.4491,1,20,0,4,0,1,CHN
@@ -4103,6 +4290,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Shanghai,China,31.202,121.4491,325,355,3,2,0,1,CHN
 2020-03-17,Shanghai,China,31.202,121.4491,325,358,3,3,0,0,CHN
 2020-03-18,Shanghai,China,31.202,121.4491,326,361,3,3,0,1,CHN
+2020-03-19,Shanghai,China,31.202,121.4491,326,363,3,2,0,0,CHN
 2020-01-22,Shanxi,China,37.5777,112.2922,0,1,0,1,0,0,CHN
 2020-01-23,Shanxi,China,37.5777,112.2922,0,1,0,0,0,0,CHN
 2020-01-24,Shanxi,China,37.5777,112.2922,0,1,0,0,0,0,CHN
@@ -4160,6 +4348,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Shanxi,China,37.5777,112.2922,133,133,0,0,0,0,CHN
 2020-03-17,Shanxi,China,37.5777,112.2922,133,133,0,0,0,0,CHN
 2020-03-18,Shanxi,China,37.5777,112.2922,133,133,0,0,0,0,CHN
+2020-03-19,Shanxi,China,37.5777,112.2922,133,133,0,0,0,0,CHN
 2020-01-22,Sichuan,China,30.6171,102.7103,0,5,0,5,0,0,CHN
 2020-01-23,Sichuan,China,30.6171,102.7103,0,8,0,3,0,0,CHN
 2020-01-24,Sichuan,China,30.6171,102.7103,0,15,0,7,0,0,CHN
@@ -4217,6 +4406,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Sichuan,China,30.6171,102.7103,516,539,3,0,0,0,CHN
 2020-03-17,Sichuan,China,30.6171,102.7103,520,540,3,1,0,4,CHN
 2020-03-18,Sichuan,China,30.6171,102.7103,525,540,3,0,0,5,CHN
+2020-03-19,Sichuan,China,30.6171,102.7103,536,540,3,0,0,11,CHN
 2020-01-22,Tianjin,China,39.3054,117.323,0,4,0,4,0,0,CHN
 2020-01-23,Tianjin,China,39.3054,117.323,0,4,0,0,0,0,CHN
 2020-01-24,Tianjin,China,39.3054,117.323,0,8,0,4,0,0,CHN
@@ -4274,6 +4464,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Tianjin,China,39.3054,117.323,133,136,3,0,0,0,CHN
 2020-03-17,Tianjin,China,39.3054,117.323,133,136,3,0,0,0,CHN
 2020-03-18,Tianjin,China,39.3054,117.323,133,136,3,0,0,0,CHN
+2020-03-19,Tianjin,China,39.3054,117.323,133,137,3,1,0,0,CHN
 2020-01-22,Tibet,China,31.6927,88.0924,0,0,0,0,0,0,CHN
 2020-01-23,Tibet,China,31.6927,88.0924,0,0,0,0,0,0,CHN
 2020-01-24,Tibet,China,31.6927,88.0924,0,0,0,0,0,0,CHN
@@ -4331,6 +4522,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Tibet,China,31.6927,88.0924,1,1,0,0,0,0,CHN
 2020-03-17,Tibet,China,31.6927,88.0924,1,1,0,0,0,0,CHN
 2020-03-18,Tibet,China,31.6927,88.0924,1,1,0,0,0,0,CHN
+2020-03-19,Tibet,China,31.6927,88.0924,1,1,0,0,0,0,CHN
 2020-01-22,Xinjiang,China,41.1129,85.2401,0,0,0,0,0,0,CHN
 2020-01-23,Xinjiang,China,41.1129,85.2401,0,2,0,2,0,0,CHN
 2020-01-24,Xinjiang,China,41.1129,85.2401,0,2,0,0,0,0,CHN
@@ -4388,6 +4580,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Xinjiang,China,41.1129,85.2401,73,76,3,0,0,0,CHN
 2020-03-17,Xinjiang,China,41.1129,85.2401,73,76,3,0,0,0,CHN
 2020-03-18,Xinjiang,China,41.1129,85.2401,73,76,3,0,0,0,CHN
+2020-03-19,Xinjiang,China,41.1129,85.2401,73,76,3,0,0,0,CHN
 2020-01-22,Yunnan,China,24.974,101.487,0,1,0,1,0,0,CHN
 2020-01-23,Yunnan,China,24.974,101.487,0,2,0,1,0,0,CHN
 2020-01-24,Yunnan,China,24.974,101.487,0,5,0,3,0,0,CHN
@@ -4445,6 +4638,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Yunnan,China,24.974,101.487,172,176,2,2,0,0,CHN
 2020-03-17,Yunnan,China,24.974,101.487,172,176,2,0,0,0,CHN
 2020-03-18,Yunnan,China,24.974,101.487,172,176,2,0,0,0,CHN
+2020-03-19,Yunnan,China,24.974,101.487,172,176,2,0,0,0,CHN
 2020-01-22,Zhejiang,China,29.1832,120.0934,0,10,0,10,0,0,CHN
 2020-01-23,Zhejiang,China,29.1832,120.0934,0,27,0,17,0,0,CHN
 2020-01-24,Zhejiang,China,29.1832,120.0934,1,43,0,16,0,1,CHN
@@ -4502,6 +4696,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Zhejiang,China,29.1832,120.0934,1216,1231,1,0,0,5,CHN
 2020-03-17,Zhejiang,China,29.1832,120.0934,1216,1232,1,1,0,0,CHN
 2020-03-18,Zhejiang,China,29.1832,120.0934,1216,1232,1,0,0,0,CHN
+2020-03-19,Zhejiang,China,29.1832,120.0934,1217,1233,1,1,0,1,CHN
 2020-01-22,NA,Colombia,4.5709,-74.2973,0,0,0,0,0,0,COL
 2020-01-23,NA,Colombia,4.5709,-74.2973,0,0,0,0,0,0,COL
 2020-01-24,NA,Colombia,4.5709,-74.2973,0,0,0,0,0,0,COL
@@ -4559,6 +4754,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Colombia,4.5709,-74.2973,0,54,0,20,0,0,COL
 2020-03-17,NA,Colombia,4.5709,-74.2973,1,65,0,11,0,1,COL
 2020-03-18,NA,Colombia,4.5709,-74.2973,1,93,0,28,0,0,COL
+2020-03-19,NA,Colombia,4.5709,-74.2973,1,102,0,9,0,0,COL
 2020-01-22,NA,Congo (Brazzaville),-4.0383,21.7587,0,0,0,0,0,0,COG
 2020-01-23,NA,Congo (Brazzaville),-4.0383,21.7587,0,0,0,0,0,0,COG
 2020-01-24,NA,Congo (Brazzaville),-4.0383,21.7587,0,0,0,0,0,0,COG
@@ -4616,6 +4812,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Congo (Brazzaville),-4.0383,21.7587,0,1,0,0,0,0,COG
 2020-03-17,NA,Congo (Brazzaville),-4.0383,21.7587,0,1,0,0,0,0,COG
 2020-03-18,NA,Congo (Brazzaville),-4.0383,21.7587,0,1,0,0,0,0,COG
+2020-03-19,NA,Congo (Brazzaville),-4.0383,21.7587,0,3,0,2,0,0,COG
 2020-01-22,NA,Congo (Kinshasa),-4.0383,21.7587,0,0,0,0,0,0,COD
 2020-01-23,NA,Congo (Kinshasa),-4.0383,21.7587,0,0,0,0,0,0,COD
 2020-01-24,NA,Congo (Kinshasa),-4.0383,21.7587,0,0,0,0,0,0,COD
@@ -4673,6 +4870,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Congo (Kinshasa),-4.0383,21.7587,0,2,0,0,0,0,COD
 2020-03-17,NA,Congo (Kinshasa),-4.0383,21.7587,0,3,0,1,0,0,COD
 2020-03-18,NA,Congo (Kinshasa),-4.0383,21.7587,0,4,0,1,0,0,COD
+2020-03-19,NA,Congo (Kinshasa),-4.0383,21.7587,0,14,0,10,0,0,COD
 2020-01-22,NA,Costa Rica,9.7489,-83.7534,0,0,0,0,0,0,CRI
 2020-01-23,NA,Costa Rica,9.7489,-83.7534,0,0,0,0,0,0,CRI
 2020-01-24,NA,Costa Rica,9.7489,-83.7534,0,0,0,0,0,0,CRI
@@ -4730,6 +4928,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Costa Rica,9.7489,-83.7534,0,35,0,8,0,0,CRI
 2020-03-17,NA,Costa Rica,9.7489,-83.7534,0,41,0,6,0,0,CRI
 2020-03-18,NA,Costa Rica,9.7489,-83.7534,0,50,0,9,0,0,CRI
+2020-03-19,NA,Costa Rica,9.7489,-83.7534,0,69,1,19,1,0,CRI
 2020-01-22,NA,Cote d'Ivoire,7.54,-5.5471,0,0,0,0,0,0,CIV
 2020-01-23,NA,Cote d'Ivoire,7.54,-5.5471,0,0,0,0,0,0,CIV
 2020-01-24,NA,Cote d'Ivoire,7.54,-5.5471,0,0,0,0,0,0,CIV
@@ -4787,6 +4986,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Cote d'Ivoire,7.54,-5.5471,0,1,0,0,0,0,CIV
 2020-03-17,NA,Cote d'Ivoire,7.54,-5.5471,1,5,0,4,0,1,CIV
 2020-03-18,NA,Cote d'Ivoire,7.54,-5.5471,1,6,0,1,0,0,CIV
+2020-03-19,NA,Cote d'Ivoire,7.54,-5.5471,1,9,0,3,0,0,CIV
 2020-01-22,NA,Croatia,45.1,15.2,0,0,0,0,0,0,HRV
 2020-01-23,NA,Croatia,45.1,15.2,0,0,0,0,0,0,HRV
 2020-01-24,NA,Croatia,45.1,15.2,0,0,0,0,0,0,HRV
@@ -4844,6 +5044,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Croatia,45.1,15.2,2,57,0,8,0,1,HRV
 2020-03-17,NA,Croatia,45.1,15.2,4,65,0,8,0,2,HRV
 2020-03-18,NA,Croatia,45.1,15.2,4,81,0,16,0,0,HRV
+2020-03-19,NA,Croatia,45.1,15.2,5,105,1,24,1,1,HRV
 2020-01-22,Diamond Princess,Cruise Ship,35.4437,139.638,0,0,0,0,0,0,NA
 2020-01-23,Diamond Princess,Cruise Ship,35.4437,139.638,0,0,0,0,0,0,NA
 2020-01-24,Diamond Princess,Cruise Ship,35.4437,139.638,0,0,0,0,0,0,NA
@@ -4901,6 +5102,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Diamond Princess,Cruise Ship,35.4437,139.638,325,696,7,0,0,0,NA
 2020-03-17,Diamond Princess,Cruise Ship,35.4437,139.638,325,696,7,0,0,0,NA
 2020-03-18,Diamond Princess,Cruise Ship,35.4437,139.638,325,712,7,16,0,0,NA
+2020-03-19,Diamond Princess,Cruise Ship,35.4437,139.638,325,712,7,0,0,0,NA
 2020-01-22,NA,Cuba,22,-80,0,0,0,0,0,0,CUB
 2020-01-23,NA,Cuba,22,-80,0,0,0,0,0,0,CUB
 2020-01-24,NA,Cuba,22,-80,0,0,0,0,0,0,CUB
@@ -4958,6 +5160,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Cuba,22,-80,0,4,0,0,0,0,CUB
 2020-03-17,NA,Cuba,22,-80,0,5,0,1,0,0,CUB
 2020-03-18,NA,Cuba,22,-80,0,7,1,2,1,0,CUB
+2020-03-19,NA,Cuba,22,-80,0,11,1,4,0,0,CUB
 2020-01-22,NA,Cyprus,35.1264,33.4299,0,0,0,0,0,0,CYP
 2020-01-23,NA,Cyprus,35.1264,33.4299,0,0,0,0,0,0,CYP
 2020-01-24,NA,Cyprus,35.1264,33.4299,0,0,0,0,0,0,CYP
@@ -5015,6 +5218,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Cyprus,35.1264,33.4299,0,33,0,7,0,0,CYP
 2020-03-17,NA,Cyprus,35.1264,33.4299,0,46,0,13,0,0,CYP
 2020-03-18,NA,Cyprus,35.1264,33.4299,0,49,0,3,0,0,CYP
+2020-03-19,NA,Cyprus,35.1264,33.4299,0,67,0,18,0,0,CYP
 2020-01-22,NA,Czechia,49.8175,15.473,0,0,0,0,0,0,CZE
 2020-01-23,NA,Czechia,49.8175,15.473,0,0,0,0,0,0,CZE
 2020-01-24,NA,Czechia,49.8175,15.473,0,0,0,0,0,0,CZE
@@ -5072,6 +5276,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Czechia,49.8175,15.473,3,298,0,45,0,3,CZE
 2020-03-17,NA,Czechia,49.8175,15.473,3,396,0,98,0,0,CZE
 2020-03-18,NA,Czechia,49.8175,15.473,3,464,0,68,0,0,CZE
+2020-03-19,NA,Czechia,49.8175,15.473,3,694,0,230,0,0,CZE
 2020-01-22,Denmark,Denmark,56.2639,9.5018,0,0,0,0,0,0,DNK
 2020-01-23,Denmark,Denmark,56.2639,9.5018,0,0,0,0,0,0,DNK
 2020-01-24,Denmark,Denmark,56.2639,9.5018,0,0,0,0,0,0,DNK
@@ -5129,6 +5334,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Denmark,Denmark,56.2639,9.5018,1,914,3,50,1,0,DNK
 2020-03-17,Denmark,Denmark,56.2639,9.5018,1,977,4,63,1,0,DNK
 2020-03-18,Denmark,Denmark,56.2639,9.5018,1,1057,4,80,0,0,DNK
+2020-03-19,Denmark,Denmark,56.2639,9.5018,1,1151,6,94,2,0,DNK
 2020-01-22,Faroe Islands,Denmark,61.8926,-6.9118,0,0,0,0,0,0,DNK
 2020-01-23,Faroe Islands,Denmark,61.8926,-6.9118,0,0,0,0,0,0,DNK
 2020-01-24,Faroe Islands,Denmark,61.8926,-6.9118,0,0,0,0,0,0,DNK
@@ -5186,6 +5392,65 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Faroe Islands,Denmark,61.8926,-6.9118,0,18,0,7,0,0,DNK
 2020-03-17,Faroe Islands,Denmark,61.8926,-6.9118,0,47,0,29,0,0,DNK
 2020-03-18,Faroe Islands,Denmark,61.8926,-6.9118,0,58,0,11,0,0,DNK
+2020-03-19,Faroe Islands,Denmark,61.8926,-6.9118,0,72,0,14,0,0,DNK
+2020-01-22,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-01-23,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-01-24,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-01-25,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-01-26,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-01-27,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-01-28,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-01-29,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-01-30,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-01-31,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-01,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-02,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-03,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-04,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-05,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-06,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-07,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-08,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-09,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-10,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-11,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-12,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-13,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-14,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-15,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-16,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-17,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-18,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-19,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-20,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-21,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-22,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-23,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-24,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-25,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-26,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-27,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-28,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-02-29,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-03-01,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-03-02,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-03-03,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-03-04,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-03-05,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-03-06,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-03-07,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-03-08,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-03-09,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-03-10,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-03-11,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-03-12,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-03-13,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-03-14,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-03-15,Greenland,Denmark,71.7069,-42.6043,0,0,0,0,0,0,DNK
+2020-03-16,Greenland,Denmark,71.7069,-42.6043,0,1,0,1,0,0,DNK
+2020-03-17,Greenland,Denmark,71.7069,-42.6043,0,1,0,0,0,0,DNK
+2020-03-18,Greenland,Denmark,71.7069,-42.6043,0,1,0,0,0,0,DNK
+2020-03-19,Greenland,Denmark,71.7069,-42.6043,0,2,0,1,0,0,DNK
 2020-01-22,NA,Djibouti,11.8251,42.5903,0,0,0,0,0,0,DJI
 2020-01-23,NA,Djibouti,11.8251,42.5903,0,0,0,0,0,0,DJI
 2020-01-24,NA,Djibouti,11.8251,42.5903,0,0,0,0,0,0,DJI
@@ -5243,6 +5508,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Djibouti,11.8251,42.5903,0,0,0,0,0,0,DJI
 2020-03-17,NA,Djibouti,11.8251,42.5903,0,0,0,0,0,0,DJI
 2020-03-18,NA,Djibouti,11.8251,42.5903,0,1,0,1,0,0,DJI
+2020-03-19,NA,Djibouti,11.8251,42.5903,0,1,0,0,0,0,DJI
 2020-01-22,NA,Dominican Republic,18.7357,-70.1627,0,0,0,0,0,0,DOM
 2020-01-23,NA,Dominican Republic,18.7357,-70.1627,0,0,0,0,0,0,DOM
 2020-01-24,NA,Dominican Republic,18.7357,-70.1627,0,0,0,0,0,0,DOM
@@ -5300,6 +5566,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Dominican Republic,18.7357,-70.1627,0,11,0,0,0,0,DOM
 2020-03-17,NA,Dominican Republic,18.7357,-70.1627,0,21,1,10,1,0,DOM
 2020-03-18,NA,Dominican Republic,18.7357,-70.1627,0,21,1,0,0,0,DOM
+2020-03-19,NA,Dominican Republic,18.7357,-70.1627,0,34,2,13,1,0,DOM
 2020-01-22,NA,Ecuador,-1.8312,-78.1834,0,0,0,0,0,0,ECU
 2020-01-23,NA,Ecuador,-1.8312,-78.1834,0,0,0,0,0,0,ECU
 2020-01-24,NA,Ecuador,-1.8312,-78.1834,0,0,0,0,0,0,ECU
@@ -5357,6 +5624,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Ecuador,-1.8312,-78.1834,0,37,2,9,0,0,ECU
 2020-03-17,NA,Ecuador,-1.8312,-78.1834,0,58,2,21,0,0,ECU
 2020-03-18,NA,Ecuador,-1.8312,-78.1834,0,111,2,53,0,0,ECU
+2020-03-19,NA,Ecuador,-1.8312,-78.1834,0,199,3,88,1,0,ECU
 2020-01-22,NA,Egypt,26,30,0,0,0,0,0,0,EGY
 2020-01-23,NA,Egypt,26,30,0,0,0,0,0,0,EGY
 2020-01-24,NA,Egypt,26,30,0,0,0,0,0,0,EGY
@@ -5414,6 +5682,65 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Egypt,26,30,27,150,2,40,0,6,EGY
 2020-03-17,NA,Egypt,26,30,32,196,4,46,2,5,EGY
 2020-03-18,NA,Egypt,26,30,32,196,6,0,2,0,EGY
+2020-03-19,NA,Egypt,26,30,32,256,6,60,0,0,EGY
+2020-01-22,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-01-23,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-01-24,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-01-25,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-01-26,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-01-27,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-01-28,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-01-29,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-01-30,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-01-31,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-01,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-02,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-03,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-04,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-05,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-06,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-07,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-08,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-09,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-10,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-11,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-12,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-13,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-14,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-15,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-16,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-17,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-18,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-19,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-20,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-21,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-22,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-23,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-24,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-25,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-26,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-27,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-28,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-02-29,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-03-01,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-03-02,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-03-03,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-03-04,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-03-05,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-03-06,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-03-07,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-03-08,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-03-09,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-03-10,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-03-11,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-03-12,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-03-13,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-03-14,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-03-15,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-03-16,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-03-17,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-03-18,NA,El Salvador,13.7942,-88.8965,0,0,0,0,0,0,SLV
+2020-03-19,NA,El Salvador,13.7942,-88.8965,0,1,0,1,0,0,SLV
 2020-01-22,NA,Equatorial Guinea,1.5,10,0,0,0,0,0,0,GNQ
 2020-01-23,NA,Equatorial Guinea,1.5,10,0,0,0,0,0,0,GNQ
 2020-01-24,NA,Equatorial Guinea,1.5,10,0,0,0,0,0,0,GNQ
@@ -5471,6 +5798,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Equatorial Guinea,1.5,10,0,1,0,0,0,0,GNQ
 2020-03-17,NA,Equatorial Guinea,1.5,10,0,1,0,0,0,0,GNQ
 2020-03-18,NA,Equatorial Guinea,1.5,10,0,4,0,3,0,0,GNQ
+2020-03-19,NA,Equatorial Guinea,1.5,10,0,6,0,2,0,0,GNQ
 2020-01-22,NA,Estonia,58.5953,25.0136,0,0,0,0,0,0,EST
 2020-01-23,NA,Estonia,58.5953,25.0136,0,0,0,0,0,0,EST
 2020-01-24,NA,Estonia,58.5953,25.0136,0,0,0,0,0,0,EST
@@ -5528,6 +5856,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Estonia,58.5953,25.0136,1,205,0,34,0,0,EST
 2020-03-17,NA,Estonia,58.5953,25.0136,1,225,0,20,0,0,EST
 2020-03-18,NA,Estonia,58.5953,25.0136,1,258,0,33,0,0,EST
+2020-03-19,NA,Estonia,58.5953,25.0136,1,267,0,9,0,0,EST
 2020-01-22,NA,Eswatini,-26.5225,31.4659,0,0,0,0,0,0,NA
 2020-01-23,NA,Eswatini,-26.5225,31.4659,0,0,0,0,0,0,NA
 2020-01-24,NA,Eswatini,-26.5225,31.4659,0,0,0,0,0,0,NA
@@ -5585,6 +5914,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Eswatini,-26.5225,31.4659,0,1,0,0,0,0,NA
 2020-03-17,NA,Eswatini,-26.5225,31.4659,0,1,0,0,0,0,NA
 2020-03-18,NA,Eswatini,-26.5225,31.4659,0,1,0,0,0,0,NA
+2020-03-19,NA,Eswatini,-26.5225,31.4659,0,1,0,0,0,0,NA
 2020-01-22,NA,Ethiopia,9.145,40.4897,0,0,0,0,0,0,ETH
 2020-01-23,NA,Ethiopia,9.145,40.4897,0,0,0,0,0,0,ETH
 2020-01-24,NA,Ethiopia,9.145,40.4897,0,0,0,0,0,0,ETH
@@ -5642,6 +5972,65 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Ethiopia,9.145,40.4897,0,5,0,4,0,0,ETH
 2020-03-17,NA,Ethiopia,9.145,40.4897,0,5,0,0,0,0,ETH
 2020-03-18,NA,Ethiopia,9.145,40.4897,0,6,0,1,0,0,ETH
+2020-03-19,NA,Ethiopia,9.145,40.4897,0,6,0,0,0,0,ETH
+2020-01-22,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-01-23,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-01-24,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-01-25,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-01-26,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-01-27,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-01-28,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-01-29,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-01-30,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-01-31,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-01,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-02,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-03,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-04,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-05,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-06,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-07,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-08,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-09,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-10,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-11,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-12,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-13,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-14,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-15,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-16,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-17,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-18,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-19,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-20,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-21,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-22,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-23,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-24,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-25,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-26,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-27,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-28,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-02-29,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-03-01,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-03-02,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-03-03,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-03-04,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-03-05,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-03-06,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-03-07,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-03-08,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-03-09,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-03-10,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-03-11,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-03-12,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-03-13,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-03-14,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-03-15,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-03-16,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-03-17,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-03-18,NA,Fiji,-17.7134,178.065,0,0,0,0,0,0,FJI
+2020-03-19,NA,Fiji,-17.7134,178.065,0,1,0,1,0,0,FJI
 2020-01-22,NA,Finland,64,26,0,0,0,0,0,0,FIN
 2020-01-23,NA,Finland,64,26,0,0,0,0,0,0,FIN
 2020-01-24,NA,Finland,64,26,0,0,0,0,0,0,FIN
@@ -5699,6 +6088,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Finland,64,26,10,277,0,33,0,0,FIN
 2020-03-17,NA,Finland,64,26,10,321,0,44,0,0,FIN
 2020-03-18,NA,Finland,64,26,10,336,0,15,0,0,FIN
+2020-03-19,NA,Finland,64,26,10,400,0,64,0,0,FIN
 2020-01-22,France,France,46.2276,2.2137,0,0,0,0,0,0,FRA
 2020-01-23,France,France,46.2276,2.2137,0,0,0,0,0,0,FRA
 2020-01-24,France,France,46.2276,2.2137,0,2,0,2,0,0,FRA
@@ -5756,6 +6146,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,France,France,46.2276,2.2137,12,6633,148,2134,57,0,FRA
 2020-03-17,France,France,46.2276,2.2137,12,7652,148,1019,0,0,FRA
 2020-03-18,France,France,46.2276,2.2137,12,9043,148,1391,0,0,FRA
+2020-03-19,France,France,46.2276,2.2137,12,10871,243,1828,95,0,FRA
 2020-01-22,French Guiana,France,3.9339,-53.1258,0,0,0,0,0,0,FRA
 2020-01-23,French Guiana,France,3.9339,-53.1258,0,0,0,0,0,0,FRA
 2020-01-24,French Guiana,France,3.9339,-53.1258,0,0,0,0,0,0,FRA
@@ -5813,6 +6204,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,French Guiana,France,3.9339,-53.1258,0,11,0,4,0,0,FRA
 2020-03-17,French Guiana,France,3.9339,-53.1258,0,11,0,0,0,0,FRA
 2020-03-18,French Guiana,France,3.9339,-53.1258,0,11,0,0,0,0,FRA
+2020-03-19,French Guiana,France,3.9339,-53.1258,0,11,0,0,0,0,FRA
 2020-01-22,French Polynesia,France,-17.6797,149.4068,0,0,0,0,0,0,FRA
 2020-01-23,French Polynesia,France,-17.6797,149.4068,0,0,0,0,0,0,FRA
 2020-01-24,French Polynesia,France,-17.6797,149.4068,0,0,0,0,0,0,FRA
@@ -5870,6 +6262,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,French Polynesia,France,-17.6797,149.4068,0,3,0,0,0,0,FRA
 2020-03-17,French Polynesia,France,-17.6797,149.4068,0,3,0,0,0,0,FRA
 2020-03-18,French Polynesia,France,-17.6797,149.4068,0,3,0,0,0,0,FRA
+2020-03-19,French Polynesia,France,-17.6797,149.4068,0,6,0,3,0,0,FRA
 2020-01-22,Guadeloupe,France,16.25,-61.5833,0,0,0,0,0,0,FRA
 2020-01-23,Guadeloupe,France,16.25,-61.5833,0,0,0,0,0,0,FRA
 2020-01-24,Guadeloupe,France,16.25,-61.5833,0,0,0,0,0,0,FRA
@@ -5927,6 +6320,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Guadeloupe,France,16.25,-61.5833,0,6,0,3,0,0,FRA
 2020-03-17,Guadeloupe,France,16.25,-61.5833,0,18,0,12,0,0,FRA
 2020-03-18,Guadeloupe,France,16.25,-61.5833,0,27,0,9,0,0,FRA
+2020-03-19,Guadeloupe,France,16.25,-61.5833,0,33,0,6,0,0,FRA
 2020-01-22,Mayotte,France,-12.8275,45.1662,0,0,0,0,0,0,FRA
 2020-01-23,Mayotte,France,-12.8275,45.1662,0,0,0,0,0,0,FRA
 2020-01-24,Mayotte,France,-12.8275,45.1662,0,0,0,0,0,0,FRA
@@ -5984,6 +6378,65 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Mayotte,France,-12.8275,45.1662,0,1,0,0,0,0,FRA
 2020-03-17,Mayotte,France,-12.8275,45.1662,0,1,0,0,0,0,FRA
 2020-03-18,Mayotte,France,-12.8275,45.1662,0,3,0,2,0,0,FRA
+2020-03-19,Mayotte,France,-12.8275,45.1662,0,3,0,0,0,0,FRA
+2020-01-22,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-01-23,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-01-24,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-01-25,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-01-26,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-01-27,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-01-28,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-01-29,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-01-30,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-01-31,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-01,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-02,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-03,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-04,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-05,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-06,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-07,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-08,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-09,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-10,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-11,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-12,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-13,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-14,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-15,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-16,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-17,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-18,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-19,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-20,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-21,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-22,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-23,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-24,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-25,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-26,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-27,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-28,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-02-29,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-03-01,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-03-02,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-03-03,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-03-04,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-03-05,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-03-06,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-03-07,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-03-08,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-03-09,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-03-10,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-03-11,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-03-12,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-03-13,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-03-14,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-03-15,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-03-16,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-03-17,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-03-18,New Caledonia,France,-20.9043,165.618,0,0,0,0,0,0,FRA
+2020-03-19,New Caledonia,France,-20.9043,165.618,0,2,0,2,0,0,FRA
 2020-01-22,Reunion,France,-21.1351,55.2471,0,0,0,0,0,0,FRA
 2020-01-23,Reunion,France,-21.1351,55.2471,0,0,0,0,0,0,FRA
 2020-01-24,Reunion,France,-21.1351,55.2471,0,0,0,0,0,0,FRA
@@ -6041,6 +6494,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Reunion,France,-21.1351,55.2471,0,9,0,2,0,0,FRA
 2020-03-17,Reunion,France,-21.1351,55.2471,0,9,0,0,0,0,FRA
 2020-03-18,Reunion,France,-21.1351,55.2471,0,12,0,3,0,0,FRA
+2020-03-19,Reunion,France,-21.1351,55.2471,0,14,0,2,0,0,FRA
 2020-01-22,Saint Barthelemy,France,17.9,-62.8333,0,0,0,0,0,0,FRA
 2020-01-23,Saint Barthelemy,France,17.9,-62.8333,0,0,0,0,0,0,FRA
 2020-01-24,Saint Barthelemy,France,17.9,-62.8333,0,0,0,0,0,0,FRA
@@ -6098,6 +6552,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Saint Barthelemy,France,17.9,-62.8333,0,3,0,2,0,0,FRA
 2020-03-17,Saint Barthelemy,France,17.9,-62.8333,0,3,0,0,0,0,FRA
 2020-03-18,Saint Barthelemy,France,17.9,-62.8333,0,3,0,0,0,0,FRA
+2020-03-19,Saint Barthelemy,France,17.9,-62.8333,0,3,0,0,0,0,FRA
 2020-01-22,St Martin,France,18.0708,-63.0501,0,0,0,0,0,0,FRA
 2020-01-23,St Martin,France,18.0708,-63.0501,0,0,0,0,0,0,FRA
 2020-01-24,St Martin,France,18.0708,-63.0501,0,0,0,0,0,0,FRA
@@ -6155,6 +6610,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,St Martin,France,18.0708,-63.0501,0,2,0,0,0,0,FRA
 2020-03-17,St Martin,France,18.0708,-63.0501,0,2,0,0,0,0,FRA
 2020-03-18,St Martin,France,18.0708,-63.0501,0,3,0,1,0,0,FRA
+2020-03-19,St Martin,France,18.0708,-63.0501,0,4,0,1,0,0,FRA
 2020-01-22,NA,Gabon,-0.8037,11.6094,0,0,0,0,0,0,GAB
 2020-01-23,NA,Gabon,-0.8037,11.6094,0,0,0,0,0,0,GAB
 2020-01-24,NA,Gabon,-0.8037,11.6094,0,0,0,0,0,0,GAB
@@ -6212,6 +6668,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Gabon,-0.8037,11.6094,0,1,0,0,0,0,GAB
 2020-03-17,NA,Gabon,-0.8037,11.6094,0,1,0,0,0,0,GAB
 2020-03-18,NA,Gabon,-0.8037,11.6094,0,1,0,0,0,0,GAB
+2020-03-19,NA,Gabon,-0.8037,11.6094,0,1,0,0,0,0,GAB
 2020-01-22,NA,"Gambia, The",13.4432,-15.3101,0,0,0,0,0,0,GMB
 2020-01-23,NA,"Gambia, The",13.4432,-15.3101,0,0,0,0,0,0,GMB
 2020-01-24,NA,"Gambia, The",13.4432,-15.3101,0,0,0,0,0,0,GMB
@@ -6269,6 +6726,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,"Gambia, The",13.4432,-15.3101,0,0,0,0,0,0,GMB
 2020-03-17,NA,"Gambia, The",13.4432,-15.3101,0,1,0,1,0,0,GMB
 2020-03-18,NA,"Gambia, The",13.4432,-15.3101,0,1,0,0,0,0,GMB
+2020-03-19,NA,"Gambia, The",13.4432,-15.3101,0,1,0,0,0,0,GMB
 2020-01-22,NA,Georgia,42.3154,43.3569,0,0,0,0,0,0,GEO
 2020-01-23,NA,Georgia,42.3154,43.3569,0,0,0,0,0,0,GEO
 2020-01-24,NA,Georgia,42.3154,43.3569,0,0,0,0,0,0,GEO
@@ -6326,6 +6784,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Georgia,42.3154,43.3569,1,33,0,0,0,1,GEO
 2020-03-17,NA,Georgia,42.3154,43.3569,1,34,0,1,0,0,GEO
 2020-03-18,NA,Georgia,42.3154,43.3569,1,38,0,4,0,0,GEO
+2020-03-19,NA,Georgia,42.3154,43.3569,1,40,0,2,0,0,GEO
 2020-01-22,NA,Germany,51,9,0,0,0,0,0,0,DEU
 2020-01-23,NA,Germany,51,9,0,0,0,0,0,0,DEU
 2020-01-24,NA,Germany,51,9,0,0,0,0,0,0,DEU
@@ -6383,6 +6842,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Germany,51,9,67,7272,17,1477,6,21,DEU
 2020-03-17,NA,Germany,51,9,67,9257,24,1985,7,0,DEU
 2020-03-18,NA,Germany,51,9,105,12327,28,3070,4,38,DEU
+2020-03-19,NA,Germany,51,9,113,15320,44,2993,16,8,DEU
 2020-01-22,NA,Ghana,7.9465,-1.0232,0,0,0,0,0,0,GHA
 2020-01-23,NA,Ghana,7.9465,-1.0232,0,0,0,0,0,0,GHA
 2020-01-24,NA,Ghana,7.9465,-1.0232,0,0,0,0,0,0,GHA
@@ -6440,6 +6900,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Ghana,7.9465,-1.0232,0,6,0,0,0,0,GHA
 2020-03-17,NA,Ghana,7.9465,-1.0232,0,7,0,1,0,0,GHA
 2020-03-18,NA,Ghana,7.9465,-1.0232,0,7,0,0,0,0,GHA
+2020-03-19,NA,Ghana,7.9465,-1.0232,0,11,0,4,0,0,GHA
 2020-01-22,NA,Greece,39.0742,21.8243,0,0,0,0,0,0,GRC
 2020-01-23,NA,Greece,39.0742,21.8243,0,0,0,0,0,0,GRC
 2020-01-24,NA,Greece,39.0742,21.8243,0,0,0,0,0,0,GRC
@@ -6497,63 +6958,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Greece,39.0742,21.8243,8,331,4,0,0,0,GRC
 2020-03-17,NA,Greece,39.0742,21.8243,8,387,5,56,1,0,GRC
 2020-03-18,NA,Greece,39.0742,21.8243,8,418,5,31,0,0,GRC
-2020-01-22,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-01-23,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-01-24,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-01-25,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-01-26,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-01-27,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-01-28,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-01-29,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-01-30,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-01-31,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-01,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-02,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-03,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-04,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-05,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-06,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-07,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-08,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-09,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-10,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-11,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-12,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-13,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-14,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-15,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-16,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-17,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-18,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-19,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-20,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-21,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-22,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-23,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-24,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-25,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-26,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-27,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-28,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-02-29,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-03-01,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-03-02,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-03-03,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-03-04,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-03-05,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-03-06,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-03-07,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-03-08,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-03-09,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-03-10,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-03-11,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-03-12,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-03-13,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-03-14,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-03-15,NA,Greenland,71.7069,-42.6043,0,0,0,0,0,0,GRL
-2020-03-16,NA,Greenland,71.7069,-42.6043,0,1,0,1,0,0,GRL
-2020-03-17,NA,Greenland,71.7069,-42.6043,0,1,0,0,0,0,GRL
-2020-03-18,NA,Greenland,71.7069,-42.6043,0,1,0,0,0,0,GRL
+2020-03-19,NA,Greece,39.0742,21.8243,8,418,6,0,1,0,GRC
 2020-01-22,NA,Guatemala,15.7835,-90.2308,0,0,0,0,0,0,GTM
 2020-01-23,NA,Guatemala,15.7835,-90.2308,0,0,0,0,0,0,GTM
 2020-01-24,NA,Guatemala,15.7835,-90.2308,0,0,0,0,0,0,GTM
@@ -6611,6 +7016,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Guatemala,15.7835,-90.2308,0,2,1,1,1,0,GTM
 2020-03-17,NA,Guatemala,15.7835,-90.2308,0,6,1,4,0,0,GTM
 2020-03-18,NA,Guatemala,15.7835,-90.2308,0,6,1,0,0,0,GTM
+2020-03-19,NA,Guatemala,15.7835,-90.2308,0,9,1,3,0,0,GTM
 2020-01-22,NA,Guinea,9.9456,-9.6966,0,0,0,0,0,0,GIN
 2020-01-23,NA,Guinea,9.9456,-9.6966,0,0,0,0,0,0,GIN
 2020-01-24,NA,Guinea,9.9456,-9.6966,0,0,0,0,0,0,GIN
@@ -6668,6 +7074,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Guinea,9.9456,-9.6966,0,1,0,0,0,0,GIN
 2020-03-17,NA,Guinea,9.9456,-9.6966,0,1,0,0,0,0,GIN
 2020-03-18,NA,Guinea,9.9456,-9.6966,0,1,0,0,0,0,GIN
+2020-03-19,NA,Guinea,9.9456,-9.6966,0,1,0,0,0,0,GIN
 2020-01-22,NA,Guyana,5,-58.75,0,0,0,0,0,0,GUY
 2020-01-23,NA,Guyana,5,-58.75,0,0,0,0,0,0,GUY
 2020-01-24,NA,Guyana,5,-58.75,0,0,0,0,0,0,GUY
@@ -6725,6 +7132,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Guyana,5,-58.75,0,4,1,0,0,0,GUY
 2020-03-17,NA,Guyana,5,-58.75,0,7,1,3,0,0,GUY
 2020-03-18,NA,Guyana,5,-58.75,0,7,1,0,0,0,GUY
+2020-03-19,NA,Guyana,5,-58.75,0,7,1,0,0,0,GUY
 2020-01-22,NA,Holy See,41.9029,12.4534,0,0,0,0,0,0,VAT
 2020-01-23,NA,Holy See,41.9029,12.4534,0,0,0,0,0,0,VAT
 2020-01-24,NA,Holy See,41.9029,12.4534,0,0,0,0,0,0,VAT
@@ -6782,6 +7190,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Holy See,41.9029,12.4534,0,1,0,0,0,0,VAT
 2020-03-17,NA,Holy See,41.9029,12.4534,0,1,0,0,0,0,VAT
 2020-03-18,NA,Holy See,41.9029,12.4534,0,1,0,0,0,0,VAT
+2020-03-19,NA,Holy See,41.9029,12.4534,0,1,0,0,0,0,VAT
 2020-01-22,NA,Honduras,15.2,-86.2419,0,0,0,0,0,0,HND
 2020-01-23,NA,Honduras,15.2,-86.2419,0,0,0,0,0,0,HND
 2020-01-24,NA,Honduras,15.2,-86.2419,0,0,0,0,0,0,HND
@@ -6839,6 +7248,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Honduras,15.2,-86.2419,0,6,0,3,0,0,HND
 2020-03-17,NA,Honduras,15.2,-86.2419,0,8,0,2,0,0,HND
 2020-03-18,NA,Honduras,15.2,-86.2419,0,9,0,1,0,0,HND
+2020-03-19,NA,Honduras,15.2,-86.2419,0,12,0,3,0,0,HND
 2020-01-22,NA,Hungary,47.1625,19.5033,0,0,0,0,0,0,HUN
 2020-01-23,NA,Hungary,47.1625,19.5033,0,0,0,0,0,0,HUN
 2020-01-24,NA,Hungary,47.1625,19.5033,0,0,0,0,0,0,HUN
@@ -6896,6 +7306,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Hungary,47.1625,19.5033,1,39,1,7,0,0,HUN
 2020-03-17,NA,Hungary,47.1625,19.5033,2,50,1,11,0,1,HUN
 2020-03-18,NA,Hungary,47.1625,19.5033,2,58,1,8,0,0,HUN
+2020-03-19,NA,Hungary,47.1625,19.5033,2,73,1,15,0,0,HUN
 2020-01-22,NA,Iceland,64.9631,-19.0208,0,0,0,0,0,0,ISL
 2020-01-23,NA,Iceland,64.9631,-19.0208,0,0,0,0,0,0,ISL
 2020-01-24,NA,Iceland,64.9631,-19.0208,0,0,0,0,0,0,ISL
@@ -6953,6 +7364,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Iceland,64.9631,-19.0208,0,180,0,9,-5,-8,ISL
 2020-03-17,NA,Iceland,64.9631,-19.0208,0,220,1,40,1,0,ISL
 2020-03-18,NA,Iceland,64.9631,-19.0208,5,250,1,30,0,5,ISL
+2020-03-19,NA,Iceland,64.9631,-19.0208,5,330,1,80,0,0,ISL
 2020-01-22,NA,India,21,78,0,0,0,0,0,0,IND
 2020-01-23,NA,India,21,78,0,0,0,0,0,0,IND
 2020-01-24,NA,India,21,78,0,0,0,0,0,0,IND
@@ -7010,6 +7422,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,India,21,78,13,119,2,6,0,0,IND
 2020-03-17,NA,India,21,78,14,142,3,23,1,1,IND
 2020-03-18,NA,India,21,78,14,156,3,14,0,0,IND
+2020-03-19,NA,India,21,78,15,194,4,38,1,1,IND
 2020-01-22,NA,Indonesia,-0.7893,113.9213,0,0,0,0,0,0,IDN
 2020-01-23,NA,Indonesia,-0.7893,113.9213,0,0,0,0,0,0,IDN
 2020-01-24,NA,Indonesia,-0.7893,113.9213,0,0,0,0,0,0,IDN
@@ -7067,6 +7480,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Indonesia,-0.7893,113.9213,8,134,5,17,0,0,IDN
 2020-03-17,NA,Indonesia,-0.7893,113.9213,8,172,5,38,0,0,IDN
 2020-03-18,NA,Indonesia,-0.7893,113.9213,11,227,19,55,14,3,IDN
+2020-03-19,NA,Indonesia,-0.7893,113.9213,11,311,25,84,6,0,IDN
 2020-01-22,NA,Iran,32,53,0,0,0,0,0,0,IRN
 2020-01-23,NA,Iran,32,53,0,0,0,0,0,0,IRN
 2020-01-24,NA,Iran,32,53,0,0,0,0,0,0,IRN
@@ -7124,6 +7538,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Iran,32,53,4590,14991,853,1053,129,0,IRN
 2020-03-17,NA,Iran,32,53,5389,16169,988,1178,135,799,IRN
 2020-03-18,NA,Iran,32,53,5389,17361,1135,1192,147,0,IRN
+2020-03-19,NA,Iran,32,53,5710,18407,1284,1046,149,321,IRN
 2020-01-22,NA,Iraq,33,44,0,0,0,0,0,0,IRQ
 2020-01-23,NA,Iraq,33,44,0,0,0,0,0,0,IRQ
 2020-01-24,NA,Iraq,33,44,0,0,0,0,0,0,IRQ
@@ -7181,6 +7596,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Iraq,33,44,26,124,10,8,0,0,IRQ
 2020-03-17,NA,Iraq,33,44,32,154,11,30,1,6,IRQ
 2020-03-18,NA,Iraq,33,44,43,164,12,10,1,11,IRQ
+2020-03-19,NA,Iraq,33,44,43,192,13,28,1,0,IRQ
 2020-01-22,NA,Ireland,53.1424,-7.6921,0,0,0,0,0,0,IRL
 2020-01-23,NA,Ireland,53.1424,-7.6921,0,0,0,0,0,0,IRL
 2020-01-24,NA,Ireland,53.1424,-7.6921,0,0,0,0,0,0,IRL
@@ -7238,6 +7654,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Ireland,53.1424,-7.6921,0,169,2,40,0,0,IRL
 2020-03-17,NA,Ireland,53.1424,-7.6921,5,223,2,54,0,5,IRL
 2020-03-18,NA,Ireland,53.1424,-7.6921,5,292,2,69,0,0,IRL
+2020-03-19,NA,Ireland,53.1424,-7.6921,5,557,3,265,1,0,IRL
 2020-01-22,NA,Israel,31,35,0,0,0,0,0,0,ISR
 2020-01-23,NA,Israel,31,35,0,0,0,0,0,0,ISR
 2020-01-24,NA,Israel,31,35,0,0,0,0,0,0,ISR
@@ -7295,6 +7712,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Israel,31,35,4,255,0,4,0,0,ISR
 2020-03-17,NA,Israel,31,35,11,337,0,82,0,7,ISR
 2020-03-18,NA,Israel,31,35,11,433,0,96,0,0,ISR
+2020-03-19,NA,Israel,31,35,11,677,0,244,0,0,ISR
 2020-01-22,NA,Italy,43,12,0,0,0,0,0,0,ITA
 2020-01-23,NA,Italy,43,12,0,0,0,0,0,0,ITA
 2020-01-24,NA,Italy,43,12,0,0,0,0,0,0,ITA
@@ -7352,6 +7770,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Italy,43,12,2749,27980,2158,3233,349,414,ITA
 2020-03-17,NA,Italy,43,12,2941,31506,2503,3526,345,192,ITA
 2020-03-18,NA,Italy,43,12,4025,35713,2978,4207,475,1084,ITA
+2020-03-19,NA,Italy,43,12,4440,41035,3405,5322,427,415,ITA
 2020-01-22,NA,Jamaica,18.1096,-77.2975,0,0,0,0,0,0,JAM
 2020-01-23,NA,Jamaica,18.1096,-77.2975,0,0,0,0,0,0,JAM
 2020-01-24,NA,Jamaica,18.1096,-77.2975,0,0,0,0,0,0,JAM
@@ -7409,6 +7828,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Jamaica,18.1096,-77.2975,2,10,0,0,0,2,JAM
 2020-03-17,NA,Jamaica,18.1096,-77.2975,2,12,0,2,0,0,JAM
 2020-03-18,NA,Jamaica,18.1096,-77.2975,2,13,0,1,0,0,JAM
+2020-03-19,NA,Jamaica,18.1096,-77.2975,2,15,1,2,1,0,JAM
 2020-01-22,NA,Japan,36,138,0,2,0,2,0,0,JPN
 2020-01-23,NA,Japan,36,138,0,1,0,-1,0,0,JPN
 2020-01-24,NA,Japan,36,138,0,2,0,1,0,0,JPN
@@ -7466,6 +7886,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Japan,36,138,144,825,27,-14,5,26,JPN
 2020-03-17,NA,Japan,36,138,144,878,29,53,2,0,JPN
 2020-03-18,NA,Japan,36,138,144,889,29,11,0,0,JPN
+2020-03-19,NA,Japan,36,138,150,924,29,35,0,6,JPN
 2020-01-22,NA,Jordan,31.24,36.51,0,0,0,0,0,0,JOR
 2020-01-23,NA,Jordan,31.24,36.51,0,0,0,0,0,0,JOR
 2020-01-24,NA,Jordan,31.24,36.51,0,0,0,0,0,0,JOR
@@ -7523,6 +7944,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Jordan,31.24,36.51,1,17,0,9,0,0,JOR
 2020-03-17,NA,Jordan,31.24,36.51,1,34,0,17,0,0,JOR
 2020-03-18,NA,Jordan,31.24,36.51,1,52,0,18,0,0,JOR
+2020-03-19,NA,Jordan,31.24,36.51,1,69,0,17,0,0,JOR
 2020-01-22,NA,Kazakhstan,48.0196,66.9237,0,0,0,0,0,0,KAZ
 2020-01-23,NA,Kazakhstan,48.0196,66.9237,0,0,0,0,0,0,KAZ
 2020-01-24,NA,Kazakhstan,48.0196,66.9237,0,0,0,0,0,0,KAZ
@@ -7580,6 +8002,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Kazakhstan,48.0196,66.9237,0,10,0,1,0,0,KAZ
 2020-03-17,NA,Kazakhstan,48.0196,66.9237,0,33,0,23,0,0,KAZ
 2020-03-18,NA,Kazakhstan,48.0196,66.9237,0,35,0,2,0,0,KAZ
+2020-03-19,NA,Kazakhstan,48.0196,66.9237,0,44,0,9,0,0,KAZ
 2020-01-22,NA,Kenya,-0.0236,37.9062,0,0,0,0,0,0,KEN
 2020-01-23,NA,Kenya,-0.0236,37.9062,0,0,0,0,0,0,KEN
 2020-01-24,NA,Kenya,-0.0236,37.9062,0,0,0,0,0,0,KEN
@@ -7637,6 +8060,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Kenya,-0.0236,37.9062,0,3,0,0,0,0,KEN
 2020-03-17,NA,Kenya,-0.0236,37.9062,0,3,0,0,0,0,KEN
 2020-03-18,NA,Kenya,-0.0236,37.9062,0,3,0,0,0,0,KEN
+2020-03-19,NA,Kenya,-0.0236,37.9062,0,7,0,4,0,0,KEN
 2020-01-22,NA,"Korea, South",36,128,0,1,0,1,0,0,KOR
 2020-01-23,NA,"Korea, South",36,128,0,1,0,0,0,0,KOR
 2020-01-24,NA,"Korea, South",36,128,0,2,0,1,0,0,KOR
@@ -7694,6 +8118,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,"Korea, South",36,128,1137,8236,75,74,0,627,KOR
 2020-03-17,NA,"Korea, South",36,128,1407,8320,81,84,6,270,KOR
 2020-03-18,NA,"Korea, South",36,128,1540,8413,84,93,3,133,KOR
+2020-03-19,NA,"Korea, South",36,128,1540,8565,91,152,7,0,KOR
 2020-01-22,NA,Kosovo,42.6026,20.903,0,0,0,0,0,0,XKS
 2020-01-23,NA,Kosovo,42.6026,20.903,0,0,0,0,0,0,XKS
 2020-01-24,NA,Kosovo,42.6026,20.903,0,0,0,0,0,0,XKS
@@ -7751,6 +8176,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Kosovo,42.6026,20.903,0,2,0,0,0,0,XKS
 2020-03-17,NA,Kosovo,42.6026,20.903,0,2,0,0,0,0,XKS
 2020-03-18,NA,Kosovo,42.6026,20.903,0,2,0,0,0,0,XKS
+2020-03-19,NA,Kosovo,42.6026,20.903,0,2,0,0,0,0,XKS
 2020-01-22,NA,Kuwait,29.5,47.75,0,0,0,0,0,0,KWT
 2020-01-23,NA,Kuwait,29.5,47.75,0,0,0,0,0,0,KWT
 2020-01-24,NA,Kuwait,29.5,47.75,0,0,0,0,0,0,KWT
@@ -7808,6 +8234,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Kuwait,29.5,47.75,9,123,0,11,0,4,KWT
 2020-03-17,NA,Kuwait,29.5,47.75,9,130,0,7,0,0,KWT
 2020-03-18,NA,Kuwait,29.5,47.75,15,142,0,12,0,6,KWT
+2020-03-19,NA,Kuwait,29.5,47.75,18,148,0,6,0,3,KWT
 2020-01-22,NA,Kyrgyzstan,41.2044,74.7661,0,0,0,0,0,0,KGZ
 2020-01-23,NA,Kyrgyzstan,41.2044,74.7661,0,0,0,0,0,0,KGZ
 2020-01-24,NA,Kyrgyzstan,41.2044,74.7661,0,0,0,0,0,0,KGZ
@@ -7865,6 +8292,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Kyrgyzstan,41.2044,74.7661,0,0,0,0,0,0,KGZ
 2020-03-17,NA,Kyrgyzstan,41.2044,74.7661,0,0,0,0,0,0,KGZ
 2020-03-18,NA,Kyrgyzstan,41.2044,74.7661,0,3,0,3,0,0,KGZ
+2020-03-19,NA,Kyrgyzstan,41.2044,74.7661,0,3,0,0,0,0,KGZ
 2020-01-22,NA,Latvia,56.8796,24.6032,0,0,0,0,0,0,LVA
 2020-01-23,NA,Latvia,56.8796,24.6032,0,0,0,0,0,0,LVA
 2020-01-24,NA,Latvia,56.8796,24.6032,0,0,0,0,0,0,LVA
@@ -7922,6 +8350,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Latvia,56.8796,24.6032,1,34,0,4,0,0,LVA
 2020-03-17,NA,Latvia,56.8796,24.6032,1,49,0,15,0,0,LVA
 2020-03-18,NA,Latvia,56.8796,24.6032,1,71,0,22,0,0,LVA
+2020-03-19,NA,Latvia,56.8796,24.6032,1,86,0,15,0,0,LVA
 2020-01-22,NA,Lebanon,33.8547,35.8623,0,0,0,0,0,0,LBN
 2020-01-23,NA,Lebanon,33.8547,35.8623,0,0,0,0,0,0,LBN
 2020-01-24,NA,Lebanon,33.8547,35.8623,0,0,0,0,0,0,LBN
@@ -7979,6 +8408,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Lebanon,33.8547,35.8623,1,99,3,-11,0,0,LBN
 2020-03-17,NA,Lebanon,33.8547,35.8623,3,120,3,21,0,2,LBN
 2020-03-18,NA,Lebanon,33.8547,35.8623,3,133,3,13,0,0,LBN
+2020-03-19,NA,Lebanon,33.8547,35.8623,4,157,4,24,1,1,LBN
 2020-01-22,NA,Liberia,6.4281,-9.4295,0,0,0,0,0,0,LBR
 2020-01-23,NA,Liberia,6.4281,-9.4295,0,0,0,0,0,0,LBR
 2020-01-24,NA,Liberia,6.4281,-9.4295,0,0,0,0,0,0,LBR
@@ -8036,6 +8466,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Liberia,6.4281,-9.4295,0,1,0,1,0,0,LBR
 2020-03-17,NA,Liberia,6.4281,-9.4295,0,1,0,0,0,0,LBR
 2020-03-18,NA,Liberia,6.4281,-9.4295,0,2,0,1,0,0,LBR
+2020-03-19,NA,Liberia,6.4281,-9.4295,0,2,0,0,0,0,LBR
 2020-01-22,NA,Liechtenstein,47.14,9.55,0,0,0,0,0,0,LIE
 2020-01-23,NA,Liechtenstein,47.14,9.55,0,0,0,0,0,0,LIE
 2020-01-24,NA,Liechtenstein,47.14,9.55,0,0,0,0,0,0,LIE
@@ -8093,6 +8524,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Liechtenstein,47.14,9.55,0,4,0,0,0,0,LIE
 2020-03-17,NA,Liechtenstein,47.14,9.55,0,7,0,3,0,0,LIE
 2020-03-18,NA,Liechtenstein,47.14,9.55,0,28,0,21,0,0,LIE
+2020-03-19,NA,Liechtenstein,47.14,9.55,0,28,0,0,0,0,LIE
 2020-01-22,NA,Lithuania,55.1694,23.8813,0,0,0,0,0,0,LTU
 2020-01-23,NA,Lithuania,55.1694,23.8813,0,0,0,0,0,0,LTU
 2020-01-24,NA,Lithuania,55.1694,23.8813,0,0,0,0,0,0,LTU
@@ -8150,6 +8582,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Lithuania,55.1694,23.8813,1,17,0,5,0,0,LTU
 2020-03-17,NA,Lithuania,55.1694,23.8813,1,25,0,8,0,0,LTU
 2020-03-18,NA,Lithuania,55.1694,23.8813,1,27,0,2,0,0,LTU
+2020-03-19,NA,Lithuania,55.1694,23.8813,1,36,0,9,0,0,LTU
 2020-01-22,NA,Luxembourg,49.8153,6.1296,0,0,0,0,0,0,LUX
 2020-01-23,NA,Luxembourg,49.8153,6.1296,0,0,0,0,0,0,LUX
 2020-01-24,NA,Luxembourg,49.8153,6.1296,0,0,0,0,0,0,LUX
@@ -8207,6 +8640,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Luxembourg,49.8153,6.1296,0,77,1,18,0,0,LUX
 2020-03-17,NA,Luxembourg,49.8153,6.1296,0,140,1,63,0,0,LUX
 2020-03-18,NA,Luxembourg,49.8153,6.1296,0,203,2,63,1,0,LUX
+2020-03-19,NA,Luxembourg,49.8153,6.1296,0,335,4,132,2,0,LUX
 2020-01-22,NA,Malaysia,2.5,112.5,0,0,0,0,0,0,MYS
 2020-01-23,NA,Malaysia,2.5,112.5,0,0,0,0,0,0,MYS
 2020-01-24,NA,Malaysia,2.5,112.5,0,0,0,0,0,0,MYS
@@ -8264,6 +8698,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Malaysia,2.5,112.5,42,566,0,138,0,0,MYS
 2020-03-17,NA,Malaysia,2.5,112.5,49,673,2,107,2,7,MYS
 2020-03-18,NA,Malaysia,2.5,112.5,60,790,2,117,0,11,MYS
+2020-03-19,NA,Malaysia,2.5,112.5,75,900,2,110,0,15,MYS
 2020-01-22,NA,Maldives,3.2028,73.2207,0,0,0,0,0,0,MDV
 2020-01-23,NA,Maldives,3.2028,73.2207,0,0,0,0,0,0,MDV
 2020-01-24,NA,Maldives,3.2028,73.2207,0,0,0,0,0,0,MDV
@@ -8321,6 +8756,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Maldives,3.2028,73.2207,0,13,0,0,0,0,MDV
 2020-03-17,NA,Maldives,3.2028,73.2207,0,13,0,0,0,0,MDV
 2020-03-18,NA,Maldives,3.2028,73.2207,0,13,0,0,0,0,MDV
+2020-03-19,NA,Maldives,3.2028,73.2207,0,13,0,0,0,0,MDV
 2020-01-22,NA,Malta,35.9375,14.3754,0,0,0,0,0,0,MLT
 2020-01-23,NA,Malta,35.9375,14.3754,0,0,0,0,0,0,MLT
 2020-01-24,NA,Malta,35.9375,14.3754,0,0,0,0,0,0,MLT
@@ -8378,6 +8814,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Malta,35.9375,14.3754,2,30,0,9,0,1,MLT
 2020-03-17,NA,Malta,35.9375,14.3754,2,38,0,8,0,0,MLT
 2020-03-18,NA,Malta,35.9375,14.3754,2,38,0,0,0,0,MLT
+2020-03-19,NA,Malta,35.9375,14.3754,2,53,0,15,0,0,MLT
 2020-01-22,NA,Martinique,14.6415,-61.0242,0,0,0,0,0,0,MTQ
 2020-01-23,NA,Martinique,14.6415,-61.0242,0,0,0,0,0,0,MTQ
 2020-01-24,NA,Martinique,14.6415,-61.0242,0,0,0,0,0,0,MTQ
@@ -8435,6 +8872,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Martinique,14.6415,-61.0242,0,15,1,6,1,0,MTQ
 2020-03-17,NA,Martinique,14.6415,-61.0242,0,16,1,1,0,0,MTQ
 2020-03-18,NA,Martinique,14.6415,-61.0242,0,19,1,3,0,0,MTQ
+2020-03-19,NA,Martinique,14.6415,-61.0242,0,23,1,4,0,0,MTQ
 2020-01-22,NA,Mauritania,21.0079,10.9408,0,0,0,0,0,0,MRT
 2020-01-23,NA,Mauritania,21.0079,10.9408,0,0,0,0,0,0,MRT
 2020-01-24,NA,Mauritania,21.0079,10.9408,0,0,0,0,0,0,MRT
@@ -8492,6 +8930,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Mauritania,21.0079,10.9408,0,1,0,0,0,0,MRT
 2020-03-17,NA,Mauritania,21.0079,10.9408,0,1,0,0,0,0,MRT
 2020-03-18,NA,Mauritania,21.0079,10.9408,0,1,0,0,0,0,MRT
+2020-03-19,NA,Mauritania,21.0079,10.9408,0,2,0,1,0,0,MRT
 2020-01-22,NA,Mauritius,-20.2,57.5,0,0,0,0,0,0,MUS
 2020-01-23,NA,Mauritius,-20.2,57.5,0,0,0,0,0,0,MUS
 2020-01-24,NA,Mauritius,-20.2,57.5,0,0,0,0,0,0,MUS
@@ -8549,6 +8988,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Mauritius,-20.2,57.5,0,0,0,0,0,0,MUS
 2020-03-17,NA,Mauritius,-20.2,57.5,0,0,0,0,0,0,MUS
 2020-03-18,NA,Mauritius,-20.2,57.5,0,3,0,3,0,0,MUS
+2020-03-19,NA,Mauritius,-20.2,57.5,0,3,0,0,0,0,MUS
 2020-01-22,NA,Mexico,23.6345,-102.5528,0,0,0,0,0,0,MEX
 2020-01-23,NA,Mexico,23.6345,-102.5528,0,0,0,0,0,0,MEX
 2020-01-24,NA,Mexico,23.6345,-102.5528,0,0,0,0,0,0,MEX
@@ -8606,6 +9046,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Mexico,23.6345,-102.5528,4,53,0,12,0,0,MEX
 2020-03-17,NA,Mexico,23.6345,-102.5528,4,82,0,29,0,0,MEX
 2020-03-18,NA,Mexico,23.6345,-102.5528,4,93,0,11,0,0,MEX
+2020-03-19,NA,Mexico,23.6345,-102.5528,4,118,1,25,1,0,MEX
 2020-01-22,NA,Moldova,47.4116,28.3699,0,0,0,0,0,0,MDA
 2020-01-23,NA,Moldova,47.4116,28.3699,0,0,0,0,0,0,MDA
 2020-01-24,NA,Moldova,47.4116,28.3699,0,0,0,0,0,0,MDA
@@ -8663,6 +9104,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Moldova,47.4116,28.3699,0,23,0,0,0,0,MDA
 2020-03-17,NA,Moldova,47.4116,28.3699,1,30,0,7,0,1,MDA
 2020-03-18,NA,Moldova,47.4116,28.3699,1,30,1,0,1,0,MDA
+2020-03-19,NA,Moldova,47.4116,28.3699,1,49,1,19,0,0,MDA
 2020-01-22,NA,Monaco,43.7333,7.4167,0,0,0,0,0,0,MCO
 2020-01-23,NA,Monaco,43.7333,7.4167,0,0,0,0,0,0,MCO
 2020-01-24,NA,Monaco,43.7333,7.4167,0,0,0,0,0,0,MCO
@@ -8720,6 +9162,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Monaco,43.7333,7.4167,0,7,0,5,0,0,MCO
 2020-03-17,NA,Monaco,43.7333,7.4167,0,7,0,0,0,0,MCO
 2020-03-18,NA,Monaco,43.7333,7.4167,0,7,0,0,0,0,MCO
+2020-03-19,NA,Monaco,43.7333,7.4167,0,7,0,0,0,0,MCO
 2020-01-22,NA,Mongolia,46.8625,103.8467,0,0,0,0,0,0,MNG
 2020-01-23,NA,Mongolia,46.8625,103.8467,0,0,0,0,0,0,MNG
 2020-01-24,NA,Mongolia,46.8625,103.8467,0,0,0,0,0,0,MNG
@@ -8777,6 +9220,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Mongolia,46.8625,103.8467,0,1,0,0,0,0,MNG
 2020-03-17,NA,Mongolia,46.8625,103.8467,0,5,0,4,0,0,MNG
 2020-03-18,NA,Mongolia,46.8625,103.8467,0,6,0,1,0,0,MNG
+2020-03-19,NA,Mongolia,46.8625,103.8467,0,6,0,0,0,0,MNG
 2020-01-22,NA,Montenegro,42.5,19.3,0,0,0,0,0,0,MNE
 2020-01-23,NA,Montenegro,42.5,19.3,0,0,0,0,0,0,MNE
 2020-01-24,NA,Montenegro,42.5,19.3,0,0,0,0,0,0,MNE
@@ -8834,6 +9278,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Montenegro,42.5,19.3,0,0,0,0,0,0,MNE
 2020-03-17,NA,Montenegro,42.5,19.3,0,2,0,2,0,0,MNE
 2020-03-18,NA,Montenegro,42.5,19.3,0,1,0,-1,0,0,MNE
+2020-03-19,NA,Montenegro,42.5,19.3,0,3,0,2,0,0,MNE
 2020-01-22,NA,Morocco,31.7917,-7.0926,0,0,0,0,0,0,MAR
 2020-01-23,NA,Morocco,31.7917,-7.0926,0,0,0,0,0,0,MAR
 2020-01-24,NA,Morocco,31.7917,-7.0926,0,0,0,0,0,0,MAR
@@ -8891,6 +9336,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Morocco,31.7917,-7.0926,1,29,1,1,0,0,MAR
 2020-03-17,NA,Morocco,31.7917,-7.0926,1,38,2,9,1,0,MAR
 2020-03-18,NA,Morocco,31.7917,-7.0926,1,49,2,11,0,0,MAR
+2020-03-19,NA,Morocco,31.7917,-7.0926,1,63,2,14,0,0,MAR
 2020-01-22,NA,Namibia,-22.9576,18.4904,0,0,0,0,0,0,NAM
 2020-01-23,NA,Namibia,-22.9576,18.4904,0,0,0,0,0,0,NAM
 2020-01-24,NA,Namibia,-22.9576,18.4904,0,0,0,0,0,0,NAM
@@ -8948,6 +9394,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Namibia,-22.9576,18.4904,0,2,0,0,0,0,NAM
 2020-03-17,NA,Namibia,-22.9576,18.4904,0,2,0,0,0,0,NAM
 2020-03-18,NA,Namibia,-22.9576,18.4904,0,2,0,0,0,0,NAM
+2020-03-19,NA,Namibia,-22.9576,18.4904,0,3,0,1,0,0,NAM
 2020-01-22,NA,Nepal,28.1667,84.25,0,0,0,0,0,0,NPL
 2020-01-23,NA,Nepal,28.1667,84.25,0,0,0,0,0,0,NPL
 2020-01-24,NA,Nepal,28.1667,84.25,0,0,0,0,0,0,NPL
@@ -9005,6 +9452,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Nepal,28.1667,84.25,1,1,0,0,0,0,NPL
 2020-03-17,NA,Nepal,28.1667,84.25,1,1,0,0,0,0,NPL
 2020-03-18,NA,Nepal,28.1667,84.25,1,1,0,0,0,0,NPL
+2020-03-19,NA,Nepal,28.1667,84.25,1,1,0,0,0,0,NPL
 2020-01-22,Aruba,Netherlands,12.5186,-70.0358,0,0,0,0,0,0,NLD
 2020-01-23,Aruba,Netherlands,12.5186,-70.0358,0,0,0,0,0,0,NLD
 2020-01-24,Aruba,Netherlands,12.5186,-70.0358,0,0,0,0,0,0,NLD
@@ -9062,6 +9510,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Aruba,Netherlands,12.5186,-70.0358,0,2,0,0,0,0,NLD
 2020-03-17,Aruba,Netherlands,12.5186,-70.0358,0,3,0,1,0,0,NLD
 2020-03-18,Aruba,Netherlands,12.5186,-70.0358,0,4,0,1,0,0,NLD
+2020-03-19,Aruba,Netherlands,12.5186,-70.0358,0,4,0,0,0,0,NLD
 2020-01-22,Curacao,Netherlands,12.1696,-68.99,0,0,0,0,0,0,NLD
 2020-01-23,Curacao,Netherlands,12.1696,-68.99,0,0,0,0,0,0,NLD
 2020-01-24,Curacao,Netherlands,12.1696,-68.99,0,0,0,0,0,0,NLD
@@ -9119,6 +9568,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Curacao,Netherlands,12.1696,-68.99,0,1,0,0,0,0,NLD
 2020-03-17,Curacao,Netherlands,12.1696,-68.99,0,3,0,2,0,0,NLD
 2020-03-18,Curacao,Netherlands,12.1696,-68.99,0,3,0,0,0,0,NLD
+2020-03-19,Curacao,Netherlands,12.1696,-68.99,0,3,1,0,1,0,NLD
 2020-01-22,Netherlands,Netherlands,52.1326,5.2913,0,0,0,0,0,0,NLD
 2020-01-23,Netherlands,Netherlands,52.1326,5.2913,0,0,0,0,0,0,NLD
 2020-01-24,Netherlands,Netherlands,52.1326,5.2913,0,0,0,0,0,0,NLD
@@ -9176,6 +9626,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Netherlands,Netherlands,52.1326,5.2913,2,1413,24,278,4,0,NLD
 2020-03-17,Netherlands,Netherlands,52.1326,5.2913,2,1705,43,292,19,0,NLD
 2020-03-18,Netherlands,Netherlands,52.1326,5.2913,2,2051,58,346,15,0,NLD
+2020-03-19,Netherlands,Netherlands,52.1326,5.2913,2,2460,76,409,18,0,NLD
 2020-01-22,NA,New Zealand,-40.9006,174.886,0,0,0,0,0,0,NZL
 2020-01-23,NA,New Zealand,-40.9006,174.886,0,0,0,0,0,0,NZL
 2020-01-24,NA,New Zealand,-40.9006,174.886,0,0,0,0,0,0,NZL
@@ -9233,6 +9684,65 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,New Zealand,-40.9006,174.886,0,8,0,0,0,0,NZL
 2020-03-17,NA,New Zealand,-40.9006,174.886,0,12,0,4,0,0,NZL
 2020-03-18,NA,New Zealand,-40.9006,174.886,0,20,0,8,0,0,NZL
+2020-03-19,NA,New Zealand,-40.9006,174.886,0,28,0,8,0,0,NZL
+2020-01-22,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-01-23,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-01-24,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-01-25,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-01-26,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-01-27,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-01-28,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-01-29,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-01-30,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-01-31,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-01,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-02,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-03,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-04,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-05,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-06,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-07,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-08,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-09,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-10,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-11,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-12,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-13,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-14,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-15,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-16,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-17,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-18,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-19,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-20,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-21,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-22,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-23,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-24,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-25,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-26,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-27,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-28,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-02-29,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-03-01,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-03-02,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-03-03,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-03-04,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-03-05,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-03-06,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-03-07,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-03-08,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-03-09,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-03-10,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-03-11,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-03-12,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-03-13,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-03-14,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-03-15,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-03-16,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-03-17,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-03-18,NA,Nicaragua,12.8654,-85.2072,0,0,0,0,0,0,NIC
+2020-03-19,NA,Nicaragua,12.8654,-85.2072,0,1,0,1,0,0,NIC
 2020-01-22,NA,Nigeria,9.082,8.6753,0,0,0,0,0,0,NGA
 2020-01-23,NA,Nigeria,9.082,8.6753,0,0,0,0,0,0,NGA
 2020-01-24,NA,Nigeria,9.082,8.6753,0,0,0,0,0,0,NGA
@@ -9290,6 +9800,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Nigeria,9.082,8.6753,0,2,0,0,0,0,NGA
 2020-03-17,NA,Nigeria,9.082,8.6753,0,3,0,1,0,0,NGA
 2020-03-18,NA,Nigeria,9.082,8.6753,1,8,0,5,0,1,NGA
+2020-03-19,NA,Nigeria,9.082,8.6753,1,8,0,0,0,0,NGA
 2020-01-22,NA,North Macedonia,41.6086,21.7453,0,0,0,0,0,0,MKD
 2020-01-23,NA,North Macedonia,41.6086,21.7453,0,0,0,0,0,0,MKD
 2020-01-24,NA,North Macedonia,41.6086,21.7453,0,0,0,0,0,0,MKD
@@ -9347,6 +9858,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,North Macedonia,41.6086,21.7453,1,18,0,4,0,0,MKD
 2020-03-17,NA,North Macedonia,41.6086,21.7453,1,26,0,8,0,0,MKD
 2020-03-18,NA,North Macedonia,41.6086,21.7453,1,35,0,9,0,0,MKD
+2020-03-19,NA,North Macedonia,41.6086,21.7453,1,48,0,13,0,0,MKD
 2020-01-22,NA,Norway,60.472,8.4689,0,0,0,0,0,0,NOR
 2020-01-23,NA,Norway,60.472,8.4689,0,0,0,0,0,0,NOR
 2020-01-24,NA,Norway,60.472,8.4689,0,0,0,0,0,0,NOR
@@ -9404,6 +9916,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Norway,60.472,8.4689,1,1333,3,112,0,0,NOR
 2020-03-17,NA,Norway,60.472,8.4689,1,1463,3,130,0,0,NOR
 2020-03-18,NA,Norway,60.472,8.4689,1,1550,6,87,3,0,NOR
+2020-03-19,NA,Norway,60.472,8.4689,1,1746,7,196,1,0,NOR
 2020-01-22,NA,Oman,21,57,0,0,0,0,0,0,OMN
 2020-01-23,NA,Oman,21,57,0,0,0,0,0,0,OMN
 2020-01-24,NA,Oman,21,57,0,0,0,0,0,0,OMN
@@ -9461,6 +9974,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Oman,21,57,9,22,0,0,0,0,OMN
 2020-03-17,NA,Oman,21,57,9,24,0,2,0,0,OMN
 2020-03-18,NA,Oman,21,57,12,39,0,15,0,3,OMN
+2020-03-19,NA,Oman,21,57,12,48,0,9,0,0,OMN
 2020-01-22,NA,Pakistan,30.3753,69.3451,0,0,0,0,0,0,PAK
 2020-01-23,NA,Pakistan,30.3753,69.3451,0,0,0,0,0,0,PAK
 2020-01-24,NA,Pakistan,30.3753,69.3451,0,0,0,0,0,0,PAK
@@ -9518,6 +10032,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Pakistan,30.3753,69.3451,2,136,0,83,0,0,PAK
 2020-03-17,NA,Pakistan,30.3753,69.3451,2,236,0,100,0,0,PAK
 2020-03-18,NA,Pakistan,30.3753,69.3451,2,299,0,63,0,0,PAK
+2020-03-19,NA,Pakistan,30.3753,69.3451,13,454,2,155,2,11,PAK
 2020-01-22,NA,Panama,8.538,-80.7821,0,0,0,0,0,0,PAN
 2020-01-23,NA,Panama,8.538,-80.7821,0,0,0,0,0,0,PAN
 2020-01-24,NA,Panama,8.538,-80.7821,0,0,0,0,0,0,PAN
@@ -9575,6 +10090,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Panama,8.538,-80.7821,0,55,1,12,0,0,PAN
 2020-03-17,NA,Panama,8.538,-80.7821,0,69,1,14,0,0,PAN
 2020-03-18,NA,Panama,8.538,-80.7821,0,86,1,17,0,0,PAN
+2020-03-19,NA,Panama,8.538,-80.7821,0,109,1,23,0,0,PAN
 2020-01-22,NA,Paraguay,-23.4425,-58.4438,0,0,0,0,0,0,PRY
 2020-01-23,NA,Paraguay,-23.4425,-58.4438,0,0,0,0,0,0,PRY
 2020-01-24,NA,Paraguay,-23.4425,-58.4438,0,0,0,0,0,0,PRY
@@ -9632,6 +10148,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Paraguay,-23.4425,-58.4438,0,8,0,2,0,0,PRY
 2020-03-17,NA,Paraguay,-23.4425,-58.4438,0,9,0,1,0,0,PRY
 2020-03-18,NA,Paraguay,-23.4425,-58.4438,0,11,0,2,0,0,PRY
+2020-03-19,NA,Paraguay,-23.4425,-58.4438,0,11,0,0,0,0,PRY
 2020-01-22,NA,Peru,-9.19,-75.0152,0,0,0,0,0,0,PER
 2020-01-23,NA,Peru,-9.19,-75.0152,0,0,0,0,0,0,PER
 2020-01-24,NA,Peru,-9.19,-75.0152,0,0,0,0,0,0,PER
@@ -9689,6 +10206,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Peru,-9.19,-75.0152,0,86,0,43,0,0,PER
 2020-03-17,NA,Peru,-9.19,-75.0152,1,117,0,31,0,1,PER
 2020-03-18,NA,Peru,-9.19,-75.0152,1,145,0,28,0,0,PER
+2020-03-19,NA,Peru,-9.19,-75.0152,1,234,0,89,0,0,PER
 2020-01-22,NA,Philippines,13,122,0,0,0,0,0,0,PHL
 2020-01-23,NA,Philippines,13,122,0,0,0,0,0,0,PHL
 2020-01-24,NA,Philippines,13,122,0,0,0,0,0,0,PHL
@@ -9746,6 +10264,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Philippines,13,122,2,142,12,2,1,0,PHL
 2020-03-17,NA,Philippines,13,122,5,187,12,45,0,3,PHL
 2020-03-18,NA,Philippines,13,122,5,202,19,15,7,0,PHL
+2020-03-19,NA,Philippines,13,122,8,217,17,15,-2,3,PHL
 2020-01-22,NA,Poland,51.9194,19.1451,0,0,0,0,0,0,POL
 2020-01-23,NA,Poland,51.9194,19.1451,0,0,0,0,0,0,POL
 2020-01-24,NA,Poland,51.9194,19.1451,0,0,0,0,0,0,POL
@@ -9803,6 +10322,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Poland,51.9194,19.1451,13,177,4,58,1,13,POL
 2020-03-17,NA,Poland,51.9194,19.1451,13,238,5,61,1,0,POL
 2020-03-18,NA,Poland,51.9194,19.1451,13,251,5,13,0,0,POL
+2020-03-19,NA,Poland,51.9194,19.1451,1,355,5,104,0,-12,POL
 2020-01-22,NA,Portugal,39.3999,-8.2245,0,0,0,0,0,0,PRT
 2020-01-23,NA,Portugal,39.3999,-8.2245,0,0,0,0,0,0,PRT
 2020-01-24,NA,Portugal,39.3999,-8.2245,0,0,0,0,0,0,PRT
@@ -9860,6 +10380,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Portugal,39.3999,-8.2245,3,331,0,86,0,1,PRT
 2020-03-17,NA,Portugal,39.3999,-8.2245,3,448,1,117,1,0,PRT
 2020-03-18,NA,Portugal,39.3999,-8.2245,3,448,2,0,1,0,PRT
+2020-03-19,NA,Portugal,39.3999,-8.2245,3,785,3,337,1,0,PRT
 2020-01-22,NA,Qatar,25.3548,51.1839,0,0,0,0,0,0,QAT
 2020-01-23,NA,Qatar,25.3548,51.1839,0,0,0,0,0,0,QAT
 2020-01-24,NA,Qatar,25.3548,51.1839,0,0,0,0,0,0,QAT
@@ -9917,6 +10438,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Qatar,25.3548,51.1839,4,439,0,38,0,0,QAT
 2020-03-17,NA,Qatar,25.3548,51.1839,4,439,0,0,0,0,QAT
 2020-03-18,NA,Qatar,25.3548,51.1839,4,452,0,13,0,0,QAT
+2020-03-19,NA,Qatar,25.3548,51.1839,4,460,0,8,0,0,QAT
 2020-01-22,NA,Romania,45.9432,24.9668,0,0,0,0,0,0,ROU
 2020-01-23,NA,Romania,45.9432,24.9668,0,0,0,0,0,0,ROU
 2020-01-24,NA,Romania,45.9432,24.9668,0,0,0,0,0,0,ROU
@@ -9974,6 +10496,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Romania,45.9432,24.9668,9,158,0,27,0,0,ROU
 2020-03-17,NA,Romania,45.9432,24.9668,16,184,0,26,0,7,ROU
 2020-03-18,NA,Romania,45.9432,24.9668,19,260,0,76,0,3,ROU
+2020-03-19,NA,Romania,45.9432,24.9668,25,277,0,17,0,6,ROU
 2020-01-22,NA,Russia,60,90,0,0,0,0,0,0,RUS
 2020-01-23,NA,Russia,60,90,0,0,0,0,0,0,RUS
 2020-01-24,NA,Russia,60,90,0,0,0,0,0,0,RUS
@@ -10031,6 +10554,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Russia,60,90,8,90,0,27,0,0,RUS
 2020-03-17,NA,Russia,60,90,8,114,0,24,0,0,RUS
 2020-03-18,NA,Russia,60,90,8,147,0,33,0,0,RUS
+2020-03-19,NA,Russia,60,90,9,199,1,52,1,1,RUS
 2020-01-22,NA,Rwanda,-1.9403,29.8739,0,0,0,0,0,0,RWA
 2020-01-23,NA,Rwanda,-1.9403,29.8739,0,0,0,0,0,0,RWA
 2020-01-24,NA,Rwanda,-1.9403,29.8739,0,0,0,0,0,0,RWA
@@ -10088,6 +10612,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Rwanda,-1.9403,29.8739,0,5,0,4,0,0,RWA
 2020-03-17,NA,Rwanda,-1.9403,29.8739,0,7,0,2,0,0,RWA
 2020-03-18,NA,Rwanda,-1.9403,29.8739,0,8,0,1,0,0,RWA
+2020-03-19,NA,Rwanda,-1.9403,29.8739,0,8,0,0,0,0,RWA
 2020-01-22,NA,Saint Lucia,13.9094,-60.9789,0,0,0,0,0,0,LCA
 2020-01-23,NA,Saint Lucia,13.9094,-60.9789,0,0,0,0,0,0,LCA
 2020-01-24,NA,Saint Lucia,13.9094,-60.9789,0,0,0,0,0,0,LCA
@@ -10145,6 +10670,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Saint Lucia,13.9094,-60.9789,0,2,0,0,0,0,LCA
 2020-03-17,NA,Saint Lucia,13.9094,-60.9789,0,2,0,0,0,0,LCA
 2020-03-18,NA,Saint Lucia,13.9094,-60.9789,0,2,0,0,0,0,LCA
+2020-03-19,NA,Saint Lucia,13.9094,-60.9789,0,2,0,0,0,0,LCA
 2020-01-22,NA,Saint Vincent and the Grenadines,12.9843,-61.2872,0,0,0,0,0,0,VCT
 2020-01-23,NA,Saint Vincent and the Grenadines,12.9843,-61.2872,0,0,0,0,0,0,VCT
 2020-01-24,NA,Saint Vincent and the Grenadines,12.9843,-61.2872,0,0,0,0,0,0,VCT
@@ -10202,6 +10728,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Saint Vincent and the Grenadines,12.9843,-61.2872,0,1,0,0,0,0,VCT
 2020-03-17,NA,Saint Vincent and the Grenadines,12.9843,-61.2872,0,1,0,0,0,0,VCT
 2020-03-18,NA,Saint Vincent and the Grenadines,12.9843,-61.2872,0,1,0,0,0,0,VCT
+2020-03-19,NA,Saint Vincent and the Grenadines,12.9843,-61.2872,0,1,0,0,0,0,VCT
 2020-01-22,NA,San Marino,43.9424,12.4578,0,0,0,0,0,0,SMR
 2020-01-23,NA,San Marino,43.9424,12.4578,0,0,0,0,0,0,SMR
 2020-01-24,NA,San Marino,43.9424,12.4578,0,0,0,0,0,0,SMR
@@ -10259,6 +10786,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,San Marino,43.9424,12.4578,4,109,7,8,2,0,SMR
 2020-03-17,NA,San Marino,43.9424,12.4578,4,109,7,0,0,0,SMR
 2020-03-18,NA,San Marino,43.9424,12.4578,4,119,11,10,4,0,SMR
+2020-03-19,NA,San Marino,43.9424,12.4578,4,119,11,0,0,0,SMR
 2020-01-22,NA,Saudi Arabia,24,45,0,0,0,0,0,0,SAU
 2020-01-23,NA,Saudi Arabia,24,45,0,0,0,0,0,0,SAU
 2020-01-24,NA,Saudi Arabia,24,45,0,0,0,0,0,0,SAU
@@ -10316,6 +10844,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Saudi Arabia,24,45,2,118,0,15,0,1,SAU
 2020-03-17,NA,Saudi Arabia,24,45,6,171,0,53,0,4,SAU
 2020-03-18,NA,Saudi Arabia,24,45,6,171,0,0,0,0,SAU
+2020-03-19,NA,Saudi Arabia,24,45,6,274,0,103,0,0,SAU
 2020-01-22,NA,Senegal,14.4974,-14.4524,0,0,0,0,0,0,SEN
 2020-01-23,NA,Senegal,14.4974,-14.4524,0,0,0,0,0,0,SEN
 2020-01-24,NA,Senegal,14.4974,-14.4524,0,0,0,0,0,0,SEN
@@ -10373,6 +10902,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Senegal,14.4974,-14.4524,2,24,0,0,0,1,SEN
 2020-03-17,NA,Senegal,14.4974,-14.4524,2,26,0,2,0,0,SEN
 2020-03-18,NA,Senegal,14.4974,-14.4524,2,31,0,5,0,0,SEN
+2020-03-19,NA,Senegal,14.4974,-14.4524,2,31,0,0,0,0,SEN
 2020-01-22,NA,Serbia,44.0165,21.0059,0,0,0,0,0,0,SRB
 2020-01-23,NA,Serbia,44.0165,21.0059,0,0,0,0,0,0,SRB
 2020-01-24,NA,Serbia,44.0165,21.0059,0,0,0,0,0,0,SRB
@@ -10430,6 +10960,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Serbia,44.0165,21.0059,1,55,0,7,0,1,SRB
 2020-03-17,NA,Serbia,44.0165,21.0059,1,65,0,10,0,0,SRB
 2020-03-18,NA,Serbia,44.0165,21.0059,1,83,0,18,0,0,SRB
+2020-03-19,NA,Serbia,44.0165,21.0059,1,103,0,20,0,0,SRB
 2020-01-22,NA,Seychelles,-4.6796,55.492,0,0,0,0,0,0,SYC
 2020-01-23,NA,Seychelles,-4.6796,55.492,0,0,0,0,0,0,SYC
 2020-01-24,NA,Seychelles,-4.6796,55.492,0,0,0,0,0,0,SYC
@@ -10487,6 +11018,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Seychelles,-4.6796,55.492,0,3,0,1,0,0,SYC
 2020-03-17,NA,Seychelles,-4.6796,55.492,0,4,0,1,0,0,SYC
 2020-03-18,NA,Seychelles,-4.6796,55.492,0,4,0,0,0,0,SYC
+2020-03-19,NA,Seychelles,-4.6796,55.492,0,6,0,2,0,0,SYC
 2020-01-22,NA,Singapore,1.2833,103.8333,0,0,0,0,0,0,SGP
 2020-01-23,NA,Singapore,1.2833,103.8333,0,1,0,1,0,0,SGP
 2020-01-24,NA,Singapore,1.2833,103.8333,0,3,0,2,0,0,SGP
@@ -10544,6 +11076,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Singapore,1.2833,103.8333,109,243,0,17,0,4,SGP
 2020-03-17,NA,Singapore,1.2833,103.8333,114,266,0,23,0,5,SGP
 2020-03-18,NA,Singapore,1.2833,103.8333,114,313,0,47,0,0,SGP
+2020-03-19,NA,Singapore,1.2833,103.8333,114,345,0,32,0,0,SGP
 2020-01-22,NA,Slovakia,48.669,19.699,0,0,0,0,0,0,SVK
 2020-01-23,NA,Slovakia,48.669,19.699,0,0,0,0,0,0,SVK
 2020-01-24,NA,Slovakia,48.669,19.699,0,0,0,0,0,0,SVK
@@ -10601,6 +11134,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Slovakia,48.669,19.699,0,63,0,9,0,0,SVK
 2020-03-17,NA,Slovakia,48.669,19.699,0,72,0,9,0,0,SVK
 2020-03-18,NA,Slovakia,48.669,19.699,0,105,1,33,1,0,SVK
+2020-03-19,NA,Slovakia,48.669,19.699,0,123,1,18,0,0,SVK
 2020-01-22,NA,Slovenia,46.1512,14.9955,0,0,0,0,0,0,SVN
 2020-01-23,NA,Slovenia,46.1512,14.9955,0,0,0,0,0,0,SVN
 2020-01-24,NA,Slovenia,46.1512,14.9955,0,0,0,0,0,0,SVN
@@ -10658,6 +11192,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Slovenia,46.1512,14.9955,0,253,1,34,0,0,SVN
 2020-03-17,NA,Slovenia,46.1512,14.9955,0,275,1,22,0,0,SVN
 2020-03-18,NA,Slovenia,46.1512,14.9955,0,275,1,0,0,0,SVN
+2020-03-19,NA,Slovenia,46.1512,14.9955,0,286,1,11,0,0,SVN
 2020-01-22,NA,Somalia,5.1521,46.1996,0,0,0,0,0,0,SOM
 2020-01-23,NA,Somalia,5.1521,46.1996,0,0,0,0,0,0,SOM
 2020-01-24,NA,Somalia,5.1521,46.1996,0,0,0,0,0,0,SOM
@@ -10715,6 +11250,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Somalia,5.1521,46.1996,0,1,0,1,0,0,SOM
 2020-03-17,NA,Somalia,5.1521,46.1996,0,1,0,0,0,0,SOM
 2020-03-18,NA,Somalia,5.1521,46.1996,0,1,0,0,0,0,SOM
+2020-03-19,NA,Somalia,5.1521,46.1996,0,1,0,0,0,0,SOM
 2020-01-22,NA,South Africa,-30.5595,22.9375,0,0,0,0,0,0,ZAF
 2020-01-23,NA,South Africa,-30.5595,22.9375,0,0,0,0,0,0,ZAF
 2020-01-24,NA,South Africa,-30.5595,22.9375,0,0,0,0,0,0,ZAF
@@ -10772,6 +11308,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,South Africa,-30.5595,22.9375,0,62,0,11,0,0,ZAF
 2020-03-17,NA,South Africa,-30.5595,22.9375,0,62,0,0,0,0,ZAF
 2020-03-18,NA,South Africa,-30.5595,22.9375,0,116,0,54,0,0,ZAF
+2020-03-19,NA,South Africa,-30.5595,22.9375,0,150,0,34,0,0,ZAF
 2020-01-22,NA,Spain,40,-4,0,0,0,0,0,0,ESP
 2020-01-23,NA,Spain,40,-4,0,0,0,0,0,0,ESP
 2020-01-24,NA,Spain,40,-4,0,0,0,0,0,0,ESP
@@ -10886,6 +11423,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Sri Lanka,7,81,1,28,0,10,0,0,LKA
 2020-03-17,NA,Sri Lanka,7,81,1,44,0,16,0,0,LKA
 2020-03-18,NA,Sri Lanka,7,81,1,51,0,7,0,0,LKA
+2020-03-19,NA,Sri Lanka,7,81,3,60,0,9,0,2,LKA
 2020-01-22,NA,Sudan,12.8628,30.2176,0,0,0,0,0,0,SDN
 2020-01-23,NA,Sudan,12.8628,30.2176,0,0,0,0,0,0,SDN
 2020-01-24,NA,Sudan,12.8628,30.2176,0,0,0,0,0,0,SDN
@@ -10943,6 +11481,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Sudan,12.8628,30.2176,0,1,1,0,0,0,SDN
 2020-03-17,NA,Sudan,12.8628,30.2176,0,1,1,0,0,0,SDN
 2020-03-18,NA,Sudan,12.8628,30.2176,0,2,1,1,0,0,SDN
+2020-03-19,NA,Sudan,12.8628,30.2176,0,2,1,0,0,0,SDN
 2020-01-22,NA,Suriname,3.9193,-56.0278,0,0,0,0,0,0,SUR
 2020-01-23,NA,Suriname,3.9193,-56.0278,0,0,0,0,0,0,SUR
 2020-01-24,NA,Suriname,3.9193,-56.0278,0,0,0,0,0,0,SUR
@@ -11000,6 +11539,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Suriname,3.9193,-56.0278,0,1,0,0,0,0,SUR
 2020-03-17,NA,Suriname,3.9193,-56.0278,0,1,0,0,0,0,SUR
 2020-03-18,NA,Suriname,3.9193,-56.0278,0,1,0,0,0,0,SUR
+2020-03-19,NA,Suriname,3.9193,-56.0278,0,1,0,0,0,0,SUR
 2020-01-22,NA,Sweden,63,16,0,0,0,0,0,0,SWE
 2020-01-23,NA,Sweden,63,16,0,0,0,0,0,0,SWE
 2020-01-24,NA,Sweden,63,16,0,0,0,0,0,0,SWE
@@ -11057,6 +11597,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Sweden,63,16,1,1103,6,81,3,0,SWE
 2020-03-17,NA,Sweden,63,16,1,1190,7,87,1,0,SWE
 2020-03-18,NA,Sweden,63,16,1,1279,10,89,3,0,SWE
+2020-03-19,NA,Sweden,63,16,16,1439,11,160,1,15,SWE
 2020-01-22,NA,Switzerland,46.8182,8.2275,0,0,0,0,0,0,CHE
 2020-01-23,NA,Switzerland,46.8182,8.2275,0,0,0,0,0,0,CHE
 2020-01-24,NA,Switzerland,46.8182,8.2275,0,0,0,0,0,0,CHE
@@ -11114,6 +11655,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Switzerland,46.8182,8.2275,4,2200,14,0,0,0,CHE
 2020-03-17,NA,Switzerland,46.8182,8.2275,4,2700,27,500,13,0,CHE
 2020-03-18,NA,Switzerland,46.8182,8.2275,15,3028,28,328,1,11,CHE
+2020-03-19,NA,Switzerland,46.8182,8.2275,15,4075,41,1047,13,0,CHE
 2020-01-22,NA,Taiwan*,23.7,121,0,1,0,1,0,0,TWN
 2020-01-23,NA,Taiwan*,23.7,121,0,1,0,0,0,0,TWN
 2020-01-24,NA,Taiwan*,23.7,121,0,3,0,2,0,0,TWN
@@ -11171,6 +11713,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Taiwan*,23.7,121,20,67,1,8,0,0,TWN
 2020-03-17,NA,Taiwan*,23.7,121,22,77,1,10,0,2,TWN
 2020-03-18,NA,Taiwan*,23.7,121,22,100,1,23,0,0,TWN
+2020-03-19,NA,Taiwan*,23.7,121,26,108,1,8,0,4,TWN
 2020-01-22,NA,Tanzania,-6.369,34.8888,0,0,0,0,0,0,TZA
 2020-01-23,NA,Tanzania,-6.369,34.8888,0,0,0,0,0,0,TZA
 2020-01-24,NA,Tanzania,-6.369,34.8888,0,0,0,0,0,0,TZA
@@ -11228,6 +11771,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Tanzania,-6.369,34.8888,0,1,0,1,0,0,TZA
 2020-03-17,NA,Tanzania,-6.369,34.8888,0,1,0,0,0,0,TZA
 2020-03-18,NA,Tanzania,-6.369,34.8888,0,3,0,2,0,0,TZA
+2020-03-19,NA,Tanzania,-6.369,34.8888,0,6,0,3,0,0,TZA
 2020-01-22,NA,Thailand,15,101,0,2,0,2,0,0,THA
 2020-01-23,NA,Thailand,15,101,0,3,0,1,0,0,THA
 2020-01-24,NA,Thailand,15,101,0,5,0,2,0,0,THA
@@ -11285,63 +11829,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Thailand,15,101,35,147,1,33,0,0,THA
 2020-03-17,NA,Thailand,15,101,41,177,1,30,0,6,THA
 2020-03-18,NA,Thailand,15,101,42,212,1,35,0,1,THA
-2020-01-22,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-01-23,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-01-24,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-01-25,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-01-26,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-01-27,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-01-28,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-01-29,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-01-30,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-01-31,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-01,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-02,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-03,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-04,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-05,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-06,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-07,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-08,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-09,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-10,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-11,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-12,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-13,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-14,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-15,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-16,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-17,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-18,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-19,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-20,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-21,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-22,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-23,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-24,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-25,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-26,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-27,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-28,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-02-29,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-03-01,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-03-02,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-03-03,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-03-04,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-03-05,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-03-06,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-03-07,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-03-08,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-03-09,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-03-10,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-03-11,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-03-12,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-03-13,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-03-14,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-03-15,NA,The Bahamas,24.25,-76,0,0,0,0,0,0,BHS
-2020-03-16,NA,The Bahamas,24.25,-76,0,1,0,1,0,0,BHS
-2020-03-17,NA,The Bahamas,24.25,-76,0,1,0,0,0,0,BHS
-2020-03-18,NA,The Bahamas,24.25,-76,0,1,0,0,0,0,BHS
+2020-03-19,NA,Thailand,15,101,42,272,1,60,0,0,THA
 2020-01-22,NA,Togo,8.6195,0.8248,0,0,0,0,0,0,TGO
 2020-01-23,NA,Togo,8.6195,0.8248,0,0,0,0,0,0,TGO
 2020-01-24,NA,Togo,8.6195,0.8248,0,0,0,0,0,0,TGO
@@ -11399,6 +11887,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Togo,8.6195,0.8248,0,1,0,0,0,0,TGO
 2020-03-17,NA,Togo,8.6195,0.8248,0,1,0,0,0,0,TGO
 2020-03-18,NA,Togo,8.6195,0.8248,0,1,0,0,0,0,TGO
+2020-03-19,NA,Togo,8.6195,0.8248,0,1,0,0,0,0,TGO
 2020-01-22,NA,Trinidad and Tobago,10.6918,-61.2225,0,0,0,0,0,0,TTO
 2020-01-23,NA,Trinidad and Tobago,10.6918,-61.2225,0,0,0,0,0,0,TTO
 2020-01-24,NA,Trinidad and Tobago,10.6918,-61.2225,0,0,0,0,0,0,TTO
@@ -11456,6 +11945,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Trinidad and Tobago,10.6918,-61.2225,0,4,0,2,0,0,TTO
 2020-03-17,NA,Trinidad and Tobago,10.6918,-61.2225,0,5,0,1,0,0,TTO
 2020-03-18,NA,Trinidad and Tobago,10.6918,-61.2225,0,7,0,2,0,0,TTO
+2020-03-19,NA,Trinidad and Tobago,10.6918,-61.2225,0,9,0,2,0,0,TTO
 2020-01-22,NA,Tunisia,34,9,0,0,0,0,0,0,TUN
 2020-01-23,NA,Tunisia,34,9,0,0,0,0,0,0,TUN
 2020-01-24,NA,Tunisia,34,9,0,0,0,0,0,0,TUN
@@ -11513,6 +12003,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Tunisia,34,9,0,20,0,2,0,0,TUN
 2020-03-17,NA,Tunisia,34,9,0,24,0,4,0,0,TUN
 2020-03-18,NA,Tunisia,34,9,0,29,0,5,0,0,TUN
+2020-03-19,NA,Tunisia,34,9,0,39,1,10,1,0,TUN
 2020-01-22,NA,Turkey,38.9637,35.2433,0,0,0,0,0,0,TUR
 2020-01-23,NA,Turkey,38.9637,35.2433,0,0,0,0,0,0,TUR
 2020-01-24,NA,Turkey,38.9637,35.2433,0,0,0,0,0,0,TUR
@@ -11570,6 +12061,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Turkey,38.9637,35.2433,0,18,0,12,0,0,TUR
 2020-03-17,NA,Turkey,38.9637,35.2433,0,47,1,29,1,0,TUR
 2020-03-18,NA,Turkey,38.9637,35.2433,0,98,1,51,0,0,TUR
+2020-03-19,NA,Turkey,38.9637,35.2433,0,192,3,94,2,0,TUR
 2020-01-22,NA,Ukraine,48.3794,31.1656,0,0,0,0,0,0,UKR
 2020-01-23,NA,Ukraine,48.3794,31.1656,0,0,0,0,0,0,UKR
 2020-01-24,NA,Ukraine,48.3794,31.1656,0,0,0,0,0,0,UKR
@@ -11627,6 +12119,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Ukraine,48.3794,31.1656,0,7,1,4,0,0,UKR
 2020-03-17,NA,Ukraine,48.3794,31.1656,0,14,2,7,1,0,UKR
 2020-03-18,NA,Ukraine,48.3794,31.1656,0,14,2,0,0,0,UKR
+2020-03-19,NA,Ukraine,48.3794,31.1656,0,16,2,2,0,0,UKR
 2020-01-22,NA,United Arab Emirates,24,54,0,0,0,0,0,0,ARE
 2020-01-23,NA,United Arab Emirates,24,54,0,0,0,0,0,0,ARE
 2020-01-24,NA,United Arab Emirates,24,54,0,0,0,0,0,0,ARE
@@ -11684,6 +12177,65 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,United Arab Emirates,24,54,23,98,0,0,0,0,ARE
 2020-03-17,NA,United Arab Emirates,24,54,23,98,0,0,0,0,ARE
 2020-03-18,NA,United Arab Emirates,24,54,26,113,0,15,0,3,ARE
+2020-03-19,NA,United Arab Emirates,24,54,31,140,0,27,0,5,ARE
+2020-01-22,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-01-23,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-01-24,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-01-25,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-01-26,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-01-27,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-01-28,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-01-29,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-01-30,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-01-31,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-01,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-02,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-03,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-04,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-05,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-06,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-07,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-08,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-09,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-10,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-11,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-12,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-13,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-14,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-15,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-16,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-17,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-18,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-19,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-20,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-21,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-22,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-23,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-24,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-25,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-26,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-27,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-28,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-02-29,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-03-01,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-03-02,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-03-03,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-03-04,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-03-05,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-03-06,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-03-07,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-03-08,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-03-09,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-03-10,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-03-11,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-03-12,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-03-13,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-03-14,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-03-15,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-03-16,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-03-17,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-03-18,Bermuda,United Kingdom,32.3078,-64.7505,0,0,0,0,0,0,GBR
+2020-03-19,Bermuda,United Kingdom,32.3078,-64.7505,0,2,0,2,0,0,GBR
 2020-01-22,Cayman Islands,United Kingdom,19.3133,-81.2546,0,0,0,0,0,0,GBR
 2020-01-23,Cayman Islands,United Kingdom,19.3133,-81.2546,0,0,0,0,0,0,GBR
 2020-01-24,Cayman Islands,United Kingdom,19.3133,-81.2546,0,0,0,0,0,0,GBR
@@ -11741,6 +12293,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Cayman Islands,United Kingdom,19.3133,-81.2546,0,1,1,0,1,0,GBR
 2020-03-17,Cayman Islands,United Kingdom,19.3133,-81.2546,0,1,1,0,0,0,GBR
 2020-03-18,Cayman Islands,United Kingdom,19.3133,-81.2546,0,1,1,0,0,0,GBR
+2020-03-19,Cayman Islands,United Kingdom,19.3133,-81.2546,0,3,1,2,0,0,GBR
 2020-01-22,Channel Islands,United Kingdom,49.3723,-2.3644,0,0,0,0,0,0,GBR
 2020-01-23,Channel Islands,United Kingdom,49.3723,-2.3644,0,0,0,0,0,0,GBR
 2020-01-24,Channel Islands,United Kingdom,49.3723,-2.3644,0,0,0,0,0,0,GBR
@@ -11798,6 +12351,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Channel Islands,United Kingdom,49.3723,-2.3644,0,6,0,3,0,0,GBR
 2020-03-17,Channel Islands,United Kingdom,49.3723,-2.3644,0,6,0,0,0,0,GBR
 2020-03-18,Channel Islands,United Kingdom,49.3723,-2.3644,0,6,0,0,0,0,GBR
+2020-03-19,Channel Islands,United Kingdom,49.3723,-2.3644,0,11,0,5,0,0,GBR
 2020-01-22,Gibraltar,United Kingdom,36.1408,-5.3536,0,0,0,0,0,0,GBR
 2020-01-23,Gibraltar,United Kingdom,36.1408,-5.3536,0,0,0,0,0,0,GBR
 2020-01-24,Gibraltar,United Kingdom,36.1408,-5.3536,0,0,0,0,0,0,GBR
@@ -11855,6 +12409,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Gibraltar,United Kingdom,36.1408,-5.3536,1,1,0,0,0,0,GBR
 2020-03-17,Gibraltar,United Kingdom,36.1408,-5.3536,1,3,0,2,0,0,GBR
 2020-03-18,Gibraltar,United Kingdom,36.1408,-5.3536,2,8,0,5,0,1,GBR
+2020-03-19,Gibraltar,United Kingdom,36.1408,-5.3536,2,10,0,2,0,0,GBR
 2020-01-22,Montserrat,United Kingdom,16.7425,-62.1874,0,0,0,0,0,0,GBR
 2020-01-23,Montserrat,United Kingdom,16.7425,-62.1874,0,0,0,0,0,0,GBR
 2020-01-24,Montserrat,United Kingdom,16.7425,-62.1874,0,0,0,0,0,0,GBR
@@ -11912,6 +12467,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Montserrat,United Kingdom,16.7425,-62.1874,0,0,0,0,0,0,GBR
 2020-03-17,Montserrat,United Kingdom,16.7425,-62.1874,0,0,0,0,0,0,GBR
 2020-03-18,Montserrat,United Kingdom,16.7425,-62.1874,0,1,0,1,0,0,GBR
+2020-03-19,Montserrat,United Kingdom,16.7425,-62.1874,0,1,0,0,0,0,GBR
 2020-01-22,United Kingdom,United Kingdom,55.3781,-3.436,0,0,0,0,0,0,GBR
 2020-01-23,United Kingdom,United Kingdom,55.3781,-3.436,0,0,0,0,0,0,GBR
 2020-01-24,United Kingdom,United Kingdom,55.3781,-3.436,0,0,0,0,0,0,GBR
@@ -11969,6 +12525,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,United Kingdom,United Kingdom,55.3781,-3.436,20,1543,55,403,34,2,GBR
 2020-03-17,United Kingdom,United Kingdom,55.3781,-3.436,52,1950,55,407,0,32,GBR
 2020-03-18,United Kingdom,United Kingdom,55.3781,-3.436,65,2626,71,676,16,13,GBR
+2020-03-19,United Kingdom,United Kingdom,55.3781,-3.436,65,2689,137,63,66,0,GBR
 2020-01-22,NA,Uruguay,-32.5228,-55.7658,0,0,0,0,0,0,URY
 2020-01-23,NA,Uruguay,-32.5228,-55.7658,0,0,0,0,0,0,URY
 2020-01-24,NA,Uruguay,-32.5228,-55.7658,0,0,0,0,0,0,URY
@@ -12026,6 +12583,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Uruguay,-32.5228,-55.7658,0,8,0,4,0,0,URY
 2020-03-17,NA,Uruguay,-32.5228,-55.7658,0,29,0,21,0,0,URY
 2020-03-18,NA,Uruguay,-32.5228,-55.7658,0,50,0,21,0,0,URY
+2020-03-19,NA,Uruguay,-32.5228,-55.7658,0,79,0,29,0,0,URY
 2020-01-22,"Adams, IN",US,39.8522,-77.2865,0,0,0,0,0,0,USA
 2020-01-23,"Adams, IN",US,39.8522,-77.2865,0,0,0,0,0,0,USA
 2020-01-24,"Adams, IN",US,39.8522,-77.2865,0,0,0,0,0,0,USA
@@ -12131,6 +12689,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Alabama,US,32.3182,-86.9023,0,29,0,17,0,0,USA
 2020-03-17,Alabama,US,32.3182,-86.9023,0,39,0,10,0,0,USA
 2020-03-18,Alabama,US,32.3182,-86.9023,0,46,0,7,0,0,USA
+2020-03-19,Alabama,US,32.3182,-86.9023,0,78,0,32,0,0,USA
 2020-01-22,"Alachua, FL",US,29.7938,-82.4944,0,0,0,0,0,0,USA
 2020-01-23,"Alachua, FL",US,29.7938,-82.4944,0,0,0,0,0,0,USA
 2020-01-24,"Alachua, FL",US,29.7938,-82.4944,0,0,0,0,0,0,USA
@@ -12284,6 +12843,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Alaska,US,61.3707,-152.4044,0,1,0,0,0,0,USA
 2020-03-17,Alaska,US,61.3707,-152.4044,0,3,0,2,0,0,USA
 2020-03-18,Alaska,US,61.3707,-152.4044,0,6,0,3,0,0,USA
+2020-03-19,Alaska,US,61.3707,-152.4044,0,9,0,3,0,0,USA
 2020-01-22,"Anoka, MN",US,45.3293,-93.2197,0,0,0,0,0,0,USA
 2020-01-23,"Anoka, MN",US,45.3293,-93.2197,0,0,0,0,0,0,USA
 2020-01-24,"Anoka, MN",US,45.3293,-93.2197,0,0,0,0,0,0,USA
@@ -12437,6 +12997,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Arizona,US,33.7298,-111.4312,1,18,0,5,0,0,USA
 2020-03-17,Arizona,US,33.7298,-111.4312,1,20,0,2,0,0,USA
 2020-03-18,Arizona,US,33.7298,-111.4312,0,27,0,7,0,-1,USA
+2020-03-19,Arizona,US,33.7298,-111.4312,0,45,0,18,0,0,USA
 2020-01-22,Arkansas,US,34.9697,-92.3731,0,0,0,0,0,0,USA
 2020-01-23,Arkansas,US,34.9697,-92.3731,0,0,0,0,0,0,USA
 2020-01-24,Arkansas,US,34.9697,-92.3731,0,0,0,0,0,0,USA
@@ -12494,6 +13055,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Arkansas,US,34.9697,-92.3731,0,22,0,6,0,0,USA
 2020-03-17,Arkansas,US,34.9697,-92.3731,0,22,0,0,0,0,USA
 2020-03-18,Arkansas,US,34.9697,-92.3731,0,33,0,11,0,0,USA
+2020-03-19,Arkansas,US,34.9697,-92.3731,0,62,0,29,0,0,USA
 2020-01-22,"Arlington, VA",US,38.8816,-77.091,0,0,0,0,0,0,USA
 2020-01-23,"Arlington, VA",US,38.8816,-77.091,0,0,0,0,0,0,USA
 2020-01-24,"Arlington, VA",US,38.8816,-77.091,0,0,0,0,0,0,USA
@@ -13127,6 +13689,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,California,US,36.1162,-119.6816,6,557,7,131,1,0,USA
 2020-03-17,California,US,36.1162,-119.6816,6,698,12,141,5,0,USA
 2020-03-18,California,US,36.1162,-119.6816,0,751,13,53,1,-6,USA
+2020-03-19,California,US,36.1162,-119.6816,0,952,18,201,5,0,USA
 2020-01-22,"Camden, NC",US,34.2465,-80.607,0,0,0,0,0,0,USA
 2020-01-23,"Camden, NC",US,34.2465,-80.607,0,0,0,0,0,0,USA
 2020-01-24,"Camden, NC",US,34.2465,-80.607,0,0,0,0,0,0,USA
@@ -13856,6 +14419,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Colorado,US,39.0598,-105.3111,0,160,1,29,0,0,USA
 2020-03-17,Colorado,US,39.0598,-105.3111,0,160,2,0,1,0,USA
 2020-03-18,Colorado,US,39.0598,-105.3111,0,184,2,24,0,0,USA
+2020-03-19,Colorado,US,39.0598,-105.3111,0,277,4,93,2,0,USA
 2020-01-22,Connecticut,US,41.5978,-72.7554,0,0,0,0,0,0,USA
 2020-01-23,Connecticut,US,41.5978,-72.7554,0,0,0,0,0,0,USA
 2020-01-24,Connecticut,US,41.5978,-72.7554,0,0,0,0,0,0,USA
@@ -13913,6 +14477,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Connecticut,US,41.5978,-72.7554,0,30,0,6,0,0,USA
 2020-03-17,Connecticut,US,41.5978,-72.7554,0,68,0,38,0,0,USA
 2020-03-18,Connecticut,US,41.5978,-72.7554,0,68,0,0,0,0,USA
+2020-03-19,Connecticut,US,41.5978,-72.7554,0,159,2,91,2,0,USA
 2020-01-22,"Contra Costa County, CA",US,37.8534,-121.9018,0,0,0,0,0,0,USA
 2020-01-23,"Contra Costa County, CA",US,37.8534,-121.9018,0,0,0,0,0,0,USA
 2020-01-24,"Contra Costa County, CA",US,37.8534,-121.9018,0,0,0,0,0,0,USA
@@ -14402,6 +14967,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Delaware,US,39.3185,-75.5071,0,8,0,1,0,0,USA
 2020-03-17,Delaware,US,39.3185,-75.5071,0,16,0,8,0,0,USA
 2020-03-18,Delaware,US,39.3185,-75.5071,0,19,0,3,0,0,USA
+2020-03-19,Delaware,US,39.3185,-75.5071,0,30,0,11,0,0,USA
 2020-01-22,"Delaware County, PA",US,39.9078,-75.3879,0,0,0,0,0,0,USA
 2020-01-23,"Delaware County, PA",US,39.9078,-75.3879,0,0,0,0,0,0,USA
 2020-01-24,"Delaware County, PA",US,39.9078,-75.3879,0,0,0,0,0,0,USA
@@ -14603,6 +15169,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Diamond Princess,US,35.4437,139.638,0,47,0,1,0,0,USA
 2020-03-17,Diamond Princess,US,35.4437,139.638,0,47,0,0,0,0,USA
 2020-03-18,Diamond Princess,US,35.4437,139.638,0,47,0,0,0,0,USA
+2020-03-19,Diamond Princess,US,35.4437,139.638,0,47,0,0,0,0,USA
 2020-01-22,District of Columbia,US,38.8974,-77.0268,0,0,0,0,0,0,USA
 2020-01-23,District of Columbia,US,38.8974,-77.0268,0,0,0,0,0,0,USA
 2020-01-24,District of Columbia,US,38.8974,-77.0268,0,0,0,0,0,0,USA
@@ -14660,6 +15227,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,District of Columbia,US,38.8974,-77.0268,0,22,0,6,0,0,USA
 2020-03-17,District of Columbia,US,38.8974,-77.0268,0,22,0,0,0,0,USA
 2020-03-18,District of Columbia,US,38.8974,-77.0268,0,31,0,9,0,0,USA
+2020-03-19,District of Columbia,US,38.8974,-77.0268,0,40,0,9,0,0,USA
 2020-01-22,"Douglas County, CO",US,39.2587,-104.9389,0,0,0,0,0,0,USA
 2020-01-23,"Douglas County, CO",US,39.2587,-104.9389,0,0,0,0,0,0,USA
 2020-01-24,"Douglas County, CO",US,39.2587,-104.9389,0,0,0,0,0,0,USA
@@ -15197,6 +15765,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Florida,US,27.7663,-81.6868,0,155,5,40,1,0,USA
 2020-03-17,Florida,US,27.7663,-81.6868,0,216,6,61,1,0,USA
 2020-03-18,Florida,US,27.7663,-81.6868,0,314,7,98,1,0,USA
+2020-03-19,Florida,US,27.7663,-81.6868,0,417,9,103,2,0,USA
 2020-01-22,"Floyd, GA",US,37.5455,-82.7779,0,0,0,0,0,0,USA
 2020-01-23,"Floyd, GA",US,37.5455,-82.7779,0,0,0,0,0,0,USA
 2020-01-24,"Floyd, GA",US,37.5455,-82.7779,0,0,0,0,0,0,USA
@@ -15446,6 +16015,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Georgia,US,33.0406,-83.6431,0,121,1,22,0,0,USA
 2020-03-17,Georgia,US,33.0406,-83.6431,0,146,1,25,0,0,USA
 2020-03-18,Georgia,US,33.0406,-83.6431,0,199,3,53,2,0,USA
+2020-03-19,Georgia,US,33.0406,-83.6431,0,287,10,88,7,0,USA
 2020-01-22,"Grafton County, NH",US,43.9088,-71.826,0,0,0,0,0,0,USA
 2020-01-23,"Grafton County, NH",US,43.9088,-71.826,0,0,0,0,0,0,USA
 2020-01-24,"Grafton County, NH",US,43.9088,-71.826,0,0,0,0,0,0,USA
@@ -15551,6 +16121,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Grand Princess,US,37.6489,-122.6655,0,20,0,-1,0,0,USA
 2020-03-17,Grand Princess,US,37.6489,-122.6655,0,21,0,1,0,0,USA
 2020-03-18,Grand Princess,US,37.6489,-122.6655,0,21,0,0,0,0,USA
+2020-03-19,Grand Princess,US,37.6489,-122.6655,0,22,0,1,0,0,USA
 2020-01-22,"Grant County, WA",US,47.1981,-119.3732,0,0,0,0,0,0,USA
 2020-01-23,"Grant County, WA",US,47.1981,-119.3732,0,0,0,0,0,0,USA
 2020-01-24,"Grant County, WA",US,47.1981,-119.3732,0,0,0,0,0,0,USA
@@ -15704,6 +16275,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Guam,US,13.4443,144.7937,0,3,0,0,0,0,USA
 2020-03-17,Guam,US,13.4443,144.7937,0,3,0,0,0,0,USA
 2020-03-18,Guam,US,13.4443,144.7937,0,5,0,2,0,0,USA
+2020-03-19,Guam,US,13.4443,144.7937,0,12,0,7,0,0,USA
 2020-01-22,"Gunnison, CO",US,38.5458,-106.9253,0,0,0,0,0,0,USA
 2020-01-23,"Gunnison, CO",US,38.5458,-106.9253,0,0,0,0,0,0,USA
 2020-01-24,"Gunnison, CO",US,38.5458,-106.9253,0,0,0,0,0,0,USA
@@ -16049,6 +16621,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Hawaii,US,21.0943,-157.4983,0,7,0,1,0,0,USA
 2020-03-17,Hawaii,US,21.0943,-157.4983,0,10,0,3,0,0,USA
 2020-03-18,Hawaii,US,21.0943,-157.4983,0,14,0,4,0,0,USA
+2020-03-19,Hawaii,US,21.0943,-157.4983,0,16,0,2,0,0,USA
 2020-01-22,"Hendricks County, IN",US,39.8065,-86.5401,0,0,0,0,0,0,USA
 2020-01-23,"Hendricks County, IN",US,39.8065,-86.5401,0,0,0,0,0,0,USA
 2020-01-24,"Hendricks County, IN",US,39.8065,-86.5401,0,0,0,0,0,0,USA
@@ -16394,6 +16967,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Idaho,US,44.2405,-114.4788,0,5,0,0,0,0,USA
 2020-03-17,Idaho,US,44.2405,-114.4788,0,8,0,3,0,0,USA
 2020-03-18,Idaho,US,44.2405,-114.4788,0,9,0,1,0,0,USA
+2020-03-19,Idaho,US,44.2405,-114.4788,0,11,0,2,0,0,USA
 2020-01-22,Illinois,US,40.3495,-88.9861,0,0,0,0,0,0,USA
 2020-01-23,Illinois,US,40.3495,-88.9861,0,0,0,0,0,0,USA
 2020-01-24,Illinois,US,40.3495,-88.9861,0,0,0,0,0,0,USA
@@ -16451,6 +17025,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Illinois,US,40.3495,-88.9861,2,105,0,12,0,0,USA
 2020-03-17,Illinois,US,40.3495,-88.9861,2,161,1,56,1,0,USA
 2020-03-18,Illinois,US,40.3495,-88.9861,0,162,1,1,0,-2,USA
+2020-03-19,Illinois,US,40.3495,-88.9861,0,422,4,260,3,0,USA
 2020-01-22,Indiana,US,39.8494,-86.2583,0,0,0,0,0,0,USA
 2020-01-23,Indiana,US,39.8494,-86.2583,0,0,0,0,0,0,USA
 2020-01-24,Indiana,US,39.8494,-86.2583,0,0,0,0,0,0,USA
@@ -16508,6 +17083,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Indiana,US,39.8494,-86.2583,0,25,1,5,1,0,USA
 2020-03-17,Indiana,US,39.8494,-86.2583,0,30,2,5,1,0,USA
 2020-03-18,Indiana,US,39.8494,-86.2583,0,39,2,9,0,0,USA
+2020-03-19,Indiana,US,39.8494,-86.2583,0,60,2,21,0,0,USA
 2020-01-22,Iowa,US,42.0115,-93.2105,0,0,0,0,0,0,USA
 2020-01-23,Iowa,US,42.0115,-93.2105,0,0,0,0,0,0,USA
 2020-01-24,Iowa,US,42.0115,-93.2105,0,0,0,0,0,0,USA
@@ -16565,6 +17141,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Iowa,US,42.0115,-93.2105,0,23,0,5,0,0,USA
 2020-03-17,Iowa,US,42.0115,-93.2105,0,23,0,0,0,0,USA
 2020-03-18,Iowa,US,42.0115,-93.2105,0,29,0,6,0,0,USA
+2020-03-19,Iowa,US,42.0115,-93.2105,0,44,0,15,0,0,USA
 2020-01-22,"Island, WA",US,48.1976,-122.5795,0,0,0,0,0,0,USA
 2020-01-23,"Island, WA",US,48.1976,-122.5795,0,0,0,0,0,0,USA
 2020-01-24,"Island, WA",US,48.1976,-122.5795,0,0,0,0,0,0,USA
@@ -17102,6 +17679,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Kansas,US,38.5266,-96.7265,0,11,1,3,0,0,USA
 2020-03-17,Kansas,US,38.5266,-96.7265,0,18,1,7,0,0,USA
 2020-03-18,Kansas,US,38.5266,-96.7265,0,18,1,0,0,0,USA
+2020-03-19,Kansas,US,38.5266,-96.7265,0,34,1,16,0,0,USA
 2020-01-22,Kentucky,US,37.6681,-84.6701,0,0,0,0,0,0,USA
 2020-01-23,Kentucky,US,37.6681,-84.6701,0,0,0,0,0,0,USA
 2020-01-24,Kentucky,US,37.6681,-84.6701,0,0,0,0,0,0,USA
@@ -17159,6 +17737,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Kentucky,US,37.6681,-84.6701,1,21,1,1,1,1,USA
 2020-03-17,Kentucky,US,37.6681,-84.6701,1,26,1,5,0,0,USA
 2020-03-18,Kentucky,US,37.6681,-84.6701,0,27,1,1,0,-1,USA
+2020-03-19,Kentucky,US,37.6681,-84.6701,0,37,2,10,1,0,USA
 2020-01-22,"Kershaw County, SC",US,34.3672,-80.5883,0,0,0,0,0,0,USA
 2020-01-23,"Kershaw County, SC",US,34.3672,-80.5883,0,0,0,0,0,0,USA
 2020-01-24,"Kershaw County, SC",US,34.3672,-80.5883,0,0,0,0,0,0,USA
@@ -17840,6 +18419,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Louisiana,US,31.1695,-91.8678,0,136,3,45,1,0,USA
 2020-03-17,Louisiana,US,31.1695,-91.8678,0,196,4,60,1,0,USA
 2020-03-18,Louisiana,US,31.1695,-91.8678,0,257,4,61,0,0,USA
+2020-03-19,Louisiana,US,31.1695,-91.8678,0,392,10,135,6,0,USA
 2020-01-22,"Madera County, CA",US,37.2519,-119.6963,0,0,0,0,0,0,USA
 2020-01-23,"Madera County, CA",US,37.2519,-119.6963,0,0,0,0,0,0,USA
 2020-01-24,"Madera County, CA",US,37.2519,-119.6963,0,0,0,0,0,0,USA
@@ -17945,6 +18525,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Maine,US,44.6939,-69.3819,0,17,0,5,0,0,USA
 2020-03-17,Maine,US,44.6939,-69.3819,0,32,0,15,0,0,USA
 2020-03-18,Maine,US,44.6939,-69.3819,0,42,0,10,0,0,USA
+2020-03-19,Maine,US,44.6939,-69.3819,0,52,0,10,0,0,USA
 2020-01-22,"Manatee County, FL",US,27.4799,-82.3452,0,0,0,0,0,0,USA
 2020-01-23,"Manatee County, FL",US,27.4799,-82.3452,0,0,0,0,0,0,USA
 2020-01-24,"Manatee County, FL",US,27.4799,-82.3452,0,0,0,0,0,0,USA
@@ -18242,6 +18823,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Maryland,US,39.0639,-76.8021,3,41,0,9,0,3,USA
 2020-03-17,Maryland,US,39.0639,-76.8021,3,60,0,19,0,0,USA
 2020-03-18,Maryland,US,39.0639,-76.8021,0,85,0,25,0,-3,USA
+2020-03-19,Maryland,US,39.0639,-76.8021,0,107,1,22,1,0,USA
 2020-01-22,Massachusetts,US,42.2302,-71.5301,0,0,0,0,0,0,USA
 2020-01-23,Massachusetts,US,42.2302,-71.5301,0,0,0,0,0,0,USA
 2020-01-24,Massachusetts,US,42.2302,-71.5301,0,0,0,0,0,0,USA
@@ -18299,6 +18881,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Massachusetts,US,42.2302,-71.5301,1,197,0,33,0,0,USA
 2020-03-17,Massachusetts,US,42.2302,-71.5301,1,218,0,21,0,0,USA
 2020-03-18,Massachusetts,US,42.2302,-71.5301,0,218,0,0,0,-1,USA
+2020-03-19,Massachusetts,US,42.2302,-71.5301,0,328,0,110,0,0,USA
 2020-01-22,"McHenry, IL",US,42.3334,-88.2668,0,0,0,0,0,0,USA
 2020-01-23,"McHenry, IL",US,42.3334,-88.2668,0,0,0,0,0,0,USA
 2020-01-24,"McHenry, IL",US,42.3334,-88.2668,0,0,0,0,0,0,USA
@@ -18404,6 +18987,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Michigan,US,43.3266,-84.5361,0,53,0,20,0,0,USA
 2020-03-17,Michigan,US,43.3266,-84.5361,0,65,0,12,0,0,USA
 2020-03-18,Michigan,US,43.3266,-84.5361,0,83,0,18,0,0,USA
+2020-03-19,Michigan,US,43.3266,-84.5361,0,334,3,251,3,0,USA
 2020-01-22,"Middlesex County, MA",US,42.4672,-71.2874,0,0,0,0,0,0,USA
 2020-01-23,"Middlesex County, MA",US,42.4672,-71.2874,0,0,0,0,0,0,USA
 2020-01-24,"Middlesex County, MA",US,42.4672,-71.2874,0,0,0,0,0,0,USA
@@ -18605,6 +19189,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Minnesota,US,45.6945,-93.9002,0,54,0,19,0,0,USA
 2020-03-17,Minnesota,US,45.6945,-93.9002,0,60,0,6,0,0,USA
 2020-03-18,Minnesota,US,45.6945,-93.9002,0,77,0,17,0,0,USA
+2020-03-19,Minnesota,US,45.6945,-93.9002,0,89,0,12,0,0,USA
 2020-01-22,Mississippi,US,32.7416,-89.6787,0,0,0,0,0,0,USA
 2020-01-23,Mississippi,US,32.7416,-89.6787,0,0,0,0,0,0,USA
 2020-01-24,Mississippi,US,32.7416,-89.6787,0,0,0,0,0,0,USA
@@ -18662,6 +19247,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Mississippi,US,32.7416,-89.6787,0,13,0,3,0,0,USA
 2020-03-17,Mississippi,US,32.7416,-89.6787,0,21,0,8,0,0,USA
 2020-03-18,Mississippi,US,32.7416,-89.6787,0,34,0,13,0,0,USA
+2020-03-19,Mississippi,US,32.7416,-89.6787,0,50,1,16,1,0,USA
 2020-01-22,Missouri,US,38.4561,-92.2884,0,0,0,0,0,0,USA
 2020-01-23,Missouri,US,38.4561,-92.2884,0,0,0,0,0,0,USA
 2020-01-24,Missouri,US,38.4561,-92.2884,0,0,0,0,0,0,USA
@@ -18719,6 +19305,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Missouri,US,38.4561,-92.2884,0,6,0,1,0,0,USA
 2020-03-17,Missouri,US,38.4561,-92.2884,0,11,0,5,0,0,USA
 2020-03-18,Missouri,US,38.4561,-92.2884,0,18,0,7,0,0,USA
+2020-03-19,Missouri,US,38.4561,-92.2884,0,31,1,13,1,0,USA
 2020-01-22,"Monmouth, NJ",US,40.2589,-74.124,0,0,0,0,0,0,USA
 2020-01-23,"Monmouth, NJ",US,40.2589,-74.124,0,0,0,0,0,0,USA
 2020-01-24,"Monmouth, NJ",US,40.2589,-74.124,0,0,0,0,0,0,USA
@@ -18872,6 +19459,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Montana,US,46.9219,-110.4544,0,7,0,0,0,0,USA
 2020-03-17,Montana,US,46.9219,-110.4544,0,9,0,2,0,0,USA
 2020-03-18,Montana,US,46.9219,-110.4544,0,11,0,2,0,0,USA
+2020-03-19,Montana,US,46.9219,-110.4544,0,11,0,0,0,0,USA
 2020-01-22,"Montgomery County, MD",US,39.1547,-77.2405,0,0,0,0,0,0,USA
 2020-01-23,"Montgomery County, MD",US,39.1547,-77.2405,0,0,0,0,0,0,USA
 2020-01-24,"Montgomery County, MD",US,39.1547,-77.2405,0,0,0,0,0,0,USA
@@ -19265,6 +19853,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Nebraska,US,41.1254,-98.2681,0,18,0,1,0,0,USA
 2020-03-17,Nebraska,US,41.1254,-98.2681,0,21,0,3,0,0,USA
 2020-03-18,Nebraska,US,41.1254,-98.2681,0,24,0,3,0,0,USA
+2020-03-19,Nebraska,US,41.1254,-98.2681,0,29,0,5,0,0,USA
 2020-01-22,Nevada,US,38.3135,-117.0554,0,0,0,0,0,0,USA
 2020-01-23,Nevada,US,38.3135,-117.0554,0,0,0,0,0,0,USA
 2020-01-24,Nevada,US,38.3135,-117.0554,0,0,0,0,0,0,USA
@@ -19322,6 +19911,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Nevada,US,38.3135,-117.0554,0,45,1,21,1,0,USA
 2020-03-17,Nevada,US,38.3135,-117.0554,0,56,1,11,0,0,USA
 2020-03-18,Nevada,US,38.3135,-117.0554,0,55,1,-1,0,0,USA
+2020-03-19,Nevada,US,38.3135,-117.0554,0,95,1,40,0,0,USA
 2020-01-22,"New Castle, DE",US,39.5393,-75.6674,0,0,0,0,0,0,USA
 2020-01-23,"New Castle, DE",US,39.5393,-75.6674,0,0,0,0,0,0,USA
 2020-01-24,"New Castle, DE",US,39.5393,-75.6674,0,0,0,0,0,0,USA
@@ -19427,6 +20017,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,New Hampshire,US,43.4525,-71.5639,0,17,0,4,0,0,USA
 2020-03-17,New Hampshire,US,43.4525,-71.5639,0,26,0,9,0,0,USA
 2020-03-18,New Hampshire,US,43.4525,-71.5639,0,26,0,0,0,0,USA
+2020-03-19,New Hampshire,US,43.4525,-71.5639,0,44,0,18,0,0,USA
 2020-01-22,New Jersey,US,40.2989,-74.521,0,0,0,0,0,0,USA
 2020-01-23,New Jersey,US,40.2989,-74.521,0,0,0,0,0,0,USA
 2020-01-24,New Jersey,US,40.2989,-74.521,0,0,0,0,0,0,USA
@@ -19484,6 +20075,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,New Jersey,US,40.2989,-74.521,1,178,2,80,0,1,USA
 2020-03-17,New Jersey,US,40.2989,-74.521,1,267,3,89,1,0,USA
 2020-03-18,New Jersey,US,40.2989,-74.521,0,267,3,0,0,-1,USA
+2020-03-19,New Jersey,US,40.2989,-74.521,0,742,9,475,6,0,USA
 2020-01-22,New Mexico,US,34.8405,-106.2485,0,0,0,0,0,0,USA
 2020-01-23,New Mexico,US,34.8405,-106.2485,0,0,0,0,0,0,USA
 2020-01-24,New Mexico,US,34.8405,-106.2485,0,0,0,0,0,0,USA
@@ -19541,6 +20133,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,New Mexico,US,34.8405,-106.2485,0,17,0,4,0,0,USA
 2020-03-17,New Mexico,US,34.8405,-106.2485,0,23,0,6,0,0,USA
 2020-03-18,New Mexico,US,34.8405,-106.2485,0,23,0,0,0,0,USA
+2020-03-19,New Mexico,US,34.8405,-106.2485,0,35,0,12,0,0,USA
 2020-01-22,New York,US,42.1657,-74.9481,0,0,0,0,0,0,USA
 2020-01-23,New York,US,42.1657,-74.9481,0,0,0,0,0,0,USA
 2020-01-24,New York,US,42.1657,-74.9481,0,0,0,0,0,0,USA
@@ -19598,6 +20191,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,New York,US,42.1657,-74.9481,0,967,10,235,7,0,USA
 2020-03-17,New York,US,42.1657,-74.9481,0,1706,13,739,3,0,USA
 2020-03-18,New York,US,42.1657,-74.9481,0,2495,16,789,3,0,USA
+2020-03-19,New York,US,42.1657,-74.9481,0,5365,34,2870,18,0,USA
 2020-01-22,"New York County, NY",US,40.7128,-74.006,0,0,0,0,0,0,USA
 2020-01-23,"New York County, NY",US,40.7128,-74.006,0,0,0,0,0,0,USA
 2020-01-24,"New York County, NY",US,40.7128,-74.006,0,0,0,0,0,0,USA
@@ -19847,6 +20441,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,North Carolina,US,35.6301,-79.8064,0,38,0,5,0,0,USA
 2020-03-17,North Carolina,US,35.6301,-79.8064,0,64,0,26,0,0,USA
 2020-03-18,North Carolina,US,35.6301,-79.8064,0,70,0,6,0,0,USA
+2020-03-19,North Carolina,US,35.6301,-79.8064,0,123,0,53,0,0,USA
 2020-01-22,North Dakota,US,47.5289,-99.784,0,0,0,0,0,0,USA
 2020-01-23,North Dakota,US,47.5289,-99.784,0,0,0,0,0,0,USA
 2020-01-24,North Dakota,US,47.5289,-99.784,0,0,0,0,0,0,USA
@@ -19904,6 +20499,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,North Dakota,US,47.5289,-99.784,0,1,0,0,0,0,USA
 2020-03-17,North Dakota,US,47.5289,-99.784,0,3,0,2,0,0,USA
 2020-03-18,North Dakota,US,47.5289,-99.784,0,6,0,3,0,0,USA
+2020-03-19,North Dakota,US,47.5289,-99.784,0,18,0,12,0,0,USA
 2020-01-22,"Oakland, MI",US,42.5922,-83.3362,0,0,0,0,0,0,USA
 2020-01-23,"Oakland, MI",US,42.5922,-83.3362,0,0,0,0,0,0,USA
 2020-01-24,"Oakland, MI",US,42.5922,-83.3362,0,0,0,0,0,0,USA
@@ -20009,6 +20605,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Ohio,US,40.3888,-82.7649,0,50,0,13,0,0,USA
 2020-03-17,Ohio,US,40.3888,-82.7649,0,67,0,17,0,0,USA
 2020-03-18,Ohio,US,40.3888,-82.7649,0,86,0,19,0,0,USA
+2020-03-19,Ohio,US,40.3888,-82.7649,0,119,0,33,0,0,USA
 2020-01-22,"Okaloosa County, FL",US,30.5773,-86.6611,0,0,0,0,0,0,USA
 2020-01-23,"Okaloosa County, FL",US,30.5773,-86.6611,0,0,0,0,0,0,USA
 2020-01-24,"Okaloosa County, FL",US,30.5773,-86.6611,0,0,0,0,0,0,USA
@@ -20114,6 +20711,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Oklahoma,US,35.5653,-96.9289,0,10,0,3,0,0,USA
 2020-03-17,Oklahoma,US,35.5653,-96.9289,0,19,0,9,0,0,USA
 2020-03-18,Oklahoma,US,35.5653,-96.9289,0,19,0,0,0,0,USA
+2020-03-19,Oklahoma,US,35.5653,-96.9289,0,44,1,25,1,0,USA
 2020-01-22,"Olmsted, MN",US,43.9952,-92.3814,0,0,0,0,0,0,USA
 2020-01-23,"Olmsted, MN",US,43.9952,-92.3814,0,0,0,0,0,0,USA
 2020-01-24,"Olmsted, MN",US,43.9952,-92.3814,0,0,0,0,0,0,USA
@@ -20267,6 +20865,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Oregon,US,44.572,-122.0709,0,39,1,3,0,0,USA
 2020-03-17,Oregon,US,44.572,-122.0709,0,66,1,27,0,0,USA
 2020-03-18,Oregon,US,44.572,-122.0709,0,68,2,2,1,0,USA
+2020-03-19,Oregon,US,44.572,-122.0709,0,88,3,20,1,0,USA
 2020-01-22,"Orleans, LA",US,29.9511,-90.0715,0,0,0,0,0,0,USA
 2020-01-23,"Orleans, LA",US,29.9511,-90.0715,0,0,0,0,0,0,USA
 2020-01-24,"Orleans, LA",US,29.9511,-90.0715,0,0,0,0,0,0,USA
@@ -20516,6 +21115,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Pennsylvania,US,40.5908,-77.2098,0,77,0,11,0,0,USA
 2020-03-17,Pennsylvania,US,40.5908,-77.2098,0,112,0,35,0,0,USA
 2020-03-18,Pennsylvania,US,40.5908,-77.2098,0,152,0,40,0,0,USA
+2020-03-19,Pennsylvania,US,40.5908,-77.2098,0,206,1,54,1,0,USA
 2020-01-22,"Philadelphia, PA",US,39.9526,-75.1652,0,0,0,0,0,0,USA
 2020-01-23,"Philadelphia, PA",US,39.9526,-75.1652,0,0,0,0,0,0,USA
 2020-01-24,"Philadelphia, PA",US,39.9526,-75.1652,0,0,0,0,0,0,USA
@@ -21149,6 +21749,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Puerto Rico,US,18.2208,-66.5901,0,5,0,0,0,0,USA
 2020-03-17,Puerto Rico,US,18.2208,-66.5901,0,5,0,0,0,0,USA
 2020-03-18,Puerto Rico,US,18.2208,-66.5901,0,5,0,0,0,0,USA
+2020-03-19,Puerto Rico,US,18.2208,-66.5901,0,5,0,0,0,0,USA
 2020-01-22,"Ramsey County, MN",US,44.9964,-93.0616,0,0,0,0,0,0,USA
 2020-01-23,"Ramsey County, MN",US,44.9964,-93.0616,0,0,0,0,0,0,USA
 2020-01-24,"Ramsey County, MN",US,44.9964,-93.0616,0,0,0,0,0,0,USA
@@ -21254,6 +21855,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Rhode Island,US,41.6809,-71.5118,0,21,0,1,0,0,USA
 2020-03-17,Rhode Island,US,41.6809,-71.5118,0,23,0,2,0,0,USA
 2020-03-18,Rhode Island,US,41.6809,-71.5118,0,33,0,10,0,0,USA
+2020-03-19,Rhode Island,US,41.6809,-71.5118,0,44,0,11,0,0,USA
 2020-01-22,"Riverside County, CA",US,33.9533,-117.3961,0,0,0,0,0,0,USA
 2020-01-23,"Riverside County, CA",US,33.9533,-117.3961,0,0,0,0,0,0,USA
 2020-01-24,"Riverside County, CA",US,33.9533,-117.3961,0,0,0,0,0,0,USA
@@ -22271,6 +22873,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,South Carolina,US,33.8569,-80.945,0,33,1,5,1,0,USA
 2020-03-17,South Carolina,US,33.8569,-80.945,0,47,1,14,0,0,USA
 2020-03-18,South Carolina,US,33.8569,-80.945,0,47,1,0,0,0,USA
+2020-03-19,South Carolina,US,33.8569,-80.945,0,81,1,34,0,0,USA
 2020-01-22,South Dakota,US,44.2998,-99.4388,0,0,0,0,0,0,USA
 2020-01-23,South Dakota,US,44.2998,-99.4388,0,0,0,0,0,0,USA
 2020-01-24,South Dakota,US,44.2998,-99.4388,0,0,0,0,0,0,USA
@@ -22328,6 +22931,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,South Dakota,US,44.2998,-99.4388,0,10,1,1,0,0,USA
 2020-03-17,South Dakota,US,44.2998,-99.4388,0,11,1,1,0,0,USA
 2020-03-18,South Dakota,US,44.2998,-99.4388,0,11,1,0,0,0,USA
+2020-03-19,South Dakota,US,44.2998,-99.4388,0,11,1,0,0,0,USA
 2020-01-22,"Spartanburg County, SC",US,34.8606,-81.9535,0,0,0,0,0,0,USA
 2020-01-23,"Spartanburg County, SC",US,34.8606,-81.9535,0,0,0,0,0,0,USA
 2020-01-24,"Spartanburg County, SC",US,34.8606,-81.9535,0,0,0,0,0,0,USA
@@ -22961,6 +23565,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Tennessee,US,35.7478,-86.6923,0,52,0,13,0,0,USA
 2020-03-17,Tennessee,US,35.7478,-86.6923,0,74,0,22,0,0,USA
 2020-03-18,Tennessee,US,35.7478,-86.6923,0,79,0,5,0,0,USA
+2020-03-19,Tennessee,US,35.7478,-86.6923,0,154,0,75,0,0,USA
 2020-01-22,Texas,US,31.0545,-97.5635,0,0,0,0,0,0,USA
 2020-01-23,Texas,US,31.0545,-97.5635,0,0,0,0,0,0,USA
 2020-01-24,Texas,US,31.0545,-97.5635,0,0,0,0,0,0,USA
@@ -23018,6 +23623,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Texas,US,31.0545,-97.5635,0,85,0,13,0,0,USA
 2020-03-17,Texas,US,31.0545,-97.5635,0,110,1,25,1,0,USA
 2020-03-18,Texas,US,31.0545,-97.5635,0,173,3,63,2,0,USA
+2020-03-19,Texas,US,31.0545,-97.5635,0,260,5,87,2,0,USA
 2020-01-22,"Thurston, WA",US,46.8646,-122.7696,0,0,0,0,0,0,USA
 2020-01-23,"Thurston, WA",US,46.8646,-122.7696,0,0,0,0,0,0,USA
 2020-01-24,"Thurston, WA",US,46.8646,-122.7696,0,0,0,0,0,0,USA
@@ -23315,6 +23921,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Utah,US,40.15,-111.8624,0,39,0,11,0,0,USA
 2020-03-17,Utah,US,40.15,-111.8624,0,51,0,12,0,0,USA
 2020-03-18,Utah,US,40.15,-111.8624,0,51,0,0,0,0,USA
+2020-03-19,Utah,US,40.15,-111.8624,0,80,0,29,0,0,USA
 2020-01-22,"Ventura, CA",US,34.3705,-119.1391,0,0,0,0,0,0,USA
 2020-01-23,"Ventura, CA",US,34.3705,-119.1391,0,0,0,0,0,0,USA
 2020-01-24,"Ventura, CA",US,34.3705,-119.1391,0,0,0,0,0,0,USA
@@ -23420,6 +24027,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Vermont,US,44.0459,-72.7107,0,12,0,4,0,0,USA
 2020-03-17,Vermont,US,44.0459,-72.7107,0,12,0,0,0,0,USA
 2020-03-18,Vermont,US,44.0459,-72.7107,0,18,0,6,0,0,USA
+2020-03-19,Vermont,US,44.0459,-72.7107,0,22,0,4,0,0,USA
 2020-01-22,Virgin Islands,US,18.3358,-64.8963,0,0,0,0,0,0,USA
 2020-01-23,Virgin Islands,US,18.3358,-64.8963,0,0,0,0,0,0,USA
 2020-01-24,Virgin Islands,US,18.3358,-64.8963,0,0,0,0,0,0,USA
@@ -23477,6 +24085,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Virgin Islands,US,18.3358,-64.8963,0,1,0,0,0,0,USA
 2020-03-17,Virgin Islands,US,18.3358,-64.8963,0,2,0,1,0,0,USA
 2020-03-18,Virgin Islands,US,18.3358,-64.8963,0,2,0,0,0,0,USA
+2020-03-19,Virgin Islands,US,18.3358,-64.8963,0,3,0,1,0,0,USA
 2020-01-22,Virginia,US,37.7693,-78.17,0,0,0,0,0,0,USA
 2020-01-23,Virginia,US,37.7693,-78.17,0,0,0,0,0,0,USA
 2020-01-24,Virginia,US,37.7693,-78.17,0,0,0,0,0,0,USA
@@ -23534,6 +24143,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Virginia,US,37.7693,-78.17,0,49,1,4,0,0,USA
 2020-03-17,Virginia,US,37.7693,-78.17,0,67,2,18,1,0,USA
 2020-03-18,Virginia,US,37.7693,-78.17,0,77,2,10,0,0,USA
+2020-03-19,Virginia,US,37.7693,-78.17,0,99,2,22,0,0,USA
 2020-01-22,"Volusia County, FL",US,29.028,-81.0755,0,0,0,0,0,0,USA
 2020-01-23,"Volusia County, FL",US,29.028,-81.0755,0,0,0,0,0,0,USA
 2020-01-24,"Volusia County, FL",US,29.028,-81.0755,0,0,0,0,0,0,USA
@@ -23687,6 +24297,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Washington,US,47.4009,-121.4905,1,904,48,261,8,0,USA
 2020-03-17,Washington,US,47.4009,-121.4905,1,1076,55,172,7,0,USA
 2020-03-18,Washington,US,47.4009,-121.4905,0,1014,55,-62,0,-1,USA
+2020-03-19,Washington,US,47.4009,-121.4905,0,1376,74,362,19,0,USA
 2020-01-22,"Washington County, OR",US,45.547,-123.1386,0,0,0,0,0,0,USA
 2020-01-23,"Washington County, OR",US,45.547,-123.1386,0,0,0,0,0,0,USA
 2020-01-24,"Washington County, OR",US,45.547,-123.1386,0,0,0,0,0,0,USA
@@ -24032,6 +24643,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,West Virginia,US,38.4912,-80.9545,0,0,0,0,0,0,USA
 2020-03-17,West Virginia,US,38.4912,-80.9545,0,1,0,1,0,0,USA
 2020-03-18,West Virginia,US,38.4912,-80.9545,0,1,0,0,0,0,USA
+2020-03-19,West Virginia,US,38.4912,-80.9545,0,2,0,1,0,0,USA
 2020-01-22,"Westchester County, NY",US,41.122,-73.7949,0,0,0,0,0,0,USA
 2020-01-23,"Westchester County, NY",US,41.122,-73.7949,0,0,0,0,0,0,USA
 2020-01-24,"Westchester County, NY",US,41.122,-73.7949,0,0,0,0,0,0,USA
@@ -24233,6 +24845,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Wisconsin,US,44.2685,-89.6165,1,47,0,15,0,0,USA
 2020-03-17,Wisconsin,US,44.2685,-89.6165,1,72,0,25,0,0,USA
 2020-03-18,Wisconsin,US,44.2685,-89.6165,0,92,0,20,0,-1,USA
+2020-03-19,Wisconsin,US,44.2685,-89.6165,0,159,0,67,0,0,USA
 2020-01-22,"Worcester, MA",US,42.4097,-71.8571,0,0,0,0,0,0,USA
 2020-01-23,"Worcester, MA",US,42.4097,-71.8571,0,0,0,0,0,0,USA
 2020-01-24,"Worcester, MA",US,42.4097,-71.8571,0,0,0,0,0,0,USA
@@ -24338,6 +24951,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,Wyoming,US,42.756,-107.3025,0,3,0,0,0,0,USA
 2020-03-17,Wyoming,US,42.756,-107.3025,0,11,0,8,0,0,USA
 2020-03-18,Wyoming,US,42.756,-107.3025,0,15,0,4,0,0,USA
+2020-03-19,Wyoming,US,42.756,-107.3025,0,18,0,3,0,0,USA
 2020-01-22,"Yolo County, CA",US,38.7646,-121.9018,0,0,0,0,0,0,USA
 2020-01-23,"Yolo County, CA",US,38.7646,-121.9018,0,0,0,0,0,0,USA
 2020-01-24,"Yolo County, CA",US,38.7646,-121.9018,0,0,0,0,0,0,USA
@@ -24443,6 +25057,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Uzbekistan,41.3775,64.5853,0,6,0,5,0,0,UZB
 2020-03-17,NA,Uzbekistan,41.3775,64.5853,0,10,0,4,0,0,UZB
 2020-03-18,NA,Uzbekistan,41.3775,64.5853,0,15,0,5,0,0,UZB
+2020-03-19,NA,Uzbekistan,41.3775,64.5853,0,23,0,8,0,0,UZB
 2020-01-22,NA,Venezuela,6.4238,-66.5897,0,0,0,0,0,0,VEN
 2020-01-23,NA,Venezuela,6.4238,-66.5897,0,0,0,0,0,0,VEN
 2020-01-24,NA,Venezuela,6.4238,-66.5897,0,0,0,0,0,0,VEN
@@ -24500,6 +25115,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Venezuela,6.4238,-66.5897,0,17,0,7,0,0,VEN
 2020-03-17,NA,Venezuela,6.4238,-66.5897,0,33,0,16,0,0,VEN
 2020-03-18,NA,Venezuela,6.4238,-66.5897,0,36,0,3,0,0,VEN
+2020-03-19,NA,Venezuela,6.4238,-66.5897,0,42,0,6,0,0,VEN
 2020-01-22,NA,Vietnam,16,108,0,0,0,0,0,0,VNM
 2020-01-23,NA,Vietnam,16,108,0,2,0,2,0,0,VNM
 2020-01-24,NA,Vietnam,16,108,0,2,0,0,0,0,VNM
@@ -24557,6 +25173,7 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Vietnam,16,108,16,61,0,5,0,0,VNM
 2020-03-17,NA,Vietnam,16,108,16,66,0,5,0,0,VNM
 2020-03-18,NA,Vietnam,16,108,16,75,0,9,0,0,VNM
+2020-03-19,NA,Vietnam,16,108,16,85,0,10,0,0,VNM
 2020-01-22,NA,Zambia,-15.4167,28.2833,0,0,0,0,0,0,ZMB
 2020-01-23,NA,Zambia,-15.4167,28.2833,0,0,0,0,0,0,ZMB
 2020-01-24,NA,Zambia,-15.4167,28.2833,0,0,0,0,0,0,ZMB
@@ -24614,3 +25231,4 @@ date,district,country,lat,lng,recovered,confirmed_cases,deaths,confirmed_cases_n
 2020-03-16,NA,Zambia,-15.4167,28.2833,0,0,0,0,0,0,ZMB
 2020-03-17,NA,Zambia,-15.4167,28.2833,0,0,0,0,0,0,ZMB
 2020-03-18,NA,Zambia,-15.4167,28.2833,0,2,0,2,0,0,ZMB
+2020-03-19,NA,Zambia,-15.4167,28.2833,0,2,0,0,0,0,ZMB
