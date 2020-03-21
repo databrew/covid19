@@ -184,8 +184,7 @@ ggplot(data = pd,
                 label = paste0(deaths, '\n(',
                                round(p, digits = 1), '%)')),
             size = text_size * 0.3,
-            nudge_y = 15) +
-  ylim(0, 230)
+            nudge_y = 15) 
 ggsave('~/Desktop/spain.png')
 
 

@@ -39,11 +39,7 @@ library(rnaturalearthdata)
 ```
 
 
-## Camas UCI
 
-```{r}
-
-```
 
 ## Rolling average new events
 
@@ -197,6 +193,52 @@ ggplot(data = pd,
 ggsave('~/Desktop/spain.png')
 
 ```
+
+
+Muertes relativas por CCAA
+
+
+```{r}
+
+# Latest in Spain
+pd <- esp_df %>%
+  filter(date == max(date)) %>%
+  mutate(p = deaths / sum(deaths) * 100)
+
+pd <- pd %>% left_join(esp_pop)
+text_size <- 12
+pd$value <- pd$deaths / pd$pop * 100000
+
+# deaths
+ggplot(data = pd,
+       aes(x = ccaa,
+           y = value)) +
+  geom_bar(stat = 'identity',
+           fill = 'black') +
+  theme_simple() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+  labs(x = '',
+       y = 'Deaths per 100,000',
+       title = 'COVID-19 deaths per 100.000',
+       subtitle = paste0('Data as of ', max(pd$date)),
+       caption = 'github.com/databrew/covid19 | joe@databrew.cc') +
+  theme(legend.position = 'top',
+        legend.text = element_text(size = text_size * 2),
+        axis.title = element_text(size = text_size * 2),
+        plot.title = element_text(size = text_size * 2.3),
+        axis.text.x = element_text(size = text_size * 1.5)) +
+  geom_text(data = pd %>% filter(value > 0),
+            aes(x = ccaa,
+                y = value,
+                label = paste0(round(value, digits = 2), '\n(',
+                               deaths, '\ndeaths)')),
+            size = text_size * 0.3,
+            nudge_y = 1.5) +
+  ylim(0, 12)
+ggsave('~/Desktop/spai2.png')
+
+```
+
 
 
 ```{r}
@@ -1592,6 +1634,7 @@ make_map(var = 'deaths',
 
 ```{r}
 make_map(var = 'deaths',
+         line_color = 'darkgrey',
        points = F) +
   labs(title = 'Number of deaths',
        caption = '@joethebrew')
@@ -1610,7 +1653,7 @@ make_map(var = 'deaths', pop = TRUE, points = T) +
 #### Number of deaths adjusted by population: polygons
 
 ```{r}
-make_map(var = 'deaths', pop = TRUE, points = F) +
+make_map(var = 'deaths', pop = TRUE, points = F, line_color = 'darkgrey') +
   labs(title = 'Number of deaths per 100,000',
        caption = '@joethebrew')
 ```
@@ -1639,6 +1682,7 @@ make_map(var = 'confirmed_cases',
 
 ```{r}
 make_map(var = 'confirmed_cases',
+         line_color = 'darkgrey',
        points = F) +
   labs(title = 'Number of confirmed cases',
        caption = '@joethebrew')
