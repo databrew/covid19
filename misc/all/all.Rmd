@@ -131,14 +131,36 @@ roll_curve <- function(data,
 
 ```{r}
 plot_data <- df_country %>% filter(country %in% c('Spain', 'France', 'Italy', 'Germany', 'Belgium', 'Norway')) %>% mutate(geo = country)
-
 roll_curve(plot_data, pop = T)
-
 ```
 
 ```{r}
-plot_data <- df_country %>% filter(country == 'Spain') %>% mutate(geo = country)
+dir.create('~/Desktop/countries')
+roll_curve_country <- function(the_country = 'Spain'){
+  plot_data <- df_country %>% filter(country %in% the_country) %>% mutate(geo = country)
+  g1 <- roll_curve(plot_data, pop = F)
+  g2 <- roll_curve(plot_data, pop = T)
+  g3 <- roll_curve(plot_data, pop = F, deaths = T)
+  g4 <- roll_curve(plot_data, pop = T, deaths = T)
+  ggsave(paste0('~/Desktop/countries/', the_country, '1.png'), g1)
+  ggsave(paste0('~/Desktop/countries/', the_country, '2.png'), g2)
+  ggsave(paste0('~/Desktop/countries/', the_country, '3.png'), g3)
+  ggsave(paste0('~/Desktop/countries/', the_country, '4.png'), g4)
+}
 
+
+countries <- c('Spain', 'France', 'Italy', 'Germany', 'Belgium', 'Norway', 'US', 'United Kingdom', 'Korea, South',
+  'China', 'Japan', 'Switzerland', 'Sweden', 'Denmark', 'Netherlands', 'Iran', 'Canada')
+for(i in 1:length(countries)){
+  roll_curve_country(the_country = countries[i])
+}
+```
+
+
+
+
+```{r}
+plot_data <- df_country %>% filter(country == 'Spain') %>% mutate(geo = country)
 roll_curve(plot_data)
 ```
 

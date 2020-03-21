@@ -17,8 +17,8 @@ opts_chunk$set(comment = NA,
                message = FALSE, 
                error = TRUE, 
                cache = FALSE,
-               # fig.width = 8.64,
-               # fig.height = 4.86,
+               fig.width = 8,
+               fig.height = 6,
                fig.path = 'figures/')
 ```
 
@@ -209,7 +209,8 @@ make_map <- function(var = 'deaths',
   }
   g +
     theme_map() +
-    labs(subtitle = paste0('Data as of ', max(esp_df$date)))
+    labs(subtitle = paste0('Data as of ', max(esp_df$date))) +
+    theme(legend.position = 'right')
   
 }
 
@@ -284,12 +285,11 @@ make_dot_map <- function(var = 'deaths',
 ```{r}
 make_map(var = 'deaths',
        points = T) +
-  labs(title = 'Number of deaths',
-       caption = '@joethebrew')
+  labs(title = 'Number of deaths')
 if(!dir.exists('high_quality')){
   dir.create('high_quality')
 }
-ggsave('high_quality/points_death_absolute.pdf')
+ggsave('high_quality/points_death_absolute.pdf', width = 8, height = 6)
 ```
 
 #### Absolute number of deaths: choropleth
@@ -298,9 +298,8 @@ ggsave('high_quality/points_death_absolute.pdf')
 make_map(var = 'deaths',
          line_color = 'darkgrey',
        points = F) +
-  labs(title = 'Number of deaths',
-       caption = '@joethebrew')
-ggsave('high_quality/polygons_death_absolute.pdf')
+  labs(title = 'Number of deaths')
+ggsave('high_quality/polygons_death_absolute.pdf', width = 8, height = 6)
 
 ```
 
@@ -309,9 +308,8 @@ ggsave('high_quality/polygons_death_absolute.pdf')
 
 ```{r}
 make_map(var = 'deaths', pop = TRUE, points = T) +
-  labs(title = 'Number of deaths per 100,000',
-       caption = '@joethebrew')
-ggsave('high_quality/points_death_adjusted.pdf')
+  labs(title = 'Number of deaths per 100,000')
+ggsave('high_quality/points_death_adjusted.pdf', width = 8, height = 6)
 
 ```
 
@@ -320,9 +318,8 @@ ggsave('high_quality/points_death_adjusted.pdf')
 
 ```{r}
 make_map(var = 'deaths', pop = TRUE, points = F, line_color = 'darkgrey') +
-  labs(title = 'Number of deaths per 100,000',
-       caption = '@joethebrew')
-ggsave('high_quality/polygons_death_adjusted.pdf')
+  labs(title = 'Number of deaths per 100,000')
+ggsave('high_quality/polygons_death_adjusted.pdf', width = 8, height = 6)
 
 ```
 
@@ -330,9 +327,8 @@ ggsave('high_quality/polygons_death_adjusted.pdf')
 
 ```{r}
 make_dot_map(var = 'deaths', point_size = 0.15) +
-  labs(title = 'COVID-19 deaths: 1 point = 1 death\nImportant: points are random within each CCAA; do not reflect exact location',
-       caption = '@joethebrew')
-ggsave('high_quality/point_per_death.pdf')
+  labs(title = 'COVID-19 deaths: 1 point = 1 death\nImportant: points are random within each CCAA; do not reflect exact location')
+ggsave('high_quality/point_per_death.pdf', width = 8, height = 6)
 
 ```
 
@@ -344,9 +340,8 @@ ggsave('high_quality/point_per_death.pdf')
 ```{r}
 make_map(var = 'confirmed_cases',
        points = T) +
-  labs(title = 'Number of confirmed cases',
-       caption = '@joethebrew')
-ggsave('high_quality/points_case_absolute.pdf')
+  labs(title = 'Number of confirmed cases')
+ggsave('high_quality/points_case_absolute.pdf', width = 8, height = 6)
 
 ```
 
@@ -356,9 +351,8 @@ ggsave('high_quality/points_case_absolute.pdf')
 make_map(var = 'confirmed_cases',
          line_color = 'darkgrey',
        points = F) +
-  labs(title = 'Number of confirmed cases',
-       caption = '@joethebrew')
-ggsave('high_quality/polygon_case_absolute.pdf')
+  labs(title = 'Number of confirmed cases')
+ggsave('high_quality/polygon_case_absolute.pdf', width = 8, height = 6)
 
 ```
 
@@ -367,9 +361,8 @@ ggsave('high_quality/polygon_case_absolute.pdf')
 
 ```{r}
 make_map(var = 'confirmed_cases', pop = TRUE, points = T) +
-  labs(title = 'Number of confirmed cases per 100,000',
-       caption = '@joethebrew')
-ggsave('high_quality/points_case_adjusted.pdf')
+  labs(title = 'Number of confirmed cases per 100,000')
+ggsave('high_quality/points_case_adjusted.pdf', width = 8, height = 6)
 
 ```
 
@@ -379,9 +372,8 @@ ggsave('high_quality/points_case_adjusted.pdf')
 ```{r}
 make_map(var = 'confirmed_cases', pop = TRUE, points = F,
          line_color = 'darkgrey') +
-  labs(title = 'Number of confirmed cases per 100,000',
-       caption = '@joethebrew')
-ggsave('high_quality/polygons_case_adjusted.pdf')
+  labs(title = 'Number of confirmed cases per 100,000')
+ggsave('high_quality/polygons_case_adjusted.pdf', width = 8, height = 6)
 
 ```
 
@@ -390,9 +382,8 @@ ggsave('high_quality/polygons_case_adjusted.pdf')
 ```{r}
 make_dot_map(var = 'confirmed_cases',
              point_size = 0.05, point_alpha = 0.5, point_factor = 10) +
-  labs(title = 'COVID-19 cases: 1 point = 10 cases\nImportant: points are random within each CCAA; do not reflect exact location',
-       caption = '@joethebrew')
-ggsave('high_quality/point_per_10_cases.pdf')
+  labs(title = 'COVID-19 cases: 1 point = 10 cases\nImportant: points are random within each CCAA; do not reflect exact location')
+ggsave('high_quality/point_per_10_cases.pdf', width = 8, height = 6)
 
 ```
 
