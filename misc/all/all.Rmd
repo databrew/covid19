@@ -39,6 +39,11 @@ library(rnaturalearthdata)
 ```
 
 
+## Africa
+
+```{r}
+
+```
 
 
 ## Rolling average new events
@@ -211,7 +216,7 @@ ggplot(data = pd,
                                round(p, digits = 1), '%)')),
             size = text_size * 0.3,
             nudge_y = 80) +
-  ylim(0, 800)
+  ylim(0, 900)
 ggsave('~/Desktop/spain.png')
 
 ```
@@ -255,8 +260,8 @@ ggplot(data = pd,
                 label = paste0(round(value, digits = 2), '\n(',
                                deaths, '\ndeaths)')),
             size = text_size * 0.3,
-            nudge_y = 1.5) +
-  ylim(0, 12)
+            nudge_y = 2.5) +
+  ylim(0, 16)
 ggsave('~/Desktop/spai2.png')
 
 ```

@@ -10,6 +10,14 @@ world_pop <- world_pop %>%
   dplyr::select(country = `Country Name`,
                 iso = `Country Code`,
                 pop = `2018`)
+
+# Add regions
+iso_regions <- read_csv('isoregions.csv') %>%
+  dplyr::select(iso = `alpha-3`,
+                region,
+                sub_region = `sub-region`)
+world_pop <- left_join(world_pop, iso_regions)
+
 usethis::use_data(world_pop, overwrite = TRUE)
 
 # Datasets at https://github.com/CSSEGISandData/COVID-19
