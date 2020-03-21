@@ -36,14 +36,54 @@ library(ggthemes)
 library(sf)
 library(rnaturalearth)
 library(rnaturalearthdata)
+library(RColorBrewer)
 ```
 
 
 ## Africa
 
 ```{r}
-
+african_isos <- world_pop %>% filter(region == 'Africa')
+pd <- df_country %>%
+          group_by(iso) %>%
+         filter(max(confirmed_cases) > 0) %>%
+         filter(iso %in% african_isos$iso) %>%
+  mutate(country = ifelse(country == 'Central African Republic', 'C.A.R.', 
+                          ifelse(grepl('Brazza', country), 'Congo, Rep.',
+                                 ifelse(grepl('Kinsha', country), 'Congo, D.R.', 
+                                        ifelse(grepl('Equatorial', country),
+                                               'Equat. Guinea', country)))))
+cols <- colorRampPalette(brewer.pal(n = 8, 'Spectral'))(length(unique(pd$country)))
+cols <- sample(cols, length(cols))
+# Plot
+ggplot(data = pd,
+       aes(x = date,
+           # color = country,
+           # fill = country,
+           y = confirmed_cases)) +
+  theme_simple() +
+  # geom_point() +
+  # geom_line() +
+  geom_area(fill = 'darkred', alpha = 0.3, color = 'darkred') +
+  # scale_color_manual(name = '',
+  #                    values = cols) +
+  # scale_fill_manual(name = '',
+  #                   values = cols) +
+  theme(legend.position = 'none',
+        axis.text = element_text(size = 5),
+        legend.text = element_text(size = 6)) +
+  # scale_y_log10() +
+  facet_wrap(~country,
+             scales = 'free') +
+  labs(x = '',
+       y = 'Confirmed cases',
+       title = 'COVID-19 in Africa')
+ggsave('~/Desktop/africa.pdf',
+       height = 8,
+       width = 12)
 ```
+
+
 
 
 ## Rolling average new events

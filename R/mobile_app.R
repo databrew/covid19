@@ -9,6 +9,7 @@
 #' @import ggplot2
 #' @import shinyMobile
 mobile_app_ui <- function(request) {
+  options(scipen = '999')
   
   tagList(
     mobile_golem_add_external_resources(),
