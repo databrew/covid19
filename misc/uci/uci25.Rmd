@@ -1,10 +1,60 @@
 ---
 title: "UCI limitations"
-author: "Brew, Chaccour, García-Basteiro"
-output: flexdashboard::flex_dashboard
-runtime: shiny
+author: "Brew, Chaccour, García-Basteiro, others?"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    code_folding: show
+  pdf_document: default
+  word_document: default
 ---
 
+```{r, eval = FALSE}
+# ## Read first: Implicit non-exclusivity agreement
+# 
+# - I (Joe) am working right now only under conditions of non-exclusivity.
+# - This means that if a collaborator (you) is working with me, you understand that I may publish, share, or disseminate any COVID-19 info (other than that which is related to private, personal data) to whomever I deem suitable
+# - The condition goes both ways: the collaborator (you) also can share publicly anything I do with you, or with whomever you deem suitable
+# - The reason for this non-exclusivity pact is principle: the COVID-19 crisis requires extremely fast action, and any delays in publication or dissemination for the purposes of getting an "exclusive" publication, authorship, ownership, recognition, etc. is unacceptable
+# - This non-exclusivity principile applies to everything we work on together, unless explicitly stated otherwise.
+# - If you don't like non-exclusivity (that is, you want me to "keep secret" any ideas we generate or work on together), that's fine. But find somebody else to work with.
+# - Just to be clear: If you are working with me, this means all of our code / data is public and can be shared by any of the collaborators (you and me) with anybody else, at any time.
+```
+
+## This document
+
+This document seeks to answer the question: how soon until Spain runs out of ICU beds?
+
+Click "Code" to see code snippets.
+
+## The question?
+
+How soon until Spain runs out of UCI beds?
+
+## Methods
+
+We define some parameters at the state level, generate a simple log-linear predictive model for daily UCI admissions weighted by days ago, and compare the capacity "ceiling" with prediction.
+
+Here are the parameters:
+
+```
+  beds_public = 3508,
+  beds_private = 896,
+  normal_occupancy = 25,
+  need_hospitalization = 15, # percent which requires hospitalization
+  need_uci = 5, # percent which requires uci
+  beds = 4404,
+  average_days_in_uci = 10 # total rough estimate
+```
+
+Here is pseudo-code of model definition:
+
+```
+model = log(daily UCI admission) ~ days, weights = 1 / (1 + today - date)
+```
+
+
+## Code 
 
 
 ```{r setup, include=FALSE, echo = FALSE}
@@ -31,8 +81,13 @@ library(ggplot2)
 library(lubridate)
 library(dplyr)
 library(ggplot2)
-library(shiny)
+library(sp)
+library(raster)
+library(viridis)
 library(ggthemes)
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
 ```
 
 
@@ -40,12 +95,12 @@ library(ggthemes)
 # Define parameters
 # Basing off: https://www.niusdiario.es/multimedia/nius-te-explica/colpaso-sistema-sanitario-espana-uci-unidad-cuidados-intensivos-hospitales-coronavirus_18_2914020237.html
 p <- list(
-  # beds_public = 3508,
-  # beds_private = 896,
+  beds_public = 3508,
+  beds_private = 896,
   normal_occupancy = 25,
-  # need_hospitalization = 15, # percent which requires hospitalization
-  # need_uci = 5, # percent which requires uci
-  beds = 5799, # https://www.infolibre.es/noticias/politica/2020/03/21/uci_termometro_coronavirus_covid_19_105153_1012.html
+  need_hospitalization = 15, # percent which requires hospitalization
+  need_uci = 5, # percent which requires uci
+  beds = 4404,
   average_days_in_uci = 10 # total rough estimate
 )
 options(scipen = '999')
@@ -96,55 +151,43 @@ make_prediction <- function(data,
     fake %>% mutate(doubling_time = dt)
 }
 
-
-```
-
-
-Column {.sidebar}
---------------------------------------------------
-
-When will Spain reach its ICU capacity ceiling?
-
-```{r}
-sliderInput(
-  "normal_occupancy", label = "Baseline (non COVID-19) occupancy (%)",
-  min = 0, max = 100, value = 25
-)
-
-sliderInput(
-  "beds", label = "UCI beds:",
-  min = 4000, max = 10000, value = 5800, step = 100,
-)
-
-sliderInput(
-  'average_days_in_uci',
-  'Number of days in UCI for a COVID-19 patient',
-  min = 1, max = 20, step = 1, value = 10
-)
-
-sliderInput(
-  'time_ahead',
-  'Number of days to predict into the future',
-  min = 1, max = 30, step = 1, value = 10
-)
-
-sliderInput(
-  'n_start',
-  'The model will be based on the period beginning at which there were more than the following number of COVID-19 UCI admissions',
-  min = 10, max = 200, step = 5, value = 10
-)
-```
-
-Column
---------------------------------------------------
+plot_prediction <- function(data, ylog = F,
+                            ci = FALSE){
+  long <- data %>%
+    tidyr::gather(key, value, var:predicted) %>%
+    mutate(key = ifelse(key == 'var', 'Observed', key)) %>%
+    mutate(key = Hmisc::capitalize(key))
+  g <- ggplot()
+  if(ci){
+    g <- g +
+      geom_ribbon(data = data %>% filter(date > max(long$date[!is.na(long$value) & long$key == 'Observed'])),
+                aes(x = date,
+                    ymax = upr,
+                    ymin = lwr),
+                alpha =0.6,
+                fill = 'darkorange')
+  }
+  g <- g +
+    geom_line(data = long,
+              aes(x = date,
+                  y = value,
+                  group = key,
+                  lty = key)) +
+    geom_bar(data = long %>% filter(key == 'Observed'),
+             stat = 'identity',
+             alpha = 0.6,
+               aes(x = date,
+                   y = value)) +
+    theme_simple() +
+    theme(legend.position = 'right',
+          legend.title = element_blank()) 
+  if(ylog){
+    g <- g + scale_y_log10()
+  }
+  return(g)
+}
 
 
-```{r}
-renderPlot({
-  
-  n_start = input$n_start
-  time_ahead = input$time_ahead
-  
 spain_data <- 
   esp_df %>% group_by(date) %>%
                                summarise_at(.vars = vars(uci, deaths, confirmed_cases,
@@ -154,9 +197,9 @@ spain_data <-
                                             .fun = function(x){sum(x, na.rm = TRUE)})
 
 pd <- make_prediction(data = spain_data,
-                      n_start = n_start,
+                      n_start = 20,
                       cumulative = FALSE,
-                      time_ahead = time_ahead,
+                      time_ahead = 10,
                       var = 'uci')
 # Get the number of daily admissions to "spillover" for the number of days they need to be in UCI
 # this function not estimating confidence bounds at this point
@@ -187,14 +230,14 @@ spill_over <- function(data,
   return(out)
 }
 # preds <- spill_over(pd)
-average_days_in_uci <- input$average_days_in_uci
-normal_occupancy <- input$normal_occupancy
-beds <- input$beds
+pd <- pd %>% spill_over(days = p$average_days_in_uci)
+```
 
-pd <- pd %>% spill_over(days = average_days_in_uci)
+# Results
 
-already_occupied <- (normal_occupancy/100) * beds
-total_beds <- beds
+```{r, fig.height = 7, fig.width = 10}
+already_occupied <- (p$normal_occupancy/100) * p$beds
+total_beds <- p$beds
 
 # Shape data for plotting
 plot_data <- pd %>%
@@ -204,12 +247,15 @@ plot_data <- pd %>%
   mutate(key = ifelse(key == 'already_occupied',
                       'UCI beds occupied (normal)',
                       ifelse(key == 'predicted_spilled_over',
-                             'Predicted COVID-19 UCI beds needed',
+                             'Predicted COVID-19 UCI beds',
                              key)))
 
 basic_data <- plot_data %>%
              filter(key %in% c('UCI beds occupied (normal)',
-                               'Predicted COVID-19 UCI beds needed'))
+                               'Predicted COVID-19 UCI beds'))
+# basic_data$key <- factor(basic_data$key,
+#                          levels = rev(c('UCI beds occupied (normal)',
+#                                'Predicted COVID-19 UCI beds')))
 
 ggplot() +
   geom_bar(data = basic_data,
@@ -221,9 +267,9 @@ ggplot() +
            alpha = 0.7, width = 1,
            color = 'white',
            lwd = 0.1) +
-  geom_text(data = basic_data %>% filter(key == 'Predicted COVID-19 UCI beds needed'),
+  geom_text(data = basic_data %>% filter(key == 'Predicted COVID-19 UCI beds'),
            aes(x = date,
-               y = value + already_occupied * 1.1,
+               y = value + already_occupied * 1.05,
                label = round(value, digits = 0)),
            # stat = 'identity',
            position = position_stack(),
@@ -254,26 +300,19 @@ ggplot() +
        caption = paste0('Code at https://github.com/databrew/covid19/blob/master/misc/uci/uci.Rmd\nAssumes: ', total_beds, ' total beds, and a ', p$normal_occupancy, ' non-COVID19 occupancy rate.')) +
   scale_x_date(breaks = sort(unique(plot_data$date)),
                labels = format(sort(unique(plot_data$date)), '%d\n%b'))
-},
-height = 700)
+ggsave('~/Desktop/uci25.png',
+       height = 7, width = 10)
 ```
 
+Table of results:
 
+Note: `Predicted including stay-over time` means that amount of people in the UCI taking into account the fact that they stay for `p$average_days_in_uci` days.
 
-#### Model specification pseudo-code
-
+```{r}
+pd %>%
+  dplyr::select(date, 
+                `Observed daily admissions` = var,
+                `Predicted daily admissions based on model` = predicted,
+                `Predicted including stay-over time` = predicted_spilled_over) %>%
+  kable
 ```
-model = log(daily UCI admission) ~ days, weights = 1 / (1 + today - date)
-```
-
-
-#### Who made this?
-
-- joe@databrew.cc
-- carlos.chaccour@isglobal.org
-- alberto@basteiro.com
-
-
-
-
-
