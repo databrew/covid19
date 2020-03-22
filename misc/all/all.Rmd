@@ -17,8 +17,8 @@ opts_chunk$set(comment = NA,
                message = FALSE, 
                error = TRUE, 
                cache = FALSE,
-               # fig.width = 8.64,
-               # fig.height = 4.86,
+               fig.width = 9.64,
+               fig.height = 7.86,
                fig.path = 'figures/')
 ```
 
@@ -39,6 +39,428 @@ library(rnaturalearthdata)
 library(RColorBrewer)
 ```
 
+## Italy regions, Spanish regions, Chinese regions (adjusted for population)
+
+
+```{r}
+# Spanish data
+a <- esp_df %>%
+  left_join(esp_pop) %>%
+  mutate(country = 'Spain')
+# Italian data
+b <- ita %>%
+  left_join(ita_pop) %>%
+  mutate(country = 'Italy')
+# Chinese data
+d <- df %>% filter(country == 'China') %>%
+  mutate(cases = confirmed_cases) %>%
+  mutate(ccaa = district) %>%
+  mutate(country = 'China') %>%
+  left_join(chi_pop)
+# join
+joined <- bind_rows(a, b, d)
+# Get deaths per milllion
+joined$deaths_pm <- joined$deaths / joined$pop * 1000000
+joined$cases_pm <- joined$cases / joined$pop * 1000000
+
+# Get the days since paradigm
+x_deaths <- 5
+x_deaths_pm <- 5
+x_cases <- 50
+x_cases_pm <- 50
+joined <- joined %>%
+  arrange(date) %>%
+  group_by(ccaa) %>%
+  mutate(start_deaths = min(date[deaths >= x_deaths]),
+         start_cases = min(date[cases >= x_cases]),
+         start_deaths_pm = min(date[deaths_pm >= x_deaths_pm]),
+         start_cases_pm = min(date[cases_pm >= x_cases_pm])) %>%
+  ungroup %>%
+  mutate(days_since_start_deaths = date - start_deaths,
+         days_since_start_cases = date - start_cases,
+         days_since_start_deaths_pm = date - start_deaths_pm,
+         days_since_start_cases_pm = date - start_cases_pm) 
+
+# Define plot data
+pd <- joined %>% filter(days_since_start_deaths_pm >= 0) %>%
+  mutate(country = ifelse(country == 'China',
+                          'Hubei (China)',
+                          ifelse(country == 'Italy', 'Italia', 'España')))
+
+# Define label data
+label_data <- pd %>% group_by(ccaa) %>% filter(
+                                                          (
+                                                            (country == 'Hubei (China)' & days_since_start_deaths_pm == 22) |
+                                                            (date == max(date) & country == 'España' & deaths_pm > 25) |
+                                                              (date == max(date) & country == 'Italia' &
+                                                                 ccaa != 'Liguria' & days_since_start_deaths_pm > 10)
+                                                          ))
+# Get differential label data based on what to be emphasized
+label_data_big <- label_data %>%
+  filter(ccaa %in% c('Madrid', 'Lombardia', 'Hubei'))
+label_data_small <- label_data %>%
+  filter(!ccaa %in% c('Madrid', 'Lombardia', 'Hubei'))
+
+pd_big <- pd %>%
+  filter(ccaa %in% c('Madrid', 'Lombardia', 'Hubei'))
+pd_small <- pd %>%
+  filter(!ccaa %in% c('Madrid', 'Lombardia', 'Hubei'))
+
+# cols <- colorRampPalette(RColorBrewer::brewer.pal(n = 8, name = 'Set2'))(length(unique(pd$country)))
+# cols <- rainbow(3)
+cols <- c('darkred', '#FF6633', '#006666')
+ggplot(data = pd_big,
+       aes(x = days_since_start_deaths_pm,
+           y = deaths_pm,
+           group = ccaa)) +
+  geom_line(aes(color = country),
+            alpha = 0.9,
+            size = 2) +
+  geom_line(data = pd_small,
+            aes(x = days_since_start_deaths_pm,
+                y = deaths_pm,
+                color = country),
+            alpha = 0.7,
+            size = 1) +
+  scale_y_log10() +
+  scale_color_manual(name = '',
+                     values = c(cols)) +
+  theme_simple() +
+  theme(legend.position = 'top') +
+  labs(x = 'Dias desde "el comienzo del brote"',
+       y = 'Muertes por millón de habitantes',
+       title = 'Muertes por 1.000.000 habitantes',
+       subtitle = paste0('Dia 0 ("comienzo del brote") = primer día a ', x_deaths_pm, ' o más muertes acumuladas por milión de población\nLíneas rojas: CCAA; líneas verde-azules: regiones italianas; línea naranja: Hubei, China'),
+       caption = '@joethebrew | www.databrew.cc') +
+  geom_text(data = label_data_big,
+            aes(x = days_since_start_deaths_pm + 0.6,
+                y = (deaths_pm + 20),
+                label = gsub(' ', '\n', ccaa),
+                color = country),
+            size = 8,
+            alpha = 0.9,
+            show.legend = FALSE) +
+    geom_text(data = label_data_small,
+            aes(x = days_since_start_deaths_pm + 0.6,
+                y = deaths_pm ,
+                label = gsub(' ', '\n', ccaa),
+                color = country),
+            size = 5,
+            alpha = 0.6,
+            show.legend = FALSE) +
+  theme(axis.text = element_text(size = 14),
+        axis.title = element_text(size = 20),
+        legend.text = element_text(size = 16),
+        plot.title = element_text(size = 30))  +
+  xlim(0, 23)
+ggsave('~/Desktop/china_spain_italy_comparison.png',
+       height = 7,
+       width = 10)
+
+```
+
+
+
+## Italy regions, Spanish regions, Chinese regions (raw numbers, not adjusted for population)
+
+
+```{r}
+# Spanish data
+a <- esp_df %>%
+  left_join(esp_pop) %>%
+  mutate(country = 'Spain')
+# Italian data
+b <- ita %>%
+  left_join(ita_pop) %>%
+  mutate(country = 'Italy')
+# Chinese data
+d <- df %>% filter(country == 'China') %>%
+  mutate(cases = confirmed_cases) %>%
+  mutate(ccaa = district) %>%
+  mutate(country = 'China') %>%
+  left_join(chi_pop)
+# join
+joined <- bind_rows(a, b, d)
+# Get deaths per milllion
+joined$deaths_pm <- joined$deaths / joined$pop * 1000000
+joined$cases_pm <- joined$cases / joined$pop * 1000000
+
+# Get the days since paradigm
+x_deaths <- 5
+x_deaths_pm <- 5
+x_cases <- 50
+x_cases_pm <- 50
+joined <- joined %>%
+  arrange(date) %>%
+  group_by(ccaa) %>%
+  mutate(start_deaths = min(date[deaths >= x_deaths]),
+         start_cases = min(date[cases >= x_cases]),
+         start_deaths_pm = min(date[deaths_pm >= x_deaths_pm]),
+         start_cases_pm = min(date[cases_pm >= x_cases_pm])) %>%
+  ungroup %>%
+  mutate(days_since_start_deaths = date - start_deaths,
+         days_since_start_cases = date - start_cases,
+         days_since_start_deaths_pm = date - start_deaths_pm,
+         days_since_start_cases_pm = date - start_cases_pm) 
+
+# Define plot data
+pd <- joined %>% filter(days_since_start_deaths >= 0) %>%
+  mutate(country = ifelse(country == 'China',
+                          'China',
+                          ifelse(country == 'Italy', 'Italia', 'España')))
+
+# Define label data
+label_data <- pd %>% group_by(ccaa) %>% filter(
+                                                          (
+                                                            (country == 'China' & deaths >10 & days_since_start_deaths == 29) |
+                                                            (date == max(date) & country == 'España' & deaths > 90) |
+                                                              (date == max(date) & country == 'Italia' &
+                                                                 ccaa != 'Liguria' & days_since_start_deaths > 10)
+                                                          ))
+# Get differential label data based on what to be emphasized
+label_data_big <- label_data %>%
+  filter(ccaa %in% c('Madrid', 'Lombardia', 'Hubei'))
+label_data_small <- label_data %>%
+  filter(!ccaa %in% c('Madrid', 'Lombardia', 'Hubei'))
+
+pd_big <- pd %>%
+  filter(ccaa %in% c('Madrid', 'Lombardia', 'Hubei'))
+pd_small <- pd %>%
+  filter(!ccaa %in% c('Madrid', 'Lombardia', 'Hubei'))
+
+# cols <- colorRampPalette(RColorBrewer::brewer.pal(n = 8, name = 'Set2'))(length(unique(pd$country)))
+# cols <- rainbow(3)
+cols <- c( '#FF6633',  'darkred', '#006666')
+ggplot(data = pd_big,
+       aes(x = days_since_start_deaths,
+           y = deaths,
+           group = ccaa)) +
+  geom_line(aes(color = country),
+            alpha = 0.9,
+            size = 2) +
+  geom_line(data = pd_small,
+            aes(x = days_since_start_deaths,
+                y = deaths,
+                color = country),
+            alpha = 0.7,
+            size = 1) +
+  scale_y_log10() +
+  scale_color_manual(name = '',
+                     values = c(cols)) +
+  theme_simple() +
+  theme(legend.position = 'top') +
+  labs(x = 'Dias desde el primer día con 5 o más muertes acumuladas',
+       y = 'Muertes',
+       title = 'Muertes por COVID-19',
+       caption = '@joethebrew | www.databrew.cc') +
+  geom_text(data = label_data_big,
+            aes(x = days_since_start_deaths + 1.6,
+                y = ifelse(ccaa == 'Hubei', (deaths -500),
+                           ifelse(ccaa == 'Lombardia',  (deaths + 700),
+                                   (deaths + 300))),
+                label = gsub(' ', '\n', ccaa),
+                color = country),
+            size = 8,
+            alpha = 0.9,
+            show.legend = FALSE) +
+    geom_text(data = label_data_small,
+            aes(x = days_since_start_deaths + 1.6,
+                align = 'left',
+                y = deaths ,
+                label = ccaa,
+                # label = gsub(' ', '\n', ccaa),
+                color = country),
+            size = 5,
+            alpha = 0.6,
+            show.legend = FALSE) +
+  theme(axis.text = element_text(size = 14),
+        axis.title = element_text(size = 20),
+        legend.text = element_text(size = 16),
+        plot.title = element_text(size = 30))  +
+  xlim(0, 32)
+ggsave('~/Desktop/china_spain_italy_comparison_raw.png',
+       height = 7,
+       width = 10) 
+
+```
+
+
+## Italy regions for Spanish regions
+
+
+```{r}
+# Spanish data
+a <- esp_df %>%
+  left_join(esp_pop) %>%
+  mutate(country = 'Spain')
+# Italian data
+b <- ita %>%
+  left_join(ita_pop) %>%
+  mutate(country = 'Italy')
+# join
+joined <- bind_rows(a, b)
+# Get deaths per milllion
+joined$deaths_pm <- joined$deaths / joined$pop * 1000000
+joined$cases_pm <- joined$cases / joined$pop * 1000000
+
+# Get the days since paradigm
+x_deaths <- 5
+x_deaths_pm <- 5
+x_cases <- 50
+x_cases_pm <- 50
+joined <- joined %>%
+  arrange(date) %>%
+  group_by(ccaa) %>%
+  mutate(start_deaths = min(date[deaths >= x_deaths]),
+         start_cases = min(date[cases >= x_cases]),
+         start_deaths_pm = min(date[deaths_pm >= x_deaths_pm]),
+         start_cases_pm = min(date[cases_pm >= x_cases_pm])) %>%
+  ungroup %>%
+  mutate(days_since_start_deaths = date - start_deaths,
+         days_since_start_cases = date - start_cases,
+         days_since_start_deaths_pm = date - start_deaths_pm,
+         days_since_start_cases_pm = date - start_cases_pm) 
+
+ggplot(data = joined %>% filter(days_since_start_deaths_pm >= 0),
+       aes(x = days_since_start_deaths_pm,
+           y = deaths_pm,
+           group = ccaa)) +
+  geom_line(aes(color = country),
+            alpha = 0.8,
+            size = 2) +
+  scale_y_log10() +
+  scale_color_manual(name = '',
+                     values = c('darkorange', 'purple')) +
+  theme_simple() +
+  theme(legend.position = 'none') +
+  labs(x = 'Days since "start out outbreak"',
+       y = 'Deaths per million',
+       title = 'Deaths per capita, Italian regions vs. Spanish autonomous communities',
+       subtitle = paste0('Day 0 ("start of outbreak") = first day at ', x_deaths_pm, ' or greater cumulative deaths per million'),
+       caption = '@joethebrew | www.databrew.cc') +
+  geom_text(data = joined %>% group_by(ccaa) %>% filter(date == max(date) & 
+                                                          (
+                                                            (country == 'Spain' & deaths_pm > 25) |
+                                                              (country == 'Italy' & days_since_start_deaths_pm > 10)
+                                                          )),
+            aes(x = days_since_start_deaths_pm + 0.6,
+                y = deaths_pm,
+                label = gsub(' ', '\n', ccaa),
+                color = country),
+            size = 6) +
+  theme(axis.text = element_text(size = 14),
+        axis.title = element_text(size = 20)) +
+  xlim(0, 18)
+ggsave('~/Desktop/italy_comparison.png',
+       height = 6,
+       width = 10)
+
+
+# Separate for Catalonia
+pd <- joined %>% filter(days_since_start_deaths_pm >= 0) %>%
+         mutate(country = ifelse(ccaa == 'Cataluña',
+                                 'Catalonia',
+                                 country)) %>%
+  mutate(ccaa = ifelse(ccaa == 'Cataluña', 'Catalunya', ccaa))
+pdcat <- pd %>% filter(country == 'Catalonia')
+label_data <- pd %>% group_by(ccaa) %>% filter(date == max(date) & 
+                                                          (
+                                                            (country == 'Catalonia') |
+                                                            (country == 'Spain' & deaths_pm > 25) |
+                                                              (country == 'Italy' & days_since_start_deaths_pm > 10)
+                                                          ))
+ggplot(data = pd,
+       aes(x = days_since_start_deaths_pm,
+           y = deaths_pm,
+           group = ccaa)) +
+  geom_line(aes(color = country),
+            alpha = 0.3,
+            size = 1.5) +
+    geom_line(data = pdcat,
+              aes(color = country),
+            alpha = 0.8,
+            size = 2) +
+  scale_y_log10() +
+  scale_color_manual(name = '',
+                     values = c('darkred', 'darkorange', "purple")) +
+  theme_simple() +
+  theme(legend.position = 'none') +
+  labs(x = 'Dies des del "començament del brot"',
+       y = 'Morts per milió',
+       title = 'Morts per càpita: Catalunya, comunitats autònomes, regions italianes',
+       subtitle = paste0('Dia 0 ("començament del brot") = primer dia a ', x_deaths_pm, ' o més morts acumulades per milió de població'),
+       caption = '@joethebrew | www.databrew.cc') +
+  geom_text(data = label_data,
+            aes(x = days_since_start_deaths_pm + 0.6,
+                y = deaths_pm +3,
+                label = gsub(' ', '\n', ccaa),
+                color = country),
+            size = 6,
+            alpha = 0.7) +
+  theme(axis.text = element_text(size = 14),
+        axis.title = element_text(size = 20)) +
+  xlim(0, 18)
+ggsave('~/Desktop/cat_italy_comparison.png',
+       height = 6,
+       width = 10)
+
+
+# Straightforward Lombardy, Madrid, Cat comparison
+specials <- c('Lombardia', 'Madrid')
+pd <- joined %>% filter(days_since_start_deaths_pm >= 0) %>%
+         mutate(country = ifelse(ccaa == 'Cataluña',
+                                 'Catalonia',
+                                 country)) %>%
+  mutate(ccaa = ifelse(ccaa == 'Cataluña', 'Catalunya', ccaa))
+pdcat <- pd %>% filter(ccaa %in%  specials)
+label_data <- pd %>% group_by(ccaa) %>% filter(date == max(date) & 
+                                                          (
+                                                            # (country == 'Catalonia') |
+                                                            (country == 'Spain' & deaths_pm > 20) |
+                                                              (country == 'Italy' & days_since_start_deaths_pm >= 10)
+                                                          ))
+ggplot(data = pd,
+       aes(x = days_since_start_deaths_pm,
+           y = deaths_pm,
+           group = ccaa)) +
+  geom_line(aes(color = country),
+            alpha = 0.3,
+            size = 1.5) +
+    geom_line(data = pdcat,
+              aes(color = country),
+            alpha = 0.8,
+            size = 2) +
+  scale_y_log10() +
+  scale_color_manual(name = '',
+                     values = c('darkred', 'darkorange', "purple")) +
+  theme_simple() +
+  theme(legend.position = 'none') +
+  labs(x = 'Dias desde "el comienzo del brote"',
+       y = 'Muertes por millón de habitantes',
+       title = 'Muertes acumuladas por 1.000.000 habitantes',
+       subtitle = paste0('Dia 0 ("comienzo del brote") = primer día a ', x_deaths_pm, ' o más muertes acumuladas por milión de población'),
+       caption = '@joethebrew | www.databrew.cc') +
+  geom_text(data = label_data %>% filter(!ccaa %in% specials),
+            aes(x = days_since_start_deaths_pm + 0.4,
+                y = deaths_pm +3,
+                label = gsub(' ', '\n', ccaa),
+                color = country),
+            size = 5,
+            alpha = 0.5) +
+    geom_text(data = label_data %>% filter(ccaa %in% specials),
+            aes(x = days_since_start_deaths_pm ,
+                y = deaths_pm +30,
+                label = gsub(' ', '\n', ccaa),
+                color = country),
+            size = 8,
+            alpha = 0.8) +
+  theme(axis.text = element_text(size = 14),
+        axis.title = element_text(size = 20)) +
+  xlim(0, 19)
+ggsave('~/Desktop/mad_lom_italy_comparison.png',
+       height = 6,
+       width = 10)
+```
 
 ## Africa
 
@@ -79,6 +501,46 @@ ggplot(data = pd,
        y = 'Confirmed cases',
        title = 'COVID-19 in Africa')
 ggsave('~/Desktop/africa.pdf',
+       height = 8,
+       width = 12)
+```
+
+
+
+## Latin America
+
+```{r}
+latam_isos <- world_pop %>% filter(sub_region == 'Latin America and the Caribbean')
+pd <- df_country %>%
+          group_by(iso) %>%
+         filter(max(confirmed_cases) > 0) %>%
+         filter(iso %in% latam_isos$iso) 
+cols <- colorRampPalette(brewer.pal(n = 8, 'Spectral'))(length(unique(pd$country)))
+cols <- sample(cols, length(cols))
+# Plot
+ggplot(data = pd,
+       aes(x = date,
+           # color = country,
+           # fill = country,
+           y = confirmed_cases)) +
+  theme_simple() +
+  # geom_point() +
+  # geom_line() +
+  geom_area(fill = 'darkred', alpha = 0.3, color = 'darkred') +
+  # scale_color_manual(name = '',
+  #                    values = cols) +
+  # scale_fill_manual(name = '',
+  #                   values = cols) +
+  theme(legend.position = 'none',
+        axis.text = element_text(size = 5),
+        legend.text = element_text(size = 6)) +
+  # scale_y_log10() +
+  facet_wrap(~country,
+             scales = 'free') +
+  labs(x = '',
+       y = 'Confirmed cases',
+       title = 'COVID-19 in Latin America and the Caribbean')
+ggsave('~/Desktop/latam.pdf',
        height = 8,
        width = 12)
 ```
@@ -256,7 +718,7 @@ ggplot(data = pd,
                                round(p, digits = 1), '%)')),
             size = text_size * 0.3,
             nudge_y = 80) +
-  ylim(0, 900)
+  ylim(0, 1200)
 ggsave('~/Desktop/spain.png')
 
 ```
@@ -301,7 +763,7 @@ ggplot(data = pd,
                                deaths, '\ndeaths)')),
             size = text_size * 0.3,
             nudge_y = 2.5) +
-  ylim(0, 16)
+  ylim(0, 19)
 ggsave('~/Desktop/spai2.png')
 
 ```
@@ -1151,7 +1613,7 @@ ggplot(data = long,
        title = 'COVID-19 DEATHS: ("predicted" assumes no change in doubling time)',
        caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
        subtitle = '(Doubling time calculated since first day at >5 cumulative deaths)') +
-    theme(strip.text = element_text(size = text_size * 0.75),
+    theme(strip.text = element_text(size = text_size * 0.5),
           plot.title = element_text(size = 15))
 ```
 
@@ -1201,7 +1663,7 @@ ggplot(data = ol,
        title = 'COVID-19 DEATHS: ("predicted" assumes no change in doubling time)',
        caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
        subtitle = '(Doubling time calculated since first day at >5 cumulative deaths)') +
-    theme(strip.text = element_text(size = text_size * 0.75),
+    theme(strip.text = element_text(size = text_size * 0.5),
           plot.title = element_text(size = 15))
 ```
 
@@ -1256,7 +1718,7 @@ ggplot(data = ol,
        title = 'COVID-19 DEATHS: ("predicted" assumes no change in doubling time)',
        caption = 'Data from Johns Hopkins. Processing: Joe Brew @joethebrew. Code: github.com/databrew/covid19',
        subtitle = '(Doubling time calculated since first day at >5 cumulative deaths)') +
-    theme(strip.text = element_text(size = text_size * 1),
+    theme(strip.text = element_text(size = text_size * 0.6),
           plot.title = element_text(size = 15))
 ```
 
@@ -1728,7 +2190,7 @@ make_map(var = 'deaths', pop = TRUE, points = F, line_color = 'darkgrey') +
 #### Number of deaths: 1 dot per death
 
 ```{r}
-make_dot_map(var = 'deaths', point_size = 0.15) +
+make_dot_map(var = 'deaths', point_size = 0.05) +
   labs(title = 'COVID-19 deaths: 1 point = 1 death\nImportant: points are random within each CCAA; do not reflect exact location',
        caption = '@joethebrew')
 ```

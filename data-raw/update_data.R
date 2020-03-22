@@ -20,6 +20,80 @@ world_pop <- left_join(world_pop, iso_regions)
 
 usethis::use_data(world_pop, overwrite = TRUE)
 
+# Get chinese pop by region
+chi_pop <- tibble(
+  ccaa = c('Anhui',
+           'Beijing',
+           'Chongqing',
+           'Fujian',
+           'Gansu',
+           'Guangdong',
+           'Guangxi',
+           'Guizhou',
+           'Hainan',
+           'Hebei',
+           'Heilongjiang',
+           'Henan',
+           'Hong Kong',
+           'Hubei',
+           'Hunan',
+           'Inner Mongolia',
+           'Jiangsu',
+           'Jiangxi',
+           'Jilin',
+           'Liaoning',
+           'Macau',
+           'Ningxia',
+           'Qinghai',
+           'Shaanxi',
+           'Shandong',
+           'Shanghai',
+           'Shanxi',
+           'Sichuan',
+           'Tianjin',
+           'Tibet',
+           'Xinjiang',
+           'Yunnan',
+           'Zhejiang'),
+  pop = c(63.24, #'Anhui',
+          21.54, #'Beijing',
+          31.02, #'Chongqing',
+          39.41, #'Fujian',
+          26.37, #'Gansu',
+          113.46, #'Guangdong',
+          49.26, #'Guangxi',
+          36, #'Guizhou',
+          9.34, #'Hainan',
+          75.56, #'Hebei',
+          37.73, #'Heilongjiang',
+          96.05, #'Henan',
+          7.39, #'Hong Kong',
+          59.17, #'Hubei',
+          68.99, #'Hunan',
+          25.34, #'Inner Mongolia',
+          80.51, #'Jiangsu',
+          46.48, #'Jiangxi',
+          27.04, #'Jilin',
+          43.59, #'Liaoning',
+          0.62, #'Macau',
+          6.88, #'Ningxia',
+          6.03, #'Qinghai',
+          38.64, #'Shaanxi',
+          100.47, #'Shandong',
+          24.24, #'Shanghai',
+          37.18, #'Shanxi',
+          83.41, #'Sichuan',
+          15.6, #'Tianjin',
+          3.44, #'Tibet',
+          24.87, #'Xinjiang',
+          48.3, #'Yunnan',
+          57.37)) #'Zhejiang')
+# Multiply by 1 million
+chi_pop$pop <- chi_pop$pop * 1000000
+usethis::use_data(chi_pop, overwrite = TRUE)
+
+
+
 # Datasets at https://github.com/CSSEGISandData/COVID-19
 if(!dir.exists('jhu')){
   dir.create('jhu')
