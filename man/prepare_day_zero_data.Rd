@@ -11,7 +11,10 @@ prepare_day_zero_data(
   time_before = 0,
   max_date = Sys.Date(),
   deaths = FALSE,
-  pop = FALSE
+  pop = FALSE,
+  pop_adjustor = 1e+06,
+  by_district = FALSE,
+  districts = NULL
 )
 }
 \arguments{
@@ -28,6 +31,12 @@ prepare_day_zero_data(
 \item{deaths}{Whether to use deaths instead of cases}
 
 \item{pop}{Adjust by population}
+
+\item{pop_adjustor}{Deaths per x (default million) when doing population adjustment}
+
+\item{by_district}{Show by district}
+
+\item{districts}{Show by districts, default FALSE}
 }
 \description{
 Generate a plot with time adjusted for the day at which the outbreak is considered to have started

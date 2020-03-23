@@ -17,8 +17,8 @@ iso_regions <- read_csv('isoregions.csv') %>%
                 region,
                 sub_region = `sub-region`)
 world_pop <- left_join(world_pop, iso_regions)
-
 usethis::use_data(world_pop, overwrite = TRUE)
+
 
 # Get chinese pop by region
 chi_pop <- tibble(
@@ -142,22 +142,24 @@ df <- full_join(x = confirmed_cases,
                 y = deaths) %>%
   full_join(recovered)
 
-# # Keep only States for the US
-# # (otherwise, double-counts certain things)
-# library(maps)
-# states <- map('state')$names
-# states <- unlist(lapply(states, function(x){strsplit(x, ':', fixed = TRUE)[1]}))
-# df <- df %>%
-#   filter(country != 'US' |
-#            tolower(district) %in% states)
+# Keep only States for the US
+# (otherwise, double-counts certain things)
+library(maps)
+states <- map('state')$names
+states <- unlist(lapply(states, function(x){strsplit(x, ':', fixed = TRUE)[1]}))
+df <- df %>%
+  filter(country != 'US' |
+           tolower(district) %in% states)
+
+## DEPRICATED BELOW
 # Beginning on March 10, the data format changes for the US - reporting states and
 # sub-state entities
 # we want to keep all US entries through March 9 and then beginning on the 10th,
 # only keep those with commas (the states)
-df <- df %>%
-  filter(country != 'US' |
-           date < '2020-03-10' |
-           !grepl(', ', district))
+# df <- df %>%
+#   filter(country != 'US' |
+#            date < '2020-03-10' |
+#            !grepl(', ', district))
 
 # Get most recent Spanish ministry data
 library(gsheet)
@@ -168,33 +170,75 @@ right <- esp_df %>%
   summarise(confirmed_cases = sum(cases, na.rm = TRUE),
             deaths  = sum(deaths, na.rm = TRUE))
 
-# Overwrite Spanish data with more accurate ministry data
-overwrite_spain = TRUE
-if(overwrite_spain){
-  dfx <- df %>% filter(country == 'Spain' & date >= '2020-03-16') 
-  dfy <- df %>% filter(country != 'Spain' | date < '2020-03-16')
-  dfz <- dfx %>% dplyr::select(date, district, country, lat, lng, recovered) %>%
-    # dont get ahead of ministry
-    filter(date <= max(right$date))
+# # Overwrite Spanish data with more accurate ministry data
+# No longer necessary, because now doing Spain at ccaa level within df
+# overwrite_spain = TRUE
+# if(overwrite_spain){
+#   dfx <- df %>% filter(country == 'Spain' & date >= '2020-03-16') 
+#   dfy <- df %>% filter(country != 'Spain' | date < '2020-03-16')
+#   dfz <- dfx %>% dplyr::select(date, district, country, lat, lng, recovered) %>%
+#     # dont get ahead of ministry
+#     filter(date <= max(right$date))
+#   
+#   dfz <- left_join(dfz, right)
+#   df <- bind_rows(dfz, dfy)
+#   df <- df %>% arrange(country, district, date)  
+# }
+
+# Get Italy regional data
+
+# https://code.montera34.com:4443/numeroteca/covid19
+ita <- read.delim("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv",sep = ",")  
+
+# Process data
+ita$date <-  as.Date(ita$data)
+ita <- ita %>%
+  dplyr::select(ccaa = denominazione_regione,
+                date,
+                cases = totale_casi,
+                deaths = deceduti)
+
+# Get the district-level data for Spain and Italy in (since JHU doesn't have it)
+do_italy_spain <- TRUE
+if(do_italy_spain){
+  # Italy
+  left <- ita %>% 
+    dplyr::rename(district = ccaa,
+                  confirmed_cases = cases) %>%
+    mutate(country = 'Italy')
+  right <- df %>% filter(country == 'Italy') %>%
+    dplyr::select(date,country, lat, lng)
+  joined <- left_join(left, right)
+  df <- df %>%
+    filter(!country == 'Italy' & date %in% joined$date) %>%
+    bind_rows(joined)
   
-  dfz <- left_join(dfz, right)
-  df <- bind_rows(dfz, dfy)
-  df <- df %>% arrange(country, district, date)  
+  # Spain
+  left <- esp_df %>% 
+    dplyr::rename(district = ccaa,
+                  confirmed_cases = cases) %>%
+    mutate(country = 'Spain') %>%
+    dplyr::select(-uci, -comment)
+  right <- df %>% filter(country == 'Spain') %>%
+    dplyr::select(date,country, lat, lng)
+  joined <- left_join(left, right)
+  df <- df %>%
+    filter(!country == 'Spain' & date %in% joined$date) %>%
+    bind_rows(joined)
 }
 
-
-# # Add a Spain row for March 17 (updating manually)
-# if(length(df$confirmed_cases[df$country == 'Spain' & df$date == '2020-03-17']) == 0){
-#   new_row <- tibble(district = NA,
-#                     date = as.Date('2020-03-17'),
-#                     country = 'Spain',
-#                     lat = df$lat[df$country == 'Spain'][1],
-#                     lng = df$lng[df$country == 'Spain'][1],
-#                     confirmed_cases = 11178,
-#                     deaths = 491,
-#                     recovered = NA) #?
-#   df <- df %>% bind_rows(new_row)
-# }
+# Set anything we haven't done population denominator work on to NA at the district level
+have_pop <- c('US', 'Italy', 'Spain', 'China', 'Canada')
+df1 <- df[df$country %in% have_pop,]
+df2 <- df[!df$country %in% have_pop,]
+df2 <- df2 %>%
+  group_by(country, lat, lng, date) %>%
+  summarise(confirmed_cases = sum(confirmed_cases, na.rm = TRUE),
+            deaths = sum(deaths, na.rm = TRUE),
+            recovered = sum(recovered, na.rm = TRUE)) %>%
+  ungroup %>%
+  mutate(district = NA)
+df <- bind_rows(df1, df2)
 
 # Decumulate too
 df <- df %>%
@@ -205,8 +249,6 @@ df <- df %>%
          deaths_non_cum = deaths - lag(deaths, default = 0),
          recovered_non_cum = recovered - lag(recovered, default = 0)) %>%
   ungroup
-
-
 
 
 # Join all together but by country
@@ -235,6 +277,9 @@ library(passport)
 country_codes$iso <- parse_country(x = countries, to = 'iso3c')
 df <- left_join(df, country_codes)
 df_country <- left_join(df_country, country_codes)
+
+
+
 
 usethis::use_data(df, overwrite = T)
 usethis::use_data(deaths, overwrite = T)
@@ -426,19 +471,7 @@ esp_df <- esp_df %>%
                                           confirmed_cases_non_cum)) 
 
 
-# Look into using France / Italy data too
-# https://code.montera34.com:4443/numeroteca/covid19
-ita <- read.delim("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv",sep = ",")  
-
-# Process data
-library(dplyr)
-ita$date <-  as.Date(ita$data)
-ita <- ita %>%
-  dplyr::select(ccaa = denominazione_regione,
-                date,
-                cases = totale_casi,
-                deaths = deceduti)
-# De-cumulate
+# De-cumulate Italy
 ita <- ita %>%
   ungroup %>%
   arrange(ccaa, date) %>%
@@ -520,3 +553,43 @@ surnames <- read_csv('cognoms/surnames.csv')
 surnames <- surnames$name[1:1000]
 usethis::use_data(cognoms, overwrite = T)
 usethis::use_data(surnames, overwrite = T)
+
+# Create a regions pop for Italy, China, Spain, US
+usa_pop <- readxl::read_excel('usapop/usapop.xlsx', 
+                              skip = 3)
+canada_pop <- 
+  tibble(ccaa = c('Alberta',
+         'British Columbia',
+         'Grand Princess',
+         'Manitoba',
+         'New Brunswick',
+         'Newfoundland and Labrador',
+         'Northwest Territories',
+         'Nova Scotia',
+         'Ontario',
+         'Prince Edward Island',
+         'Quebec',
+         'Saskatchewan'),
+         pop = c(4413146,
+                 5110917,
+                 NA,
+                 1377517,
+                 779993,
+                 521365,
+                 44904,
+                 977457,
+                 14711827,
+                 158158,
+                 8537674,
+                 1181666))
+names(usa_pop)[c(1,13)] <- c('ccaa', 'pop')
+usa_pop <- usa_pop %>% dplyr::select('ccaa', 'pop')
+usa_pop <- usa_pop[6:56,]
+usa_pop$ccaa <- gsub('.', '', usa_pop$ccaa, fixed = TRUE)
+regions_pop <- 
+  bind_rows(esp_pop %>% mutate(country = 'Spain', iso = 'ESP'),
+            ita_pop %>% mutate(country = 'Italy', iso = 'ITA'),
+            chi_pop %>% mutate(country = 'China', iso = 'CHN'),
+            usa_pop %>% mutate(country = 'US', iso = 'USA'),
+            canada_pop %>% mutate(country = 'Canada', iso = 'CAN'))
+usethis::use_data(regions_pop, overwrite = T)

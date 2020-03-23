@@ -37,24 +37,33 @@ mobile_app_ui <- function(request) {
           intensity = 10,
           hover = TRUE,
           f7Card(
-            plotOutput('day0'),
+            plotOutput('day0', height = '500px'),
             selectInput('country', 'Country/Countries',
                         multiple = TRUE,
                         choices = sort(unique(sort(unique(covid19::df_country$country)))),
                         selected = c('Italy', 'Spain', 'France', 'US')),
             # f7Stepper('day0', '"Critical mass": number of cases to be considered start of outbreak (day 0)', min = 1, max = 500, value = 150, step = 5),
             
-            sliderInput('day0', '"Critical mass" adjustment: Number of cases to be considered "day 0"',
+            sliderInput('day0', 'Value to be considered "day 0"',
                         min = 1,
-                        max = 500,
+                        max = 250,
                         value = 150,
                         # scale = TRUE,
                         step = 1),
             f7Toggle('deaths', 'Deaths instead of cases?',
                      checked = FALSE),
+            br(),
             f7Toggle('pop', 'Adjust by population?',
                      checked = FALSE),
-            height = 300,
+            br(),
+            f7Toggle('by_district', 'By district instead of country (if available)?',
+                     checked = FALSE),
+            br(),
+            uiOutput('district_ui'),
+            br(),
+            f7Toggle('calendar', 'Calendar dates instead of relative dates?',
+                     checked = FALSE),
+            height = 500
           )
         ),
         f7Shadow(
@@ -73,12 +82,10 @@ mobile_app_ui <- function(request) {
             br(),
             f7Toggle('cumulative', 'Cumulative cases?',
                      checked = TRUE),
-            # br(),
-            # f7Toggle('add_markers', 'Add visual markers at "critical mass"?',
-            #          checked = TRUE),
             br(),
-            f7Stepper('line_size', 'Line thickness', min = 0.5, max = 4, value = 1, step = 0.5),
+            f7Stepper('line_size', 'Line thickness', min = 0.5, max = 4, value = 2, step = 0.5),
             br(),
+            f7Stepper('line_opacity', 'Line opacity', min = 0, max = 1, value = 0.8, step = 0.05),
             
           )
         )
@@ -148,7 +155,47 @@ mobile_golem_add_external_resources <- function(){
 #' @import leaflet
 mobile_app_server <- function(input, output, session) {
   
+  
+  dzd <- reactive({
+    prepare_day_zero_data(countries = input$country,
+                          day0 = input$day0,
+                          cumulative = input$cumulative,
+                          time_before = input$time_before,
+                          deaths = input$deaths,
+                          pop = input$pop,
+                          pop_adjustor = 1000000,
+                          by_district = input$by_district,
+                          districts = NULL)
+  })
+  
+  output$district_ui <- renderUI({
+    
+    pd <- dzd()
+    if(is.null(pd)){
+      return(NULL)
+    }
+    if(nrow(pd) == 0){
+      return(NULL)
+    }
+    by_district <- input$by_district
+    if(is.null(by_district)){
+      return(NULL)
+    }
+    if(!by_district){
+      return(NULL)
+    }
+    
+    district_choices <- sort(unique(pd$geo))
+    selectInput('districts', 'Select districts',
+                choices = district_choices,
+                selected = district_choices,
+                multiple = TRUE)
+  })
+  
   output$day0 <- renderPlot({
+    
+    the_districts <- input$districts
+
     plot_day_zero(countries = input$country,
                   ylog = input$ylog,
                   day0 = input$day0,
@@ -156,9 +203,13 @@ mobile_app_server <- function(input, output, session) {
                   time_before = input$time_before,
                   line_size = input$line_size,
                   add_markers = FALSE,
-                  # add_markers = input$add_markers,
                   deaths = input$deaths,
-                  pop = input$pop)
+                  pop = input$pop,
+                  calendar = input$calendar,
+                  pop_adjustor = 1000000,
+                  by_district = input$by_district,
+                  districts = the_districts,
+                  alpha = input$line_opacity)
   })
 }
 

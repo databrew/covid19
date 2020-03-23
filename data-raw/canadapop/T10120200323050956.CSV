@@ -1,0 +1,27 @@
+"Geographic code","Geographic name","Incompletely enumerated Indian reserves and Indian settlements, 2016","Population, 2016","Population, 2011","2011 adjusted population flag","Incompletely enumerated Indian reserves and Indian settlements, 2011","Population, % change","Total private dwellings, 2016","Private dwellings occupied by usual residents, 2016","Land area in square kilometres, 2016","Population density per square kilometre, 2016"
+"01","Canada",T,35151728,33476688,F,T,5.0,15412443,14072079,8965588.85,3.9
+"10","Newfoundland and Labrador",F,519716,514536,F,F,1.0,265739,218673,370514.08,1.4
+"11","Prince Edward Island",F,142907,140204,F,F,1.9,71119,59472,5686.03,25.1
+"12","Nova Scotia",F,923598,921727,F,F,0.2,458568,401990,52942.27,17.4
+"13","New Brunswick",F,747101,751171,F,F,-0.5,359721,319773,71388.81,10.5
+"24","Quebec",T,8164361,7903001,F,T,3.3,3858943,3531663,1356625.27,6.0
+"35","Ontario",T,13448494,12851821,F,T,4.6,5598391,5169174,908699.33,14.8
+"46","Manitoba",F,1278365,1208268,F,T,5.8,539748,489050,552370.99,2.3
+"47","Saskatchewan",F,1098352,1033381,F,T,6.3,495582,432622,588243.54,1.9
+"48","Alberta",T,4067175,3645257,F,T,11.6,1654129,1527678,640330.46,6.4
+"59","British Columbia",T,4648055,4400057,F,T,5.6,2063417,1881969,922503.01,5.0
+"60","Yukon",F,35874,33897,F,F,5.8,17987,15215,474712.68,0.1
+"61","Northwest Territories",F,41786,41462,F,F,0.8,17666,14981,1143793.86,0.0
+"62","Nunavut",F,35944,31906,F,F,12.7,11433,9819,1877778.53,0.0
+
+Note:
+"Incompletely enumerated Indian reserves and Indian settlements, 2016","T = excludes census data for one or more incompletely enumerated Indian reserves or Indian settlements."
+"Incompletely enumerated Indian reserves and Indian settlements, 2011","T = excludes census data for one or more incompletely enumerated Indian reserves or Indian settlements."
+"2011 adjusted population flag","T = adjusted figure due to boundary change."
+"For further information, refer to: http://www12.statcan.gc.ca/census-recensement/2016/dp-pd/hlt-fst/pd-pl/About.cfm."
+
+"Source: Statistics Canada, 2016 Census of Population."
+"How to cite: Statistics Canada. 2017. Population and dwelling counts, for Canada, provinces and territories, 2016 and 2011 censuses (table). Population and Dwelling Count Highlight Tables. 2016 Census."
+"Statistics Canada Catalogue no. 98-402-X2016001. Ottawa. Released February 8, 2017."
+"http://www12.statcan.gc.ca/census-recensement/2016/dp-pd/hlt-fst/pd-pl/Tables/File.cfm?T=101&SR=1&RPP=25&PR=0&CMA=0&CSD=0&S=50&O=A&Lang=Eng&OFT=CSV (accessed March 23, 2020)"
+
