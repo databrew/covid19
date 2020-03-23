@@ -142,24 +142,39 @@ df <- full_join(x = confirmed_cases,
                 y = deaths) %>%
   full_join(recovered)
 
-# Keep only States for the US
-# (otherwise, double-counts certain things)
-library(maps)
-states <- map('state')$names
-states <- unlist(lapply(states, function(x){strsplit(x, ':', fixed = TRUE)[1]}))
-df <- df %>%
-  filter(country != 'US' |
-           tolower(district) %in% states)
-
-## DEPRICATED BELOW
-# Beginning on March 10, the data format changes for the US - reporting states and
-# sub-state entities
-# we want to keep all US entries through March 9 and then beginning on the 10th,
-# only keep those with commas (the states)
+# # Keep only States for the US
+# # (otherwise, double-counts certain things)
+# library(maps)
+# states <- map('state')$names
+# states <- unlist(lapply(states, function(x){strsplit(x, ':', fixed = TRUE)[1]}))
+# df <- df %>%
+#   filter(country != 'US' |
+#            (tolower(district) %in% states))
+# 
+# # DEPRICATED BELOW
+# # Beginning on March 10, the data format changes for the US - reporting states and
+# # sub-state entities
+# # we want to keep all US entries through March 9 and then beginning on the 10th,
+# # only keep those with commas (the states)
 # df <- df %>%
 #   filter(country != 'US' |
 #            date < '2020-03-10' |
 #            !grepl(', ', district))
+
+# Need to figure out how to clean the US data by State.
+# For now, ignoring:
+dfusa <- df %>% filter(country == 'US')
+dfnousa <- df %>% filter(country != 'US')
+dfusa <- dfusa %>%
+  group_by(date) %>%
+  summarise(confirmed_cases = sum(confirmed_cases, na.rm = TRUE),
+            deaths  = sum(deaths, na.rm = TRUE),
+            recovered = sum(recovered, na.rm = TRUE),
+            lat = mean(lat, na.rm = TRUE),
+            lng = mean(lng, na.rm = TRUE)) %>%
+  ungroup %>%
+  mutate(district = NA)
+df <- bind_rows(df, dfusa)
 
 # Get most recent Spanish ministry data
 library(gsheet)
@@ -232,7 +247,8 @@ if(do_italy_spain){
 }
 
 # Set anything we haven't done population denominator work on to NA at the district level
-have_pop <- c('US', 'Italy', 'Spain', 'China', 'Canada')
+have_pop <- c(#'US', 
+              'Italy', 'Spain', 'China', 'Canada')
 df1 <- df[df$country %in% have_pop,]
 df2 <- df[!df$country %in% have_pop,]
 df2 <- df2 %>%

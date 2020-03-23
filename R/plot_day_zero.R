@@ -46,7 +46,6 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'France', 'US
   
   # Get values by district or country
   pd <- df %>%
-    mutate(iso, country) %>%
     arrange(date, country) %>%
     filter(country %in% these_countries)
   if(by_district){
