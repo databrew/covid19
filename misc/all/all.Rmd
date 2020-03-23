@@ -152,7 +152,7 @@ ggplot(data = pd_big,
         axis.title = element_text(size = 20),
         legend.text = element_text(size = 16),
         plot.title = element_text(size = 30))  +
-  xlim(0, 23)
+  xlim(0, 26)
 ggsave('~/Desktop/china_spain_italy_comparison.png',
        height = 7,
        width = 10)
@@ -277,7 +277,7 @@ ggplot(data = pd_big,
         axis.title = element_text(size = 20),
         legend.text = element_text(size = 16),
         plot.title = element_text(size = 30))  +
-  xlim(0, 32)
+  xlim(0, 35)
 ggsave('~/Desktop/china_spain_italy_comparison_raw.png',
        height = 7,
        width = 10) 
@@ -733,7 +733,7 @@ ggplot(data = joined %>% filter(days_since_start_deaths_pm >= 0),
             size = 6) +
   theme(axis.text = element_text(size = 14),
         axis.title = element_text(size = 20)) +
-  xlim(0, 18)
+  xlim(0, 21)
 ggsave('~/Desktop/italy_comparison.png',
        height = 6,
        width = 10)
@@ -782,7 +782,7 @@ ggplot(data = pd,
             alpha = 0.7) +
   theme(axis.text = element_text(size = 14),
         axis.title = element_text(size = 20)) +
-  xlim(0, 18)
+  xlim(0, 21)
 ggsave('~/Desktop/cat_italy_comparison.png',
        height = 6,
        width = 10)
@@ -1101,7 +1101,7 @@ ggplot(data = pd,
                                round(p, digits = 1), '%)')),
             size = text_size * 0.3,
             nudge_y = 80) +
-  ylim(0, 1200)
+  ylim(0, 1400)
 ggsave('~/Desktop/spain.png')
 
 ```
@@ -1146,7 +1146,7 @@ ggplot(data = pd,
                                deaths, '\ndeaths)')),
             size = text_size * 0.3,
             nudge_y = 2.5) +
-  ylim(0, 19)
+  ylim(0, 23)
 ggsave('~/Desktop/spai2.png')
 
 ```
