@@ -24,8 +24,6 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'France', 'US
                                    by_district = FALSE,
                                    districts = NULL){
   
-  
-  
   if(time_before > 0){
     stop('time_before must be less than or equal to 0')
   }

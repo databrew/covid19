@@ -37,7 +37,7 @@ mobile_app_ui <- function(request) {
           intensity = 10,
           hover = TRUE,
           f7Card(
-            plotOutput('day0', height = '500px'),
+            plotOutput('the_plot', height = '500px'),
             selectInput('country', 'Country/Countries',
                         multiple = TRUE,
                         choices = sort(unique(sort(unique(covid19::df_country$country)))),
@@ -45,7 +45,7 @@ mobile_app_ui <- function(request) {
             # f7Stepper('day0', '"Critical mass": number of cases to be considered start of outbreak (day 0)', min = 1, max = 500, value = 150, step = 5),
             
             sliderInput('day0', 'Value to be considered "day 0"',
-                        min = 1,
+                        min = 0,
                         max = 250,
                         value = 150,
                         # scale = TRUE,
@@ -192,7 +192,7 @@ mobile_app_server <- function(input, output, session) {
                 multiple = TRUE)
   })
   
-  output$day0 <- renderPlot({
+  output$the_plot <- renderPlot({
     
     the_districts <- input$districts
 
