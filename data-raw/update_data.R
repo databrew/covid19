@@ -208,7 +208,9 @@ if(do_italy_spain){
     mutate(country = 'Italy')
   right <- df %>% filter(country == 'Italy') %>%
     dplyr::select(date,country, lat, lng)
-  joined <- left_join(left, right)
+  add_these <- df %>% filter(country == 'Italy') %>%
+    filter(!date %in% left$date)
+  joined <- left_join(left, right) %>% bind_rows(add_these)
   df <- df %>%
     filter(!country == 'Italy' & date %in% joined$date) %>%
     bind_rows(joined)
@@ -221,7 +223,9 @@ if(do_italy_spain){
     dplyr::select(-uci, -comment)
   right <- df %>% filter(country == 'Spain') %>%
     dplyr::select(date,country, lat, lng)
-  joined <- left_join(left, right)
+  add_these <- df %>% filter(country == 'Spain') %>%
+    filter(!date %in% left$date)
+  joined <- left_join(left, right) %>% bind_rows(add_these)
   df <- df %>%
     filter(!country == 'Spain' & date %in% joined$date) %>%
     bind_rows(joined)
