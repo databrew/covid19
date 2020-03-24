@@ -226,6 +226,8 @@ ita <- ita %>%
   dplyr::select(ccaa = denominazione_regione,
                 date,
                 cases = totale_casi,
+                uci = terapia_intensiva,
+                hospitalizations = totale_ospedalizzati,
                 deaths = deceduti)
 
 # Get the district-level data for Spain and Italy in (since JHU doesn't have it)
@@ -526,7 +528,9 @@ ita <- ita %>%
   arrange(ccaa, date) %>%
   group_by(ccaa) %>%
   mutate(cases_non_cum = cases - lag(cases, default = 0),
-         deaths_non_cum = deaths - lag(deaths, default = 0)) %>%
+         deaths_non_cum = deaths - lag(deaths, default = 0),
+         uci_non_cum = uci - lag(uci, default = 0),
+         hospitalizations_non_cum = hospitalizations - lag(hospitalizations, default = 0)) %>%
   ungroup
 
 # By province

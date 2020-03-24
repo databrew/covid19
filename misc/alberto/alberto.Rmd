@@ -29,6 +29,8 @@ library(ggplot2)
 library(lubridate)
 library(dplyr)
 library(ggplot2)
+ylog <- FALSE
+options(scipen = '999')
 ```
 
 
@@ -42,6 +44,8 @@ pd <- df %>% filter(country == 'Spain')
 pd <- pd %>% left_join(world_pop)
 pd$value <- pd$confirmed_cases
 pd <- pd %>% filter(value > 0)
+pd <- pd %>% group_by(country, date) %>%
+  summarise(value = sum(value, na.rm = TRUE))
 
 g1 <- ggplot(data = pd,
        aes(x = date,
@@ -58,8 +62,12 @@ g1 <- ggplot(data = pd,
   geom_text(data = pd %>% filter(date == max(date)),
             aes(x = date - 3,
                 y = value,
-                label = round(value, digits = 1)),
+                label = scales::comma(round(value, digits = 1))),
             alpha = 0.7)
+if(ylog){
+  g1 <- g1 +
+    scale_y_log10()
+}
 g1
 ```
 
@@ -72,7 +80,8 @@ pd <- df %>% filter(country %in% c('Italy', 'Spain'))
 pd <- pd %>% left_join(world_pop)
 pd$value <- pd$confirmed_cases
 pd <- pd %>% filter(value > 0)
-
+pd <- pd %>% group_by(country, date) %>%
+  summarise(value = sum(value, na.rm = TRUE))
 g1x <- ggplot(data = pd,
        aes(x = date,
            y = value)) +
@@ -88,9 +97,13 @@ g1x <- ggplot(data = pd,
   geom_text(data = pd %>% filter(date == max(date)),
             aes(x = date - 3,
                 y = value,
+                color = country,
                 label = round(value, digits = 1)),
             alpha = 0.7) +
   scale_color_manual(name = '', values = c('red', 'black'))
+if(ylog){
+  g1x <- g1x + scale_y_log10()
+}
 g1x
 ```
 
@@ -106,6 +119,8 @@ pd <- df %>% filter(country == 'Spain')
 pd <- pd %>% left_join(world_pop)
 pd$value <- pd$deaths 
 pd <- pd %>% filter(value > 0)
+pd <- pd %>% group_by(country, date) %>%
+  summarise(value = sum(value, na.rm = TRUE))
 
 g2 <- ggplot(data = pd,
        aes(x = date,
@@ -120,10 +135,13 @@ g2 <- ggplot(data = pd,
   theme(axis.title = element_text(size = text_size),
         axis.text = element_text(size = text_size)) +
   geom_text(data = pd %>% filter(date == max(date)),
-            aes(x = date -1,
-                y = value,
+            aes(x = date,
+                y = value - ifelse(ylog, 1000, 300),
                 label = round(value, digits = 1)),
             alpha = 0.7)
+if(ylog){
+  g2 <- g2 + scale_y_log10()
+}
 g2
 ```
 
@@ -138,6 +156,9 @@ pd <- df %>% filter(country %in% c('Italy', 'Spain'))
 pd <- pd %>% left_join(world_pop)
 pd$value <- pd$deaths
 pd <- pd %>% filter(value > 0)
+pd <- pd %>% group_by(country, date) %>%
+  summarise(value = sum(value, na.rm = TRUE))
+
 
 g2x <- ggplot(data = pd,
        aes(x = date,
@@ -157,6 +178,9 @@ g2x <- ggplot(data = pd,
                 label = round(value, digits = 1)),
             alpha = 0.7) +
   scale_color_manual(name = '', values = c('red', 'black'))
+if(ylog){
+  g2x <- g2x + scale_y_log10()
+}
 g2x
 ```
 
@@ -170,6 +194,8 @@ pd <- df %>% filter(country == 'Spain')
 pd <- pd %>% left_join(world_pop)
 pd$value <- pd$confirmed_cases / pd$pop * 100000
 pd <- pd %>% filter(value > 0)
+pd <- pd %>% group_by(country, date) %>%
+  summarise(value = sum(value, na.rm = TRUE))
 
 g3 <- ggplot(data = pd,
        aes(x = date,
@@ -184,10 +210,13 @@ g3 <- ggplot(data = pd,
   theme(axis.title = element_text(size = text_size),
         axis.text = element_text(size = text_size)) +
   geom_text(data = pd %>% filter(date == max(date)),
-            aes(x = date - 2,
-                y = value,
+            aes(x = date,
+                y = value - ifelse(ylog, 40, 10),
                 label = round(value, digits = 1)),
             alpha = 0.7)
+if(ylog){
+  g3 <- g3 + scale_y_log10()
+}
 g3
 ```
 
@@ -201,6 +230,8 @@ pd <- df %>% filter(country %in% c('Spain', 'Italy'))
 pd <- pd %>% left_join(world_pop)
 pd$value <- pd$confirmed_cases / pd$pop * 100000
 pd <- pd %>% filter(value > 0)
+pd <- pd %>% group_by(country, date) %>%
+  summarise(value = sum(value, na.rm = TRUE))
 
 g3x <- ggplot(data = pd,
        aes(x = date,
@@ -215,12 +246,16 @@ g3x <- ggplot(data = pd,
   theme(axis.title = element_text(size = text_size),
         axis.text = element_text(size = text_size)) +
   geom_text(data = pd %>% filter(date == max(date)),
-            aes(x = date - 2,
+            aes(x = date +2,
                 y = value,
                 label = round(value, digits = 1)),
             alpha = 0.7) +
   scale_color_manual(name ='',
                      values = c('red', 'black'))
+
+if(ylog){
+  g3x <- g3x + scale_y_log10()
+}
 g3x
 ```
 
@@ -236,6 +271,8 @@ pd <- df %>% filter(country == 'Spain')
 pd <- pd %>% left_join(world_pop)
 pd$value <- pd$deaths / pd$pop * 100000
 pd <- pd %>% filter(value > 0)
+pd <- pd %>% group_by(country, date) %>%
+  summarise(value = sum(value, na.rm = TRUE))
 
 g4 <- ggplot(data = pd,
        aes(x = date,
@@ -254,6 +291,10 @@ g4 <- ggplot(data = pd,
                 y = value,
                 label = round(value, digits = 1)),
             alpha = 0.7)
+
+if(ylog){
+  g4 <- g4 + scale_y_log10()
+}
 g4
 ```
 
@@ -266,6 +307,8 @@ pd <- df %>% filter(country %in% c('Spain', 'Italy'))
 pd <- pd %>% left_join(world_pop)
 pd$value <- pd$deaths / pd$pop * 100000
 pd <- pd %>% filter(value > 0)
+pd <- pd %>% group_by(country, date) %>%
+  summarise(value = sum(value, na.rm = TRUE))
 
 g4x <- ggplot(data = pd,
        aes(x = date,
@@ -285,8 +328,14 @@ g4x <- ggplot(data = pd,
                 label = round(value, digits = 1)),
             alpha = 0.7) +
   scale_color_manual(name ='', values = c('red', 'black') )
+if(ylog){
+  g4x <- g4x + scale_y_log10()
+}
 g4x
 ```
+
+
+# Italy only UCI charts
 
 
 ```{r, fig.height = 9, fig.width = 12}
@@ -308,7 +357,7 @@ dev.off()
 
 
 ```{r, fig.height = 9, fig.width = 12}
-pdf('~/Desktop/alberto1x.pdf',
+pdf('~/Desktop/alberto1_with_italy.pdf',
     height = 9, 
     width = 12)
 small_text_size = 9
@@ -324,154 +373,3 @@ Rmisc::multiplot(g1x + theme(axis.title = element_text(size = small_text_size),
 dev.off()
 ```
 
-
-## Logarithmic-scale charts
-
-### Cumulative cases (absolute)
-
-```{r}
-text_size <- 20
-
-pd <- df %>% filter(country == 'Spain')
-pd <- pd %>% left_join(world_pop)
-pd$value <- pd$confirmed_cases
-pd <- pd %>% filter(value > 0)
-
-g1 <- ggplot(data = pd,
-       aes(x = date,
-           y = value)) +
-  theme_simple() +
-  geom_line() +
-  geom_point() +
-  labs(x = 'Date',
-       y = 'Cases',
-       title = 'Spain: Confirmed COVID-19 cases',
-       subtitle = paste0('Data as of ', max(pd$date))) +
-  theme(axis.title = element_text(size = text_size),
-        axis.text = element_text(size = text_size)) +
-  geom_text(data = pd %>% filter(date == max(date)),
-            aes(x = date - 2,
-                y = value,
-                label = round(value, digits = 1)),
-            alpha = 0.7) +
-  scale_y_log10()
-g1
-```
-
-
-
-### Cumulative deaths (absolute)
-
-```{r}
-text_size <- 20
-
-pd <- df %>% filter(country == 'Spain')
-pd <- pd %>% left_join(world_pop)
-pd$value <- pd$deaths 
-pd <- pd %>% filter(value > 0)
-
-g2 <- ggplot(data = pd,
-       aes(x = date,
-           y = value)) +
-  theme_simple() +
-  geom_line() +
-  geom_point() +
-  labs(x = 'Date',
-       y = 'Deaths',
-       title = 'Spain: Confirmed COVID-19 deaths',
-       subtitle = paste0('Data as of ', max(pd$date))) +
-  theme(axis.title = element_text(size = text_size),
-        axis.text = element_text(size = text_size)) +
-  geom_text(data = pd %>% filter(date == max(date)),
-            aes(x = date -1,
-                y = value,
-                label = round(value, digits = 1)),
-            alpha = 0.7)  +
-  scale_y_log10()
-g2
-```
-
-
-
-### Cumulative cases by population
-
-```{r}
-text_size <- 20
-
-pd <- df %>% filter(country == 'Spain')
-pd <- pd %>% left_join(world_pop)
-pd$value <- pd$confirmed_cases / pd$pop * 100000
-pd <- pd %>% filter(value > 0)
-
-g3 <- ggplot(data = pd,
-       aes(x = date,
-           y = value)) +
-  theme_simple() +
-  geom_line() +
-  geom_point() +
-  labs(x = 'Date',
-       y = 'Cases (per 100,000)',
-       title = 'Spain: Confirmed COVID-19 cases per 100,000 population',
-       subtitle = paste0('Data as of ', max(pd$date))) +
-  theme(axis.title = element_text(size = text_size),
-        axis.text = element_text(size = text_size)) +
-  geom_text(data = pd %>% filter(date == max(date)),
-            aes(x = date - 2,
-                y = value,
-                label = round(value, digits = 1)),
-            alpha = 0.7) +
-  scale_y_log10()
-g3
-```
-
-
-
-### Cumulative deaths by population
-
-```{r}
-text_size <- 20
-
-pd <- df %>% filter(country == 'Spain')
-pd <- pd %>% left_join(world_pop)
-pd$value <- pd$deaths / pd$pop * 100000
-pd <- pd %>% filter(value > 0)
-
-g4 <- ggplot(data = pd,
-       aes(x = date,
-           y = value)) +
-  theme_simple() +
-  geom_line() +
-  geom_point() +
-  labs(x = 'Date',
-       y = 'Mortality rate (per 100,000)',
-       title = 'Spain: Confirmed COVID-19 deaths per 100,000 population',
-       subtitle = paste0('Data as of ', max(pd$date))) +
-  theme(axis.title = element_text(size = text_size),
-        axis.text = element_text(size = text_size)) +
-  geom_text(data = pd %>% filter(date == max(date)),
-            aes(x = date -1,
-                y = value,
-                label = round(value, digits = 1)),
-            alpha = 0.7) +
-  scale_y_log10()
-g4
-```
-
-### 4-panel chart
-
-```{r, fig.height = 9, fig.width = 12}
-pdf('~/Desktop/alberto2.pdf',
-    height = 9, 
-    width = 12)
-small_text_size = 9
-Rmisc::multiplot(g1 + theme(axis.title = element_text(size = small_text_size),
-        axis.text = element_text(size = small_text_size), plot.title = element_text(size = small_text_size * 1.4)), 
-        g2  + theme(axis.title = element_text(size = small_text_size),
-        axis.text = element_text(size = small_text_size), plot.title = element_text(size = small_text_size * 1.4)), 
-        g3  + theme(axis.title = element_text(size = small_text_size),
-        axis.text = element_text(size = small_text_size), plot.title = element_text(size = small_text_size * 1.4)), 
-        g4  + theme(axis.title = element_text(size = small_text_size),
-        axis.text = element_text(size = small_text_size), plot.title = element_text(size = small_text_size * 1.4)),
-                 cols = 2) 
-dev.off()
-```
