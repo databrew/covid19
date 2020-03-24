@@ -932,6 +932,89 @@ ggsave('~/Desktop/latam.pdf',
 ```
 
 
+## Southern Asia
+
+```{r}
+southern_asia_isos <- world_pop %>% filter(sub_region == 'Southern Asia')
+pd <- df_country %>%
+          group_by(iso) %>%
+         filter(max(confirmed_cases) > 0) %>%
+         filter(iso %in% southern_asia_isos$iso) 
+cols <- colorRampPalette(brewer.pal(n = 8, 'Spectral'))(length(unique(pd$country)))
+cols <- sample(cols, length(cols))
+# Plot
+ggplot(data = pd,
+       aes(x = date,
+           # color = country,
+           # fill = country,
+           y = confirmed_cases)) +
+  theme_simple() +
+  # geom_point() +
+  # geom_line() +
+  geom_area(fill = 'darkred', alpha = 0.3, color = 'darkred') +
+  # scale_color_manual(name = '',
+  #                    values = cols) +
+  # scale_fill_manual(name = '',
+  #                   values = cols) +
+  theme(legend.position = 'none',
+        axis.text = element_text(size = 8),
+        strip.text = element_text(size = 14),
+        legend.text = element_text(size = 6)) +
+  # scale_y_log10() +
+  facet_wrap(~country,
+             scales = 'free') +
+  labs(x = '',
+       y = 'Confirmed cases',
+       title = 'COVID-19 in Southern Asia')
+ggsave('~/Desktop/southern_asia.pdf',
+       height = 8,
+       width = 12)
+```
+
+
+## Eastern Europe
+
+```{r}
+isos <- world_pop %>% filter(sub_region == 'Eastern Europe')
+pd <- df_country %>%
+          group_by(iso) %>%
+         filter(max(confirmed_cases) > 0) %>%
+         filter(iso %in% isos$iso) 
+cols <- colorRampPalette(brewer.pal(n = 8, 'Spectral'))(length(unique(pd$country)))
+cols <- sample(cols, length(cols))
+# Plot
+ggplot(data = pd,
+       aes(x = date,
+           # color = country,
+           # fill = country,
+           y = confirmed_cases)) +
+  theme_simple() +
+  # geom_point() +
+  # geom_line() +
+  geom_area(fill = 'darkred', alpha = 0.3, color = 'darkred') +
+  # scale_color_manual(name = '',
+  #                    values = cols) +
+  # scale_fill_manual(name = '',
+  #                   values = cols) +
+  theme(legend.position = 'none',
+        axis.text = element_text(size = 8),
+        strip.text = element_text(size = 14),
+        legend.text = element_text(size = 6)) +
+  # scale_y_log10() +
+  facet_wrap(~country,
+             scales = 'free',
+             ncol = 5) +
+  labs(x = '',
+       y = 'Confirmed cases',
+       title = 'COVID-19 in Eastern Europe')
+ggsave('~/Desktop/eastern_europe.pdf',
+       height = 8,
+       width = 12)
+```
+
+
+
+
 
 
 ## Rolling average new events
