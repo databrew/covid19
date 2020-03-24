@@ -294,6 +294,11 @@ df$confirmed_cases[df$district == 'Washington' & df$country == 'US' & df$date ==
 df$confirmed_cases[df$district == 'Grand Princess' & df$country == 'US' & df$date == '2020-03-16'] <- 21
 df$deaths[df$district == 'Oregon' & df$country == 'US' & df$date == '2020-03-22'] <- 5
 
+# Remove any missings
+df <- df %>% 
+  filter(!is.na(deaths),
+         !is.na(confirmed_cases))
+
 # Join all together but by country
 df_country <- df %>%
   group_by(country, date) %>%
@@ -320,6 +325,7 @@ library(passport)
 country_codes$iso <- parse_country(x = countries, to = 'iso3c')
 df <- left_join(df, country_codes)
 df_country <- left_join(df_country, country_codes)
+
 
 
 
