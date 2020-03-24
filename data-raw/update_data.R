@@ -1,3 +1,4 @@
+
 library(dplyr)
 library(readr)
 library(tidyr)
@@ -238,7 +239,8 @@ if(do_italy_spain){
   right <- df %>% filter(country == 'Italy') %>%
     dplyr::select(date,country, lat, lng)
   add_these <- df %>% filter(country == 'Italy') %>%
-    filter(!date %in% left$date)
+    filter(!date %in% left$date,
+           date < max(left$date)) # remove any obs AHEAD of ministry data
   joined <- left_join(left, right) %>% bind_rows(add_these)
   df <- df %>%
     filter(!country == 'Italy' & date %in% joined$date) %>%
@@ -253,7 +255,8 @@ if(do_italy_spain){
   right <- df %>% filter(country == 'Spain') %>%
     dplyr::select(date,country, lat, lng)
   add_these <- df %>% filter(country == 'Spain') %>%
-    filter(!date %in% left$date)
+    filter(!date %in% left$date,
+           date < max(left$date)) # remove any obs AHEAD of ministry data
   joined <- left_join(left, right) %>% bind_rows(add_these)
   df <- df %>%
     filter(!country == 'Spain' & date %in% joined$date) %>%
@@ -261,7 +264,7 @@ if(do_italy_spain){
 }
 
 # Set anything we haven't done population denominator work on to NA at the district level
-have_pop <- c(#'US', 
+have_pop <- c('US', 
               'Italy', 'Spain', 'China', 'Canada')
 df1 <- df[df$country %in% have_pop,]
 df2 <- df[!df$country %in% have_pop,]
@@ -284,6 +287,12 @@ df <- df %>%
          recovered_non_cum = recovered - lag(recovered, default = 0)) %>%
   ungroup
 
+# Deal with errors in US data
+df$confirmed_cases[df$district == 'Nevada' & df$country == 'US' & df$date == '2020-03-17'] <- 50
+df$confirmed_cases[df$district == 'Utah' & df$country == 'US' & df$date == '2020-03-19'] <- 77
+df$confirmed_cases[df$district == 'Washington' & df$country == 'US' & df$date == '2020-03-17'] <- 1000
+df$confirmed_cases[df$district == 'Grand Princess' & df$country == 'US' & df$date == '2020-03-16'] <- 21
+df$deaths[df$district == 'Oregon' & df$country == 'US' & df$date == '2020-03-22'] <- 5
 
 # Join all together but by country
 df_country <- df %>%
