@@ -442,7 +442,7 @@ for(i in 1:length(the_dates)){
                 y = deaths,
                 color = country),
                size = 1, alpha = 0.6) +
-    scale_y_log10(limits = c(5, 3250)) +
+    scale_y_log10(limits = c(5, 3700)) +
   scale_color_manual(name = '',
                      values = sub_cols) +
   theme_simple() +
@@ -475,13 +475,16 @@ for(i in 1:length(the_dates)){
         legend.text = element_text(size = 16),
         plot.title = element_text(size = 35),
         plot.subtitle = element_text(size = 24))  +
-  xlim(0, 36)
+  xlim(0, 36) 
   message(i)
   ggsave(paste0(the_dir, add_zero(i, 3), '.png'),
          height = 7,
          width = 10.5)
 }
 ```
+
+
+
 
 ```
 # Command line

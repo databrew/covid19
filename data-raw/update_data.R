@@ -142,39 +142,53 @@ df <- full_join(x = confirmed_cases,
                 y = deaths) %>%
   full_join(recovered)
 
-# # Keep only States for the US
-# # (otherwise, double-counts certain things)
-# library(maps)
-# states <- map('state')$names
-# states <- unlist(lapply(states, function(x){strsplit(x, ':', fixed = TRUE)[1]}))
-# df <- df %>%
-#   filter(country != 'US' |
-#            (tolower(district) %in% states))
-# 
-# # DEPRICATED BELOW
-# # Beginning on March 10, the data format changes for the US - reporting states and
-# # sub-state entities
-# # we want to keep all US entries through March 9 and then beginning on the 10th,
-# # only keep those with commas (the states)
-# df <- df %>%
-#   filter(country != 'US' |
-#            date < '2020-03-10' |
-#            !grepl(', ', district))
+# For US
+# Up until March 9, data shows by sub-states but not States
+# Beginning on March 10, shows states, not sub-states
+usiso2 <- readLines('usiso2/usiso2.txt')
+iso2 <- unlist(lapply(strsplit(usiso2, split = '\t', fixed = T), function(x){x[1]}))
+district <- unlist(lapply(strsplit(usiso2, split = '\t', fixed = T), function(x){x[2]}))
+usiso2 <- tibble(district, iso2)
 
-# Need to figure out how to clean the US data by State.
-# For now, ignoring:
-dfusa <- df %>% filter(country == 'US')
-dfnousa <- df %>% filter(country != 'US')
-dfusa <- dfusa %>%
-  group_by(date) %>%
-  summarise(confirmed_cases = sum(confirmed_cases, na.rm = TRUE),
-            deaths  = sum(deaths, na.rm = TRUE),
-            recovered = sum(recovered, na.rm = TRUE),
-            lat = mean(lat, na.rm = TRUE),
-            lng = mean(lng, na.rm = TRUE)) %>%
-  ungroup %>%
-  mutate(district = NA)
-df <- bind_rows(df, dfusa)
+us_old <- df %>% filter(country == 'US', date <= '2020-03-09')
+us_new <- df %>% filter(country == 'US', date >= '2020-03-10')
+
+# In us_old, keep only the sub-states, since that's where the data is
+us_old <- us_old %>% filter(grepl(',', district))
+# Do the opposite in us_new (ie, keep only the states)
+us_new <- us_new %>% filter(!grepl(',', district))
+
+# In us_old, get the state
+us_old$iso2 <- unlist(lapply(strsplit(us_old$district, ', '), function(x){x[length(x)]}))
+# now bring in state name
+us_old <- left_join(us_old %>% dplyr::select(-district), usiso2) %>% dplyr::select(-iso2)
+us_old <- us_old %>%
+  group_by(country, date, district) %>%
+  summarise(confirmed_cases = sum(confirmed_cases, na.rm = T),
+            deaths = sum(deaths, na.rm = TRUE),
+            recovered = sum(recovered, na.rm = T)) %>%
+  left_join(us_new %>% dplyr::distinct(country, district, lat, lng))
+# bring it all together now
+df <- df %>%
+  filter(country != 'US') %>%
+  bind_rows(us_old,
+            us_new)
+
+
+# # Need to figure out how to clean the US data by State.
+# # For now, ignoring:
+# dfusa <- df %>% filter(country == 'US')
+# dfnousa <- df %>% filter(country != 'US')
+# dfusa <- dfusa %>%
+#   group_by(date) %>%
+#   summarise(confirmed_cases = sum(confirmed_cases, na.rm = TRUE),
+#             deaths  = sum(deaths, na.rm = TRUE),
+#             recovered = sum(recovered, na.rm = TRUE),
+#             lat = mean(lat, na.rm = TRUE),
+#             lng = mean(lng, na.rm = TRUE)) %>%
+#   ungroup %>%
+#   mutate(district = NA)
+# df <- bind_rows(df, dfusa)
 
 # Get most recent Spanish ministry data
 library(gsheet)
