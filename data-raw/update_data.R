@@ -283,10 +283,12 @@ df <- bind_rows(df1, df2)
 df <- df %>%
   ungroup %>%
   arrange(country, district, date) %>%
-  group_by(country, district, lat, lng) %>%
-  mutate(confirmed_cases_non_cum = confirmed_cases - lag(confirmed_cases, default = 0),
-         deaths_non_cum = deaths - lag(deaths, default = 0),
-         recovered_non_cum = recovered - lag(recovered, default = 0)) %>%
+  group_by(country, district) %>%
+  mutate(confirmed_cases_non_cum = confirmed_cases - dplyr::lag(confirmed_cases, default = 0),
+         deaths_non_cum = deaths - dplyr::lag(deaths, default = 0),
+         recovered_non_cum = recovered - dplyr::lag(recovered, default = 0),
+         lat = dplyr::first(lat),
+         lng = dplyr::first(lng)) %>%
   ungroup
 
 # Deal with errors in US data

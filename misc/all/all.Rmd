@@ -923,17 +923,23 @@ for(i in 1:length(isos)){
   message(i, ' ', this_iso)
   countries <- world_pop %>% filter(sub_region == this_iso)
   pd <- df %>%
-          group_by(iso) %>%
-         filter(max(confirmed_cases) > 0) %>%
+          group_by(country, iso, date) %>%
+          summarise(cases = sum(confirmed_cases, na.rm = TRUE)) %>%
+    ungroup %>%
+    group_by(country) %>%
+         filter(max(cases) > 0) %>%
+    ungroup %>%
          filter(iso %in% countries$iso)
-cols <- colorRampPalette(brewer.pal(n = 8, 'Spectral'))(length(unique(pd$country)))
+  if(nrow(pd) > 0){
+    cols <- colorRampPalette(brewer.pal(n = 8, 'Spectral'))(length(unique(pd$country)))
 cols <- sample(cols, length(cols))
-# Plot
+    # Plot
+n_countries <- (length(unique(pd$country)))
 ggplot(data = pd,
        aes(x = date,
            # color = country,
            # fill = country,
-           y = confirmed_cases)) +
+           y = cases)) +
   theme_simple() +
   # geom_point() +
   # geom_line() +
@@ -943,8 +949,10 @@ ggplot(data = pd,
   # scale_fill_manual(name = '',
   #                   values = cols) +
   theme(legend.position = 'none',
-        axis.text = element_text(size = 8),
-        strip.text = element_text(size = 14),
+        axis.text = element_text(size = 6),
+        strip.text = element_text(size = ifelse(n_countries > 20, 6,
+                                                ifelse(n_countries > 10, 10,
+                                                       ifelse(n_countries > 5, 11, 12))) ),
         legend.text = element_text(size = 6)) +
   # scale_y_log10() +
   facet_wrap(~country,
@@ -955,6 +963,10 @@ ggplot(data = pd,
   ggsave(paste0('~/Desktop/world/', this_iso, '.png'),
          width = 12, 
          height = 7)
+  }
+
+
+
 }
 
 ```
