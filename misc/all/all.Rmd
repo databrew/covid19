@@ -39,6 +39,74 @@ library(rnaturalearthdata)
 library(RColorBrewer)
 ```
 
+## Madrid vs rest of state
+
+```{r}
+library(RColorBrewer)
+place_transform <- function(x){ifelse(x == 'Madrid', 'Madrid',
+                                      # ifelse(x == 'Cataluña', 'Cataluña',
+                                             'Otras CCAA')
+  # )
+}
+place_transform_ita <- function(x){
+  ifelse(x == 'Lombardia', 'Lombardia', 
+         # ifelse(x == 'Emilia Romagna', 'Emilia Romagna', 
+                'Otras regiones italianas')
+  # )
+}
+pd <- esp_df %>%
+  mutate(ccaa = place_transform(ccaa)) %>%
+  bind_rows(ita %>% mutate(ccaa = place_transform_ita(ccaa))) %>%
+  group_by(ccaa, date) %>% 
+  summarise(cases = sum(cases),
+            uci = sum(uci),
+            deaths = sum(deaths),
+            cases_non_cum = sum(confirmed_cases_non_cum),
+            deaths_non_cum = sum(deaths_non_cum),
+            uci_non_cum = sum(uci_non_cum)) %>%
+  left_join(esp_pop %>%
+              mutate(ccaa = place_transform(ccaa)) %>%
+              bind_rows(ita_pop %>% mutate(ccaa = place_transform_ita(ccaa))) %>%
+              group_by(ccaa) %>%
+              summarise(pop = sum(pop))) %>%
+  mutate(deaths_non_cum_p = deaths_non_cum / pop * 1000000)
+pd$ccaa <- factor(pd$ccaa,
+                  levels = c('Madrid',
+                             # 'Cataluña',
+                             'Otras CCAA',
+                             'Lombardia',
+                             # 'Emilia Romagna',
+                             'Otras regiones italianas'))
+cols <- c(
+  rev(brewer.pal(n = 3, 'Reds'))[1:2],
+  rev(brewer.pal(n = 3, 'Blues'))[1:2]
+)
+ggplot(data = pd,
+       aes(x = date,
+           y = deaths_non_cum_p,
+           fill = ccaa,
+           group = ccaa)) +
+  geom_bar(stat = 'identity',
+           position = position_dodge(width = 0.99)) +
+  scale_fill_manual(name = '', values = cols) +
+  scale_color_manual(name = '', values = cols) +
+  # geom_line(size = 0.2,
+  #           aes(color = ccaa)) +
+  xlim(as.Date('2020-03-09'),
+       Sys.Date()-1) +
+  theme_simple() +
+  labs(x = 'Fecha',
+       y = 'Muertes diarias por 1.000.000',
+       title = 'Muertes por 1.000.000 habitantes') +
+  theme(legend.position = 'top') +
+  geom_text(aes(label = round(deaths_non_cum_p, digits = 1),
+                color = ccaa,
+                y = deaths_non_cum_p + 2,
+                group = ccaa),
+            size = 2.5,
+            position = position_dodge(width = 0.99))
+```
+
 ## Italy regions, Spanish regions, Chinese regions (adjusted for population)
 
 

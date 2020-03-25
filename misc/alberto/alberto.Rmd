@@ -29,7 +29,7 @@ library(ggplot2)
 library(lubridate)
 library(dplyr)
 library(ggplot2)
-ylog <- FALSE
+ylog <- TRUE
 options(scipen = '999')
 ```
 
@@ -90,7 +90,7 @@ g1x <- ggplot(data = pd,
   geom_point(aes(color = country)) +
   labs(x = 'Date',
        y = 'Cases',
-       title = 'Spain: Confirmed COVID-19 cases',
+       title = 'Confirmed COVID-19 cases',
        subtitle = paste0('Data as of ', max(pd$date))) +
   theme(axis.title = element_text(size = text_size),
         axis.text = element_text(size = text_size)) +
@@ -168,7 +168,7 @@ g2x <- ggplot(data = pd,
   geom_point(aes(color = country)) +
   labs(x = 'Date',
        y = 'Deaths',
-       title = 'Spain: Confirmed COVID-19 deaths',
+       title = 'Confirmed COVID-19 deaths',
        subtitle = paste0('Data as of ', max(pd$date))) +
   theme(axis.title = element_text(size = text_size),
         axis.text = element_text(size = text_size)) +
@@ -241,7 +241,7 @@ g3x <- ggplot(data = pd,
   geom_point(aes(color = country)) +
   labs(x = 'Date',
        y = 'Cases (per 100,000)',
-       title = 'Spain: Confirmed COVID-19 cases per 100,000 population',
+       title = 'Confirmed COVID-19 cases per 100,000 population',
        subtitle = paste0('Data as of ', max(pd$date))) +
   theme(axis.title = element_text(size = text_size),
         axis.text = element_text(size = text_size)) +
@@ -318,7 +318,7 @@ g4x <- ggplot(data = pd,
   geom_point(aes(color = country)) +
   labs(x = 'Date',
        y = 'Mortality rate (per 100,000)',
-       title = 'Spain: Confirmed COVID-19 deaths per 100,000 population',
+       title = 'Confirmed COVID-19 deaths per 100,000 population',
        subtitle = paste0('Data as of ', max(pd$date))) +
   theme(axis.title = element_text(size = text_size),
         axis.text = element_text(size = text_size)) +
@@ -335,21 +335,231 @@ g4x
 ```
 
 
-# Italy only UCI charts
+# UCI charts
 
+Spain only, UCI, (not pop adjusted)
+
+```{r}
+text_size <- 20
+pd <- esp_df %>% mutate(iso = 'ESP') %>% #bind_rows(ita %>% mutate(iso = 'ITA')) %>%
+  group_by(iso, date) %>%
+  summarise(uci = sum(uci),
+            deaths = sum(deaths),
+            cases = sum(confirmed_cases))
+pd <- pd %>% left_join(world_pop)
+pd$value <- pd$uci # /pd$pop * 100000
+pd <- pd %>% filter(value > 0)
+pd <- pd %>% group_by(country, date) %>%
+  summarise(value = sum(value, na.rm = TRUE))
+
+g5 <- ggplot(data = pd,
+       aes(x = date,
+           y = value)) +
+  theme_simple() +
+  geom_line() +
+  geom_point() +
+  labs(x = 'Date',
+       y = 'UCI admissions',
+       title = 'Spain: COVID-19 UCI admissions',
+       subtitle = paste0('Data as of ', max(pd$date))) +
+  theme(axis.title = element_text(size = text_size),
+        axis.text = element_text(size = text_size)) +
+  geom_text(data = pd %>% filter(date == max(date)),
+            aes(x = date - 1,
+                y = value,
+                label = scales::comma(round(value, digits = 1))),
+            alpha = 0.7)
+if(ylog){
+  g5 <- g5 +
+    scale_y_log10()
+}
+g5
+```
+
+
+UCI total admissions (not pop adjusted)
+
+```{r}
+text_size <- 20
+
+pd <- esp_df %>% mutate(iso = 'ESP') %>% bind_rows(ita %>% mutate(iso = 'ITA')) %>%
+  group_by(iso, date) %>%
+  summarise(uci = sum(uci),
+            deaths = sum(deaths),
+            cases = sum(confirmed_cases))
+pd <- pd %>% left_join(world_pop)
+pd$value <- pd$uci # /pd$pop * 100000
+pd <- pd %>% filter(value > 0, !is.na(value))
+
+
+g5x <- ggplot(data = pd,
+       aes(x = date,
+           y = value)) +
+  theme_simple() +
+  geom_line(aes(color = country)) +
+  geom_point(aes(color = country)) +
+  labs(x = 'Date',
+       y = 'UCI  admissions',
+       title = 'COVID-19 UCI admissions',
+       subtitle = paste0('Data as of ', max(pd$date))) +
+  theme(axis.title = element_text(size = text_size),
+        axis.text = element_text(size = text_size)) +
+  geom_text(data = pd %>% filter(date == max(date)),
+            aes(x = date -1,
+                y = value,
+                label = round(value, digits = 1)),
+            alpha = 0.7) +
+  scale_color_manual(name ='', values = c('red', 'black') )
+if(ylog){
+  g5x <- g5x + scale_y_log10()
+}
+g5x
+```
+
+Spain only, UCI, (pop adjusted)
+
+```{r}
+text_size <- 20
+pd <- esp_df %>% mutate(iso = 'ESP') %>% #bind_rows(ita %>% mutate(iso = 'ITA')) %>%
+  group_by(iso, date) %>%
+  summarise(uci = sum(uci),
+            deaths = sum(deaths),
+            cases = sum(confirmed_cases))
+pd <- pd %>% left_join(world_pop)
+pd$value <- pd$uci /pd$pop * 100000
+pd <- pd %>% filter(value > 0)
+pd <- pd %>% group_by(country, date) %>%
+  summarise(value = sum(value, na.rm = TRUE))
+
+g6 <- ggplot(data = pd,
+       aes(x = date,
+           y = value)) +
+  theme_simple() +
+  geom_line() +
+  geom_point() +
+  labs(x = 'Date',
+       y = 'UCI admissions per 100,000',
+       title = 'Spain: COVID-19 UCI admissions per 100,000',
+       subtitle = paste0('Data as of ', max(pd$date))) +
+  theme(axis.title = element_text(size = text_size),
+        axis.text = element_text(size = text_size)) +
+  geom_text(data = pd %>% filter(date == max(date)),
+            aes(x = date - 1,
+                y = value,
+                label = round(value, digits = 1)),
+            alpha = 0.7)
+if(ylog){
+  g6 <- g6 +
+    scale_y_log10()
+}
+g6
+```
+
+
+UCI admissions (pop adjusted)
+
+```{r}
+text_size <- 20
+
+pd <- esp_df %>% mutate(iso = 'ESP') %>% bind_rows(ita %>% mutate(iso = 'ITA')) %>%
+  group_by(iso, date) %>%
+  summarise(uci = sum(uci),
+            deaths = sum(deaths),
+            cases = sum(confirmed_cases))
+pd <- pd %>% left_join(world_pop)
+pd$value <- pd$uci / pd$pop * 100000
+pd <- pd %>% filter(value > 0, !is.na(value))
+
+
+g6x <- ggplot(data = pd,
+       aes(x = date,
+           y = value)) +
+  theme_simple() +
+  geom_line(aes(color = country)) +
+  geom_point(aes(color = country)) +
+  labs(x = 'Date',
+       y = 'UCI  admissions (per 100,000)',
+       title = 'COVID-19 UCI admissions per 100,000 population',
+       subtitle = paste0('Data as of ', max(pd$date))) +
+  theme(axis.title = element_text(size = text_size),
+        axis.text = element_text(size = text_size)) +
+  geom_text(data = pd %>% filter(date == max(date)),
+            aes(x = date -1,
+                y = value,
+                label = round(value, digits = 1)),
+            alpha = 0.7) +
+  scale_color_manual(name ='', values = c('red', 'black') )
+if(ylog){
+  g6x <- g6x + scale_y_log10()
+}
+g6x
+```
+
+# New charts
+
+```{r}
+text_size <- 12
+pd <- esp_df %>% mutate(iso = 'ESP',
+                        cases_non_cum = confirmed_cases_non_cum) %>% bind_rows(ita %>% mutate(iso = 'ITA') %>% mutate(confirmed_cases = cases))
+  
+pd <- pd %>% group_by(iso, date) %>%
+  summarise(uci = sum(uci, na.rm = TRUE),
+            deaths = sum(deaths, na.rm = TRUE),
+            cases = sum(confirmed_cases, na.rm = TRUE),
+            uci_non_cum = sum(uci_non_cum, na.rm = TRUE),
+            deaths_non_cum = sum(deaths_non_cum, na.rm = TRUE),
+            cases_non_cum = sum(cases_non_cum, na.rm = TRUE)) %>%
+  ungroup %>%
+  tidyr::gather(key, value, uci:cases_non_cum)
+pd <- pd %>% left_join(world_pop %>% dplyr::select(iso, pop, country))
+pd$p <- pd$value / pd$pop * 100000
+
+keys <- tibble(key = c('cases', 'cases_non_cum',
+                       'deaths', 'deaths_non_cum',
+                       'uci', 'uci_non_cum'),
+               new_key = c('Cases\n(cumulative)',
+                 'Cases\n(daily)',
+                 'Deaths\n(cumulative)',
+                 'Deaths\n(daily)',
+                 'ICU\n(cumulative)',
+                 'ICU\n(daily)'))
+pd <- left_join(pd, keys) %>%
+  dplyr::select(-key) %>%
+  dplyr::rename(key = new_key)
+ggplot(data = pd,
+       aes(x = date,
+           y = value)) +
+  theme_simple() +
+  facet_grid(key~country, scales = 'free') +
+  geom_bar(stat = 'identity') +
+  
+  labs(x = '',
+       y = '',
+       title = 'COVID-19: Spain and Italy',
+       subtitle = paste0('Data as of ', max(pd$date))) +
+  theme(axis.title = element_text(size = text_size),
+        axis.text = element_text(size = text_size* 0.8),
+        strip.text.y = element_text(hjust = 0.5, size = 15),
+        strip.text.x = element_text(size = 15, hjust = 0.5)) 
+ggsave('~/Desktop/special.pdf')
+```
 
 ```{r, fig.height = 9, fig.width = 12}
-pdf('~/Desktop/alberto1.pdf',
-    height = 9, 
+pdf('~/Desktop/alberto1_LOG.pdf',
+    height =12, 
     width = 12)
 small_text_size = 9
 Rmisc::multiplot(g1 + theme(axis.title = element_text(size = small_text_size),
         axis.text = element_text(size = small_text_size), plot.title = element_text(size = small_text_size * 1.4)), 
         g2  + theme(axis.title = element_text(size = small_text_size),
         axis.text = element_text(size = small_text_size), plot.title = element_text(size = small_text_size * 1.4)), 
+                g5  + theme(axis.title = element_text(size = small_text_size),
+        axis.text = element_text(size = small_text_size), plot.title = element_text(size = small_text_size * 1.4)),
         g3  + theme(axis.title = element_text(size = small_text_size),
         axis.text = element_text(size = small_text_size), plot.title = element_text(size = small_text_size * 1.4)), 
-        g4  + theme(axis.title = element_text(size = small_text_size),
+                g4  + theme(axis.title = element_text(size = small_text_size),
+        axis.text = element_text(size = small_text_size), plot.title = element_text(size = small_text_size * 1.4)),
+        g6  + theme(axis.title = element_text(size = small_text_size),
         axis.text = element_text(size = small_text_size), plot.title = element_text(size = small_text_size * 1.4)),
                  cols = 2) 
 dev.off()
@@ -357,17 +567,22 @@ dev.off()
 
 
 ```{r, fig.height = 9, fig.width = 12}
-pdf('~/Desktop/alberto1_with_italy.pdf',
-    height = 9, 
+pdf('~/Desktop/alberto1_with_italy_LOG.pdf',
+    height =12, 
     width = 12)
 small_text_size = 9
 Rmisc::multiplot(g1x + theme(axis.title = element_text(size = small_text_size),
         axis.text = element_text(size = small_text_size), plot.title = element_text(size = small_text_size * 1.4)), 
         g2x  + theme(axis.title = element_text(size = small_text_size),
         axis.text = element_text(size = small_text_size), plot.title = element_text(size = small_text_size * 1.4)), 
+                g5x  + theme(axis.title = element_text(size = small_text_size),
+        axis.text = element_text(size = small_text_size), plot.title = element_text(size = small_text_size * 1.4)), 
         g3x  + theme(axis.title = element_text(size = small_text_size),
         axis.text = element_text(size = small_text_size), plot.title = element_text(size = small_text_size * 1.4)), 
         g4x  + theme(axis.title = element_text(size = small_text_size),
+        axis.text = element_text(size = small_text_size), plot.title = element_text(size = small_text_size * 1.4)),
+
+        g6x  + theme(axis.title = element_text(size = small_text_size),
         axis.text = element_text(size = small_text_size), plot.title = element_text(size = small_text_size * 1.4)),
                  cols = 2) 
 dev.off()
