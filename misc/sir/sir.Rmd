@@ -1,0 +1,181 @@
+---
+title: "SIR"
+author: "joe@databrew.cc"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    code_folding: "hide"
+---
+
+
+```{r setup, include=FALSE, echo = FALSE}
+# Basic knitr options
+library(knitr)
+opts_chunk$set(comment = NA, 
+               # echo = FALSE, 
+               warning = FALSE, 
+               message = FALSE, 
+               error = TRUE, 
+               cache = FALSE,
+               fig.width = 9.64,
+               fig.height = 7.86,
+               fig.path = 'figures/')
+```
+
+```{r}
+## Load libraries
+library(covid19)
+library(ggplot2)
+library(lubridate)
+library(dplyr)
+library(ggplot2)
+library(sp)
+library(raster)
+library(viridis)
+library(ggthemes)
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(RColorBrewer)
+library(deSolve)
+
+```
+
+
+```{r}
+options(scipen = '999')
+# Define differential equations
+sir_equations <- function(time, variables, parameters) {
+  with(as.list(c(variables, parameters)), {
+    dS <- -beta * I * S
+    dI <-  beta * I * S - gamma * I
+    dR <-  gamma * I
+    return(list(c(dS, dI, dR)))
+  })
+}
+
+# Define parameters
+parameters_values <- c(
+  beta  = 0.004, # infectious contact rate (/person/day)
+  gamma = 0.05    # recovery rate (/day)
+)
+
+# Define initial values for variables
+initial_values <- c(
+  S = 7500000,  # number of susceptibles at time = 0
+  I =   1,  # number of infectious at time = 0
+  R =   0   # number of recovered (and immune) at time = 0
+)
+
+# Define where to calculate variables
+# We want to know the values of our SIR model variables at these time points:
+time_values <- seq(0, 100) # days
+
+# Run
+sir_values_1 <- as.data.frame(ode(
+  y = initial_values,
+  times = time_values,
+  func = sir_equations,
+  parms = parameters_values 
+))
+
+
+with(sir_values_1, {
+# plotting the time series of susceptibles:
+  plot(time, S, type = "l", col = "blue",
+       xlab = "time (days)", ylab = "number of people")
+# adding the time series of infectious:
+  lines(time, I, col = "red")
+# adding the time series of recovered:
+  lines(time, R, col = "green")
+})
+
+# adding a legend:
+legend("right", c("susceptibles", "infectious", "recovered"),
+       col = c("blue", "red", "green"), lty = 1, bty = "n")
+
+# R-nought
+(999 + 1) * parameters_values["beta"] / parameters_values["gamma"]
+```
+
+Turn the above into a function
+
+```{r}
+sir_1 <- function(beta, gamma, S0, I0, R0, times) {
+  require(deSolve) # for the "ode" function
+  
+# the differential equations:
+  sir_equations <- function(time, variables, parameters) {
+  with(as.list(c(variables, parameters)), {
+    dS <- -beta * I * S
+    dI <-  beta * I * S - gamma * I
+    dR <-  gamma * I
+    return(list(c(dS, dI, dR)))
+  })
+  }
+  
+# the parameters values:
+  parameters_values <- c(beta  = beta, gamma = gamma)
+
+# the initial values of variables:
+  initial_values <- c(S = S0, I = I0, R = R0)
+  
+# solving
+  out <- ode(initial_values, times, sir_equations, parameters_values)
+
+# returning the output:
+  as.data.frame(out)
+}
+```
+
+Compare with real data
+
+```{r}
+flu <- read.table("https://bit.ly/2vDqAYN", header = TRUE)
+```
+
+Plot flu
+
+```{r}
+with(flu, plot(day, cases, pch = 19, col = "red", ylim = c(0, 600)))
+predictions <- sir_1(beta = 0.004, gamma = 0.5, S0 = 999, I0 = 1, R0 = 0, times = flu$day)
+with(predictions, lines(time, I, col = "red"))
+```
+
+Model plot
+
+```{r}
+model_fit <- function(beta, gamma, data, N = 763, ...) {
+  I0 <- data$cases[1] # initial number of infected (from data)
+  times <- data$day   # time points (from data)
+# model's predictions:
+  predictions <- sir_1(beta = beta, gamma = gamma,   # parameters
+                       S0 = N - I0, I0 = I0, R0 = 0, # variables' intial values
+                       times = times)                # time points
+# plotting the observed prevalences:
+  with(data, plot(day, cases, ...))
+# adding the model-predicted prevalence:
+  with(predictions, lines(time, I, col = "red"))
+}
+
+# Use
+model_fit(beta = 0.004, gamma = 0.5, flu, pch = 19, col = "red", ylim = c(0, 600))
+
+# Continues here with mll: https://rpubs.com/choisy/sir
+```
+
+```{r}
+# Estimate model parameters_values
+predictions <- sir_1(beta = 0.004, gamma = 0.5, S0 = 999, I0 = 1, R0 = 0, times = flu$day)
+predictions
+
+sum((predictions$I - flu$cases)^2)
+
+# the observed prevalences:
+with(flu, plot(day, cases, pch = 19, col = "red", ylim = c(0, 600)))
+# the model-predicted prevalences:
+with(predictions, lines(time, I, col = "red", type = "o"))
+# the "errors":
+segments(flu$day, flu$cases, predictions$time, predictions$I)
+
+```
