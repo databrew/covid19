@@ -358,7 +358,7 @@ ggsave('~/Desktop/china_spain_italy_comparison_raw.png',
 ## ANIMATION: Italy regions, Spanish regions, Chinese regions (raw numbers, not adjusted for population)
 
 
-```{r}
+```{r, eval = FALSE}
 # Spanish data
 a <- esp_df %>%
   left_join(esp_pop) %>%
@@ -567,7 +567,7 @@ convert -delay 20 -loop 0 *.png result.gif
 ## ANIMATION: Spain only
 
 
-```{r}
+```{r, eval = FALSE}
 # Spanish data
 a <- esp_df %>%
   left_join(esp_pop) %>%

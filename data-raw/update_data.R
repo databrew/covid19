@@ -245,7 +245,7 @@ if(do_italy_spain){
            date < max(left$date)) # remove any obs AHEAD of ministry data
   joined <- left_join(left, right) %>% bind_rows(add_these)
   df <- df %>%
-    filter(!country == 'Italy' & (!date %in% joined$date)) %>%
+    filter((!country == 'Italy' & (date %in% joined$date))) %>%
     bind_rows(joined)
   
   # Spain
@@ -261,7 +261,7 @@ if(do_italy_spain){
            date < max(left$date)) # remove any obs AHEAD of ministry data
   joined <- left_join(left, right) %>% bind_rows(add_these)
   df <- df %>%
-    filter(!country == 'Spain' & (!date %in% joined$date)) %>%
+    filter((!country == 'Spain' & (date %in% joined$date))) %>%
     bind_rows(joined)
 }
 
