@@ -159,20 +159,21 @@ pd <- joined %>% filter(days_since_start_deaths_pm >= 0) %>%
 label_data <- pd %>% group_by(ccaa) %>% filter(
                                                           (
                                                             (country == 'Hubei (China)' & days_since_start_deaths_pm == 22) |
-                                                            (date == max(date) & country == 'España' & deaths_pm > 25) |
+                                                            (date == max(date) & country == 'España' & deaths_pm > 40 & days_since_start_deaths_pm >= 7) & ccaa != 'CyL' |
                                                               (date == max(date) & country == 'Italia' &
-                                                                 ccaa != 'Liguria' & days_since_start_deaths_pm > 10)
+                                                                 ccaa != 'Liguria' & days_since_start_deaths_pm > 15)
                                                           ))
 # Get differential label data based on what to be emphasized
+bigs <- c('Madrid', 'Lombardia', 'Hubei')
 label_data_big <- label_data %>%
-  filter(ccaa %in% c('Madrid', 'Lombardia', 'Hubei'))
+  filter(ccaa %in% bigs)
 label_data_small <- label_data %>%
-  filter(!ccaa %in% c('Madrid', 'Lombardia', 'Hubei'))
+  filter(!ccaa %in% bigs)
 
 pd_big <- pd %>%
-  filter(ccaa %in% c('Madrid', 'Lombardia', 'Hubei'))
+  filter(ccaa %in% bigs)
 pd_small <- pd %>%
-  filter(!ccaa %in% c('Madrid', 'Lombardia', 'Hubei'))
+  filter(!ccaa %in% bigs)
 
 # cols <- colorRampPalette(RColorBrewer::brewer.pal(n = 8, name = 'Set2'))(length(unique(pd$country)))
 # cols <- rainbow(3)
@@ -202,7 +203,7 @@ ggplot(data = pd_big,
        caption = '@joethebrew | www.databrew.cc') +
   geom_text(data = label_data_big,
             aes(x = days_since_start_deaths_pm + 0.6,
-                y = (deaths_pm + 20),
+                y = (deaths_pm + 50),
                 label = gsub(' ', '\n', ccaa),
                 color = country),
             size = 8,
@@ -210,7 +211,7 @@ ggplot(data = pd_big,
             show.legend = FALSE) +
     geom_text(data = label_data_small,
             aes(x = days_since_start_deaths_pm + 0.6,
-                y = deaths_pm ,
+                y = deaths_pm  + (log(deaths_pm)/2),
                 label = gsub(' ', '\n', ccaa),
                 color = country),
             size = 5,
@@ -510,7 +511,7 @@ for(i in 1:length(the_dates)){
                 y = deaths,
                 color = country),
                size = 1, alpha = 0.6) +
-    scale_y_log10(limits = c(5, 3700)) +
+    scale_y_log10(limits = c(5, 4500)) +
   scale_color_manual(name = '',
                      values = sub_cols) +
   theme_simple() +
@@ -543,7 +544,7 @@ for(i in 1:length(the_dates)){
         legend.text = element_text(size = 16),
         plot.title = element_text(size = 35),
         plot.subtitle = element_text(size = 24))  +
-  xlim(0, 36) 
+  xlim(0, 38) 
   message(i)
   ggsave(paste0(the_dir, add_zero(i, 3), '.png'),
          height = 7,
@@ -558,7 +559,7 @@ for(i in 1:length(the_dates)){
 # Command line
 cd ~/Desktop/animation
 mogrify -resize 50% *.png
-convert -delay 10 -loop 0 *.png result.gif
+convert -delay 20 -loop 0 *.png result.gif
 
 ```
 
@@ -600,21 +601,6 @@ pd <- joined %>% filter(days_since_start_deaths >= 0) %>%
                           'China',
                           ifelse(country == 'Italy', 'Italia', 'España')))
 
-
-add_zero <- function(x, n){
-  x <- as.character(x)
-  adders <- n - nchar(x)
-  adders <- ifelse(adders < 0, 0, adders)
-  for (i in 1:length(x)){
-    if(!is.na(x[i])){
-      x[i] <- paste0(
-        paste0(rep('0', adders[i]), collapse = ''),
-        x[i],
-        collapse = '')  
-    } 
-  }
-  return(x)
-}
 bigs <- c('Madrid', 'Cataluña', 'CLM', 'CyL', 'País Vasco', 'La Rioja')
 pd_big <- pd %>%
   filter(ccaa %in% bigs)
@@ -627,7 +613,7 @@ pd_small <- pd %>%
 # cols <- rainbow(3)
 cols <- colorRampPalette(c('#A16928','#bd925a','#d6bd8d','#edeac2', '#b5c8b8','#79a7ac','#2887a1'))(length(unique(pd$country)))
 
-the_dir <- '~/Desktop/animation/'
+the_dir <- '~/Desktop/animation2/'
 dir.create(the_dir)
 the_dates <- sort(unique(c(pd_big$date, pd_small$date)))
 for(i in 1:length(the_dates)){
@@ -681,7 +667,7 @@ for(i in 1:length(the_dates)){
                 y = deaths,
                 color = ccaa),
                size = 1, alpha = 0.01) +
-    scale_y_log10(limits = c(1, 1100),
+    scale_y_log10(limits = c(5, max(pd$deaths)*1.2),
                   breaks = c(10, 50, 100, 500, 1000)) +
   scale_color_manual(name = '',
                      values = sub_cols) +
@@ -804,7 +790,7 @@ ggplot(data = joined %>% filter(days_since_start_deaths_pm >= 0),
             size = 6) +
   theme(axis.text = element_text(size = 14),
         axis.title = element_text(size = 20)) +
-  xlim(0, 21)
+  xlim(0, 23)
 ggsave('~/Desktop/italy_comparison.png',
        height = 6,
        width = 10)
@@ -834,6 +820,10 @@ ggplot(data = pd,
               aes(color = country),
             alpha = 0.8,
             size = 2) +
+      geom_point(data = pdcat %>% filter(date == max(date)),
+              aes(color = country),
+            alpha = 0.8,
+            size = 4) +
   scale_y_log10() +
   scale_color_manual(name = '',
                      values = c('darkred', 'darkorange', "purple")) +
@@ -845,15 +835,16 @@ ggplot(data = pd,
        subtitle = paste0('Dia 0 ("començament del brot") = primer dia a ', x_deaths_pm, ' o més morts acumulades per milió de població'),
        caption = '@joethebrew | www.databrew.cc') +
   geom_text(data = label_data,
-            aes(x = days_since_start_deaths_pm + 0.6,
+            aes(x = days_since_start_deaths_pm +0.2 ,
                 y = deaths_pm +3,
+                hjust = 0,
                 label = gsub(' ', '\n', ccaa),
                 color = country),
             size = 6,
             alpha = 0.7) +
   theme(axis.text = element_text(size = 14),
         axis.title = element_text(size = 20)) +
-  xlim(0, 21)
+  xlim(0, 24)
 ggsave('~/Desktop/cat_italy_comparison.png',
        height = 6,
        width = 10)
@@ -910,7 +901,7 @@ ggplot(data = pd,
             alpha = 0.8) +
   theme(axis.text = element_text(size = 14),
         axis.title = element_text(size = 20)) +
-  xlim(0, 19)
+  xlim(0, 23)
 ggsave('~/Desktop/mad_lom_italy_comparison.png',
        height = 6,
        width = 10)
