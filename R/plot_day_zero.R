@@ -53,7 +53,8 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'France', 'US
       pd <- pd %>% filter(district %in% districts)
     } 
     pd <- pd %>%
-      group_by(iso, geo = district, date) %>%
+      group_by(iso, 
+               geo = ifelse(is.na(district), country, district), date) %>%
       summarise(confirmed_cases = sum(confirmed_cases),
                 confirmed_cases_non_cum = sum(confirmed_cases_non_cum),
                 deaths = sum(deaths),

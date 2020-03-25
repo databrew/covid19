@@ -916,98 +916,25 @@ ggsave('~/Desktop/mad_lom_italy_comparison.png',
        width = 10)
 ```
 
-## Africa
-
+# Loop for regions of the world
 ```{r}
-african_isos <- world_pop %>% filter(region == 'Africa')
-pd <- df_country %>%
+isos <- sort(unique(world_pop$sub_region))
+isos <- c('Central Asia', 'Eastern Asia', 'Eastern Europe',
+          'Latin America and the Caribbean',
+          'Northern Africa', 'Northern America',
+          'Nothern Europe',
+          'South-eastern Asia',
+          'Southern Asia', 'Southern Europe',
+          'Sub-Saharan Africa', 'Western Asia', 'Western Europe')
+dir.create('~/Desktop/world')
+for(i in 1:length(isos)){
+  this_iso <- isos[i]
+  message(i, ' ', this_iso)
+  countries <- world_pop %>% filter(sub_region == this_iso)
+  pd <- df %>%
           group_by(iso) %>%
          filter(max(confirmed_cases) > 0) %>%
-         filter(iso %in% african_isos$iso) %>%
-  mutate(country = ifelse(country == 'Central African Republic', 'C.A.R.', 
-                          ifelse(grepl('Brazza', country), 'Congo, Rep.',
-                                 ifelse(grepl('Kinsha', country), 'Congo, D.R.', 
-                                        ifelse(grepl('Equatorial', country),
-                                               'Equat. Guinea', country)))))
-cols <- colorRampPalette(brewer.pal(n = 8, 'Spectral'))(length(unique(pd$country)))
-cols <- sample(cols, length(cols))
-# Plot
-ggplot(data = pd,
-       aes(x = date,
-           # color = country,
-           # fill = country,
-           y = confirmed_cases)) +
-  theme_simple() +
-  # geom_point() +
-  # geom_line() +
-  geom_area(fill = 'darkred', alpha = 0.3, color = 'darkred') +
-  # scale_color_manual(name = '',
-  #                    values = cols) +
-  # scale_fill_manual(name = '',
-  #                   values = cols) +
-  theme(legend.position = 'none',
-        axis.text = element_text(size = 5),
-        legend.text = element_text(size = 6)) +
-  # scale_y_log10() +
-  facet_wrap(~country,
-             scales = 'free') +
-  labs(x = '',
-       y = 'Confirmed cases',
-       title = 'COVID-19 in Africa')
-ggsave('~/Desktop/africa.pdf',
-       height = 8,
-       width = 12)
-```
-
-
-
-## Latin America
-
-```{r}
-latam_isos <- world_pop %>% filter(sub_region == 'Latin America and the Caribbean')
-pd <- df_country %>%
-          group_by(iso) %>%
-         filter(max(confirmed_cases) > 0) %>%
-         filter(iso %in% latam_isos$iso) 
-cols <- colorRampPalette(brewer.pal(n = 8, 'Spectral'))(length(unique(pd$country)))
-cols <- sample(cols, length(cols))
-# Plot
-ggplot(data = pd,
-       aes(x = date,
-           # color = country,
-           # fill = country,
-           y = confirmed_cases)) +
-  theme_simple() +
-  # geom_point() +
-  # geom_line() +
-  geom_area(fill = 'darkred', alpha = 0.3, color = 'darkred') +
-  # scale_color_manual(name = '',
-  #                    values = cols) +
-  # scale_fill_manual(name = '',
-  #                   values = cols) +
-  theme(legend.position = 'none',
-        axis.text = element_text(size = 5),
-        legend.text = element_text(size = 6)) +
-  # scale_y_log10() +
-  facet_wrap(~country,
-             scales = 'free') +
-  labs(x = '',
-       y = 'Confirmed cases',
-       title = 'COVID-19 in Latin America and the Caribbean')
-ggsave('~/Desktop/latam.pdf',
-       height = 8,
-       width = 12)
-```
-
-
-## Southern Asia
-
-```{r}
-southern_asia_isos <- world_pop %>% filter(sub_region == 'Southern Asia')
-pd <- df_country %>%
-          group_by(iso) %>%
-         filter(max(confirmed_cases) > 0) %>%
-         filter(iso %in% southern_asia_isos$iso) 
+         filter(iso %in% countries$iso)
 cols <- colorRampPalette(brewer.pal(n = 8, 'Spectral'))(length(unique(pd$country)))
 cols <- sample(cols, length(cols))
 # Plot
@@ -1033,54 +960,13 @@ ggplot(data = pd,
              scales = 'free') +
   labs(x = '',
        y = 'Confirmed cases',
-       title = 'COVID-19 in Southern Asia')
-ggsave('~/Desktop/southern_asia.pdf',
-       height = 8,
-       width = 12)
+       title = paste0('Confirmed cases of COVID-19 in ', this_iso)) 
+  ggsave(paste0('~/Desktop/world/', this_iso, '.png'),
+         width = 12, 
+         height = 7)
+}
+
 ```
-
-
-## Eastern Europe
-
-```{r}
-isos <- world_pop %>% filter(sub_region == 'Eastern Europe')
-pd <- df_country %>%
-          group_by(iso) %>%
-         filter(max(confirmed_cases) > 0) %>%
-         filter(iso %in% isos$iso) 
-cols <- colorRampPalette(brewer.pal(n = 8, 'Spectral'))(length(unique(pd$country)))
-cols <- sample(cols, length(cols))
-# Plot
-ggplot(data = pd,
-       aes(x = date,
-           # color = country,
-           # fill = country,
-           y = confirmed_cases)) +
-  theme_simple() +
-  # geom_point() +
-  # geom_line() +
-  geom_area(fill = 'darkred', alpha = 0.3, color = 'darkred') +
-  # scale_color_manual(name = '',
-  #                    values = cols) +
-  # scale_fill_manual(name = '',
-  #                   values = cols) +
-  theme(legend.position = 'none',
-        axis.text = element_text(size = 8),
-        strip.text = element_text(size = 14),
-        legend.text = element_text(size = 6)) +
-  # scale_y_log10() +
-  facet_wrap(~country,
-             scales = 'free',
-             ncol = 5) +
-  labs(x = '',
-       y = 'Confirmed cases',
-       title = 'COVID-19 in Eastern Europe')
-ggsave('~/Desktop/eastern_europe.pdf',
-       height = 8,
-       width = 12)
-```
-
-
 
 
 
