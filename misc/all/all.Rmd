@@ -61,7 +61,7 @@ pd <- esp_df %>%
   summarise(cases = sum(cases),
             uci = sum(uci),
             deaths = sum(deaths),
-            cases_non_cum = sum(confirmed_cases_non_cum),
+            cases_non_cum = sum(cases_non_cum),
             deaths_non_cum = sum(deaths_non_cum),
             uci_non_cum = sum(uci_non_cum)) %>%
   left_join(esp_pop %>%
@@ -121,7 +121,7 @@ b <- ita %>%
   mutate(country = 'Italy')
 # Chinese data
 d <- df %>% filter(country == 'China') %>%
-  mutate(cases = confirmed_cases) %>%
+  mutate(cases = cases) %>%
   mutate(ccaa = district) %>%
   mutate(country = 'China') %>%
   left_join(chi_pop)
@@ -244,7 +244,7 @@ b <- ita %>%
   mutate(country = 'Italy')
 # Chinese data
 d <- df %>% filter(country == 'China') %>%
-  mutate(cases = confirmed_cases) %>%
+  mutate(cases = cases) %>%
   mutate(ccaa = district) %>%
   mutate(country = 'China') %>%
   left_join(chi_pop)
@@ -369,7 +369,7 @@ b <- ita %>%
   mutate(country = 'Italy')
 # Chinese data
 d <- df %>% filter(country == 'China') %>%
-  mutate(cases = confirmed_cases) %>%
+  mutate(cases = cases) %>%
   mutate(ccaa = district) %>%
   mutate(country = 'China') %>%
   left_join(chi_pop)
@@ -924,7 +924,7 @@ for(i in 1:length(isos)){
   countries <- world_pop %>% filter(sub_region == this_iso)
   pd <- df %>%
           group_by(country, iso, date) %>%
-          summarise(cases = sum(confirmed_cases, na.rm = TRUE)) %>%
+          summarise(cases = sum(cases, na.rm = TRUE)) %>%
     ungroup %>%
     group_by(country) %>%
          filter(max(cases) > 0) %>%
@@ -1002,7 +1002,7 @@ roll_curve <- function(data,
   if(deaths){
     pd$var <- pd$deaths_non_cum
   } else {
-    pd$var <- pd$confirmed_cases_non_cum
+    pd$var <- pd$cases_non_cum
   }
   
   if('ccaa' %in% names(pd)){
@@ -1093,8 +1093,21 @@ for(i in 1:length(countries)){
 
 
 ```{r}
+# Cases
 plot_data <- df_country %>% filter(country == 'Spain') %>% mutate(geo = country)
 roll_curve(plot_data)
+
+# Cases adjusted
+plot_data <- df_country %>% filter(country == 'Spain') %>% mutate(geo = country)
+roll_curve(plot_data, pop = T)
+
+# Deaths
+plot_data <- df_country %>% filter(country == 'Spain') %>% mutate(geo = country)
+roll_curve(plot_data, deaths = T)
+
+# Cases adjusted
+plot_data <- df_country %>% filter(country == 'Spain') %>% mutate(geo = country)
+roll_curve(plot_data, pop = T, deaths = T)
 ```
 
 
@@ -1294,7 +1307,7 @@ ggsave('~/Desktop/z.png',
 ```{r}
 pd <- df_country %>%
   group_by(date) %>%
-  summarise(n = sum(confirmed_cases)) %>%
+  summarise(n = sum(cases)) %>%
   filter(date < max(date))
 ggplot(data = pd,
        aes(x = date,
@@ -1316,7 +1329,7 @@ ggsave('~/Videos/update/a.png',
 pd <- df_country %>%
   group_by(date,
            country = ifelse(country == 'China', 'China', 'Other countries')) %>%
-  summarise(n = sum(confirmed_cases))  %>%
+  summarise(n = sum(cases))  %>%
   ungroup %>%
   filter(date < max(date))
 ggplot(data = pd,
@@ -1345,7 +1358,7 @@ ggsave('~/Videos/update/b.png',
 pd <- df_country %>%
   group_by(date,
            country = ifelse(country == 'China', 'China', 'Other countries')) %>%
-  summarise(n = sum(confirmed_cases)) %>%
+  summarise(n = sum(cases)) %>%
   filter(country == 'Other countries')  %>%
   ungroup %>%
   filter(date < max(date))
@@ -1451,16 +1464,16 @@ for(i in 1:length(countries)){
   sub_data <-df_country %>% filter(country == this_country)
   # Only calculate on countries with n_cases_start or greater cases,
   # starting at the first day at n_cases_start or greater
-  ok <- max(sub_data$confirmed_cases, na.rm = TRUE) >= n_cases_start
+  ok <- max(sub_data$cases, na.rm = TRUE) >= n_cases_start
   if(ok){
     counter <- counter + 1
     pd <- sub_data %>%
-      filter(!is.na(confirmed_cases)) %>%
-      mutate(start_date = min(date[confirmed_cases >= n_cases_start])) %>%
+      filter(!is.na(cases)) %>%
+      mutate(start_date = min(date[cases >= n_cases_start])) %>%
       mutate(days_since = date - start_date) %>%
       filter(days_since >= 0) %>%
       mutate(days_since = as.numeric(days_since))
-    fit <- lm(log(confirmed_cases) ~ days_since, data = pd) 
+    fit <- lm(log(cases) ~ days_since, data = pd) 
     # plot(pd$days_since, log(pd$cases))
     # abline(fit)
     ## Slope
@@ -1468,7 +1481,7 @@ for(i in 1:length(countries)){
     
     # Predict days ahead
     fake <- tibble(days_since = seq(0, max(pd$days_since) + 5, by = 1))
-    fake <- left_join(fake, pd %>% dplyr::select(days_since, confirmed_cases, date))
+    fake <- left_join(fake, pd %>% dplyr::select(days_since, cases, date))
     fake$predicted <- exp(predict(fit, newdata = fake))
     
     # Doubling time
@@ -1497,8 +1510,8 @@ joined <- joined %>%
 
 # Make long format
 long <- joined %>% 
-  dplyr::select(date, days_since, country, confirmed_cases, predicted, doubling_time) %>%
-  tidyr::gather(key, value, confirmed_cases:predicted) %>%
+  dplyr::select(date, days_since, country, cases, predicted, doubling_time) %>%
+  tidyr::gather(key, value, cases:predicted) %>%
   mutate(key = Hmisc::capitalize(gsub('_', ' ', key))) %>%
   mutate(key = ifelse(key == 'Predicted', 'Predicted (based on current doubling time)', key))
 ```
@@ -1543,11 +1556,11 @@ Since Italy is "leading the way", it's helpful to also compare each country to I
 ```{r, fig.height = 9}
 # Overlay Italy
 ol1 <- joined %>% filter(!country %in% 'Italy')
-ol2 <- joined %>% filter(country == 'Italy') %>% dplyr::rename(Italy = confirmed_cases) %>%
+ol2 <- joined %>% filter(country == 'Italy') %>% dplyr::rename(Italy = cases) %>%
   dplyr::select(Italy, days_since)
 ol <- left_join(ol1, ol2) %>%
-  dplyr::select(days_since, date, country, confirmed_cases, predicted, Italy,doubling_time)
-ol <- tidyr::gather(ol, key, value, confirmed_cases: Italy) %>%
+  dplyr::select(days_since, date, country, cases, predicted, Italy,doubling_time)
+ol <- tidyr::gather(ol, key, value, cases: Italy) %>%
   mutate(key = Hmisc::capitalize(gsub('_', ' ', key))) %>%
   mutate(key = ifelse(key == 'Predicted', 'Predicted (based on current doubling time)', key))
 
@@ -1951,7 +1964,7 @@ pd <- esp_df %>%
   filter(is.finite(days_since_n_deaths))
 
 pd$country <- pd$ccaa
-pd$confirmed_cases <- pd$cases
+pd$cases <- pd$cases
 countries <- sort(unique(pd$country))
 out_list <- curve_list <-  list()
 counter <- 0
@@ -2374,7 +2387,7 @@ if(remake_world_map){
   
   # Get plotting data
   pd <- df_country %>%
-    dplyr::select(date, lng, lat, n = confirmed_cases)
+    dplyr::select(date, lng, lat, n = cases)
   dates <- sort(unique(pd$date))
   n_days <- length(dates)
   # # Define vectors for projection
@@ -2627,7 +2640,7 @@ make_dot_map(var = 'deaths', point_size = 0.05) +
 #### Absolute number of cases: points
 
 ```{r}
-make_map(var = 'confirmed_cases',
+make_map(var = 'cases',
        points = T) +
   labs(title = 'Number of confirmed cases',
        caption = '@joethebrew')
@@ -2636,7 +2649,7 @@ make_map(var = 'confirmed_cases',
 #### Absolute number of cases: choropleth
 
 ```{r}
-make_map(var = 'confirmed_cases',
+make_map(var = 'cases',
          line_color = 'darkgrey',
        points = F) +
   labs(title = 'Number of confirmed cases',
@@ -2647,7 +2660,7 @@ make_map(var = 'confirmed_cases',
 #### Number of cases adjusted by population: points
 
 ```{r}
-make_map(var = 'confirmed_cases', pop = TRUE, points = T) +
+make_map(var = 'cases', pop = TRUE, points = T) +
   labs(title = 'Number of confirmed cases per 100,000',
        caption = '@joethebrew')
 ```
@@ -2656,7 +2669,7 @@ make_map(var = 'confirmed_cases', pop = TRUE, points = T) +
 #### Number of cases adjusted by population: polygons
 
 ```{r}
-make_map(var = 'confirmed_cases', pop = TRUE, points = F,
+make_map(var = 'cases', pop = TRUE, points = F,
          line_color = 'darkgrey') +
   labs(title = 'Number of confirmed cases per 100,000',
        caption = '@joethebrew')
@@ -2665,7 +2678,7 @@ make_map(var = 'confirmed_cases', pop = TRUE, points = F,
 #### Number of cases: points
 
 ```{r}
-make_dot_map(var = 'confirmed_cases',
+make_dot_map(var = 'cases',
              point_size = 0.05, point_alpha = 0.5, point_factor = 10) +
   labs(title = 'COVID-19 cases: 1 point = 10 cases\nImportant: points are random within each CCAA; do not reflect exact location',
        caption = '@joethebrew')

@@ -55,8 +55,8 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'France', 'US
     pd <- pd %>%
       group_by(iso, 
                geo = ifelse(is.na(district), country, district), date) %>%
-      summarise(confirmed_cases = sum(confirmed_cases),
-                confirmed_cases_non_cum = sum(confirmed_cases_non_cum),
+      summarise(cases = sum(cases),
+                cases_non_cum = sum(cases_non_cum),
                 deaths = sum(deaths),
                 deaths_non_cum = sum(deaths_non_cum)) %>%
       ungroup
@@ -64,8 +64,8 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'France', 'US
     } else {
       pd <- pd %>%
         group_by(iso, geo = country, date) %>%
-        summarise(confirmed_cases = sum(confirmed_cases),
-                  confirmed_cases_non_cum = sum(confirmed_cases_non_cum),
+        summarise(cases = sum(cases),
+                  cases_non_cum = sum(cases_non_cum),
                   deaths = sum(deaths),
                   deaths_non_cum = sum(deaths_non_cum)) %>%
         ungroup
@@ -80,9 +80,9 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'France', 'US
     }
   } else {
     if(cumulative){
-      pd$value <- pd$confirmed_cases
+      pd$value <- pd$cases
     } else {
-      pd$value <- pd$confirmed_cases_non_cum
+      pd$value <- pd$cases_non_cum
     }
   }
   
@@ -278,9 +278,9 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'France', 'US', 'Germa
       geom_hline(yintercept = day0, lty = 2, alpha = 0.7) +
       geom_vline(xintercept = 0, lty = 2, alpha = 0.7) +
       geom_point(data = tibble(days_since_first_day = 0,
-                               confirmed_cases = day0),
+                               cases = day0),
                  aes(x = days_since_first_day,
-                     y = confirmed_cases),
+                     y = cases),
                  color = 'red', 
                  pch = 1,
                  size = 20) 
