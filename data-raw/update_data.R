@@ -142,6 +142,16 @@ have_pop <- c('US', 'Italy', 'Spain', 'China', 'Canada')
 df <- df %>% mutate(country = ifelse(country == 'Mainland China',
                                        'China',
                                        country)) %>%
+  mutate(country = ifelse(country == 'Korea, South', 'South Korea',
+                          ifelse(country == 'Hong Kong SAR', 'Hong Kong',
+                                 ifelse(country == 'Republic of Korea', 'North Korea',
+                                        ifelse(country == 'Macao SAR', 'Macao',
+                                               ifelse(country == 'Czech Republic', 'Czechia',
+                                                      ifelse(country == 'Republic of Moldova', 'Moldova',
+                                                             ifelse(country == 'Russian Federation',
+                                                                    'Russia',
+                                                                    ifelse(country == 'Iran (Islamic Republic of)',
+                                                                           'Iran', country))))))))) %>%
   mutate(district = ifelse(country %in% have_pop,
                                         district,
                                         NA)) %>%
