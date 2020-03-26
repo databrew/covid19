@@ -154,20 +154,26 @@ options(scipen = '999')
 
 ```{r}
 make_map <- function(var = 'deaths',
-                     date = NULL,
+                     data = NULL,
                      pop = FALSE,
                      pop_factor = 100000,
                      points = FALSE,
-                     line_color = 'white'){
-  if(is.null(date)){
-    the_date <- max(esp_df$date)
-  } else {
-    the_date <- date
+                     line_color = 'white',
+                     add_names = T,
+                     add_values = T,
+                     text_size = 2.7){
+  
+  if(is.null(data)){
+    data <- esp_df
   }
+
   left <- espf
-  right <- esp_df[esp_df$date == the_date,c('ccaa', var)]
+  right <- data[,c('ccaa', paste0(var, '_non_cum'))]
+  
 
   names(right)[ncol(right)] <- 'var'
+  right <- right %>% group_by(ccaa) %>% summarise(var = sum(var, na.rm = T))
+  
   if(pop){
     right <- left_join(right, esp_pop)
     right$var <- right$var / right$pop * pop_factor
@@ -207,9 +213,29 @@ make_map <- function(var = 'deaths',
     # scale_fill_viridis(name = '' ,option = 'magma',
     #                    direction = -1) 
   }
+  
+  # Add names?
+  if(add_names){
+    centy <- centroids %>% left_join(right)
+    if(add_values){
+      centy$label <- paste0(centy$ccaa, '\n(', round(centy$var, digits = 2), ')')
+    } else {
+      centy$label <- centy$ccaa
+    }
+
+    g <- g +
+      geom_text(data = centy,
+                aes(x = long,
+                    y = lat,
+                    label = label,
+                    group = ccaa),
+                alpha = 0.7,
+                size = text_size)
+  }
+  
   g +
     theme_map() +
-    labs(subtitle = paste0('Data as of ', max(esp_df$date))) +
+    labs(subtitle = paste0('Data as of ', max(data$date))) +
     theme(legend.position = 'right')
   
 }
@@ -338,7 +364,7 @@ ggsave('high_quality/point_per_death.pdf', width = 8, height = 6)
 #### Absolute number of cases: points
 
 ```{r}
-make_map(var = 'confirmed_cases',
+make_map(var = 'cases',
        points = T) +
   labs(title = 'Number of confirmed cases')
 ggsave('high_quality/points_case_absolute.pdf', width = 8, height = 6)
@@ -348,7 +374,7 @@ ggsave('high_quality/points_case_absolute.pdf', width = 8, height = 6)
 #### Absolute number of cases: choropleth
 
 ```{r}
-make_map(var = 'confirmed_cases',
+make_map(var = 'cases',
          line_color = 'darkgrey',
        points = F) +
   labs(title = 'Number of confirmed cases')
@@ -360,7 +386,7 @@ ggsave('high_quality/polygon_case_absolute.pdf', width = 8, height = 6)
 #### Number of cases adjusted by population: points
 
 ```{r}
-make_map(var = 'confirmed_cases', pop = TRUE, points = T) +
+make_map(var = 'cases', pop = TRUE, points = T) +
   labs(title = 'Number of confirmed cases per 100,000')
 ggsave('high_quality/points_case_adjusted.pdf', width = 8, height = 6)
 
@@ -370,20 +396,53 @@ ggsave('high_quality/points_case_adjusted.pdf', width = 8, height = 6)
 #### Number of cases adjusted by population: polygons
 
 ```{r}
-make_map(var = 'confirmed_cases', pop = TRUE, points = F,
+make_map(var = 'cases', pop = TRUE, points = F,
          line_color = 'darkgrey') +
   labs(title = 'Number of confirmed cases per 100,000')
 ggsave('high_quality/polygons_case_adjusted.pdf', width = 8, height = 6)
 
 ```
 
+
+#### Number of cases adjusted by population: polygons: JUST 7 MOST RECENT DAYS
+
+```{r}
+keep_dates <- as.Date(seq((max(esp_df$date)-6), max(esp_df$date), by = 1))
+data <- esp_df %>% filter(date %in% keep_dates)
+make_map(var = 'cases', data = data, pop = TRUE, points = F,
+         line_color = 'darkgrey') +
+  labs(title = 'Number of confirmed cases per 100,000',
+       caption = paste0('Cumulative incidence over the week from ',
+                        min(keep_dates), ' through ', 
+                        max(keep_dates)))
+ggsave('high_quality/polygons_case_adjusted_week.pdf', width = 8, height = 6)
+
+```
+
 #### Number of cases: points
 
 ```{r}
-make_dot_map(var = 'confirmed_cases',
+make_dot_map(var = 'cases',
              point_size = 0.05, point_alpha = 0.5, point_factor = 10) +
   labs(title = 'COVID-19 cases: 1 point = 10 cases\nImportant: points are random within each CCAA; do not reflect exact location')
 ggsave('high_quality/point_per_10_cases.pdf', width = 8, height = 6)
 
+```
+
+# Numbers for manuscript
+
+Calculate cumulative incidence per 1.000.000 per week
+
+```{r}
+keep_dates <- as.Date(seq((max(esp_df$date)-6), max(esp_df$date), by = 1))
+x <- esp_df %>%
+  filter(date %in% keep_dates) %>%
+  group_by(ccaa) %>%
+  summarise(incident_cases_over_7_days = sum(cases_non_cum)) %>%
+  ungroup %>%
+  left_join(esp_pop) %>%
+  mutate(incident_cases_over_7_days_per_10e4 = (incident_cases_over_7_days / pop) * 10e4) %>%
+  arrange(desc(incident_cases_over_7_days_per_10e4))
+kable(x)
 ```
 
