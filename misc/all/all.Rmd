@@ -39,6 +39,8 @@ library(rnaturalearthdata)
 library(RColorBrewer)
 ```
 
+
+
 ## Madrid vs rest of state
 
 ```{r}
@@ -54,10 +56,11 @@ place_transform_ita <- function(x){
                 'Otras regiones italianas')
   # )
 }
-pd <- esp_df %>%
+pd <- esp_df %>% mutate(country = 'España') %>%
   mutate(ccaa = place_transform(ccaa)) %>%
-  bind_rows(ita %>% mutate(ccaa = place_transform_ita(ccaa))) %>%
-  group_by(ccaa, date) %>% 
+  bind_rows(ita %>% mutate(ccaa = place_transform_ita(ccaa),
+                           country = 'Italia')) %>%
+  group_by(country, ccaa, date) %>% 
   summarise(cases = sum(cases),
             uci = sum(uci),
             deaths = sum(deaths),
@@ -69,7 +72,10 @@ pd <- esp_df %>%
               bind_rows(ita_pop %>% mutate(ccaa = place_transform_ita(ccaa))) %>%
               group_by(ccaa) %>%
               summarise(pop = sum(pop))) %>%
-  mutate(deaths_non_cum_p = deaths_non_cum / pop * 1000000)
+  mutate(deaths_non_cum_p = deaths_non_cum / pop * 1000000) %>%
+  group_by(country, date) %>%
+  mutate(p_deaths_non_cum_country = deaths_non_cum / sum(deaths_non_cum) * 100,
+         p_deaths_country = deaths / sum(deaths) * 100)
 pd$ccaa <- factor(pd$ccaa,
                   levels = c('Madrid',
                              # 'Cataluña',
@@ -105,6 +111,52 @@ ggplot(data = pd,
                 group = ccaa),
             size = 2.5,
             position = position_dodge(width = 0.99))
+
+
+label_data <- pd %>%
+  filter(country  %in% c('Italia', 'España')) %>%
+  group_by(country) %>%
+  filter(date == max(date))  %>%
+  mutate(label = gsub('\nitalianas', '',  gsub(' ', '\n', ccaa))) %>%
+  mutate(x = date - 2,
+         y = p_deaths_country + 
+           ifelse(p_deaths_country > 50, 10, -12))
+ggplot(data = pd %>% group_by(country) %>% mutate(start_day = dplyr::first(date[deaths >=50])) %>% filter(date >= start_day),
+       aes(x = date,
+           y = p_deaths_country,
+           color = ccaa,
+           group = ccaa)) +
+  # geom_bar(stat = 'identity',
+  #          position = position_dodge(width = 0.99)) +
+  scale_fill_manual(name = '', values = cols) +
+  scale_color_manual(name = '', values = cols) +
+  geom_line(size = 2,
+            aes(color = ccaa)) +
+  geom_point(size = 3,
+             aes(color = ccaa)) +
+  facet_wrap(~country, scales = 'free_x') +
+  # xlim(as.Date('2020-03-09'),
+  #      Sys.Date()-1) +
+  theme_simple() +
+  geom_hline(yintercept = 50, lty = 2, alpha = 0.6) +
+  # geom_line(lty = 2, alpha = 0.6) +
+  labs(x = 'Fecha',
+       y = 'Porcentaje de muertes',
+       title = 'Porcentaje de muertes diarias atribuible a la región más afectada vs. resto del país',
+       subtitle = 'A partir del primer día en cada país con 50 o más muertes') +
+  theme(legend.position = 'top',
+        strip.text = element_text(size = 30),
+        legend.text = element_text(size = 10))  +
+  guides(color = guide_legend(nrow = 2,
+                              keywidth = 5)) +
+  geom_text(data = label_data,
+            aes(x = x,
+                y = y,
+                label = label,
+                color = ccaa),
+            size = 7,
+            show.legend = FALSE)
+ggsave('~/Desktop/porcentaje.png')
 ```
 
 ## Italy regions, Spanish regions, Chinese regions (adjusted for population)
@@ -358,7 +410,7 @@ ggsave('~/Desktop/china_spain_italy_comparison_raw.png',
 ## ANIMATION: Italy regions, Spanish regions, Chinese regions (raw numbers, not adjusted for population)
 
 
-```{r, eval = FALSE}
+```{r, eval = F}
 # Spanish data
 a <- esp_df %>%
   left_join(esp_pop) %>%
@@ -567,7 +619,7 @@ convert -delay 20 -loop 0 *.png result.gif
 ## ANIMATION: Spain only
 
 
-```{r, eval = FALSE}
+```{r, eval = F}
 # Spanish data
 a <- esp_df %>%
   left_join(esp_pop) %>%
@@ -927,7 +979,7 @@ for(i in 1:length(isos)){
           summarise(cases = sum(cases, na.rm = TRUE)) %>%
     ungroup %>%
     group_by(country) %>%
-         filter(max(cases) > 0) %>%
+         filter(length(which(cases > 0)) > 1) %>%
     ungroup %>%
          filter(iso %in% countries$iso)
   if(nrow(pd) > 0){
@@ -1157,7 +1209,7 @@ ggplot(data = pd,
                                round(p, digits = 1), '%)')),
             size = text_size * 0.3,
             nudge_y = 180) +
-  ylim(0, 2200)
+  ylim(0, 2500)
 ggsave('~/Desktop/spain.png')
 
 ```
@@ -1202,7 +1254,7 @@ ggplot(data = pd,
                                deaths, '\ndeaths)')),
             size = text_size * 0.3,
             nudge_y = 4.5) +
-  ylim(0, 35)
+  ylim(0, 40)
 ggsave('~/Desktop/spai2.png')
 
 ```
@@ -1695,7 +1747,7 @@ data
 dir.create('~/Desktop/ccaa_predictions')
 
 plot_double_time(data, ylog = T) +
-  labs(subtitle = 'Basic log-linear model weighted at (1 + (1/ days ago)), assuming no change in growth trajectory since first day at >150 deaths')
+  labs(subtitle = 'Basic log-linear model weighted at (1 + (1/ days ago)),\nassuming no change in growth trajectory since first day at >150 deaths')
 ggsave('~/Desktop/ccaa_predictions/spain.png')
 # All ccaas
 ccaas <- sort(unique(esp_df$ccaa))
@@ -2462,22 +2514,27 @@ if(remake_world_map){
 ## Maps of Spain
 
 ```{r}
-
 make_map <- function(var = 'deaths',
-                     date = NULL,
+                     data = NULL,
                      pop = FALSE,
                      pop_factor = 100000,
                      points = FALSE,
-                     line_color = 'white'){
-  if(is.null(date)){
-    the_date <- max(esp_df$date)
-  } else {
-    the_date <- date
+                     line_color = 'white',
+                     add_names = T,
+                     add_values = T,
+                     text_size = 2.7){
+  
+  if(is.null(data)){
+    data <- esp_df
   }
+
   left <- espf
-  right <- esp_df[esp_df$date == the_date,c('ccaa', var)]
+  right <- data[,c('ccaa', paste0(var, '_non_cum'))]
+  
 
   names(right)[ncol(right)] <- 'var'
+  right <- right %>% group_by(ccaa) %>% summarise(var = sum(var, na.rm = T))
+  
   if(pop){
     right <- left_join(right, esp_pop)
     right$var <- right$var / right$pop * pop_factor
@@ -2517,12 +2574,32 @@ make_map <- function(var = 'deaths',
     # scale_fill_viridis(name = '' ,option = 'magma',
     #                    direction = -1) 
   }
+  
+  # Add names?
+  if(add_names){
+    centy <- centroids %>% left_join(right)
+    if(add_values){
+      centy$label <- paste0(centy$ccaa, '\n(', round(centy$var, digits = 2), ')')
+    } else {
+      centy$label <- centy$ccaa
+    }
+
+    g <- g +
+      geom_text(data = centy,
+                aes(x = long,
+                    y = lat,
+                    label = label,
+                    group = ccaa),
+                alpha = 0.7,
+                size = text_size)
+  }
+  
   g +
     theme_map() +
-    labs(subtitle = paste0('Data as of ', max(esp_df$date)))
+    labs(subtitle = paste0('Data as of ', max(data$date))) +
+    theme(legend.position = 'right')
   
 }
-
 
 make_dot_map <- function(var = 'deaths',
                      date = NULL,

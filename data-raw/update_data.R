@@ -229,7 +229,7 @@ if(do_italy_spain){
            date < max(left$date)) # remove any obs AHEAD of ministry data
   joined <- left_join(left, right) %>% bind_rows(add_these)
   df <- df %>%
-    mutate(flag = country == 'Italy' & date %in% joined$date) %>%
+    mutate(flag = (country == 'Italy' & date %in% joined$date) | (country == 'Italy' & date > max(ita$date))) %>%
     filter(!flag) %>% dplyr::select(-flag) %>%
     bind_rows(joined)
   
@@ -237,7 +237,7 @@ if(do_italy_spain){
   left <- esp_df %>% 
     dplyr::rename(district = ccaa) %>%
     mutate(country = 'Spain') %>%
-    dplyr::select(-uci, -comment)
+    dplyr::select( -comment)
   right <- df %>% filter(country == 'Spain') %>%
     dplyr::select(date,country)
   add_these <- df %>% filter(country == 'Spain') %>%
@@ -245,7 +245,7 @@ if(do_italy_spain){
            date < max(left$date)) # remove any obs AHEAD of ministry data
   joined <- left_join(left, right) %>% bind_rows(add_these)
   df <- df %>%
-    mutate(flag = country == 'Spain' & date %in% joined$date) %>%
+    mutate(flag = (country == 'Spain' & date %in% joined$date) | (country == 'Spain' & date > max(esp_df$date))) %>%
     filter(!flag) %>% dplyr::select(-flag) %>%
     bind_rows(joined)
 }

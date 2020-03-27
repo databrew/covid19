@@ -31,7 +31,412 @@ library(dplyr)
 library(ggplot2)
 ylog <- TRUE
 options(scipen = '999')
+library(tidyr)
 ```
+
+
+# FINAL CHARTS FOR PUBLICATION
+
+a) All notified cases in Italy and Spain (cumulative and per day). So the line that shows cases per day is well seen, it would be great if we could make use of both axis (with different scales).
+
+b) All notified deaths in Italy and Spain (cumulative and per day). Both axis
+
+c) All notificed ICU deaths in Italy and Spain (cumulative and per day). Both axis
+
+d) Case notification risk (per 100.000) in Italy and Spain (cumulative and per day)
+
+e) COVID-19 mortality risk (per 100,000) in Italy and Spain (cumulative and per day)
+
+f) COVID-19 ICU admission risk (per 100.000) in Italy and Spain (cumulative and per day).
+
+### A. All notified cases in Italy and Spain (cumulative and per day). So the line that shows cases per day is well seen, it would be great if we could make use of both axis (with different scales).
+
+```{r}
+cols <- c('black', 'red')
+text_size <- 12
+pd <- df %>% filter(country %in% c('Spain','Italy'))
+max_date <- pd %>% group_by(country) %>% summarise(d = max(date)) %>% summarise(d = min(d)) %>% .$d
+pd <- pd %>% left_join(world_pop)
+pd$value <- pd$cases
+pd$value_non_cum <- pd$cases_non_cum
+pd <- pd %>% filter(value > 0,
+                    date <= max_date)
+pd <- pd %>% group_by(country, date) %>%
+  summarise(value = sum(value, na.rm = TRUE),
+            value_non_cum = sum(value_non_cum, na.rm = TRUE))
+
+# Define transofrmer value
+transformer <- ((max(pd$value) /  max(pd$value_non_cum)) )/ 40
+# gather
+pd <- pd %>%
+  mutate(value_non_cum = value_non_cum / transformer) %>%
+  gather(key, value, value:value_non_cum) %>%
+  mutate(key = ifelse(key != 'value', 'Daily', 'Cumulative'))
+
+aa <- ggplot(data = pd,
+       aes(x = date,
+           y = value,
+           color = country,
+           lty = key)) +
+  theme_simple() +
+  geom_line() +
+  labs(x = 'Date',
+       y = 'Cumulative cases',
+       title = 'A',
+       caption = paste0('Data as of ', max(pd$date))) +
+  theme(axis.title = element_text(size = text_size),
+        axis.text = element_text(size = text_size* 0.8)) +
+  geom_text(data = pd %>% filter(date == max(date),
+                                 key == 'Cumulative cases'),
+            aes(x = date,
+                y = value * 1.05,
+                label = scales::comma(round(value, digits = 1))),
+            alpha = 0.7,
+            show.legend = FALSE) +
+  scale_color_manual(name = 'Country', values = cols) +
+  scale_y_continuous(sec.axis = sec_axis(trans = ~ . * transformer,
+                                         name = 'Daily cases')) +
+  scale_linetype_manual(name = 'Confirmed COVID-19 cases', values = c(1,2)) +
+  theme(legend.position = 'top',
+        legend.title = element_text(size = text_size * 1.05, hjust = 0.5),
+        legend.text = element_text(size = text_size * 0.98,
+                                   hjust = 0.5)) +
+  guides(lty = guide_legend(ncol = 1,
+                            title.position = 'top'),
+         color = guide_legend(ncol = 1,
+                              title.position = 'top')) +
+  xlim(as.Date('2020-02-25'),
+       max(pd$date))
+aa
+```
+
+
+## B All notified deaths in Italy and Spain (cumulative and per day). Both axis
+
+```{r}
+cols <- c('black', 'red')
+pd <- df %>% filter(country %in% c('Spain','Italy'))
+max_date <- pd %>% group_by(country) %>% summarise(d = max(date)) %>% summarise(d = min(d)) %>% .$d
+pd <- pd %>% left_join(world_pop)
+pd$value <- pd$deaths
+pd$value_non_cum <- pd$deaths_non_cum
+pd <- pd %>% filter(value > 0,
+                    date <= max_date)
+pd <- pd %>% group_by(country, date) %>%
+  summarise(value = sum(value, na.rm = TRUE),
+            value_non_cum = sum(value_non_cum, na.rm = TRUE))
+
+# Define transofrmer value
+transformer <- ((max(pd$value) /  max(pd$value_non_cum)) )/ 80
+# gather
+pd <- pd %>%
+  mutate(value_non_cum = value_non_cum / transformer) %>%
+  gather(key, value, value:value_non_cum) %>%
+  mutate(key = ifelse(key != 'value', 'Daily', 'Cumulative'))
+
+bb <- ggplot(data = pd,
+       aes(x = date,
+           y = value,
+           color = country,
+           lty = key)) +
+  theme_simple() +
+  geom_line() +
+  labs(x = 'Date',
+       y = 'Cumulative deaths',
+       title = 'B',
+       caption = paste0('Data as of ', max(pd$date))) +
+  theme(axis.title = element_text(size = text_size),
+        axis.text = element_text(size = text_size* 0.8)) +
+  geom_text(data = pd %>% filter(date == max(date),
+                                 key == 'Cumulative deaths'),
+            aes(x = date,
+                y = value * 1.05,
+                label = scales::comma(round(value, digits = 1))),
+            alpha = 0.7,
+            show.legend = FALSE) +
+  scale_color_manual(name = 'Country', values = cols) +
+  scale_y_continuous(sec.axis = sec_axis(trans = ~ . * transformer,
+                                         name = 'Daily deaths')) +
+  scale_linetype_manual(name = 'Confirmed COVID-19 deaths', values = c(1,2)) +
+  theme(legend.position = 'top',
+        legend.title = element_text(size = text_size * 1.05, hjust = 0.5),
+        legend.text = element_text(size = text_size * 0.98,
+                                   hjust = 0.5)) +
+  guides(lty = guide_legend(ncol = 1,
+                            title.position = 'top'),
+         color = guide_legend(ncol = 1,
+                              title.position = 'top')) +
+  xlim(as.Date('2020-02-25'),
+       max(pd$date))
+bb
+```
+
+
+## C. ICU in Italy and Spain cumulative and per day
+
+
+```{r}
+
+cols <- c('black', 'red')
+pd <- df %>% filter(country %in% c('Spain','Italy'))
+max_date <- pd %>% group_by(country) %>% summarise(d = max(date)) %>% summarise(d = min(d)) %>% .$d
+pd <- pd %>% left_join(world_pop)
+pd$value <- pd$uci
+pd$value_non_cum <- pd$uci_non_cum
+pd <- pd %>% filter(value > 0,
+                    date <= max_date)
+pd <- pd %>% group_by(country, date) %>%
+  summarise(value = sum(value, na.rm = TRUE),
+            value_non_cum = sum(value_non_cum, na.rm = TRUE))
+
+# Define transofrmer value
+transformer <- ((max(pd$value) /  max(pd$value_non_cum)) )/ 40
+# gather
+pd <- pd %>%
+  mutate(value_non_cum = value_non_cum / transformer) %>%
+  gather(key, value, value:value_non_cum) %>%
+  mutate(key = ifelse(key != 'value', 'Daily', 'Cumulative'))
+
+cc <- ggplot(data = pd,
+       aes(x = date,
+           y = value,
+           color = country,
+           lty = key)) +
+  theme_simple() +
+  geom_line() +
+  labs(x = 'Date',
+       y = 'Cumulative ICU admissions',
+       title = 'C',
+       caption = paste0('Data as of ', max(pd$date))) +
+  theme(axis.title = element_text(size = text_size),
+        axis.text = element_text(size = text_size* 0.8)) +
+  geom_text(data = pd %>% filter(date == max(date),
+                                 key == 'Cumulative ICU admissions'),
+            aes(x = date,
+                y = value * 1.05,
+                label = scales::comma(round(value, digits = 1))),
+            alpha = 0.7,
+            show.legend = FALSE) +
+  scale_color_manual(name = 'Country', values = cols) +
+  scale_y_continuous(sec.axis = sec_axis(trans = ~ . * transformer,
+                                         name = 'Daily ICU admissions')) +
+  scale_linetype_manual(name = 'COVID-19 ICU admissions', values = c(1,2)) +
+  theme(legend.position = 'top',
+        legend.title = element_text(size = text_size * 1.05, hjust = 0.5),
+        legend.text = element_text(size = text_size * 0.98,
+                                   hjust = 0.5)) +
+  guides(lty = guide_legend(ncol = 1,
+                            title.position = 'top'),
+         color = guide_legend(ncol = 1,
+                              title.position = 'top')) +
+  xlim(as.Date('2020-02-25'),
+       max(pd$date))
+cc
+```
+
+
+## D. Case notification risk (per 100.000) in Italy and Spain (cumulative and per day)
+
+```{r}
+cols <- c('black', 'red')
+pd <- df %>% filter(country %in% c('Spain','Italy'))
+max_date <- pd %>% group_by(country) %>% summarise(d = max(date)) %>% summarise(d = min(d)) %>% .$d
+pd <- pd %>% left_join(world_pop)
+pd$value <- pd$cases / pd$pop * 100000
+pd$value_non_cum <- pd$cases_non_cum / pd$pop * 100000
+pd <- pd %>% filter(value > 0,
+                    date <= max_date)
+pd <- pd %>% group_by(country, date) %>%
+  summarise(value = sum(value, na.rm = TRUE),
+            value_non_cum = sum(value_non_cum, na.rm = TRUE))
+
+# Define transofrmer value
+transformer <- ((max(pd$value) /  max(pd$value_non_cum)) )/ 40
+# gather
+pd <- pd %>%
+  mutate(value_non_cum = value_non_cum / transformer) %>%
+  gather(key, value, value:value_non_cum) %>%
+  mutate(key = ifelse(key != 'value', 'Daily', 'Cumulative'))
+
+dd <- ggplot(data = pd,
+       aes(x = date,
+           y = value,
+           color = country,
+           lty = key)) +
+  theme_simple() +
+  geom_line() +
+  labs(x = 'Date',
+       y = 'Cumulative cases per 100,000',
+       title = 'D',
+       caption = paste0('Data as of ', max(pd$date))) +
+  theme(axis.title = element_text(size = text_size),
+        axis.text = element_text(size = text_size* 0.8)) +
+  geom_text(data = pd %>% filter(date == max(date),
+                                 key == 'Cumulative cases per 100,000'),
+            aes(x = date,
+                y = value * 1.05,
+                label = scales::comma(round(value, digits = 1))),
+            alpha = 0.7,
+            show.legend = FALSE) +
+  scale_color_manual(name = 'Country', values = cols) +
+  scale_y_continuous(sec.axis = sec_axis(trans = ~ . * transformer,
+                                         name = 'Daily cases per 100,000')) +
+  scale_linetype_manual(name = 'Confirmed COVID-19 cases per 100,000', values = c(1,2)) +
+  theme(legend.position = 'top',
+        legend.title = element_text(size = text_size * 1.05, hjust = 0.5),
+        legend.text = element_text(size = text_size * 0.98,
+                                   hjust = 0.5)) +
+  guides(lty = guide_legend(ncol = 1,
+                            title.position = 'top'),
+         color = guide_legend(ncol = 1,
+                              title.position = 'top')) +
+  xlim(as.Date('2020-02-25'),
+       max(pd$date))
+dd
+```
+
+
+## E Mortality risk
+
+```{r}
+cols <- c('black', 'red')
+pd <- df %>% filter(country %in% c('Spain','Italy'))
+max_date <- pd %>% group_by(country) %>% summarise(d = max(date)) %>% summarise(d = min(d)) %>% .$d
+pd <- pd %>% left_join(world_pop)
+pd$value <- pd$deaths / pd$pop * 100000
+pd$value_non_cum <- pd$deaths_non_cum / pd$pop * 100000
+pd <- pd %>% filter(value > 0,
+                    date <= max_date)
+pd <- pd %>% group_by(country, date) %>%
+  summarise(value = sum(value, na.rm = TRUE),
+            value_non_cum = sum(value_non_cum, na.rm = TRUE))
+
+# Define transofrmer value
+transformer <- ((max(pd$value) /  max(pd$value_non_cum)) )/ 70
+# gather
+pd <- pd %>%
+  mutate(value_non_cum = value_non_cum / transformer) %>%
+  gather(key, value, value:value_non_cum) %>%
+  mutate(key = ifelse(key != 'value', 'Daily', 'Cumulative'))
+
+ee <- ggplot(data = pd,
+       aes(x = date,
+           y = value,
+           color = country,
+           lty = key)) +
+  theme_simple() +
+  geom_line() +
+  labs(x = 'Date',
+       y = 'Cumulative deaths per 100,000',
+       title = 'E',
+       caption = paste0('Data as of ', max(pd$date))) +
+  theme(axis.title = element_text(size = text_size),
+        axis.text = element_text(size = text_size* 0.8)) +
+  geom_text(data = pd %>% filter(date == max(date),
+                                 key == 'Cumulative deaths per 100,000'),
+            aes(x = date,
+                y = value * 1.05,
+                label = scales::comma(round(value, digits = 1))),
+            alpha = 0.7,
+            show.legend = FALSE) +
+  scale_color_manual(name = 'Country', values = cols) +
+  scale_y_continuous(sec.axis = sec_axis(trans = ~ . * transformer,
+                                         name = 'Daily deaths per 100,000')) +
+  scale_linetype_manual(name = 'Confirmed COVID-19 deaths per 100,000', values = c(1,2)) +
+  theme(legend.position = 'top',
+        legend.title = element_text(size = text_size * 1.05, hjust = 0.5),
+        legend.text = element_text(size = text_size * 0.98,
+                                   hjust = 0.5)) +
+  guides(lty = guide_legend(ncol = 1,
+                            title.position = 'top'),
+         color = guide_legend(ncol = 1,
+                              title.position = 'top')) +
+  xlim(as.Date('2020-02-25'),
+       max(pd$date))
+ee
+```
+
+
+## F ICU admission risk
+
+
+```{r}
+
+cols <- c('black', 'red')
+pd <- df %>% filter(country %in% c('Spain','Italy'))
+max_date <- pd %>% group_by(country) %>% summarise(d = max(date)) %>% summarise(d = min(d)) %>% .$d
+pd <- pd %>% left_join(world_pop)
+pd$value <- pd$uci / pd$pop * 100000
+pd$value_non_cum <- pd$uci_non_cum / pd$pop * 100000
+pd <- pd %>% filter(value > 0,
+                    date <= max_date)
+pd <- pd %>% group_by(country, date) %>%
+  summarise(value = sum(value, na.rm = TRUE),
+            value_non_cum = sum(value_non_cum, na.rm = TRUE))
+
+# Define transofrmer value
+transformer <- ((max(pd$value) /  max(pd$value_non_cum)) )/ 40
+# gather
+pd <- pd %>%
+  mutate(value_non_cum = value_non_cum / transformer) %>%
+  gather(key, value, value:value_non_cum) %>%
+  mutate(key = ifelse(key != 'value', 'Daily', 'Cumulative'))
+
+ff <- ggplot(data = pd,
+       aes(x = date,
+           y = value,
+           color = country,
+           lty = key)) +
+  theme_simple() +
+  geom_line() +
+  labs(x = 'Date',
+       y = 'Cumulative ICU admissions per 100,000',
+       title = 'F',
+       caption = paste0('Data as of ', max(pd$date))) +
+  theme(axis.title = element_text(size = text_size),
+        axis.text = element_text(size = text_size* 0.8)) +
+  geom_text(data = pd %>% filter(date == max(date),
+                                 key == 'Cumulative ICU admissions per 100,000'),
+            aes(x = date,
+                y = value * 1.05,
+                label = scales::comma(round(value, digits = 1))),
+            alpha = 0.7,
+            show.legend = FALSE) +
+  scale_color_manual(name = 'Country', values = cols) +
+  scale_y_continuous(sec.axis = sec_axis(trans = ~ . * transformer,
+                                         name = 'Daily ICU admissions per 100,000')) +
+  scale_linetype_manual(name = 'COVID-19 ICU admissions per 100,000', values = c(1,2)) +
+  theme(legend.position = 'top',
+        legend.title = element_text(size = text_size * 1.05, hjust = 0.5),
+        legend.text = element_text(size = text_size * 0.98,
+                                   hjust = 0.5)) +
+  guides(lty = guide_legend(ncol = 1,
+                            title.position = 'top'),
+         color = guide_legend(ncol = 1,
+                              title.position = 'top')) +
+  xlim(as.Date('2020-02-25'),
+       max(pd$date))
+ff
+```
+
+```{r, fig.height = 9, fig.width = 12}
+pdf('6panelforpublication.pdf',
+    height =12, 
+    width = 12)
+small_text_size = 7
+Rmisc::multiplot(aa, bb, cc, 
+                 dd, ee, ff,
+                 layout = matrix(1:6, nrow = 3, byrow = T)) 
+dev.off()
+```
+
+
+
+
+
+
+# OLD CHARTS
+
 
 
 ## Linear-scale charts
@@ -42,7 +447,7 @@ options(scipen = '999')
 text_size <- 20
 pd <- df %>% filter(country == 'Spain')
 pd <- pd %>% left_join(world_pop)
-pd$value <- pd$confirmed_cases
+pd$value <- pd$cases
 pd <- pd %>% filter(value > 0)
 pd <- pd %>% group_by(country, date) %>%
   summarise(value = sum(value, na.rm = TRUE))
@@ -58,7 +463,7 @@ g1 <- ggplot(data = pd,
        title = 'Spain: Confirmed COVID-19 cases',
        subtitle = paste0('Data as of ', max(pd$date))) +
   theme(axis.title = element_text(size = text_size),
-        axis.text = element_text(size = text_size)) +
+        axis.text = element_text(size = text_size* 0.8)) +
   geom_text(data = pd %>% filter(date == max(date)),
             aes(x = date - 3,
                 y = value,
@@ -78,7 +483,7 @@ Comparison with Italy
 text_size <- 20
 pd <- df %>% filter(country %in% c('Italy', 'Spain'))
 pd <- pd %>% left_join(world_pop)
-pd$value <- pd$confirmed_cases
+pd$value <- pd$cases
 pd <- pd %>% filter(value > 0)
 pd <- pd %>% group_by(country, date) %>%
   summarise(value = sum(value, na.rm = TRUE))
@@ -93,7 +498,7 @@ g1x <- ggplot(data = pd,
        title = 'Confirmed COVID-19 cases',
        subtitle = paste0('Data as of ', max(pd$date))) +
   theme(axis.title = element_text(size = text_size),
-        axis.text = element_text(size = text_size)) +
+        axis.text = element_text(size = text_size* 0.8)) +
   geom_text(data = pd %>% filter(date == max(date)),
             aes(x = date - 3,
                 y = value,
@@ -133,7 +538,7 @@ g2 <- ggplot(data = pd,
        title = 'Spain: Confirmed COVID-19 deaths',
        subtitle = paste0('Data as of ', max(pd$date))) +
   theme(axis.title = element_text(size = text_size),
-        axis.text = element_text(size = text_size)) +
+        axis.text = element_text(size = text_size* 0.8)) +
   geom_text(data = pd %>% filter(date == max(date)),
             aes(x = date,
                 y = value - ifelse(ylog, 1000, 300),
@@ -171,7 +576,7 @@ g2x <- ggplot(data = pd,
        title = 'Confirmed COVID-19 deaths',
        subtitle = paste0('Data as of ', max(pd$date))) +
   theme(axis.title = element_text(size = text_size),
-        axis.text = element_text(size = text_size)) +
+        axis.text = element_text(size = text_size* 0.8)) +
   geom_text(data = pd %>% filter(date == max(date)),
             aes(x = date - 2,
                 y = value,
@@ -192,7 +597,7 @@ text_size <- 20
 
 pd <- df %>% filter(country == 'Spain')
 pd <- pd %>% left_join(world_pop)
-pd$value <- pd$confirmed_cases / pd$pop * 100000
+pd$value <- pd$cases / pd$pop * 100000
 pd <- pd %>% filter(value > 0)
 pd <- pd %>% group_by(country, date) %>%
   summarise(value = sum(value, na.rm = TRUE))
@@ -208,7 +613,7 @@ g3 <- ggplot(data = pd,
        title = 'Spain: Confirmed COVID-19 cases per 100,000 population',
        subtitle = paste0('Data as of ', max(pd$date))) +
   theme(axis.title = element_text(size = text_size),
-        axis.text = element_text(size = text_size)) +
+        axis.text = element_text(size = text_size* 0.8)) +
   geom_text(data = pd %>% filter(date == max(date)),
             aes(x = date,
                 y = value - ifelse(ylog, 40, 10),
@@ -228,7 +633,7 @@ text_size <- 20
 
 pd <- df %>% filter(country %in% c('Spain', 'Italy'))
 pd <- pd %>% left_join(world_pop)
-pd$value <- pd$confirmed_cases / pd$pop * 100000
+pd$value <- pd$cases / pd$pop * 100000
 pd <- pd %>% filter(value > 0)
 pd <- pd %>% group_by(country, date) %>%
   summarise(value = sum(value, na.rm = TRUE))
@@ -244,7 +649,7 @@ g3x <- ggplot(data = pd,
        title = 'Confirmed COVID-19 cases per 100,000 population',
        subtitle = paste0('Data as of ', max(pd$date))) +
   theme(axis.title = element_text(size = text_size),
-        axis.text = element_text(size = text_size)) +
+        axis.text = element_text(size = text_size* 0.8)) +
   geom_text(data = pd %>% filter(date == max(date)),
             aes(x = date +2,
                 y = value,
@@ -285,7 +690,7 @@ g4 <- ggplot(data = pd,
        title = 'Spain: Confirmed COVID-19 deaths per 100,000 population',
        subtitle = paste0('Data as of ', max(pd$date))) +
   theme(axis.title = element_text(size = text_size),
-        axis.text = element_text(size = text_size)) +
+        axis.text = element_text(size = text_size* 0.8)) +
   geom_text(data = pd %>% filter(date == max(date)),
             aes(x = date -1,
                 y = value,
@@ -321,7 +726,7 @@ g4x <- ggplot(data = pd,
        title = 'Confirmed COVID-19 deaths per 100,000 population',
        subtitle = paste0('Data as of ', max(pd$date))) +
   theme(axis.title = element_text(size = text_size),
-        axis.text = element_text(size = text_size)) +
+        axis.text = element_text(size = text_size* 0.8)) +
   geom_text(data = pd %>% filter(date == max(date)),
             aes(x = date -1,
                 y = value,
@@ -345,7 +750,7 @@ pd <- esp_df %>% mutate(iso = 'ESP') %>% #bind_rows(ita %>% mutate(iso = 'ITA'))
   group_by(iso, date) %>%
   summarise(uci = sum(uci),
             deaths = sum(deaths),
-            cases = sum(confirmed_cases))
+            cases = sum(cases))
 pd <- pd %>% left_join(world_pop)
 pd$value <- pd$uci # /pd$pop * 100000
 pd <- pd %>% filter(value > 0)
@@ -363,7 +768,7 @@ g5 <- ggplot(data = pd,
        title = 'Spain: COVID-19 UCI admissions',
        subtitle = paste0('Data as of ', max(pd$date))) +
   theme(axis.title = element_text(size = text_size),
-        axis.text = element_text(size = text_size)) +
+        axis.text = element_text(size = text_size* 0.8)) +
   geom_text(data = pd %>% filter(date == max(date)),
             aes(x = date - 1,
                 y = value,
@@ -386,7 +791,7 @@ pd <- esp_df %>% mutate(iso = 'ESP') %>% bind_rows(ita %>% mutate(iso = 'ITA')) 
   group_by(iso, date) %>%
   summarise(uci = sum(uci),
             deaths = sum(deaths),
-            cases = sum(confirmed_cases))
+            cases = sum(cases))
 pd <- pd %>% left_join(world_pop)
 pd$value <- pd$uci # /pd$pop * 100000
 pd <- pd %>% filter(value > 0, !is.na(value))
@@ -403,7 +808,7 @@ g5x <- ggplot(data = pd,
        title = 'COVID-19 UCI admissions',
        subtitle = paste0('Data as of ', max(pd$date))) +
   theme(axis.title = element_text(size = text_size),
-        axis.text = element_text(size = text_size)) +
+        axis.text = element_text(size = text_size* 0.8)) +
   geom_text(data = pd %>% filter(date == max(date)),
             aes(x = date -1,
                 y = value,
@@ -424,7 +829,7 @@ pd <- esp_df %>% mutate(iso = 'ESP') %>% #bind_rows(ita %>% mutate(iso = 'ITA'))
   group_by(iso, date) %>%
   summarise(uci = sum(uci),
             deaths = sum(deaths),
-            cases = sum(confirmed_cases))
+            cases = sum(cases))
 pd <- pd %>% left_join(world_pop)
 pd$value <- pd$uci /pd$pop * 100000
 pd <- pd %>% filter(value > 0)
@@ -442,7 +847,7 @@ g6 <- ggplot(data = pd,
        title = 'Spain: COVID-19 UCI admissions per 100,000',
        subtitle = paste0('Data as of ', max(pd$date))) +
   theme(axis.title = element_text(size = text_size),
-        axis.text = element_text(size = text_size)) +
+        axis.text = element_text(size = text_size* 0.8)) +
   geom_text(data = pd %>% filter(date == max(date)),
             aes(x = date - 1,
                 y = value,
@@ -465,7 +870,7 @@ pd <- esp_df %>% mutate(iso = 'ESP') %>% bind_rows(ita %>% mutate(iso = 'ITA')) 
   group_by(iso, date) %>%
   summarise(uci = sum(uci),
             deaths = sum(deaths),
-            cases = sum(confirmed_cases))
+            cases = sum(cases))
 pd <- pd %>% left_join(world_pop)
 pd$value <- pd$uci / pd$pop * 100000
 pd <- pd %>% filter(value > 0, !is.na(value))
@@ -482,7 +887,7 @@ g6x <- ggplot(data = pd,
        title = 'COVID-19 UCI admissions per 100,000 population',
        subtitle = paste0('Data as of ', max(pd$date))) +
   theme(axis.title = element_text(size = text_size),
-        axis.text = element_text(size = text_size)) +
+        axis.text = element_text(size = text_size* 0.8)) +
   geom_text(data = pd %>% filter(date == max(date)),
             aes(x = date -1,
                 y = value,
@@ -500,12 +905,12 @@ g6x
 ```{r}
 text_size <- 12
 pd <- esp_df %>% mutate(iso = 'ESP',
-                        cases_non_cum = confirmed_cases_non_cum) %>% bind_rows(ita %>% mutate(iso = 'ITA') %>% mutate(confirmed_cases = cases))
+                        cases_non_cum = cases_non_cum) %>% bind_rows(ita %>% mutate(iso = 'ITA') %>% mutate(cases = cases))
   
 pd <- pd %>% group_by(iso, date) %>%
   summarise(uci = sum(uci, na.rm = TRUE),
             deaths = sum(deaths, na.rm = TRUE),
-            cases = sum(confirmed_cases, na.rm = TRUE),
+            cases = sum(cases, na.rm = TRUE),
             uci_non_cum = sum(uci_non_cum, na.rm = TRUE),
             deaths_non_cum = sum(deaths_non_cum, na.rm = TRUE),
             cases_non_cum = sum(cases_non_cum, na.rm = TRUE)) %>%
