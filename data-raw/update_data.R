@@ -4,10 +4,26 @@
 # Pull from JHU
 system('cd ../../COVID-19; pwd; git pull;')
 
+# Pull from ibesora's webscraping app
+system('cd ../../covid-19-data; pwd; git pull;')
+
 library(dplyr)
 library(readr)
 library(tidyr)
 library(readxl)
+
+# Get ibesora's data (from acquas application)
+the_dir <- '../../covid-19-data/'
+csvs <- dir(the_dir)
+csvs <- csvs[grepl('.csv', csvs, fixed = T)]
+if(file.exists('catalonia.csv')){
+  data_list <- list()
+  for(i in 1:length(csvs)){
+    data <- read_csv(paste0(the_dir, csvs[i])) %>%
+      mutate(file_name = gsub('.csv', '', csvs[i], fixed = TRUE))
+    data_list[[i]] <- data
+  }
+}
 
 # Get world populationd data
 world_pop <- read_csv('unpop/API_SP.POP.TOTL_DS2_en_csv_v2_866861.csv',
@@ -153,6 +169,7 @@ df <- df %>% mutate(country = ifelse(country == 'Mainland China',
                                                                     ifelse(country == 'Iran (Islamic Republic of)',
                                                                            'Iran', country))))))))) %>%
   mutate(country = ifelse(country == 'Gambia, The', 'Gambia', country)) %>%
+  mutate(country = ifelse(country == 'UK', 'United Kingdom', country)) %>%
   mutate(district = ifelse(country %in% have_pop,
                                         district,
                                         NA)) %>%

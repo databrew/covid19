@@ -97,7 +97,7 @@ date,country,cases,deaths,iso
 2020-03-27,Iraq,458,40,IRQ
 2020-03-27,Ireland,2121,22,IRL
 2020-03-27,Israel,3035,12,ISR
-2020-03-27,Italy,86498,9134,ITA
+2020-03-28,Italy,92472,10023,ITA
 2020-01-27,Ivory Coast,1,0,CIV
 2020-03-27,Jamaica,26,1,JAM
 2020-03-27,Japan,1468,49,JPN
@@ -202,7 +202,6 @@ date,country,cases,deaths,iso
 2020-03-27,Tunisia,227,6,TUN
 2020-03-27,Turkey,5698,92,TUR
 2020-03-27,Uganda,23,0,UGA
-2020-03-10,UK,382,6,GBR
 2020-03-27,Ukraine,310,5,UKR
 2020-03-27,United Arab Emirates,405,2,ARE
 2020-03-27,United Kingdom,14745,761,GBR
