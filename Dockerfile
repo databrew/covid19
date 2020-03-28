@@ -14,6 +14,7 @@ RUN apt-get update \
             software-properties-common
 
 # https://cloud.r-project.org/bin/linux/ubuntu/README
+# http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xe298a3a825c0d65dfd57cbb651716619e084dab9o
 
 # Install repo keys
 RUN apt-key adv \
@@ -24,13 +25,29 @@ RUN apt-key adv \
 RUN add-apt-repository \
     'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/'
 
-# Install dependencies
+# Install R and R library dependencies
 RUN apt-get update \
     && apt-get install \
         --assume-yes \
         --no-install-recommends \
             r-base \
             r-base-dev \
+            curl \
+            libcurl4-openssl-dev \
+            libxml2-dev \
+            libgdal-dev \
     && rm -rf /var/lib/apt/lists/*
+
+# Copy project files to /srv
+COPY . /srv
+WORKDIR /srv
+
+# Install packrat
+RUN R \
+    -e 'install.packages(c("packrat"))'
+
+# Install app dependencies via packrat
+RUN R \
+    -e 'packrat::restore()'
 
 #ENTRYPOINT ["/entrypoint.py"]
