@@ -39,12 +39,212 @@ library(rnaturalearthdata)
 library(RColorBrewer)
 ```
 
+## Deaths yesterday
 
+```{r}
+pd <- df_country
+pd$value <- pd$deaths_non_cum
+pd <- pd %>%
+  filter(date == max(date)) %>%
+  dplyr::select(country, iso, cases, cases_non_cum,
+                deaths, value) %>%
+  dplyr::arrange(desc(value)) %>%
+  left_join(world_pop %>% dplyr::select(-country)) %>%
+  mutate(value_per_million = value / pop * 1000000) #%>% 
+  # arrange(desc(value_per_million))
+pd <- pd[1:10,]
+pd$country <- factor(pd$country, levels = pd$country)
+ggplot(data = pd,
+       aes(x = country,
+           y = value)) +
+  geom_bar(stat = 'identity',
+           fill = 'black') +
+  theme_simple() +
+  geom_text(aes(label = value),
+            nudge_y = -20,
+            size = 4,
+            color = 'white')
+pd
+
+```
+
+Deaths per million yesterday per CCAA
+
+```{r}
+pd <- esp_df
+pd$value <- pd$deaths_non_cum
+pd <- pd %>%
+  filter(date == max(date)) %>%
+  dplyr::select(ccaa, cases, cases_non_cum,
+                deaths, value) %>%
+  dplyr::arrange(desc(value)) %>%
+  left_join(esp_pop)%>%
+  mutate(value_per_million = value / pop * 1000000) #%>% 
+  # arrange(desc(value_per_million))
+pd <- pd[1:10,]
+pd$country <- factor(pd$country, levels = pd$country)
+ggplot(data = pd,
+       aes(x = country,
+           y = value)) +
+  geom_bar(stat = 'identity',
+           fill = 'black') +
+  theme_simple() +
+  geom_text(aes(label = value),
+            nudge_y = -20,
+            size = 4,
+            color = 'white')
+pd
+```
+
+## Deaths yesterday animation
+
+```{r, eval = T}
+dir.create('~/Desktop/animation_deaths')
+dates <- seq(as.Date('2020-03-17'), (Sys.Date()-1), by = 1)
+for(i in 1:length(dates)){
+  this_date <- dates[i]
+  pd <- df_country
+  pd$value <- pd$deaths_non_cum
+  pd <- pd %>%
+    filter(date == max(this_date)) %>%
+    dplyr::select(country, cases, cases_non_cum,
+                  deaths, value) %>%
+    dplyr::arrange(desc(value))
+  pd <- pd[1:10,]
+  pd <- pd %>% filter(value > 0)
+  pd$country <- gsub(' ', '\n', pd$country)
+  pd$country <- factor(pd$country, levels = pd$country)
+  pd$color_var <- pd$country == 'Spain'
+  if('Spain' %in% pd$country){
+    cols <- rev(c('darkred', 'black'))
+  } else {
+    cols <- 'black'
+  }
+  g <- ggplot(data = pd,
+         aes(x = country,
+             y = value)) +
+    geom_bar(stat = 'identity',
+             aes(fill = color_var),
+             alpha = 0.8,
+             show.legend = FALSE) +
+    theme_simple() +
+    geom_text(aes(label = value),
+              nudge_y = max(pd$value) * .05,
+              size = 5,
+              color = 'black') +
+    labs(title = 'Daily (non-cumulative) COVID-19 deaths',
+         subtitle = format(this_date, '%B %d')) +
+    labs(x = 'Country',
+         y = 'Deaths') +
+    theme(axis.text = element_text(size = 15),
+          plot.subtitle = element_text(size = 20)) +
+    scale_fill_manual(name ='',
+                      values = cols) +
+    ylim(0, 900)
+  ggsave(filename = paste0('~/Desktop/animation_deaths/', this_date, '.png'),
+         g)
+}
+# Command line
+```
+
+```
+cd ~/Desktop/animation_deaths
+mogrify -resize 50% *.png
+convert -delay 50 -loop 0 *.png result.gif
+```
+
+## Heatmap
+
+```{r}
+pd <- by_country <-  esp_df %>% mutate(country = 'Spain') %>%  bind_rows(ita %>% mutate(country = 'Italy'))
+pd$value <- pd$deaths_non_cum
+max_date <- pd %>% group_by(country) %>% summarise(d = max(date)) %>% ungroup %>% summarise(d = min(d)) %>% .$d
+# pd$value <- ifelse(is.na(pd$value), 0, pd$value)
+left <- expand.grid(date = seq(min(pd$date),
+                               max(pd$date),
+                               by = 1),
+                    ccaa = sort(unique(pd$ccaa)))
+right <- pd %>% dplyr::select(date, ccaa, value)
+pd <- left_join(left, right) %>% mutate(value = ifelse(is.na(value), NA, value))
+pd <- left_join(pd, by_country %>% dplyr::distinct(country, ccaa)) %>%
+  filter(date <= max_date) %>%
+  filter(value > 0)
+the_limits <- c(1, 600)
+the_breaks <- c(1, seq(100, 600, length = 6)) #seq(0, 600, length = 7)
+pd$ccaa <- factor(pd$ccaa, levels = rev(unique(sort(pd$ccaa))))
+ggplot(data = pd,
+       aes(x = date,
+           y = ccaa,
+           color = value,
+           size = value)) +
+  # geom_tile(color = 'white') +
+  geom_point(alpha = 0.8) +
+  scale_color_gradientn(colors = rev(colorRampPalette(brewer.pal(n = 8, 'Spectral'))(5)),
+                        name = '',
+                        limits = the_limits,
+                        breaks = the_breaks) +
+  scale_size_area(name = '', limits = the_limits, breaks = the_breaks, max_size = 10) +
+  theme_simple() +
+  facet_wrap(~country, scales = 'free') +
+  theme(strip.text = element_text(size = 26),
+        axis.title = element_blank(),
+        axis.text = element_text(size = 16)) +
+  guides(color = guide_legend(), size = guide_legend()) +
+  labs(title = 'Daily (non-cumulative) COVID-19 deaths by sub-state regions',
+       caption = paste0('Data as of ', max_date))
+ggsave('/tmp/1.png')
+```
+
+
+
+
+## Heatmap per population
+
+```{r}
+pd <- by_country <-  esp_df %>% mutate(country = 'Spain') %>%  bind_rows(ita %>% mutate(country = 'Italy'))
+poppy <- bind_rows(ita_pop, esp_pop)
+pd <- pd %>% left_join(poppy)
+pd$value <- pd$deaths_non_cum / pd$pop * 1000000
+max_date <- pd %>% group_by(country) %>% summarise(d = max(date)) %>% ungroup %>% summarise(d = min(d)) %>% .$d
+# pd$value <- ifelse(is.na(pd$value), 0, pd$value)
+left <- expand.grid(date = seq(min(pd$date),
+                               max(pd$date),
+                               by = 1),
+                    ccaa = sort(unique(pd$ccaa)))
+right <- pd %>% dplyr::select(date, ccaa, value)
+pd <- left_join(left, right) %>% mutate(value = ifelse(is.na(value), NA, value))
+pd <- left_join(pd, by_country %>% dplyr::distinct(country, ccaa)) %>%
+  filter(date <= max_date) %>%
+  filter(value > 0)
+the_limits <- c(1, 60)
+the_breaks <- c(1, seq(10, 60, length = 6)) #seq(0, 600, length = 7)
+pd$ccaa <- factor(pd$ccaa, levels = rev(unique(sort(pd$ccaa))))
+ggplot(data = pd,
+       aes(x = date,
+           y = ccaa,
+           color = value,
+           size = value)) +
+  # geom_tile(color = 'white') +
+  geom_point(alpha = 0.8) +
+  scale_color_gradientn(colors = rev(colorRampPalette(brewer.pal(n = 8, 'Spectral'))(5)),
+                        name = '',
+                        limits = the_limits,
+                        breaks = the_breaks) +
+  scale_size_area(name = '', limits = the_limits, breaks = the_breaks, max_size = 10) +
+  theme_simple() +
+  facet_wrap(~country, scales = 'free') +
+  theme(strip.text = element_text(size = 26),
+        axis.title = element_blank(),
+        axis.text = element_text(size = 16)) +
+  guides(color = guide_legend(), size = guide_legend()) +
+  labs(title = 'Daily COVID-19 deaths per 1,000,000 population by sub-state regions',
+       caption = paste0('Data as of ', max_date))
+ggsave('/tmp/2.png')
+```
 
 ## Madrid vs rest of state
 
 ```{r}
-library(RColorBrewer)
 place_transform <- function(x){ifelse(x == 'Madrid', 'Madrid',
                                       # ifelse(x == 'Cataluña', 'Cataluña',
                                              'Otras CCAA')
@@ -1209,7 +1409,7 @@ ggplot(data = pd,
                                round(p, digits = 1), '%)')),
             size = text_size * 0.3,
             nudge_y = 180) +
-  ylim(0, 2500)
+  ylim(0, max(pd$deaths * 1.1))
 ggsave('~/Desktop/spain.png')
 
 ```
@@ -1254,8 +1454,94 @@ ggplot(data = pd,
                                deaths, '\ndeaths)')),
             size = text_size * 0.3,
             nudge_y = 4.5) +
-  ylim(0, 40)
+  ylim(0, max(pd$value) * 1.2)
 ggsave('~/Desktop/spai2.png')
+
+```
+
+
+# Just yesterday
+
+```{r}
+
+# Latest in Spain
+pd <- esp_df %>%
+  filter(date == max(date)) %>%
+  mutate(p = deaths_non_cum / sum(deaths_non_cum) * 100)
+text_size <- 12
+
+# deaths
+ggplot(data = pd,
+       aes(x = ccaa,
+           y = deaths_non_cum)) +
+  geom_bar(stat = 'identity',
+           fill = 'black') +
+  theme_simple() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+  labs(x = '',
+       y = 'Deaths',
+       title = 'COVID-19 deaths in Spain',
+       subtitle = paste0('Data only for ', max(pd$date)),
+       caption = 'github.com/databrew/covid19 | joe@databrew.cc') +
+  theme(legend.position = 'top',
+        legend.text = element_text(size = text_size * 2),
+        axis.title = element_text(size = text_size * 2),
+        plot.title = element_text(size = text_size * 2.3),
+        axis.text.x = element_text(size = text_size * 1.5)) +
+  geom_text(data = pd %>% filter(deaths_non_cum > 0),
+            aes(x = ccaa,
+                y = deaths_non_cum,
+                label = paste0(deaths_non_cum, '\n(',
+                               round(p, digits = 1), '%)')),
+            size = text_size * 0.3,
+            nudge_y = 30) +
+  ylim(0, max(pd$deaths_non_cum * 1.1))
+ggsave('~/Desktop/spain_non_cum.png')
+
+```
+
+
+Muertes relativas por CCAA ayer SOLO
+
+
+```{r}
+
+# Latest in Spain
+pd <- esp_df %>%
+  filter(date == max(date)) %>%
+  mutate(p = deaths_non_cum / sum(deaths_non_cum) * 100)
+
+pd <- pd %>% left_join(esp_pop)
+text_size <- 12
+pd$value <- pd$deaths_non_cum / pd$pop * 100000
+
+# deaths
+ggplot(data = pd,
+       aes(x = ccaa,
+           y = value)) +
+  geom_bar(stat = 'identity',
+           fill = 'black') +
+  theme_simple() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+  labs(x = '',
+       y = 'Deaths per 100,000',
+       title = 'COVID-19 deaths per 100.000',
+       subtitle = paste0('Data as of ', max(pd$date)),
+       caption = 'github.com/databrew/covid19 | joe@databrew.cc') +
+  theme(legend.position = 'top',
+        legend.text = element_text(size = text_size * 2),
+        axis.title = element_text(size = text_size * 2),
+        plot.title = element_text(size = text_size * 2.3),
+        axis.text.x = element_text(size = text_size * 1.5)) +
+  geom_text(data = pd %>% filter(value > 0),
+            aes(x = ccaa,
+                y = value,
+                label = paste0(round(value, digits = 2), '\n(',
+                               deaths_non_cum, '\ndeaths)')),
+            size = text_size * 0.3,
+            nudge_y = 1) +
+  ylim(0, max(pd$value) * 1.3)
+ggsave('~/Desktop/spain_ayer_adj.png')
 
 ```
 

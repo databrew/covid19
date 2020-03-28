@@ -506,6 +506,16 @@ dd
 ## D.ii. Case notification risk (per 100.000) in Italy and Spain (cumulative and per day)
 
 ```{r}
+make_day_zero_var <- function(x, start_value = 1, start_var = 'cases'){
+  x$start_var <- as.numeric(unlist(x[,start_var]))
+  x <- x %>%
+    arrange(date) %>%
+    group_by(country) %>%
+    mutate(day0 = min(date[start_var >= start_value])) %>%
+    mutate(date = as.numeric(date - day0))
+}
+
+
 cols <- c('black', 'red')
 pd <- df %>% filter(country %in% c('Spain','Italy'))
 max_date <- pd %>% group_by(country) %>% summarise(d = max(date)) %>% summarise(d = min(d)) %>% .$d
@@ -515,7 +525,7 @@ pd$value_non_cum <- pd$cases_non_cum / pd$pop * 100000
 pd <- pd %>% filter(value > 0,
                     date <= max_date)
 pd <- pd %>% 
-  make_day_zero() %>%
+  make_day_zero_var(start_var = 'cases') %>%
   group_by(country, date) %>%
   summarise(value = sum(value, na.rm = TRUE),
             value_non_cum = sum(value_non_cum, na.rm = TRUE))
@@ -536,7 +546,7 @@ ddii <- ggplot(data = pd,
            lty = key)) +
   theme_simple() +
   geom_line() +
-  labs(x = 'Days since first day at >1 cumulative case per 100,000',
+  labs(x = 'Days since first case',
        y = 'Cumulative cases per 100,000',
        title = 'B',
        caption = paste0('Data as of ',max_date)) +
@@ -643,13 +653,13 @@ pd$value_non_cum <- pd$deaths_non_cum / pd$pop * 100000
 pd <- pd %>% filter(value > 0,
                     date <= max_date)
 pd <- pd %>% 
-  make_day_zero() %>%
+  make_day_zero_var(start_var = 'deaths') %>%
   group_by(country, date) %>%
   summarise(value = sum(value, na.rm = TRUE),
             value_non_cum = sum(value_non_cum, na.rm = TRUE))
 
 # Define transofrmer value
-transformer <- ((max(pd$value) /  max(pd$value_non_cum)) )/ 70
+transformer <- ((max(pd$value) /  max(pd$value_non_cum)) )/ 40
 # gather
 pd <- pd %>%
   mutate(value_non_cum = value_non_cum / transformer) %>%
@@ -664,7 +674,7 @@ eeii <- ggplot(data = pd,
            lty = key)) +
   theme_simple() +
   geom_line() +
-  labs(x = 'Days since first day at >1 daily death per 100,000',
+  labs(x = 'Days since first death',
        y = 'Cumulative deaths per 100,000',
        title = 'D',
        caption = paste0('Data as of ', max_date)) +
@@ -762,7 +772,6 @@ ff
 
 
 ```{r}
-
 cols <- c('black', 'red')
 pd <- df %>% filter(country %in% c('Spain','Italy'))
 max_date <- pd %>% group_by(country) %>% summarise(d = max(date)) %>% summarise(d = min(d)) %>% .$d
@@ -772,7 +781,7 @@ pd$value_non_cum <- pd$uci_non_cum / pd$pop * 100000
 pd <- pd %>% filter(value > 0,
                     date <= max_date)
 pd <- pd %>% 
-  make_day_zero() %>%
+  make_day_zero_var(start_var = 'uci') %>%
   group_by(country, date) %>%
   summarise(value = sum(value, na.rm = TRUE),
             value_non_cum = sum(value_non_cum, na.rm = TRUE))
@@ -793,7 +802,7 @@ ffii <- ggplot(data = pd,
            lty = key)) +
   theme_simple() +
   geom_line() +
-  labs(x = 'Days since first day at >1 ICU admission per 100,000',
+  labs(x = 'Days since first ICU admission',
        y = 'Cumulative ICU admissions per 100,000',
        title = 'F',
        caption = paste0('Data as of ', max_date)) +

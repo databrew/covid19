@@ -152,6 +152,7 @@ df <- df %>% mutate(country = ifelse(country == 'Mainland China',
                                                                     'Russia',
                                                                     ifelse(country == 'Iran (Islamic Republic of)',
                                                                            'Iran', country))))))))) %>%
+  mutate(country = ifelse(country == 'Gambia, The', 'Gambia', country)) %>%
   mutate(district = ifelse(country %in% have_pop,
                                         district,
                                         NA)) %>%
