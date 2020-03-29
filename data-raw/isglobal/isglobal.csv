@@ -97,7 +97,7 @@ date,country,cases,deaths,iso
 2020-03-28,Iraq,506,42,IRQ
 2020-03-28,Ireland,2415,36,IRL
 2020-03-28,Israel,3619,12,ISR
-2020-03-28,Italy,92472,10023,ITA
+2020-03-29,Italy,97689,10779,ITA
 2020-01-27,Ivory Coast,1,0,CIV
 2020-03-28,Jamaica,30,1,JAM
 2020-03-28,Japan,1693,52,JPN
@@ -157,7 +157,7 @@ date,country,cases,deaths,iso
 2020-03-28,Peru,671,16,PER
 2020-03-28,Philippines,1075,68,PHL
 2020-03-28,Poland,1638,18,POL
-2020-03-28,Portugal,5170,100,PRT
+2020-03-29,Portugal,5962,119,PRT
 2020-03-21,Puerto Rico,0,0,PRI
 2020-03-28,Qatar,590,1,QAT
 2020-03-08,Republic of Ireland,21,0,IRL
@@ -182,7 +182,7 @@ date,country,cases,deaths,iso
 2020-03-28,Somalia,3,0,SOM
 2020-03-28,South Africa,1187,1,ZAF
 2020-03-28,South Korea,9478,144,KOR
-2020-03-27,Spain,72248,5690,ESP
+2020-03-28,Spain,78797,6528,ESP
 2020-03-28,Sri Lanka,113,1,LKA
 2020-03-09,St. Martin,2,0,NA
 2020-03-28,Sudan,5,1,SDN

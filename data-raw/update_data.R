@@ -90,6 +90,19 @@ fra_pop <-
 map_fra <- raster::getData(country = 'FRA', level = 1)
 # Get Spanish map
 map_esp <- raster::getData(country = 'ESP', level = 1)
+# Get Italian map
+map_ita <- raster::getData(country = 'ITA', level = 1)
+ccaas <- map_ita@data$NAME_1
+ccaas <- ifelse(ccaas == "Apulia", 'Puglia',
+                ifelse(ccaas == "Emilia-Romagna", 'Emilia Romagna',
+                       ifelse(ccaas == "Friuli-Venezia Giulia", 'Friuli Venezia Giulia',
+                              ifelse(ccaas == "Sicily", 'Sicilia',
+                                            ccaas))))
+map_ita@data$ccaa <- ccaas
+usethis::use_data(map_ita, overwrite = T)
+# Andorra map
+map_and <- raster::getData(country = 'AND', level = 0)
+usethis::use_data(map_and, overwrite = T)
 # Fix names
 names_df <- tibble(NAME_1 = c('Andalucía',
                               'Aragón',
@@ -175,12 +188,14 @@ por_pop <- tibble(
            'Algarve',
            'Madeira',
            'Norte',
+           'Centro',
            'RLVT'),
   pop = c(242846,
           705478,
           438864,
           253945,
           3572583,
+          2327000,
           3447173)
 )
 usethis::use_data(por_pop, overwrite = TRUE)
@@ -408,6 +423,15 @@ ita <- ita %>%
                 uci = terapia_intensiva,
                 hospitalizations = totale_ospedalizzati,
                 deaths = deceduti)
+ita$ccaa <- as.character(ita$ccaa)
+ita <- ita %>%
+  mutate(ccaa = ifelse(ccaa %in% c('P.A. Bolzano', 'P.A. Trento'), 'Trentino-Alto Adige',
+                       ccaa)) %>%
+  group_by(ccaa, date) %>%
+  summarise(cases = sum(cases, na.rm = TRUE),
+            uci = sum(uci, na.rm = TRUE),
+            hospitalizations = sum(hospitalizations, na.rm = TRUE),
+            deaths = sum(deaths, na.rm = TRUE))
 
 # Get the district-level data for Spain and Italy Portugal, France too in (since JHU doesn't have it)
 do_italy_spain <- TRUE
@@ -649,8 +673,7 @@ ita_pop <- tibble(
            'Lombardia',
            'Marche',
            'Molise',
-           'P.A. Bolzano',
-           'P.A. Trento',
+           'Trentino-Alto Adige',
            'Piemonte',
            'Puglia',
            'Sardegna',
@@ -671,8 +694,7 @@ pop = c(
   10040000,#'Lombardia',
   1532000,#'Marche',
   308493,#'Molise',
-  520891,#'P.A. Bolzano',
-  538223,#'P.A. Trento',
+  1070000, # trentino alto
   4376000,#'Piemonte',
   4048000,#'Puglia',
   1648000,#'Sardegna',
