@@ -7,10 +7,186 @@ system('cd ../../COVID-19; pwd; git pull;')
 # Pull from ibesora's webscraping app
 system('cd ../../covid-19-data; pwd; git pull;')
 
+# Pull from data for French departments
+system('cd ../../FRANCE-COVID-19; git pull')
+
+# Pull data for Portugese regions
+system('cd ../../covid19pt-data; git pull')
+
 library(dplyr)
 library(readr)
 library(tidyr)
 library(readxl)
+library(rgdal)
+library(sp)
+library(raster)
+
+# Get French data
+cases <- read_csv('../../FRANCE-COVID-19/france_coronavirus_time_series-confirmed.csv')
+deaths <- read_csv('../../FRANCE-COVID-19/france_coronavirus_time_series-deaths.csv')
+# Clean up
+clean_france <- function(x){
+  x$Date <- as.Date(x$Date, format = '%d/%m/%Y')
+  x$Total <- NULL
+  x <- x %>% gather(key, value, names(x)[2:ncol(x)])
+  x <- x %>% dplyr::rename(date = Date,
+                           ccaa = key)
+  return(x)
+}
+cases <- clean_france(cases) %>% dplyr::rename(cases = value)
+deaths <- clean_france(deaths) %>% dplyr::rename(deaths = value)
+fra_df <- left_join(cases, deaths)
+fra_df <- fra_df %>%
+  mutate(cases = ifelse(is.na(cases), 0, cases),
+         deaths = ifelse(is.na(deaths), 0, deaths))
+fra_df <- fra_df %>% arrange(date, ccaa)
+# Get french population
+fra_pop <- 
+  tibble(ccaa = c("Auvergne-Rhône-Alpes",
+                  "Bourgogne-Franche-Comté",
+                  "Bretagne",
+                  "Centre-Val de Loire",
+                  "Corse",
+                  "Grand Est",
+                  "Guadeloupe",
+                  "Guyane",
+                  "Hauts-de-France",
+                  "Île-de-France",
+                  "La Réunion",
+                  "Martinique",
+                  "Mayotte",
+                  "Normandie",
+                  "Nouvelle-Aquitaine",
+                  "Nouvelle-Calédonie",
+                  "Occitanie",
+                  "Pays de la Loire",
+                  "Provence-Alpes-Côte d'Azur",
+                  "Saint-Barthélémy",
+                  "Saint-Martin"),
+         pop = c(
+           8032377, #"Auvergne-Rhône-Alpes",
+           2783039, #"Bourgogne-Franche-Comté",
+           3340379, #"Bretagne",
+           2559073, #"Centre-Val de Loire",
+           344679, #"Corse",
+           5511747, #"Grand Est",
+           395700, #"Guadeloupe",
+           290691, #"Guyane",
+           5962662, #"Hauts-de-France",
+           12278210, #"Île-de-France",
+           859959, #"La Réunion",
+           376480, #"Martinique",
+           270372, #"Mayotte",
+           3303500, #"Normandie",
+           5999982, #"Nouvelle-Aquitaine",
+           280460, #"Nouvelle-Calédonie",
+           5924858, #"Occitanie",
+           3801797, #"Pays de la Loire",
+           5055651, #"Provence-Alpes-Côte d'Azur",
+           9131, # "Saint-Barthélémy",
+           32125# "Saint-Martin"
+         ))
+# Get french map
+map_fra <- raster::getData(country = 'FRA', level = 1)
+# Get Spanish map
+map_esp <- raster::getData(country = 'ESP', level = 1)
+# Fix names
+names_df <- tibble(NAME_1 = c('Andalucía',
+                              'Aragón',
+                              'Cantabria',
+                              'Castilla-La Mancha',
+                              'Castilla y León',
+                              'Cataluña',
+                              'Ceuta y Melilla',
+                              'Comunidad de Madrid',
+                              'Comunidad Foral de Navarra',
+                              'Comunidad Valenciana',
+                              'Extremadura',
+                              'Galicia',
+                              'Islas Baleares',
+                              'La Rioja',
+                              'País Vasco',
+                              'Principado de Asturias',
+                              'Región de Murcia',
+                              'Islas Canarias'),
+                   ccaa = c('Andalucía',
+                            'Aragón',
+                            'Cantabria',
+                            'CLM',
+                            'CyL',
+                            'Cataluña',
+                            'Melilla',
+                            'Madrid',
+                            'Navarra',
+                            'C. Valenciana',
+                            'Extremadura',
+                            'Galicia',
+                            'Baleares',
+                            'La Rioja',
+                            'País Vasco',
+                            'Asturias',
+                            'Murcia',
+                            'Canarias'))
+map_esp@data <- left_join(map_esp@data, names_df)
+
+usethis::use_data(map_esp, overwrite = TRUE)
+usethis::use_data(fra_pop, overwrite = TRUE)
+usethis::use_data(fra_df, overwrite = TRUE)
+usethis::use_data(map_fra, overwrite = TRUE)
+
+# Get Portuguese data
+#https://github.com/dssg-pt/covid19pt-data
+# Shpaefiles
+map_por <- readOGR('../../covid19pt-data/extra/mapas/portugal/', 'portugal')
+# raw data
+portugal <- read_csv('../../covid19pt-data/data.csv')
+# Chop down variables
+places <- c('_arscentro','_arslvt','arsalentejo','arsalgarve','acores','madeira','estrangeiro', 'arsnorte')
+places <- paste0(places, collapse = '|')
+keep_vars <- which(grepl(places, names(portugal)) & !grepl('recuperados', names(portugal)))
+portugal <- portugal[,c(1, keep_vars)]
+portugal$data <- as.Date(portugal$data, format = '%d-%m-%Y')
+portugal <- gather(portugal, key, value, names(portugal)[2:ncol(portugal)])
+ccaa <- unlist(lapply(strsplit(portugal$key, '_'), function(x){x[2]}))
+key <- unlist(lapply(strsplit(portugal$key, '_'), function(x){x[1]}))
+portugal$key <- ifelse(key == 'obitos', 'deaths', 'cases')
+portugal$ccaa <- ccaa
+deaths <- portugal %>% filter(key == 'deaths') %>% dplyr::select(-key) %>% dplyr::rename(deaths = value)
+cases <- portugal %>% filter(key == 'cases') %>% dplyr::select(-key) %>% dplyr::rename(cases = value)
+joined <- full_join(cases, deaths)
+joined <- joined %>%
+  mutate(ccaa = ifelse(ccaa == 'acores', 'Açores',
+                       ifelse(ccaa == 'arsalgarve', 'Algarve',
+                              ifelse(ccaa == 'arsalentejo', 'Alentejo',
+                                     ifelse(ccaa == 'arslvt', 'RLVT',
+                                            ifelse(ccaa == 'madeira', 'Madeira',
+                                                   ifelse(ccaa == 'arsnorte', 'Norte',
+                                                          ifelse(ccaa == 'arscentro', 'Centro', 'Estrangeiro'))))))))
+por_df <- joined
+por_df <- por_df %>%
+  mutate(cases = ifelse(is.na(cases), 0, cases),
+         deaths = ifelse(is.na(deaths), 0, deaths))
+por_df <- por_df %>% dplyr::rename(date = data)
+por_df <- por_df %>% arrange(date, ccaa)
+# Portugal population
+por_pop <- tibble(
+  ccaa = c('Açores',
+           'Alentejo',
+           'Algarve',
+           'Madeira',
+           'Norte',
+           'RLVT'),
+  pop = c(242846,
+          705478,
+          438864,
+          253945,
+          3572583,
+          3447173)
+)
+usethis::use_data(por_pop, overwrite = TRUE)
+usethis::use_data(por_df, overwrite = TRUE)
+usethis::use_data(map_por, overwrite = TRUE)
+
 
 # Get ibesora's data (from acquas application)
 the_dir <- '../../covid-19-data/'
@@ -152,7 +328,7 @@ for(i in 1:length(files)){
 df <- bind_rows(out_list) %>% dplyr::select(-Latitude, -Longitude, -recovered)
 
 # Define which countries we have sub-national population data for
-have_pop <- c('US', 'Italy', 'Spain', 'China', 'Canada')
+have_pop <- c('US', 'Italy', 'Spain', 'China', 'Canada', 'France', 'Portugal')
 
 # For China, get all on one
 df <- df %>% mutate(country = ifelse(country == 'Mainland China',
@@ -233,7 +409,7 @@ ita <- ita %>%
                 hospitalizations = totale_ospedalizzati,
                 deaths = deceduti)
 
-# Get the district-level data for Spain and Italy in (since JHU doesn't have it)
+# Get the district-level data for Spain and Italy Portugal, France too in (since JHU doesn't have it)
 do_italy_spain <- TRUE
 if(do_italy_spain){
   # Italy
@@ -264,6 +440,38 @@ if(do_italy_spain){
   joined <- left_join(left, right) %>% bind_rows(add_these)
   df <- df %>%
     mutate(flag = (country == 'Spain' & date %in% joined$date) | (country == 'Spain' & date > max(esp_df$date))) %>%
+    filter(!flag) %>% dplyr::select(-flag) %>%
+    bind_rows(joined)
+  
+  # Portugal
+  left <- por_df %>% 
+    dplyr::rename(district = ccaa) %>%
+    mutate(country = 'Portugal')
+  right <- df %>% filter(country == 'Portugal') %>%
+    dplyr::select(date,country)
+  add_these <- df %>% filter(country == 'Portugal') %>%
+    filter(!date %in% left$date,
+           date < max(left$date)) # remove any obs AHEAD of ministry data
+  joined <- left_join(left, right) %>% bind_rows(add_these)
+  df <- df %>%
+    mutate(flag = (country == 'Portugal' & date %in% joined$date) | (country == 'Portugal' & date > max(por_df$date))) %>%
+    filter(!flag) %>% dplyr::select(-flag) %>%
+    bind_rows(joined)
+  
+  # France (special case because JHU has some)
+  left <- fra_df %>% 
+    dplyr::rename(district = ccaa) %>%
+    mutate(country = 'France')
+  right <- df %>% filter(country == 'France') %>%
+    dplyr::distinct(date,country)
+  add_these <- df %>% filter(country == 'France') %>%
+    group_by(date, country) %>% mutate(cases = sum(cases, na.rm = TRUE), deaths = sum(deaths, na.rm = TRUE)) %>%
+    mutate(district = NA) %>%
+    filter(!date %in% left$date,
+           date < max(left$date)) # remove any obs AHEAD of ministry data
+  joined <- left_join(left, right) %>% bind_rows(add_these)
+  df <- df %>%
+    mutate(flag = (country == 'France' & date %in% joined$date) | (country == 'France' & date > max(fra_df$date))) %>%
     filter(!flag) %>% dplyr::select(-flag) %>%
     bind_rows(joined)
 }
@@ -402,10 +610,31 @@ ita <- ita %>%
          hospitalizations_non_cum = hospitalizations - lag(hospitalizations, default = 0)) %>%
   ungroup
 
+# De-cumulate france
+fra_df <- fra_df %>%
+  ungroup %>%
+  arrange(ccaa, date) %>%
+  group_by(ccaa) %>%
+  mutate(cases_non_cum = cases - lag(cases, default = 0),
+         deaths_non_cum = deaths - lag(deaths, default = 0)) %>%
+  ungroup
+
+# De-cumulate portugal
+por_df <- por_df %>%
+  ungroup %>%
+  arrange(ccaa, date) %>%
+  group_by(ccaa) %>%
+  mutate(cases_non_cum = cases - lag(cases, default = 0),
+         deaths_non_cum = deaths - lag(deaths, default = 0)) %>%
+  ungroup
+
+
 # By province
 # https://docs.google.com/spreadsheets/d/1qxbKnU39yn6yYcNkBqQ0mKnIXmKfPQ4lgpNglpJ9frE/edit#gid=0
 
 usethis::use_data(ita, overwrite = T)
+usethis::use_data(por_df, overwrite = T)
+usethis::use_data(fra_df, overwrite = T)
 
 # Get Italian populations
 ita_pop <- tibble(
@@ -476,7 +705,7 @@ surnames <- surnames$name[1:1000]
 usethis::use_data(cognoms, overwrite = T)
 usethis::use_data(surnames, overwrite = T)
 
-# Create a regions pop for Italy, China, Spain, US
+# Create a regions pop for Italy, China, Spain, US, Portugal, France
 usa_pop <- readxl::read_excel('usapop/usapop.xlsx', 
                               skip = 3)
 canada_pop <- 
@@ -513,6 +742,8 @@ regions_pop <-
             ita_pop %>% mutate(country = 'Italy', iso = 'ITA'),
             chi_pop %>% mutate(country = 'China', iso = 'CHN'),
             usa_pop %>% mutate(country = 'US', iso = 'USA'),
+            fra_pop %>% mutate(country = 'France', iso = 'FRA'),
+            por_pop %>% mutate(country = 'Portugal', iso = 'PRT'),
             canada_pop %>% mutate(country = 'Canada', iso = 'CAN'))
 usethis::use_data(regions_pop, overwrite = T)
 

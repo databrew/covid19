@@ -39,6 +39,12 @@ library(rnaturalearthdata)
 library(RColorBrewer)
 ```
 
+## Deaths overall over time Spain
+
+```{r}
+df_country %>% filter(country == 'Spain') %>% arrange(date) %>% tail
+```
+
 ## Deaths yesterday
 
 ```{r}
