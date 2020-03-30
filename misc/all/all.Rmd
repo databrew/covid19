@@ -37,6 +37,242 @@ library(sf)
 library(rnaturalearth)
 library(rnaturalearthdata)
 library(RColorBrewer)
+library(readr)
+options(scipen = '999')
+```
+
+## Africa and Latin America for ISGlobal
+
+```{r}
+dir.create('~/Desktop/isglobal/')
+african_countries <-  world_pop$country[world_pop$sub_region %in% c('Sub-Saharan Africa')]
+
+pd <- plot_day_zero(countries = c(african_countries),
+                    day0 = 10,
+                    max_date = Sys.Date() - 13)
+pd
+ggsave('~/Desktop/isglobal/a_africa_two_weeks_ago.png',
+       height = 5.4,
+       width = 9.6)
+
+pd <- plot_day_zero(countries = c(african_countries),
+                    day0 = 10,
+                    max_date = Sys.Date() - 6)
+pd
+ggsave('~/Desktop/isglobal/b_africa_1_week_ago.png',
+       height = 5.4,
+       width = 9.6)
+
+pd <- plot_day_zero(countries = c(african_countries),
+                    day0 = 10,
+                    max_date = Sys.Date())
+pd
+ggsave('~/Desktop/isglobal/c_africa_now.png',
+       height = 5.4,
+       width = 9.6)
+
+
+latam_countries <-  world_pop$country[world_pop$sub_region %in% c('Latin America and the Caribbean')]
+latam_countries <- latam_countries[!latam_countries %in% c('Guyana')]
+
+pd <- plot_day_zero(countries = c(latam_countries),
+                    day0 = 10,
+                    max_date = Sys.Date() - 13)
+pd
+ggsave('~/Desktop/isglobal/d_latam_two_weeks_ago.png',
+       height = 5.4,
+       width = 9.6)
+
+pd <- plot_day_zero(countries = c(latam_countries),
+                    day0 = 10,
+                    max_date = Sys.Date() - 6)
+pd
+ggsave('~/Desktop/isglobal/e_latam_1_week_ago.png',
+       height = 5.4,
+       width = 9.6)
+
+pd <- plot_day_zero(countries = c(latam_countries),
+                    day0 = 10,
+                    max_date = Sys.Date())
+pd
+ggsave('~/Desktop/isglobal/f_latam_now.png',
+       height = 5.4,
+       width = 9.6)
+
+```
+
+Latin America and Africa vs Europe
+
+
+```{r}
+isos <- sort(unique(world_pop$sub_region))
+keep_countries <- world_pop$country[world_pop$sub_region %in% c('Latin America and the Caribbean', 'Sub-Saharan Africa') |
+                                      world_pop$region %in% 'Europe']
+keep_countries <- keep_countries[!keep_countries %in% c('Guyana')]
+pd <- df_country %>% ungroup %>%
+  filter(country %in% keep_countries) %>%
+  dplyr::select(-country) %>%
+  left_join(world_pop) %>%
+  group_by(iso) %>%
+  mutate(day0 = min(date[cases >= 10])) %>%
+  ungroup %>%
+  mutate(days_since = date - day0) %>%
+  filter(days_since >= 0)
+
+
+cols <- c( 'black')
+g <- ggplot(data = pd,
+       aes(x = days_since,
+           y = cases,
+           group = country,
+           color = region)) +
+  geom_line(data = pd %>% filter(region == 'Europe'),
+            alpha = 0.6) +
+  scale_y_log10() +
+  scale_color_manual(name = '', values = cols) +
+  theme_simple() +
+  labs(x = 'Days since first day at 10 cases') +
+  theme(legend.position = 'top')
+g
+ggsave('~/Desktop/isglobal/g_europe_only.png',
+       height = 5.4,
+       width = 9.6)
+
+
+cols <- c('darkred', 'black')
+
+g + 
+    geom_line(data = pd %>% filter(region == 'Africa'),
+            # alpha = 1,
+            size = 1.5,
+            alpha = 0.8) +
+    scale_color_manual(name = '', values = cols) 
+ggsave('~/Desktop/isglobal/h1_europe_and_africa.png',
+       height = 5.4,
+       width = 9.6)
+
+
+
+cols <- c( 'darkorange', 'black')
+g + 
+    geom_line(data = pd %>% filter(sub_region == 'Latin America and the Caribbean'),
+            # alpha = 1,
+            size = 1.5,
+            alpha = 0.8) +
+    scale_color_manual(name = '', values = cols) 
+ggsave('~/Desktop/isglobal/h2_europe_and_latam.png',
+       height = 5.4,
+       width = 9.6)
+
+
+cols <- c('darkred', 'darkorange', 'black')
+g + 
+    geom_line(data = pd %>% filter(sub_region != 'Europe'),
+            # alpha = 1,
+            size = 1.5,
+            alpha = 0.8) +
+    scale_color_manual(name = '', values = cols) 
+ggsave('~/Desktop/isglobal/h3_europe_latam_and_africa.png',
+       height = 5.4,
+       width = 9.6)
+
+```
+
+```{r}
+# Assets
+pyramid_dir <- '../../data-raw/pyramids/'
+pyramid_files <- dir(pyramid_dir)
+out_list <- list()
+for(i in 1:length(pyramid_files)){
+  out_list[[i]] <- read_csv(paste0(pyramid_dir, pyramid_files[i])) %>%
+    mutate(region = gsub('.csv', '', pyramid_files[i]))
+}
+pyramid <- bind_rows(out_list)
+make_pyramid <- function(the_region = 'AFRICA-2019'){
+  sub_data <- pyramid %>% filter(region == the_region)
+  sub_data$Age <- factor(sub_data$Age, levels = sub_data$Age)
+  sub_data <- tidyr::gather(sub_data, key, value, M:F)
+  ggplot(data = sub_data,
+         aes(x = Age,
+             y = value,
+             fill = key)) +
+    geom_bar(stat = 'identity',
+             position = position_dodge()) +
+    scale_fill_manual(name = '', values = c('darkgrey', 'lightblue')) +
+    theme_simple() +
+    labs(x = 'Age group',
+         y = 'Population') +
+    theme(legend.position = 'top')
+}
+make_pyramid_overlay <- function(){
+  sub_data <- pyramid %>% filter(region %in% c('EUROPE-2019',
+                                               'AFRICA-2019',
+                                               'LATIN AMERICA AND THE CARIBBEAN-2019')) %>%
+    mutate(region = gsub('-2019', '', region))
+   sub_data$Age <- factor(sub_data$Age, levels = unique(sub_data$Age))
+  sub_data <- tidyr::gather(sub_data, key, value, M:F) %>%
+    group_by(Age, region) %>%
+    summarise(value = sum(value)) %>%
+    ungroup %>%
+    group_by(region) %>%
+    mutate(p = value / sum(value) * 100) %>%
+    ungroup
+  ggplot(data = sub_data,
+         aes(x = Age,
+             y = p,
+             color = region,
+             group = region,
+             fill = region)) +
+    geom_area(position = position_dodge(),
+              alpha = 0.6) +
+    scale_fill_manual(name = '',
+                      values = c('darkred', 'darkorange', 'black')) +
+    scale_color_manual(name = '',
+                      values = c('darkred', 'darkorange', 'black')) +
+    theme_simple() +
+    theme(legend.position = 'top') +
+    labs(x = 'Age group', y = 'Percentage')
+}
+
+make_pyramid(the_region = 'Spain-2019') + labs(title = 'Spain')
+ggsave('~/Desktop/isglobal/i_pop_spain.png',
+       height = 5.4,
+       width = 9.6)
+make_pyramid(the_region = 'Italy-2019') + labs(title = 'Italy')
+ggsave('~/Desktop/isglobal/j_pop_italy.png',
+       height = 5.4,
+       width = 9.6)
+
+make_pyramid(the_region = 'EUROPE-2019') + labs(title = 'Europe')
+ggsave('~/Desktop/isglobal/k_pop_europe.png',
+       height = 5.4,
+       width = 9.6)
+
+make_pyramid(the_region = 'Kenya-2019') + labs(title = 'Kenya')
+ggsave('~/Desktop/isglobal/l_pop_kenya.png',
+       height = 5.4,
+       width = 9.6)
+
+make_pyramid(the_region = 'Guatemala-2019') + labs(title = 'Guatemala')
+ggsave('~/Desktop/isglobal/m_pop_guatemala.png',
+       height = 5.4,
+       width = 9.6)
+
+make_pyramid(the_region = 'AFRICA-2019') + labs(title = 'Africa')
+ggsave('~/Desktop/isglobal/n_pop_africa.png',
+       height = 5.4,
+       width = 9.6)
+
+make_pyramid(the_region = 'LATIN AMERICA AND THE CARIBBEAN-2019') + labs(title = 'Latin America and the Caribbean')
+ggsave('~/Desktop/isglobal/o_pop_latam.png',
+       height = 5.4,
+       width = 9.6)
+
+make_pyramid_overlay() + labs(title = 'Population distribution by region')
+ggsave('~/Desktop/isglobal/p_pop_all.png',
+       height = 5.4,
+       width = 9.6)
+
 ```
 
 ## Map of portugal, france, spain
