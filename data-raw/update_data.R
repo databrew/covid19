@@ -36,10 +36,33 @@ clean_france <- function(x){
 cases <- clean_france(cases) %>% dplyr::rename(cases = value)
 deaths <- clean_france(deaths) %>% dplyr::rename(deaths = value)
 fra_df <- left_join(cases, deaths)
-fra_df <- fra_df %>%
-  mutate(cases = ifelse(is.na(cases), 0, cases),
-         deaths = ifelse(is.na(deaths), 0, deaths))
+# fra_df <- fra_df %>%
+#   mutate(cases = ifelse(is.na(cases), 0, cases),
+#          deaths = ifelse(is.na(deaths), 0, deaths))
 fra_df <- fra_df %>% arrange(date, ccaa)
+# Flag non-updated areas 
+fra_df <- fra_df %>%
+  group_by(ccaa) %>%
+  mutate(flag_cases = cases < dplyr::lag(cases, 1),
+         flag_deaths = deaths < dplyr::lag(deaths, 1)) %>%
+  ungroup %>%
+  mutate(cases = ifelse(flag_cases, NA, cases),
+         deaths = ifelse(flag_deaths, NA, deaths)) %>%
+  dplyr::select(-flag_deaths,
+                -flag_cases)
+cases <- fra_df %>% dplyr::select(date, ccaa, cases) %>% filter(!is.na(cases))
+deaths <- fra_df %>% dplyr::select(date, ccaa, deaths) %>% filter(!is.na(deaths))
+left <- expand.grid(date = sort(unique(c(cases$date, deaths$date))),
+                    ccaa = sort(unique(c(cases$ccaa, deaths$ccaa))))
+joined <- left_join(left, cases) %>% left_join(deaths)
+# Interpolate missing
+library(zoo)
+fra_df <- joined %>%
+  arrange(date) %>%
+  group_by(ccaa) %>%
+    mutate(cases = na.approx(cases, maxgap = 3, rule = 2),
+           deaths = na.approx(deaths, maxgap = 3, rule = 2))
+
 # Get french population
 fra_pop <- 
   tibble(ccaa = c("Auvergne-Rhône-Alpes",
@@ -482,22 +505,23 @@ if(do_italy_spain){
     filter(!flag) %>% dplyr::select(-flag) %>%
     bind_rows(joined)
   
-  # France (special case because JHU has some)
-  left <- fra_df %>% 
-    dplyr::rename(district = ccaa) %>%
-    mutate(country = 'France')
-  right <- df %>% filter(country == 'France') %>%
-    dplyr::distinct(date,country)
-  add_these <- df %>% filter(country == 'France') %>%
-    group_by(date, country) %>% mutate(cases = sum(cases, na.rm = TRUE), deaths = sum(deaths, na.rm = TRUE)) %>%
-    mutate(district = NA) %>%
-    filter(!date %in% left$date,
-           date < max(left$date)) # remove any obs AHEAD of ministry data
-  joined <- left_join(left, right) %>% bind_rows(add_these)
-  df <- df %>%
-    mutate(flag = (country == 'France' & date %in% joined$date) | (country == 'France' & date > max(fra_df$date))) %>%
-    filter(!flag) %>% dplyr::select(-flag) %>%
-    bind_rows(joined)
+  # # France (special case because JHU has some)
+  # NOT DOING DUE TO INCOMPLETE DATA FOR FRANCE
+  # left <- fra_df %>% 
+  #   dplyr::rename(district = ccaa) %>%
+  #   mutate(country = 'France')
+  # right <- df %>% filter(country == 'France') %>%
+  #   dplyr::distinct(date,country)
+  # add_these <- df %>% filter(country == 'France') %>%
+  #   group_by(date, country) %>% mutate(cases = sum(cases, na.rm = TRUE), deaths = sum(deaths, na.rm = TRUE)) %>%
+  #   mutate(district = NA) %>%
+  #   filter(!date %in% left$date,
+  #          date < max(left$date)) # remove any obs AHEAD of ministry data
+  # joined <- left_join(left, right) %>% bind_rows(add_these)
+  # df <- df %>%
+  #   mutate(flag = (country == 'France' & date %in% joined$date) | (country == 'France' & date > max(fra_df$date))) %>%
+  #   filter(!flag) %>% dplyr::select(-flag) %>%
+  #   bind_rows(joined)
 }
 
 # Decumulate

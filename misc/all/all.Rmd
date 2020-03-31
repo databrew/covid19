@@ -383,6 +383,147 @@ g
 ggsave('~/Desktop/map_with_borders.pdf')
 ```
 
+
+
+## Animation, Portugal, France, Spain, Italy
+
+```{r}
+dir.create('~/Desktop/animation_map/')
+pd <- por_df %>% mutate(country = 'Portugal') %>%
+  bind_rows(esp_df %>% mutate(country = 'Spain')) %>%
+  bind_rows(fra_df %>% mutate(country = 'France')) %>%
+  bind_rows(ita %>% mutate(country = 'Italy')) %>%
+  bind_rows(
+    df %>% filter(country == 'Andorra') %>%
+      mutate(ccaa = 'Andorra')
+  )
+pd %>% group_by(country) %>% summarise(max_date= max(date))
+unique_dates <- sort(unique(pd$date))
+popper <- regions_pop %>%
+                bind_rows(
+                  world_pop %>% filter(country == 'Andorra') %>% dplyr::mutate(ccaa = country) %>%
+                    dplyr::select(-region, -sub_region)
+                )
+map_esp1 <- map_esp
+map_esp1@data <- map_esp1@data %>% dplyr::select(ccaa)
+map_fra1 <- map_fra
+map_fra1@data <- map_fra1@data %>% dplyr::select(ccaa = NAME_1)
+map_por1 <- map_por
+map_por1@data <- map_por1@data %>% dplyr::select(ccaa = CCDR)
+map_ita1 <- map_ita
+map_ita1@data <- map_ita1@data %>% dplyr::select(ccaa = NAME_1)
+map_and1 <- map_and
+map_and1@data <- map_and1@data %>% dplyr::select(ccaa = NAME_0)
+
+map <- 
+  rbind(map_esp1,
+        map_por1,
+        map_fra1,
+        map_ita1,
+        map_and1)
+
+# Remove areas not of interest
+centroids <- coordinates(map)
+centroids <- data.frame(centroids)
+names(centroids) <- c('x', 'y')
+centroids$ccaa <- map@data$ccaa
+# map <- map_sp <- map[centroids$y >35 & centroids$x > -10 &
+#              # centroids$x < 8 &
+#                (centroids$y < 43  | map@data$ccaa %in% c('Occitanie', 'Nouvelle-Aquitaine') |
+#                                   map@data$ccaa %in% esp_df$ccaa),]
+map_sp <- map <-  map[centroids$x > -10 & centroids$y <47,]
+
+
+# fortify
+map <- fortify(map, region = 'ccaa')
+
+
+
+for(i in 1:length(unique_dates)){
+  this_date <- unique_dates[i]
+    today_map <- map
+    today_centroids <- centroids
+    today_pd <- pd
+
+  today_pd <- today_pd %>%
+    group_by(ccaa) %>%
+    # filter(date == max(date)) %>%
+    filter(date == this_date) %>%
+    ungroup %>%
+    dplyr::select(date, ccaa, deaths, deaths_non_cum,
+                  cases, cases_non_cum) %>%
+    left_join(popper) %>%
+    mutate(cases_per_million = cases / pop * 1000000,
+           deaths_per_million = deaths / pop * 1000000) %>%
+    mutate(cases_per_million_non_cum = cases_non_cum / pop * 1000000,
+           deaths_per_million_non_cum = deaths_non_cum / pop * 1000000)
+  
+  today_centroids <- left_join(today_centroids, today_pd)
+
+  
+  # join data
+  today_map$ccaa <- today_map$id
+  today_map <- left_join(today_map, today_pd)
+  var <- 'deaths_per_million'
+  today_map$var <- as.numeric(unlist(today_map[,var]))
+  today_map$var <- ifelse(is.na(today_map$var), 0, today_map$var)
+  today_centroids <- today_centroids[,c('ccaa', 'x', 'y', var)]
+  today_centroids <- today_centroids %>%
+    filter(ccaa %in% today_map$ccaa)
+  today_centroids$var <- today_centroids[,var]
+  today_centroids$var <- ifelse(is.na(today_centroids$var), 0, today_centroids$var)
+
+  
+  # cols <- rev(RColorBrewer::brewer.pal(n = 9, name = 'Spectral'))
+  # cols <- c('#A16928','#bd925a','#d6bd8d','#edeac2','#b5c8b8','#79a7ac','#2887a1')
+  # cols <- c('#009392','#39b185','#9ccb86','#e9e29c','#eeb479','#e88471','#cf597e')
+  # cols <- c('#008080','#70a494','#b4c8a8','#f6edbd','#edbb8a','#de8a5a','#ca562c')
+  cols <- rev(colorRampPalette(c('darkred', 'red', 'darkorange', 'orange', 'yellow', 'white'))(15))
+  g <- ggplot(data = today_map,
+           aes(x = long,
+               y = lat,
+               group = group)) +
+      geom_polygon(aes(fill = var),
+                   lwd = 0.3,
+                   color = 'darkgrey',
+                   size = 0.6) +
+        scale_fill_gradientn(name = '',
+                             colours = cols,
+                             breaks = seq(0, 700, 50),
+                             limits = c(0, 700)) +
+    # scale_fill_() +
+    ggthemes::theme_map() +
+    theme(legend.position = 'top',
+          plot.title = element_text(size = 24)) +
+    guides(fill = guide_colorbar(direction= 'horizontal',
+                                 barwidth = 20,
+                                 barheight = 2,
+                                 label.position = 'bottom')) +
+    labs(subtitle = 'Cumulative COVID-19 deaths per million population',
+         title = paste0(format(this_date, '%B %d, %Y'))) +
+    geom_text(data = today_centroids,
+              aes(x = x,
+                  y = y,
+                  group = NA,
+                  label = paste0(ccaa, '\n',
+                                 round(var, digits = 2))),
+              alpha = 0.8,
+              size = 1.5)
+  
+  ggsave(paste0('~/Desktop/animation_map/', this_date, '.png'),
+         plot = g,
+         height = 6, width = 10)
+}
+```
+
+```
+# Command line
+cd ~/Desktop/animation_map
+mogrify -resize 50% *.png
+convert -delay 20 -loop 0 *.png result.gif
+
+```
+
 ## Deaths overall over time Spain
 
 ```{r}
