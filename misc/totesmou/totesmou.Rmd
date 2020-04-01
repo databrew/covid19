@@ -1,11 +1,18 @@
 ---
-title: "All charts"
-author: "www.databrew.cc"
-date: "`r Sys.Date()`"
-output:
-  html_document:
-    code_folding: "hide"
+output: github_document
 ---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  echo = FALSE,
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
 
 
 ```{r setup, include=FALSE, echo = FALSE}
