@@ -11,9 +11,12 @@
 #' @param pop_adjustor Deaths per x (default million) when doing population adjustment
 #' @param by_district Show by district
 #' @param districts Show by districts, default FALSE
+#' @param roll How many days to get rolling values for
+#' @param roll_fun Mean or Sum
 #' @import dplyr
+#' @import zoo
 #' @export
-prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'France', 'US', 'Germany'),
+prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'US', 'Germany'),
                                    day0 = 150,
                                    cumulative = TRUE,
                                    time_before = 0,
@@ -22,7 +25,14 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'France', 'US
                                    pop = FALSE,
                                    pop_adjustor = 1000000,
                                    by_district = FALSE,
-                                   districts = NULL){
+                                   districts = NULL,
+                                   roll = 0,
+                                   roll_fun = 'mean'){
+  
+  # If rolling, cannot be cumulative
+  if(roll > 0){
+    cumulative <- FALSE
+  }
   
   if(time_before > 0){
     stop('time_before must be less than or equal to 0')
@@ -86,6 +96,23 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'France', 'US
     }
   }
   
+  # If roll, do
+  if(roll > 0){
+    if(roll_fun == 'mean'){
+      # Rolling average
+      pd <- pd %>%
+        arrange(iso, geo, date) %>%
+        group_by(iso, geo) %>%
+        mutate(value = rollmean(x = value, roll, align = 'right', fill = NA))
+    } else {
+      # Rolling sum
+      pd <- pd %>%
+        arrange(iso, geo, date) %>%
+        group_by(iso, geo) %>%
+        mutate(value = rollsum(x = value, roll, align = 'right', fill = NA))
+    }
+  }
+  
   # Adjust by population
   if(pop){
     if(by_district){
@@ -130,6 +157,9 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'France', 'US
   # Clean up type
   pd$days_since_first_day <- as.integer(pd$days_since_first_day)
   
+  # Define roll in data frame
+  pd$roll <- roll
+  pd$roll_fun <- roll_fun
   return(pd)
 }
 
@@ -146,24 +176,30 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'France', 'US
 #' @param line_size Size of line
 #' @param max_date The maximum date
 #' @param calendar Whether to plot by calendar date
+#' @param point_size Size of points
+#' @param point_alpha Alpha of points
 #' @param deaths Whether to show deaths instead of cases
 #' @param pop Adjust by population
 #' @param pop_adjustor Deaths per x (default million) when doing population adjustment
 #' @param by_district Show by district
 #' @param districts Show by districts, default FALSE
 #' @param alpha alpha of lines
+#' @param roll How many days to get rolling values for
+#' @param roll_fun Mean or Sum
 #' @import dplyr
 #' @import ggplot2
 #' @import RColorBrewer
 #' @import scales
 #' @export
-plot_day_zero <- function(countries = c('Italy', 'Spain', 'France', 'US', 'Germany'),
+plot_day_zero <- function(countries = c('Italy', 'Spain', 'US', 'Germany'),
                           ylog = TRUE,
                           day0 = 150,
                           cumulative = TRUE,
                           time_before = 0,
                           add_markers = FALSE,
                           line_size = 1.5,
+                          point_size = 1.5,
+                          point_alpha = 0.9,
                           max_date = Sys.Date(),
                           calendar = FALSE, 
                           deaths = FALSE,
@@ -171,7 +207,15 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'France', 'US', 'Germa
                           pop_adjustor = 1000000,
                           by_district = FALSE,
                           districts = NULL,
-                          alpha = 0.8){
+                          alpha = 0.8,
+                          roll = 0,
+                          roll_fun = 'mean',
+                          color_var = 'geo'){
+  options(scipen = '999')
+  # If rolling, cannot be cumulative
+  if(roll > 0){
+    cumulative <- FALSE
+  }
   
   pd <- prepare_day_zero_data(countries = countries,
                               day0 = day0,
@@ -196,10 +240,15 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'France', 'US', 'Germa
       filter(!is.na(geo))
   }
   
-  n_geo <- length(unique(pd$geo))
  
   # Get y scale
   if(is.null(ylog)){ylog <- TRUE}    
+  
+  
+  # Deal with colors
+  pd$color_var <- as.character(unlist(pd[,color_var]))
+  n_geo <- length(unique(pd$color_var))
+  
   
   if(n_geo == 0){
     return(NULL)
@@ -210,19 +259,36 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'France', 'US', 'Germa
   if(n_geo == 2){
     cols <- c('black', 'red')
   }
-  if(n_geo == 3){
-    cols <- c('#008080','#b4c8a8','#ca562c')
-  }
-  if(n_geo == 4){
-    cols <- c('#008080','#b4c8a8','#edbb8a','#de8a5a','#ca562c')
-  }
-  if(n_geo == 5){
-    cols <- c('#008080','#70a494','#b4c8a8','#edbb8a','#de8a5a','#ca562c')
-  }
+  # if(n_geo == 3){
+  #   cols <- c('#008080','#b4c8a8','#ca562c')
+  # }
+  # if(n_geo == 4){
+  #   cols <- c('#008080','#b4c8a8','#edbb8a','#de8a5a','#ca562c')
+  # }
+  # if(n_geo == 5){
+  #   cols <- c('#008080','#70a494','#b4c8a8','#edbb8a','#de8a5a','#ca562c')
+  # }
 
-  if(n_geo > 5){
-    cols <- colorRampPalette(RColorBrewer::brewer.pal(n = 8,
-                                                      name = 'Dark2'))(n_geo)
+  if(n_geo > 2){
+    # cols <- colorRampPalette(RColorBrewer::brewer.pal(n = 8,
+    #                                                   name = 'Dark2'))(n_geo)
+    c25 <- c(
+      "dodgerblue2", "#E31A1C", # red
+      "green4",
+      "#6A3D9A", # purple
+      "#FF7F00", # orange
+      "black", "gold1",
+      "skyblue2", "#FB9A99", # lt pink
+      "palegreen2",
+      "#CAB2D6", # lt purple
+      "#FDBF6F", # lt orange
+      "gray70", "khaki2",
+      "maroon", "orchid1", "deeppink1", "blue1", "steelblue4",
+      "darkturquoise", "green1", "yellow4", "yellow3",
+      "darkorange4", "brown"
+    )
+    # pie(rep(1, 25), col = c25)
+    cols <- colorRampPalette(c25)(n_geo)
   }
   
   selfy <- function(x){abs(x)}
@@ -239,10 +305,15 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'France', 'US', 'Germa
     pd$xvar <- pd$days_since_first_day
   }
   
+  
+  
   g <- ggplot(data = pd,
               aes(x = xvar,
                   y = value)) +
-    geom_line(aes(color = geo),  alpha = alpha, size = line_size) +
+    geom_line(aes(color = color_var,
+                  group = geo),  alpha = alpha, size = line_size) +
+    geom_point(aes(color = color_var,
+                   group = geo),  alpha = point_alpha, size = point_size) +
     # geom_point(aes(color = country), size = line_size, alpha = 0.6) +
     theme_bw() +
     scale_color_manual(name = '',
@@ -250,12 +321,17 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'France', 'US', 'Germa
     labs(x = paste0("Days since place's first day with ",
                     day0, " or more ", ifelse(deaths, 'deaths ', 'cases '),
                     pop_text),
-         y = paste0(ifelse(cumulative, "Cumulative n", "N"), 'umber of ', ifelse(deaths, 'deaths', 'cases'),
-                    pop_text,
+         y = paste0(#ifelse(cumulative, "Cumulative n", "N"), 'umber of ', ifelse(deaths, 'deaths', 'cases'),
+                    #pop_text,
+           ifelse(deaths, 'Deaths', 'Cases'),
                     ifelse(ylog, '\n(Logarithmic scale)', '')),
          title = paste0('COVID-19 ', ifelse(deaths, 'deaths', 'cases'), ' since place\'s\nfirst day with ',
                         day0, " or more ", ifelse(cumulative, "cumulative ", "daily "),  ifelse(deaths, 'deaths ', 'cases '),
-                        pop_text),
+                        pop_text, ifelse(roll > 0, 
+                                         paste0('\n(rolling ', 
+                                                ifelse(roll_fun == 'mean', 'average', 'sum'),
+                                                ' of ',
+                                                roll, ' days)'), '')),
          subtitle = paste0('Data as of ', max(pd$date))) +
     theme_simple() +
     # scale_x_continuous(breaks = seq(-100, 100, 2)) +

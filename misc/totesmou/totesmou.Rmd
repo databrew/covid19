@@ -1,0 +1,598 @@
+---
+title: "All charts"
+author: "www.databrew.cc"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    code_folding: "hide"
+---
+
+
+```{r setup, include=FALSE, echo = FALSE}
+# Basic knitr options
+library(knitr)
+opts_chunk$set(comment = NA, 
+               # echo = FALSE, 
+               warning = FALSE, 
+               message = FALSE, 
+               error = TRUE, 
+               cache = FALSE,
+               fig.width = 9.6,
+               fig.height = 5.6,
+               fig.path = 'figures/')
+```
+
+```{r}
+## Load libraries
+library(covid19)
+library(ggplot2)
+library(lubridate)
+library(dplyr)
+library(ggplot2)
+library(sp)
+library(raster)
+library(viridis)
+library(ggthemes)
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(RColorBrewer)
+library(readr)
+options(scipen = '999')
+```
+
+
+```{r}
+roll_curve <- function(data,
+                       n = 4,
+                       deaths = FALSE,
+                       scales = 'fixed',
+                       nrow = NULL,
+                       ncol = NULL,
+                       pop = FALSE){
+
+  # Create the n day rolling avg
+  ma <- function(x, n = 5){
+    
+    if(length(x) >= n){
+      stats::filter(x, rep(1 / n, n), sides = 1)
+    } else {
+      new_n <- length(x)
+      stats::filter(x, rep(1 / new_n, new_n), sides = 1)
+    }
+    
+    
+  }
+  
+  pd <- data
+  if(deaths){
+    pd$var <- pd$deaths_non_cum
+  } else {
+    pd$var <- pd$cases_non_cum
+  }
+  
+  if('ccaa' %in% names(pd)){
+    pd$geo <- pd$ccaa
+  } else {
+    pd$geo <- pd$iso
+  }
+  
+  if(pop){
+    # try to get population
+    if(any(pd$geo %in% unique(esp_df$ccaa))){
+      right <- esp_pop
+      right_var <- 'ccaa'
+    } else {
+      right <- world_pop
+      right_var <- 'iso'
+    }
+    pd <- pd %>% left_join(right %>% dplyr::select(all_of(right_var), pop),
+                           by = c('geo' = right_var)) %>%
+      mutate(var = var / pop * 100000)
+  }
+  
+  pd <- pd %>%
+    arrange(date) %>%
+    group_by(geo) %>%
+    mutate(with_lag = ma(var, n = n))
+  
+  
+  ggplot() +
+    geom_bar(data = pd,
+         aes(x = date,
+             y = var),
+             stat = 'identity',
+         fill = 'grey',
+         alpha = 0.8) +
+    geom_area(data = pd,
+              aes(x = date,
+                  y = with_lag),
+              color = 'red',
+              fill = 'red',
+              alpha = 0.6) +
+    facet_wrap(~geo, scales = scales, nrow = nrow, ncol = ncol) +
+    theme_simple() +
+    labs(x = '',
+         y = ifelse(deaths, 'Deaths', 'Cases'),
+         title = paste0('Daily (non-cumulative) ', ifelse(deaths, 'deaths', 'cases'),
+                        ifelse(pop, ' (per 100,000)', '')),
+         subtitle = paste0('Data as of ', max(data$date),
+                           '.\nRed line = ', n, ' day rolling average. Grey bar = day-specific value.')) +
+    theme(axis.text.x = element_text(size = 7,
+                                     angle = 90,
+                                     hjust = 0.5, vjust = 1)) #+
+    # scale_x_date(name ='',
+    #              breaks = sort(unique(pd$date)),
+    #              labels = format(sort(unique(pd$date)), '%b %d'))
+    # scale_y_log10()
+}
+
+```
+
+## Catalunya, corbes epidèmiques
+
+
+Corba epidèmica. CASOS.
+-Barras en gris: casos diaris
+-Vermell: tendència (mitjana dels 4 dies anteriors)
+
+```{r}
+this_ccaa <- 'Cataluña'
+plot_data <- esp_df %>% mutate(geo = ccaa) %>% filter(ccaa == this_ccaa)
+roll_curve(plot_data, scales = 'fixed')  + theme(strip.text = element_text(size = 30))
+ggsave('~/Desktop/totesmou/00a_catalunya_corba_epidemica_casos.png',
+       height = 5.6,
+       width = 9.6)
+```
+
+Corba epidèmica. MORTS
+-Barras en gris: casos diaris
+-Vermell: tendència (mitjana dels 4 dies anteriors)
+
+```{r}
+plot_data <- esp_df %>% mutate(geo = ccaa) %>% filter(ccaa == this_ccaa)
+roll_curve(plot_data, deaths = T, scales = 'fixed') + theme(strip.text = element_text(size = 30))
+ggsave('~/Desktop/totesmou/00b_catalunya_corba_epidemica_morts.png',
+       height = 5.6,
+       width = 9.6)
+
+```
+
+
+## Espanya, corbes epidèmiques
+
+Corba epidèmica. CASOS.
+-Barras en gris: casos diaris
+-Vermell: tendència (mitjana dels 4 dies anteriors)
+
+```{r}
+the_country = 'Spain'
+plot_data <- df_country %>% filter(country %in% the_country) %>% mutate(geo = country)
+roll_curve(plot_data, pop = F)
+ggsave('~/Desktop/totesmou/00c_espanya_epidemica_casos.png',
+       height = 5.6,
+       width = 9.6)
+```
+
+Corba epidèmica. MORTS
+-Barras en gris: casos diaris
+-Vermell: tendència (mitjana dels 4 dies anteriors)
+
+```{r}
+plot_data <- df_country %>% filter(country %in% the_country) %>% mutate(geo = country)
+roll_curve(plot_data, pop = F, deaths = T)
+ggsave('~/Desktop/totesmou/00d_espanya_corba_epidemica_morts.png',
+       height = 5.6,
+       width = 9.6)
+
+```
+
+## CCAA, corbes epidèmiques
+
+
+Corba epidèmica. CASOS.
+-Barras en gris: casos diaris
+-Vermell: tendència (mitjana dels 4 dies anteriors)
+
+```{r}
+plot_data <- esp_df %>% mutate(geo = ccaa)
+roll_curve(plot_data, scales = 'fixed', pop = T)  + theme(strip.text = element_text(size = 15))
+ggsave('~/Desktop/totesmou/00e_ccaa_corba_epidemica_casos.png',
+       height = 5.6,
+       width = 9.6)
+```
+
+Corba epidèmica. MORTS
+-Barras en gris: casos diaris
+-Vermell: tendència (mitjana dels 4 dies anteriors)
+
+```{r}
+plot_data <- esp_df %>% mutate(geo = ccaa)
+roll_curve(plot_data, scales = 'fixed', pop = T, deaths = T)  + theme(strip.text = element_text(size = 15))
+ggsave('~/Desktop/totesmou/00f_ccaa_corba_epidemica_morts.png',
+       height = 5.6,
+       width = 9.6)
+
+```
+
+## Comparacions amb Itàlia
+
+Comparació Itàlia vs. Espanya, casos. Aix-X: data real
+
+```{r}
+dir.create('~/Desktop/totesmou')
+plot_day_zero(countries = c('Spain', 'Italy'),
+              point_size = 2, calendar = T)
+ggsave('~/Desktop/totesmou/1_italy_vs_spain.png',
+       height = 5.6,
+       width = 9.6)
+```
+
+Comparació Itàlia vs. Espanya, casos. Aix-X: data relativa (des del principi del brot)
+
+
+```{r}
+plot_day_zero(countries = c('Spain', 'Italy'),
+              point_size = 2, calendar = F)
+ggsave('~/Desktop/totesmou/2_italy_vs_spain_temps_ajustat.png',
+       height = 5.6,
+       width = 9.6)
+```
+
+
+Comparació Itàlia vs. Espanya, morts Aix-X: data real
+
+
+```{r}
+plot_day_zero(countries = c('Spain', 'Italy'),
+              point_size = 2, calendar = T, deaths = T, day0 = 10)
+ggsave('~/Desktop/totesmou/3_italy_vs_spain_morts.png',
+       height = 5.6,
+       width = 9.6)
+```
+
+Comparació Itàlia vs. Espanya, morts Aix-X: data relativa (des del principi del brot)
+
+
+```{r}
+plot_day_zero(countries = c('Spain', 'Italy'),
+              point_size = 2, calendar = F, deaths = T, day0 = 10)
+ggsave('~/Desktop/totesmou/4_italy_vs_spain_morts_temps_ajustat.png',
+       height = 5.6,
+       width = 9.6)
+```
+
+Comparació Itàlia vs. Espanya, morts Aix-X: data relativa (des del principi del brot), ajustat per població
+
+
+```{r}
+plot_day_zero(countries = c('Spain', 'Italy'),
+              point_size = 2, calendar = F, deaths = T, day0 = 10, pop = T)
+ggsave('~/Desktop/totesmou/5_italy_vs_spain_morts_temps_ajustat_poblacio.png',
+       height = 5.6,
+       width = 9.6)
+```
+
+Comparació Itàlia vs. Espanya, morts Aix-X: data relativa (des del principi del brot), ajustat per població, morts diàries amb tendència darrers 7 dies
+
+
+```{r}
+plot_day_zero(countries = c('Spain', 'Italy'),
+              point_size = 2, calendar = F, deaths = T, day0 = 1, pop = T, roll = 7, roll_fun = 'mean')
+ggsave('~/Desktop/totesmou/6_italy_vs_spain_morts_diarias_rolling_7_day_avg_temps_ajustat_poblacio.png',
+       height = 5.6,
+       width = 9.6)
+```
+
+Regions d'Itàlia vs Espanya. Madrid / Cat + Lombardia / ER. Ajustat per població. CASOS.
+
+```{r}
+plot_day_zero(countries = c('Spain', 'Italy'),
+              districts = c('Cataluña', 'Madrid',
+                            'Lombardia', 'Emilia-Romagna'),
+              by_district = T,
+              day0 = 10,
+              pop = T)
+ggsave('~/Desktop/totesmou/7_ccaa_casos_ajustat_poblacio.png',
+       height = 5.6,
+       width = 9.6)
+```
+
+
+Regions d'Itàlia vs Espanya. Madrid / Cat + Lombardia / ER. Ajustat per població. MORTS
+
+```{r}
+plot_day_zero(countries = c('Spain', 'Italy'),
+              districts = c('Cataluña', 'Madrid',
+                            'Lombardia', 'Emilia-Romagna'),
+              by_district = T,
+              deaths = T,
+              day0 = 1,
+              pop = T)
+ggsave('~/Desktop/totesmou/8_ccaa_morts_ajustat_poblacio.png',
+       height = 5.6,
+       width = 9.6)
+```
+
+
+Regions d'Itàlia vs Espanya. Madrid / Cat + Lombardia / ER. Ajustat per població. MORTS DIARIES
+
+```{r}
+plot_day_zero(countries = c('Spain', 'Italy'),
+              districts = c('Cataluña', 'Madrid',
+                            'Lombardia', 'Emilia-Romagna'),
+              by_district = T,
+              deaths = T,
+              roll = 7,
+              roll_fun = 'mean',
+              day0 = 1,
+              pop = T)
+ggsave('~/Desktop/totesmou/9_ccaa_morts_ajustat_poblacio.png',
+       height = 5.6,
+       width = 9.6)
+```
+
+Regions d'Itàlia vs Espanya vs New York (USA). Morts per població
+
+
+```{r}
+plot_day_zero(countries = c('Spain', 'Italy', 'US'),
+              districts = c('Cataluña', 'Madrid', 
+                            'New York', 
+                            'Lombardia', 'Emilia-Romagna'),
+              by_district = T,
+              deaths = T,
+              # roll = 7,
+              # roll_fun = 'mean',
+              day0 = 1,
+              pop = T)
+ggsave('~/Desktop/totesmou/10_usa_comparison.png',
+       height = 5.6,
+       width = 9.6)
+```
+
+
+Regions d'Itàlia vs Espanya vs New York (USA). Morts sense ajustar per població
+
+
+```{r}
+plot_day_zero(countries = c('Spain', 'Italy', 'US'),
+              districts = c('Cataluña', 'Madrid', 
+                            'New York', 
+                            'Lombardia', 'Emilia-Romagna'),
+              by_district = T,
+              deaths = T,
+              # roll = 7,
+              roll_fun = 'mean',
+              day0 = 1,
+              pop = F)
+ggsave('~/Desktop/totesmou/11_usa_comparison_no_ajust_pop.png',
+       height = 5.6,
+       width = 9.6)
+```
+
+Regions d'Itàlia vs Espanya
+
+
+```{r}
+plot_day_zero(color_var = 'iso', by_district = T,
+              deaths = T,
+              day0 = 1,
+              alpha = 0.6,
+              point_alpha = 0.6,
+              countries = c('Spain', 'Italy'),
+              pop = T)
+ggsave('~/Desktop/totesmou/12_ita_us_ccaa_comparison.png',
+       height = 5.6,
+       width = 9.6)
+
+```
+
+
+Madrid vs resta estat i Lombardia vs resta estat
+
+```{r, fig.height = 8, fig.width = 12}
+place_transform <- function(x){ifelse(x == 'Madrid', 'Madrid',
+                                      # ifelse(x == 'Cataluña', 'Cataluña',
+                                             'Altres CCAA')
+  # )
+}
+place_transform_ita <- function(x){
+  ifelse(x == 'Lombardia', 'Lombardia', 
+         # ifelse(x == 'Emilia Romagna', 'Emilia Romagna', 
+                'Altres regions italianes')
+  # )
+}
+pd <- esp_df %>% mutate(country = 'Espanya') %>%
+  mutate(ccaa = place_transform(ccaa)) %>%
+  bind_rows(ita %>% mutate(ccaa = place_transform_ita(ccaa),
+                           country = 'Itàlia')) %>%
+  group_by(country, ccaa, date) %>% 
+  summarise(cases = sum(cases),
+            uci = sum(uci),
+            deaths = sum(deaths),
+            cases_non_cum = sum(cases_non_cum),
+            deaths_non_cum = sum(deaths_non_cum),
+            uci_non_cum = sum(uci_non_cum)) %>%
+  left_join(esp_pop %>%
+              mutate(ccaa = place_transform(ccaa)) %>%
+              bind_rows(ita_pop %>% mutate(ccaa = place_transform_ita(ccaa))) %>%
+              group_by(ccaa) %>%
+              summarise(pop = sum(pop))) %>%
+  mutate(deaths_non_cum_p = deaths_non_cum / pop * 1000000) %>%
+  group_by(country, date) %>%
+  mutate(p_deaths_non_cum_country = deaths_non_cum / sum(deaths_non_cum) * 100,
+         p_deaths_country = deaths / sum(deaths) * 100)
+pd$ccaa <- factor(pd$ccaa,
+                  levels = c('Madrid',
+                             # 'Cataluña',
+                             'Altres CCAA',
+                             'Lombardia',
+                             # 'Emilia Romagna',
+                             'Altres regions italianes'))
+cols <- c(
+  rev(brewer.pal(n = 3, 'Reds'))[1:2],
+  rev(brewer.pal(n = 3, 'Blues'))[1:2]
+)
+
+label_data <- pd %>%
+  filter(country  %in% c('Itàlia', 'Espanya')) %>%
+  group_by(country) %>%
+  filter(date == max(date))  %>%
+  mutate(label = gsub('\nitalianas', '',  gsub(' ', '\n', ccaa))) %>%
+  mutate(x = date - 2,
+         y = p_deaths_country + 
+           ifelse(p_deaths_country > 50, 10, -9))
+ggplot(data = pd %>% group_by(country) %>% mutate(start_day = dplyr::first(date[deaths >=50])) %>% filter(date >= start_day),
+       aes(x = date,
+           y = p_deaths_country,
+           color = ccaa,
+           group = ccaa)) +
+  # geom_bar(stat = 'identity',
+  #          position = position_dodge(width = 0.99)) +
+  scale_fill_manual(name = '', values = cols) +
+  scale_color_manual(name = '', values = cols) +
+  geom_line(size = 2,
+            aes(color = ccaa)) +
+  geom_point(size = 3,
+             aes(color = ccaa)) +
+  facet_wrap(~country, scales = 'free_x') +
+  # xlim(as.Date('2020-03-09'),
+  #      Sys.Date()-1) +
+  theme_simple() +
+  geom_hline(yintercept = 50, lty = 2, alpha = 0.6) +
+  # geom_line(lty = 2, alpha = 0.6) +
+  labs(x = 'Data',
+       y = 'Percentatge de morts',
+       title = 'Percentatge de morts de la regió més afectada vs resta del pais',
+       subtitle = 'A partir del primer día a cada país amb 50 o més morts') +
+  theme(legend.position = 'top',
+        strip.text = element_text(size = 30),
+        legend.text = element_text(size = 10))  +
+  guides(color = guide_legend(nrow = 2,
+                              keywidth = 5)) +
+  geom_text(data = label_data,
+            aes(x = x-1,
+                y = y,
+                label = label,
+                color = ccaa),
+            size = 7,
+            show.legend = FALSE)
+ggsave('~/Desktop/totesmou/13_madrid_lombardia_percent.png',
+       height = 8,
+       width = 12)
+```
+
+
+## Map of portugal, france, spain
+
+```{r, fig.height = 8, fig.width = 12}
+pd <- por_df %>% mutate(country = 'Portugal') %>%
+  bind_rows(esp_df %>% mutate(country = 'Spain')) %>%
+  bind_rows(fra_df %>% mutate(country = 'France')) %>%
+  bind_rows(ita %>% mutate(country = 'Italy')) %>%
+  bind_rows(
+    df %>% filter(country == 'Andorra') %>%
+      mutate(ccaa = 'Andorra')
+  )
+keep_date = pd %>% group_by(country) %>% summarise(max_date= max(date)) %>% summarise(x = min(max_date)) %>% .$x
+pd <- pd %>%
+  group_by(ccaa) %>%
+  filter(date == keep_date) %>%
+  # filter(date == '2020-03-27') %>%
+  ungroup %>%
+  dplyr::select(date, ccaa, deaths, deaths_non_cum,
+                cases, cases_non_cum) %>%
+  left_join(regions_pop %>%
+              bind_rows(
+                world_pop %>% filter(country == 'Andorra') %>% dplyr::mutate(ccaa = country) %>%
+                  dplyr::select(-region, -sub_region)
+              )) %>%
+  mutate(cases_per_million = cases / pop * 1000000,
+         deaths_per_million = deaths / pop * 1000000) %>%
+  mutate(cases_per_million_non_cum = cases_non_cum / pop * 1000000,
+         deaths_per_million_non_cum = deaths_non_cum / pop * 1000000)
+
+map_esp1 <- map_esp
+map_esp1@data <- map_esp1@data %>% dplyr::select(ccaa)
+map_fra1 <- map_fra
+map_fra1@data <- map_fra1@data %>% dplyr::select(ccaa = NAME_1)
+map_por1 <- map_por
+map_por1@data <- map_por1@data %>% dplyr::select(ccaa = CCDR)
+map_ita1 <- map_ita 
+map_ita1@data <- map_ita1@data %>% dplyr::select(ccaa)
+map_and1 <- map_and
+map_and1@data <- map_and1@data %>% dplyr::select(ccaa = NAME_0)
+
+
+map <- 
+  rbind(map_esp1,
+        map_por1,
+        map_fra1,
+        map_ita1,
+        map_and1)
+
+# Remove areas not of interest
+centroids <- coordinates(map)
+centroids <- data.frame(centroids)
+names(centroids) <- c('x', 'y')
+centroids$ccaa <- map@data$ccaa
+centroids <- left_join(centroids, pd)
+# map <- map_sp <- map[centroids$y >35 & centroids$x > -10 &
+#              centroids$x < 8 & (centroids$y < 43  | map@data$ccaa %in% c('Occitanie', 'Nouvelle-Aquitaine') |
+#                                   map@data$ccaa %in% esp_df$ccaa),]
+map_sp <- map <-  map[centroids$x > -10 & centroids$y <47,]
+# map_sp <- map <-  map[centroids$x > -10,]
+
+# fortify
+map <- fortify(map, region = 'ccaa')
+
+# join data
+map$ccaa <- map$id
+map <- left_join(map, pd)
+var <- 'deaths_per_million'
+map$var <- as.numeric(unlist(map[,var]))
+centroids <- centroids[,c('ccaa', 'x', 'y', var)]
+centroids <- centroids %>%
+  filter(ccaa %in% map_sp@data$ccaa)
+
+# cols <- rev(RColorBrewer::brewer.pal(n = 9, name = 'Spectral'))
+# cols <- c('#A16928','#bd925a','#d6bd8d','#edeac2','#b5c8b8','#79a7ac','#2887a1')
+# cols <- c('#009392','#39b185','#9ccb86','#e9e29c','#eeb479','#e88471','#cf597e')
+# cols <- c('#008080','#70a494','#b4c8a8','#f6edbd','#edbb8a','#de8a5a','#ca562c')
+cols <- rev(colorRampPalette(c('darkred', 'red', 'darkorange', 'orange', 'yellow', 'lightblue'))(10))
+g <- ggplot(data = map,
+         aes(x = long,
+             y = lat,
+             group = group)) +
+    geom_polygon(aes(fill = var),
+                 lwd = 0.3,
+                 color = 'darkgrey',
+                 size = 0.6) +
+      scale_fill_gradientn(name = '',
+                           colours = cols) +
+  # scale_fill_() +
+  ggthemes::theme_map() +
+  theme(legend.position = 'bottom',
+        plot.title = element_text(size = 16)) +
+  guides(fill = guide_colorbar(direction= 'horizontal',
+                               barwidth = 50,
+                               barheight = 1,
+                               label.position = 'bottom')) +
+  labs(title = 'Cumulative COVID-19 deaths per million population, western Mediterranean',
+       subtitle = paste0('Data as of ', format(max(pd$date), '%B %d, %Y'))) +
+  geom_text(data = centroids,
+            aes(x = x,
+                y = y,
+                group = NA,
+                label = paste0(ccaa, '\n',
+                               round(deaths_per_million, digits = 2))),
+            alpha = 0.8,
+            size = 3)
+g
+ggsave('~/Desktop/totesmou/15_mapa_mediterranea.png',
+       height = 8,
+       width = 12)
+
+```
+

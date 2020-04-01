@@ -117,10 +117,10 @@ map_esp <- raster::getData(country = 'ESP', level = 1)
 map_ita <- raster::getData(country = 'ITA', level = 1)
 ccaas <- map_ita@data$NAME_1
 ccaas <- ifelse(ccaas == "Apulia", 'Puglia',
-                ifelse(ccaas == "Emilia-Romagna", 'Emilia Romagna',
+                # ifelse(ccaas == "Emilia-Romagna", 'Emilia Romagna',
                        ifelse(ccaas == "Friuli-Venezia Giulia", 'Friuli Venezia Giulia',
                               ifelse(ccaas == "Sicily", 'Sicilia',
-                                            ccaas))))
+                                            ccaas)))
 map_ita@data$ccaa <- ccaas
 usethis::use_data(map_ita, overwrite = T)
 # Andorra map
@@ -690,7 +690,7 @@ ita_pop <- tibble(
            'Basilicata',
            'Calabria',
            'Campania',
-           'Emilia Romagna',
+           'Emilia-Romagna',
            'Friuli Venezia Giulia',
            'Lazio',
            'Liguria',
