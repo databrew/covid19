@@ -67,8 +67,6 @@ roll_curve <- function(data,
       new_n <- length(x)
       stats::filter(x, rep(1 / new_n, new_n), sides = 1)
     }
-    
-    
   }
   
   pd <- data
@@ -136,7 +134,7 @@ roll_curve <- function(data,
 
 ```
 
-## Catalunya, corbes epidèmiques
+## Catalunya, corba epidémica
 
 
 Corba epidèmica. CASOS.
@@ -152,21 +150,8 @@ ggsave('~/Desktop/totesmou/00a_catalunya_corba_epidemica_casos.png',
        width = 9.6)
 ```
 
-Corba epidèmica. MORTS
--Barras en gris: casos diaris
--Vermell: tendència (mitjana dels 4 dies anteriors)
 
-```{r}
-plot_data <- esp_df %>% mutate(geo = ccaa) %>% filter(ccaa == this_ccaa)
-roll_curve(plot_data, deaths = T, scales = 'fixed') + theme(strip.text = element_text(size = 30))
-ggsave('~/Desktop/totesmou/00b_catalunya_corba_epidemica_morts.png',
-       height = 5.6,
-       width = 9.6)
-
-```
-
-
-## Espanya, corbes epidèmiques
+## Espanya, corba epidémica
 
 Corba epidèmica. CASOS.
 -Barras en gris: casos diaris
@@ -181,48 +166,22 @@ ggsave('~/Desktop/totesmou/00c_espanya_epidemica_casos.png',
        width = 9.6)
 ```
 
-Corba epidèmica. MORTS
--Barras en gris: casos diaris
--Vermell: tendència (mitjana dels 4 dies anteriors)
-
-```{r}
-plot_data <- df_country %>% filter(country %in% the_country) %>% mutate(geo = country)
-roll_curve(plot_data, pop = F, deaths = T)
-ggsave('~/Desktop/totesmou/00d_espanya_corba_epidemica_morts.png',
-       height = 5.6,
-       width = 9.6)
-
-```
-
-## CCAA, corbes epidèmiques
-
+## Itàlia, corba epidémica
 
 Corba epidèmica. CASOS.
 -Barras en gris: casos diaris
 -Vermell: tendència (mitjana dels 4 dies anteriors)
 
 ```{r}
-plot_data <- esp_df %>% mutate(geo = ccaa)
-roll_curve(plot_data, scales = 'fixed', pop = T)  + theme(strip.text = element_text(size = 15))
-ggsave('~/Desktop/totesmou/00e_ccaa_corba_epidemica_casos.png',
+the_country = 'Italy'
+plot_data <- df_country %>% filter(country %in% the_country) %>% mutate(geo = country)
+roll_curve(plot_data, pop = F)
+ggsave('~/Desktop/totesmou/00z_italia_epidemica_casos.png',
        height = 5.6,
        width = 9.6)
 ```
 
-Corba epidèmica. MORTS
--Barras en gris: casos diaris
--Vermell: tendència (mitjana dels 4 dies anteriors)
-
-```{r}
-plot_data <- esp_df %>% mutate(geo = ccaa)
-roll_curve(plot_data, scales = 'fixed', pop = T, deaths = T)  + theme(strip.text = element_text(size = 15))
-ggsave('~/Desktop/totesmou/00f_ccaa_corba_epidemica_morts.png',
-       height = 5.6,
-       width = 9.6)
-
-```
-
-## Comparacions amb Itàlia
+# Magnitud del brot
 
 Comparació Itàlia vs. Espanya, casos. Aix-X: data real
 
@@ -247,50 +206,6 @@ ggsave('~/Desktop/totesmou/2_italy_vs_spain_temps_ajustat.png',
 ```
 
 
-Comparació Itàlia vs. Espanya, morts Aix-X: data real
-
-
-```{r}
-plot_day_zero(countries = c('Spain', 'Italy'),
-              point_size = 2, calendar = T, deaths = T, day0 = 10)
-ggsave('~/Desktop/totesmou/3_italy_vs_spain_morts.png',
-       height = 5.6,
-       width = 9.6)
-```
-
-Comparació Itàlia vs. Espanya, morts Aix-X: data relativa (des del principi del brot)
-
-
-```{r}
-plot_day_zero(countries = c('Spain', 'Italy'),
-              point_size = 2, calendar = F, deaths = T, day0 = 10)
-ggsave('~/Desktop/totesmou/4_italy_vs_spain_morts_temps_ajustat.png',
-       height = 5.6,
-       width = 9.6)
-```
-
-Comparació Itàlia vs. Espanya, morts Aix-X: data relativa (des del principi del brot), ajustat per població
-
-
-```{r}
-plot_day_zero(countries = c('Spain', 'Italy'),
-              point_size = 2, calendar = F, deaths = T, day0 = 10, pop = T)
-ggsave('~/Desktop/totesmou/5_italy_vs_spain_morts_temps_ajustat_poblacio.png',
-       height = 5.6,
-       width = 9.6)
-```
-
-Comparació Itàlia vs. Espanya, morts Aix-X: data relativa (des del principi del brot), ajustat per població, morts diàries amb tendència darrers 7 dies
-
-
-```{r}
-plot_day_zero(countries = c('Spain', 'Italy'),
-              point_size = 2, calendar = F, deaths = T, day0 = 1, pop = T, roll = 7, roll_fun = 'mean')
-ggsave('~/Desktop/totesmou/6_italy_vs_spain_morts_diarias_rolling_7_day_avg_temps_ajustat_poblacio.png',
-       height = 5.6,
-       width = 9.6)
-```
-
 Regions d'Itàlia vs Espanya. Madrid / Cat + Lombardia / ER. Ajustat per població. CASOS.
 
 ```{r}
@@ -306,94 +221,7 @@ ggsave('~/Desktop/totesmou/7_ccaa_casos_ajustat_poblacio.png',
 ```
 
 
-Regions d'Itàlia vs Espanya. Madrid / Cat + Lombardia / ER. Ajustat per població. MORTS
 
-```{r}
-plot_day_zero(countries = c('Spain', 'Italy'),
-              districts = c('Cataluña', 'Madrid',
-                            'Lombardia', 'Emilia-Romagna'),
-              by_district = T,
-              deaths = T,
-              day0 = 1,
-              pop = T)
-ggsave('~/Desktop/totesmou/8_ccaa_morts_ajustat_poblacio.png',
-       height = 5.6,
-       width = 9.6)
-```
-
-
-Regions d'Itàlia vs Espanya. Madrid / Cat + Lombardia / ER. Ajustat per població. MORTS DIARIES
-
-```{r}
-plot_day_zero(countries = c('Spain', 'Italy'),
-              districts = c('Cataluña', 'Madrid',
-                            'Lombardia', 'Emilia-Romagna'),
-              by_district = T,
-              deaths = T,
-              roll = 7,
-              roll_fun = 'mean',
-              day0 = 1,
-              pop = T)
-ggsave('~/Desktop/totesmou/9_ccaa_morts_ajustat_poblacio.png',
-       height = 5.6,
-       width = 9.6)
-```
-
-Regions d'Itàlia vs Espanya vs New York (USA). Morts per població
-
-
-```{r}
-plot_day_zero(countries = c('Spain', 'Italy', 'US'),
-              districts = c('Cataluña', 'Madrid', 
-                            'New York', 
-                            'Lombardia', 'Emilia-Romagna'),
-              by_district = T,
-              deaths = T,
-              # roll = 7,
-              # roll_fun = 'mean',
-              day0 = 1,
-              pop = T)
-ggsave('~/Desktop/totesmou/10_usa_comparison.png',
-       height = 5.6,
-       width = 9.6)
-```
-
-
-Regions d'Itàlia vs Espanya vs New York (USA). Morts sense ajustar per població
-
-
-```{r}
-plot_day_zero(countries = c('Spain', 'Italy', 'US'),
-              districts = c('Cataluña', 'Madrid', 
-                            'New York', 
-                            'Lombardia', 'Emilia-Romagna'),
-              by_district = T,
-              deaths = T,
-              # roll = 7,
-              roll_fun = 'mean',
-              day0 = 1,
-              pop = F)
-ggsave('~/Desktop/totesmou/11_usa_comparison_no_ajust_pop.png',
-       height = 5.6,
-       width = 9.6)
-```
-
-Regions d'Itàlia vs Espanya
-
-
-```{r}
-plot_day_zero(color_var = 'iso', by_district = T,
-              deaths = T,
-              day0 = 1,
-              alpha = 0.6,
-              point_alpha = 0.6,
-              countries = c('Spain', 'Italy'),
-              pop = T)
-ggsave('~/Desktop/totesmou/12_ita_us_ccaa_comparison.png',
-       height = 5.6,
-       width = 9.6)
-
-```
 
 
 Madrid vs resta estat i Lombardia vs resta estat

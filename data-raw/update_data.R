@@ -8,6 +8,7 @@ system('cd ../../COVID-19; pwd; git pull;')
 system('cd ../../covid-19-data; pwd; git pull;')
 
 # Pull from data for French departments
+# Consider replacing with this: Updated map (data through 31 March
 system('cd ../../FRANCE-COVID-19; git pull')
 
 # Pull data for Portugese regions

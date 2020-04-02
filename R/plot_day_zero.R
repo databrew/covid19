@@ -103,14 +103,15 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'US', 'German
       pd <- pd %>%
         arrange(iso, geo, date) %>%
         group_by(iso, geo) %>%
-        mutate(value = rollmean(x = value, roll, align = 'right', fill = NA))
+        mutate(new_value = rollmean(x = value, roll, align = 'right', fill = NA))
     } else {
       # Rolling sum
       pd <- pd %>%
         arrange(iso, geo, date) %>%
         group_by(iso, geo) %>%
-        mutate(value = rollsum(x = value, roll, align = 'right', fill = NA))
+        mutate(new_value = rollsum(x = value, roll, align = 'right', fill = NA))
     }
+    pd$value <- pd$new_value
   }
   
   # Adjust by population
@@ -136,7 +137,7 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'US', 'German
   # Deal with day 0 adjustments
   pd <- pd %>%
     group_by(geo) %>%
-    mutate(first_day = min(date[value >= day0])) %>%
+    mutate(first_day = min(date[value >= day0], na.rm = TRUE)) %>%
     ungroup %>%
     mutate(days_since_first_day = date - first_day) %>%
     filter(days_since_first_day >= time_before)
@@ -156,10 +157,6 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'US', 'German
                          value)
   # Clean up type
   pd$days_since_first_day <- as.integer(pd$days_since_first_day)
-  
-  # Define roll in data frame
-  pd$roll <- roll
-  pd$roll_fun <- roll_fun
   return(pd)
 }
 
@@ -212,11 +209,7 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'US', 'Germany'),
                           roll_fun = 'mean',
                           color_var = 'geo'){
   options(scipen = '999')
-  # If rolling, cannot be cumulative
-  if(roll > 0){
-    cumulative <- FALSE
-  }
-  
+
   pd <- prepare_day_zero_data(countries = countries,
                               day0 = day0,
                               cumulative = cumulative,
@@ -226,8 +219,15 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'US', 'Germany'),
                               pop = pop,
                               pop_adjustor = pop_adjustor,
                               by_district = by_district,
-                              districts = districts)
+                              districts = districts,
+                              roll = roll,
+                              roll_fun = roll_fun)
 
+  # If rolling, cannot be cumulative
+  if(roll > 0){
+    cumulative <- FALSE
+  }
+  
   # Fix geos for those without districts, etc.
   if(any(is.na(pd$geo))){
     pd <- left_join(pd,

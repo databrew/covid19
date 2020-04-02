@@ -795,7 +795,7 @@ for(i in 1:length(unique_dates)){
   # cols <- c('#A16928','#bd925a','#d6bd8d','#edeac2','#b5c8b8','#79a7ac','#2887a1')
   # cols <- c('#009392','#39b185','#9ccb86','#e9e29c','#eeb479','#e88471','#cf597e')
   # cols <- c('#008080','#70a494','#b4c8a8','#f6edbd','#edbb8a','#de8a5a','#ca562c')
-  cols <- rev(colorRampPalette(c('darkred', 'red', 'darkorange', 'orange', 'yellow', 'white'))(15))
+  cols <- rev(colorRampPalette(c('darkred', 'red', 'darkorange', 'orange', 'yellow', 'white'))(17))
   g <- ggplot(data = today_map,
            aes(x = long,
                y = lat,
@@ -806,8 +806,8 @@ for(i in 1:length(unique_dates)){
                    size = 0.6) +
         scale_fill_gradientn(name = '',
                              colours = cols,
-                             breaks = seq(0, 700, 50),
-                             limits = c(0, 700)) +
+                             breaks = seq(0, 800, 50),
+                             limits = c(0, 800)) +
     # scale_fill_() +
     ggthemes::theme_map() +
     theme(legend.position = 'top',
