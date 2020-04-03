@@ -18,7 +18,7 @@ opts_chunk$set(comment = NA,
                error = TRUE, 
                cache = FALSE,
                fig.width = 9.64,
-               fig.height = 7.86,
+               fig.height = 5.9,
                fig.path = 'figures/')
 ```
 
@@ -38,16 +38,17 @@ library(rnaturalearth)
 library(rnaturalearthdata)
 library(RColorBrewer)
 library(readr)
+library(zoo)
 options(scipen = '999')
 ```
 
 ## Charts for Tot es Mou
 
 ```{r}
-dir.create('~/Desktop/totesmou')
-plot_day_zero(countries = c('Spain', 'Italy'),
+dir.create('/tmp/totesmou')
+plot_day_zero(countries = c('Spain', 'Italy', max_date = Sys.Date()-1),
               point_size = 2, calendar = T)
-ggsave('~/Desktop/totesmou/1_italy_vs_spain.png',
+ggsave('/tmp/totesmou/1_italy_vs_spain.png',
        height = 5.6,
        width = 9.6)
 ```
@@ -55,7 +56,7 @@ ggsave('~/Desktop/totesmou/1_italy_vs_spain.png',
 ```{r}
 plot_day_zero(countries = c('Spain', 'Italy'),
               point_size = 2, calendar = F)
-ggsave('~/Desktop/totesmou/2_italy_vs_spain_temps_ajustat.png',
+ggsave('/tmp/totesmou/2_italy_vs_spain_temps_ajustat.png',
        height = 5.6,
        width = 9.6)
 ```
@@ -64,34 +65,22 @@ ggsave('~/Desktop/totesmou/2_italy_vs_spain_temps_ajustat.png',
 ```{r}
 plot_day_zero(countries = c('Spain', 'Italy'),
               point_size = 2, calendar = T, deaths = T, day0 = 10)
-ggsave('~/Desktop/totesmou/3_italy_vs_spain_morts.png',
-       height = 5.6,
-       width = 9.6)
 ```
 
 
 ```{r}
 plot_day_zero(countries = c('Spain', 'Italy'),
               point_size = 2, calendar = F, deaths = T, day0 = 10)
-ggsave('~/Desktop/totesmou/4_italy_vs_spain_morts_temps_ajustat.png',
-       height = 5.6,
-       width = 9.6)
 ```
 
 ```{r}
 plot_day_zero(countries = c('Spain', 'Italy'),
               point_size = 2, calendar = F, deaths = T, day0 = 10, pop = T)
-ggsave('~/Desktop/totesmou/5_italy_vs_spain_morts_temps_ajustat_poblacio.png',
-       height = 5.6,
-       width = 9.6)
 ```
 
 ```{r}
 plot_day_zero(countries = c('Spain', 'Italy'),
-              point_size = 2, calendar = F, deaths = T, day0 = 1, pop = T, roll = 7, roll_fun = 'mean')
-ggsave('~/Desktop/totesmou/6_italy_vs_spain_morts_diarias_rolling_7_day_avg_temps_ajustat_poblacio.png',
-       height = 5.6,
-       width = 9.6)
+              point_size = 2, calendar = F, deaths = T, day0 = 1, pop = T, roll = 3, roll_fun = 'mean')
 ```
 
 ```{r}
@@ -101,7 +90,6 @@ plot_day_zero(countries = c('Spain', 'Italy'),
               by_district = T,
               day0 = 10,
               pop = T)
-ggsave('~/Desktop/totesmou/7_ccaa_casos_ajustat_poblacio.png')
 ```
 
 ```{r}
@@ -112,7 +100,6 @@ plot_day_zero(countries = c('Spain', 'Italy'),
               deaths = T,
               day0 = 1,
               pop = T)
-ggsave('~/Desktop/totesmou/8_ccaa_morts_ajustat_poblacio.png')
 ```
 
 ```{r}
@@ -121,11 +108,11 @@ plot_day_zero(countries = c('Spain', 'Italy'),
                             'Lombardia', 'Emilia-Romagna'),
               by_district = T,
               deaths = T,
-              roll = 7,
+              roll = 3,
               roll_fun = 'mean',
               day0 = 1,
-              pop = T)
-ggsave('~/Desktop/totesmou/9_ccaa_morts_ajustat_poblacio.png')
+              ylog = F,
+              pop = T, calendar = T)
 ```
 
 ```{r}
@@ -135,11 +122,10 @@ plot_day_zero(countries = c('Spain', 'Italy', 'US'),
                             'Lombardia', 'Emilia-Romagna'),
               by_district = T,
               deaths = T,
-              # roll = 7,
+              roll = 3,
               roll_fun = 'mean',
               day0 = 1,
               pop = T)
-ggsave('~/Desktop/totesmou/10_usa_comparison.png')
 ```
 
 
@@ -154,7 +140,6 @@ plot_day_zero(countries = c('Spain', 'Italy', 'US'),
               roll_fun = 'mean',
               day0 = 1,
               pop = F)
-ggsave('~/Desktop/totesmou/11_usa_comparison_no_ajust_pop.png')
 ```
 
 ```{r}
@@ -162,10 +147,10 @@ plot_day_zero(color_var = 'iso', by_district = T,
               deaths = T,
               day0 = 1,
               alpha = 0.6,
-              point_alpha = 0.6,
+              point_alpha = 0,
+              calendar = T,
               countries = c('Spain', 'Italy'),
               pop = T)
-ggsave('~/Desktop/totesmou/12_ita_us_ccaa_comparison.png')
 
 ```
 
@@ -251,13 +236,12 @@ ggplot(data = pd %>% group_by(country) %>% mutate(start_day = dplyr::first(date[
   guides(color = guide_legend(nrow = 2,
                               keywidth = 5)) +
   geom_text(data = label_data,
-            aes(x = x-1,
+            aes(x = x-2,
                 y = y,
                 label = label,
                 color = ccaa),
             size = 7,
             show.legend = FALSE)
-ggsave('~/Desktop/totesmou/13_madrid_lombardia_percent.png')
 ```
 
 
@@ -348,42 +332,33 @@ roll_curve <- function(data,
 this_ccaa <- 'Cataluña'
 plot_data <- esp_df %>% mutate(geo = ccaa) %>% filter(ccaa == this_ccaa)
 roll_curve(plot_data, scales = 'fixed')  + theme(strip.text = element_text(size = 30))
-ggsave('~/Desktop/totesmou/14_catalunya_corba_epidemica_casos.png')
 
 plot_data <- esp_df %>% mutate(geo = ccaa) %>% filter(ccaa == this_ccaa)
 roll_curve(plot_data, deaths = T, scales = 'fixed') + theme(strip.text = element_text(size = 30))
-ggsave('~/Desktop/totesmou/15_catalunya_corba_epidemica_morts.png')
 
 ```
 
 
 ```{r}
-dir.create('~/Desktop/isglobal/')
 african_countries <-  world_pop$country[world_pop$sub_region %in% c('Sub-Saharan Africa')]
 
 pd <- plot_day_zero(countries = c(african_countries),
                     day0 = 10,
                     max_date = Sys.Date() - 13)
 pd
-ggsave('~/Desktop/isglobal/a_africa_two_weeks_ago.png',
-       height = 5.4,
-       width = 9.6)
+
 
 pd <- plot_day_zero(countries = c(african_countries),
                     day0 = 10,
                     max_date = Sys.Date() - 6)
 pd
-ggsave('~/Desktop/isglobal/b_africa_1_week_ago.png',
-       height = 5.4,
-       width = 9.6)
+
 
 pd <- plot_day_zero(countries = c(african_countries),
                     day0 = 10,
                     max_date = Sys.Date())
 pd
-ggsave('~/Desktop/isglobal/c_africa_now.png',
-       height = 5.4,
-       width = 9.6)
+
 
 
 latam_countries <-  world_pop$country[world_pop$sub_region %in% c('Latin America and the Caribbean')]
@@ -393,26 +368,18 @@ pd <- plot_day_zero(countries = c(latam_countries),
                     day0 = 10,
                     max_date = Sys.Date() - 13)
 pd
-ggsave('~/Desktop/isglobal/d_latam_two_weeks_ago.png',
-       height = 5.4,
-       width = 9.6)
+
 
 pd <- plot_day_zero(countries = c(latam_countries),
                     day0 = 10,
                     max_date = Sys.Date() - 6)
 pd
-ggsave('~/Desktop/isglobal/e_latam_1_week_ago.png',
-       height = 5.4,
-       width = 9.6)
+
 
 pd <- plot_day_zero(countries = c(latam_countries),
                     day0 = 10,
                     max_date = Sys.Date())
 pd
-ggsave('~/Desktop/isglobal/f_latam_now.png',
-       height = 5.4,
-       width = 9.6)
-
 ```
 
 Latin America and Africa vs Europe
@@ -448,9 +415,6 @@ g <- ggplot(data = pd,
   labs(x = 'Days since first day at 10 cases') +
   theme(legend.position = 'top')
 g
-ggsave('~/Desktop/isglobal/g_europe_only.png',
-       height = 5.4,
-       width = 9.6)
 
 
 cols <- c('darkred', 'black')
@@ -461,10 +425,6 @@ g +
             size = 1.5,
             alpha = 0.8) +
     scale_color_manual(name = '', values = cols) 
-ggsave('~/Desktop/isglobal/h1_europe_and_africa.png',
-       height = 5.4,
-       width = 9.6)
-
 
 
 cols <- c( 'darkorange', 'black')
@@ -474,9 +434,6 @@ g +
             size = 1.5,
             alpha = 0.8) +
     scale_color_manual(name = '', values = cols) 
-ggsave('~/Desktop/isglobal/h2_europe_and_latam.png',
-       height = 5.4,
-       width = 9.6)
 
 
 cols <- c('darkred', 'darkorange', 'black')
@@ -486,13 +443,9 @@ g +
             size = 1.5,
             alpha = 0.8) +
     scale_color_manual(name = '', values = cols) 
-ggsave('~/Desktop/isglobal/h3_europe_latam_and_africa.png',
-       height = 5.4,
-       width = 9.6)
-
 ```
 
-```{r}
+```{r, eval = F}
 # Assets
 pyramid_dir <- '../../data-raw/pyramids/'
 pyramid_files <- dir(pyramid_dir)
@@ -549,44 +502,35 @@ make_pyramid_overlay <- function(){
 }
 
 make_pyramid(the_region = 'Spain-2019') + labs(title = 'Spain')
-ggsave('~/Desktop/isglobal/i_pop_spain.png',
-       height = 5.4,
-       width = 9.6)
 make_pyramid(the_region = 'Italy-2019') + labs(title = 'Italy')
-ggsave('~/Desktop/isglobal/j_pop_italy.png',
-       height = 5.4,
-       width = 9.6)
 
 make_pyramid(the_region = 'EUROPE-2019') + labs(title = 'Europe')
-ggsave('~/Desktop/isglobal/k_pop_europe.png',
-       height = 5.4,
-       width = 9.6)
-
 make_pyramid(the_region = 'Kenya-2019') + labs(title = 'Kenya')
-ggsave('~/Desktop/isglobal/l_pop_kenya.png',
-       height = 5.4,
-       width = 9.6)
+
 
 make_pyramid(the_region = 'Guatemala-2019') + labs(title = 'Guatemala')
-ggsave('~/Desktop/isglobal/m_pop_guatemala.png',
-       height = 5.4,
-       width = 9.6)
 
 make_pyramid(the_region = 'AFRICA-2019') + labs(title = 'Africa')
-ggsave('~/Desktop/isglobal/n_pop_africa.png',
-       height = 5.4,
-       width = 9.6)
 
 make_pyramid(the_region = 'LATIN AMERICA AND THE CARIBBEAN-2019') + labs(title = 'Latin America and the Caribbean')
-ggsave('~/Desktop/isglobal/o_pop_latam.png',
-       height = 5.4,
-       width = 9.6)
 
 make_pyramid_overlay() + labs(title = 'Population distribution by region')
-ggsave('~/Desktop/isglobal/p_pop_all.png',
-       height = 5.4,
-       width = 9.6)
 
+```
+
+## Pics
+
+```{r}
+plot_day_zero(countries = c('China', 'Italy', 'Spain'),
+              districts = c('Hubei', 'Lombardia', 'Cataluña', 'Madrid'),
+              by_district = T,
+              point_alpha = 0,
+              day0 = 5,
+              pop = F,
+              deaths = T,
+              ylog = T,
+              calendar = F,
+              roll = 5)
 ```
 
 ## Map of portugal, france, spain
@@ -695,7 +639,7 @@ g <- ggplot(data = map,
             alpha = 0.8,
             size = 3)
 g
-ggsave('~/Desktop/map_with_borders.png',
+ggsave('/tmp/map_with_borders.png',
        height = 8, width = 13)
 ```
 
@@ -704,7 +648,7 @@ ggsave('~/Desktop/map_with_borders.png',
 ## Animation, Portugal, France, Spain, Italy
 
 ```{r}
-dir.create('~/Desktop/animation_map/')
+dir.create('/tmp/animation_map/')
 pd <- por_df %>% mutate(country = 'Portugal') %>%
   bind_rows(esp_df %>% mutate(country = 'Spain')) %>%
   bind_rows(fra_df %>% mutate(country = 'France')) %>%
@@ -827,7 +771,7 @@ for(i in 1:length(unique_dates)){
               alpha = 0.8,
               size = 1.5)
   
-  ggsave(paste0('~/Desktop/animation_map/', this_date, '.png'),
+  ggsave(paste0('/tmp/animation_map/', this_date, '.png'),
          plot = g,
          height = 6, width = 10)
 }
@@ -835,7 +779,7 @@ for(i in 1:length(unique_dates)){
 
 ```
 # Command line
-cd ~/Desktop/animation_map
+cd /tmp/animation_map
 mogrify -resize 50% *.png
 convert -delay 20 -loop 0 *.png result.gif
 
@@ -852,8 +796,9 @@ df_country %>% filter(country == 'Spain') %>% arrange(date) %>% tail
 ```{r}
 pd <- df_country
 pd$value <- pd$deaths_non_cum
+the_date <- Sys.Date() - 1
 pd <- pd %>%
-  filter(date == max(date)) %>%
+  filter(date == the_date) %>%
   dplyr::select(country, iso, cases, cases_non_cum,
                 deaths, value) %>%
   dplyr::arrange(desc(value)) %>%
@@ -871,7 +816,9 @@ ggplot(data = pd,
   geom_text(aes(label = value),
             nudge_y = -20,
             size = 4,
-            color = 'white')
+            color = 'white') +
+  labs(title = paste0('Confirmed COVID-19 deaths on ', the_date),
+       x = '', y = '')
 pd
 
 ```
@@ -881,6 +828,7 @@ Deaths per million yesterday per CCAA
 ```{r}
 pd <- esp_df
 pd$value <- pd$deaths_non_cum
+the_date <- max(pd$date)
 pd <- pd %>%
   filter(date == max(date)) %>%
   dplyr::select(ccaa, cases, cases_non_cum,
@@ -890,9 +838,9 @@ pd <- pd %>%
   mutate(value_per_million = value / pop * 1000000) #%>% 
   # arrange(desc(value_per_million))
 pd <- pd[1:10,]
-pd$country <- factor(pd$country, levels = pd$country)
+pd$ccaa <- factor(pd$ccaa, levels = pd$ccaa)
 ggplot(data = pd,
-       aes(x = country,
+       aes(x = ccaa,
            y = value)) +
   geom_bar(stat = 'identity',
            fill = 'black') +
@@ -907,7 +855,7 @@ pd
 ## Deaths yesterday animation
 
 ```{r, eval = T}
-dir.create('~/Desktop/animation_deaths')
+dir.create('/tmp/animation_deaths')
 dates <- seq(as.Date('2020-03-17'), (Sys.Date()-1), by = 1)
 for(i in 1:length(dates)){
   this_date <- dates[i]
@@ -949,21 +897,21 @@ for(i in 1:length(dates)){
     scale_fill_manual(name ='',
                       values = cols) +
     ylim(0, 900)
-  ggsave(filename = paste0('~/Desktop/animation_deaths/', this_date, '.png'),
+  ggsave(filename = paste0('/tmp/animation_deaths/', this_date, '.png'),
          g)
 }
 # Command line
 ```
 
 ```
-cd ~/Desktop/animation_deaths
+cd /tmp/animation_deaths
 mogrify -resize 50% *.png
 convert -delay 50 -loop 0 *.png result.gif
 ```
 
 ## Heatmap
 
-```{r}
+```{r, fig.width = 10, fig.height = 8}
 pd <- by_country <-  esp_df %>% mutate(country = 'Spain') %>% 
   bind_rows(ita %>% mutate(country = 'Italy')) %>%
   bind_rows(por_df %>% mutate(country = 'Portugal')) %>%
@@ -1010,15 +958,17 @@ ggplot(data = pd,
   guides(color = guide_legend(), size = guide_legend()) +
   labs(title = 'Daily (non-cumulative) COVID-19 deaths by sub-state regions',
        caption = paste0('Data as of ', max_date))
-ggsave('/tmp/1.png')
-  ```
+ggsave('/tmp/1.png',
+       width = 10,
+       height = 8)
+```
 
 
 
 
 ## Heatmap per population
 
-```{r}
+```{r, fig.width = 12, fig.height = 8}
 pd <- by_country <-  esp_df %>% mutate(country = 'Spain') %>%  bind_rows(ita %>% mutate(country = 'Italy'))
 poppy <- bind_rows(ita_pop, esp_pop)
 pd <- pd %>% left_join(poppy)
@@ -1053,11 +1003,14 @@ ggplot(data = pd,
   facet_wrap(~country, scales = 'free') +
   theme(strip.text = element_text(size = 26),
         axis.title = element_blank(),
-        axis.text = element_text(size = 16)) +
+        axis.text = element_text(size = 16),
+        axis.text.x = element_text(size = 12)) +
   guides(color = guide_legend(), size = guide_legend()) +
   labs(title = 'Daily COVID-19 deaths per 1,000,000 population by sub-state regions',
        caption = paste0('Data as of ', max_date))
-ggsave('/tmp/2.png')
+ggsave('/tmp/2.png',
+       width = 10,
+       height = 8)
 ```
 
 ## Madrid vs rest of state
@@ -1128,6 +1081,7 @@ ggplot(data = pd,
                 y = deaths_non_cum_p + 2,
                 group = ccaa),
             size = 2.5,
+            angle = 90,
             position = position_dodge(width = 0.99))
 
 
@@ -1138,7 +1092,7 @@ label_data <- pd %>%
   mutate(label = gsub('\nitalianas', '',  gsub(' ', '\n', ccaa))) %>%
   mutate(x = date - 2,
          y = p_deaths_country + 
-           ifelse(p_deaths_country > 50, 10, -12))
+           ifelse(p_deaths_country > 50, 10, -10))
 ggplot(data = pd %>% group_by(country) %>% mutate(start_day = dplyr::first(date[deaths >=50])) %>% filter(date >= start_day),
        aes(x = date,
            y = p_deaths_country,
@@ -1160,7 +1114,7 @@ ggplot(data = pd %>% group_by(country) %>% mutate(start_day = dplyr::first(date[
   # geom_line(lty = 2, alpha = 0.6) +
   labs(x = 'Fecha',
        y = 'Porcentaje de muertes',
-       title = 'Porcentaje de muertes diarias atribuible a la región más afectada vs. resto del país',
+       title = 'Porcentaje de muertes del país: región más afectada vs. resto del país',
        subtitle = 'A partir del primer día en cada país con 50 o más muertes') +
   theme(legend.position = 'top',
         strip.text = element_text(size = 30),
@@ -1168,13 +1122,12 @@ ggplot(data = pd %>% group_by(country) %>% mutate(start_day = dplyr::first(date[
   guides(color = guide_legend(nrow = 2,
                               keywidth = 5)) +
   geom_text(data = label_data,
-            aes(x = x,
+            aes(x = x - 2,
                 y = y,
                 label = label,
                 color = ccaa),
-            size = 7,
+            size = 6,
             show.legend = FALSE)
-ggsave('~/Desktop/porcentaje.png')
 ```
 
 ## Italy regions, Spanish regions, Chinese regions (adjusted for population)
@@ -1225,6 +1178,8 @@ pd <- joined %>% filter(days_since_start_deaths_pm >= 0) %>%
                           'Hubei (China)',
                           ifelse(country == 'Italy', 'Italia', 'España')))
 
+lombardy_location <- (max(pd_big$days_since_start_deaths_pm[pd_big$ccaa == 'Lombardia']))
+
 # Define label data
 label_data <- pd %>% group_by(ccaa) %>% filter(
                                                           (
@@ -1248,6 +1203,7 @@ pd_small <- pd %>%
 # cols <- colorRampPalette(RColorBrewer::brewer.pal(n = 8, name = 'Set2'))(length(unique(pd$country)))
 # cols <- rainbow(3)
 cols <- c('darkred', '#FF6633', '#006666')
+
 ggplot(data = pd_big,
        aes(x = days_since_start_deaths_pm,
            y = deaths_pm,
@@ -1288,14 +1244,10 @@ ggplot(data = pd_big,
             alpha = 0.6,
             show.legend = FALSE) +
   theme(axis.text = element_text(size = 14),
-        axis.title = element_text(size = 20),
+        axis.title = element_text(size = 16),
         legend.text = element_text(size = 16),
-        plot.title = element_text(size = 30))  +
-  xlim(0, 26)
-ggsave('~/Desktop/china_spain_italy_comparison.png',
-       height = 7,
-       width = 10)
-
+        plot.title = element_text(size = 25))  +
+  xlim(0, lombardy_location + 5)
 ```
 
 
@@ -1416,11 +1368,7 @@ ggplot(data = pd_big,
         axis.title = element_text(size = 20),
         legend.text = element_text(size = 16),
         plot.title = element_text(size = 30))  +
-  xlim(0, 35)
-ggsave('~/Desktop/china_spain_italy_comparison_raw.png',
-       height = 7,
-       width = 10) 
-
+  xlim(0, 50)
 ```
 
 
@@ -1513,7 +1461,7 @@ pd_small <- pd %>%
 # cols <- rainbow(3)
 cols <- c( '#FF6633',  'darkred', '#006666')
 
-the_dir <- '~/Desktop/animation/'
+the_dir <- '/tmp/animation/'
 dir.create(the_dir)
 the_dates <- sort(unique(c(pd_big$date, pd_small$date)))
 for(i in 1:length(the_dates)){
@@ -1627,7 +1575,7 @@ for(i in 1:length(the_dates)){
 
 ```
 # Command line
-cd ~/Desktop/animation
+cd /tmp/animation
 mogrify -resize 50% *.png
 convert -delay 20 -loop 0 *.png result.gif
 
@@ -1683,7 +1631,7 @@ pd_small <- pd %>%
 # cols <- rainbow(3)
 cols <- colorRampPalette(c('#A16928','#bd925a','#d6bd8d','#edeac2', '#b5c8b8','#79a7ac','#2887a1'))(length(unique(pd$country)))
 
-the_dir <- '~/Desktop/animation2/'
+the_dir <- '/tmp/animation2/'
 dir.create(the_dir)
 the_dates <- sort(unique(c(pd_big$date, pd_small$date)))
 for(i in 1:length(the_dates)){
@@ -1786,7 +1734,7 @@ for(i in 1:length(the_dates)){
 
 ```
 # Command line
-cd ~/Desktop/animation
+cd /tmp/animation
 mogrify -resize 50% *.png
 convert -delay 25 -loop 0 *.png result.gif
 
@@ -1861,7 +1809,7 @@ ggplot(data = joined %>% filter(days_since_start_deaths_pm >= 0),
   theme(axis.text = element_text(size = 14),
         axis.title = element_text(size = 20)) +
   xlim(0, 23)
-ggsave('~/Desktop/italy_comparison.png',
+ggsave('/tmp/italy_comparison.png',
        height = 6,
        width = 10)
 
@@ -1915,7 +1863,7 @@ ggplot(data = pd,
   theme(axis.text = element_text(size = 14),
         axis.title = element_text(size = 20)) +
   xlim(0, 24)
-ggsave('~/Desktop/cat_italy_comparison.png',
+ggsave('/tmp/cat_italy_comparison.png',
        height = 6,
        width = 10)
 
@@ -1972,7 +1920,7 @@ ggplot(data = pd,
   theme(axis.text = element_text(size = 14),
         axis.title = element_text(size = 20)) +
   xlim(0, 23)
-ggsave('~/Desktop/mad_lom_italy_comparison.png',
+ggsave('/tmp/mad_lom_italy_comparison.png',
        height = 6,
        width = 10)
 ```
@@ -1987,7 +1935,7 @@ isos <- c('Central Asia', 'Eastern Asia', 'Eastern Europe',
           'South-eastern Asia',
           'Southern Asia', 'Southern Europe',
           'Sub-Saharan Africa', 'Western Asia', 'Western Europe')
-dir.create('~/Desktop/world')
+dir.create('/tmp/world')
 for(i in 1:length(isos)){
   this_iso <- isos[i]
   message(i, ' ', this_iso)
@@ -2030,7 +1978,7 @@ ggplot(data = pd,
   labs(x = '',
        y = 'Confirmed cases',
        title = paste0('Confirmed cases of COVID-19 in ', this_iso)) 
-  ggsave(paste0('~/Desktop/world/', this_iso, '.png'),
+  ggsave(paste0('/tmp/world/', this_iso, '.png'),
          width = 12, 
          height = 7)
   }
@@ -2053,17 +2001,17 @@ roll_curve(plot_data, pop = T)
 ```
 
 ```{r}
-dir.create('~/Desktop/countries')
+dir.create('/tmp/countries')
 roll_curve_country <- function(the_country = 'Spain'){
   plot_data <- df_country %>% filter(country %in% the_country) %>% mutate(geo = country)
   g1 <- roll_curve(plot_data, pop = F)
   g2 <- roll_curve(plot_data, pop = T)
   g3 <- roll_curve(plot_data, pop = F, deaths = T)
   g4 <- roll_curve(plot_data, pop = T, deaths = T)
-  ggsave(paste0('~/Desktop/countries/', the_country, '1.png'), g1)
-  ggsave(paste0('~/Desktop/countries/', the_country, '2.png'), g2)
-  ggsave(paste0('~/Desktop/countries/', the_country, '3.png'), g3)
-  ggsave(paste0('~/Desktop/countries/', the_country, '4.png'), g4)
+  ggsave(paste0('/tmp/countries/', the_country, '1.png'), g1)
+  ggsave(paste0('/tmp/countries/', the_country, '2.png'), g2)
+  ggsave(paste0('/tmp/countries/', the_country, '3.png'), g3)
+  ggsave(paste0('/tmp/countries/', the_country, '4.png'), g4)
 }
 
 
@@ -2143,7 +2091,7 @@ ggplot(data = pd,
             size = text_size * 0.3,
             nudge_y = 180) +
   ylim(0, max(pd$deaths * 1.1))
-ggsave('~/Desktop/spain.png')
+ggsave('/tmp/spain.png')
 
 ```
 
@@ -2188,7 +2136,7 @@ ggplot(data = pd,
             size = text_size * 0.3,
             nudge_y = 4.5) +
   ylim(0, max(pd$value) * 1.2)
-ggsave('~/Desktop/spai2.png')
+ggsave('/tmp/spai2.png')
 
 ```
 
@@ -2229,7 +2177,7 @@ ggplot(data = pd,
             size = text_size * 0.3,
             nudge_y = 30) +
   ylim(0, max(pd$deaths_non_cum * 1.1))
-ggsave('~/Desktop/spain_non_cum.png')
+ggsave('/tmp/spain_non_cum.png')
 
 ```
 
@@ -2274,7 +2222,7 @@ ggplot(data = pd,
             size = text_size * 0.3,
             nudge_y = 1) +
   ylim(0, max(pd$value) * 1.3)
-ggsave('~/Desktop/spain_ayer_adj.png')
+ggsave('/tmp/spain_ayer_adj.png')
 
 ```
 
@@ -2283,7 +2231,7 @@ ggsave('~/Desktop/spain_ayer_adj.png')
 ```{r}
 plot_data <- esp_df %>% mutate(geo = ccaa) %>% filter(!ccaa %in% c('Melilla'))
 roll_curve(plot_data, scales = 'fixed')
-ggsave('~/Desktop/a.png',
+ggsave('/tmp/a.png',
        width = 1280 / 150,
        height = 720 / 150)
 ```
@@ -2291,13 +2239,13 @@ ggsave('~/Desktop/a.png',
 Loop for everywhere (see desktop)
 
 ```{r}
-dir.create('~/Desktop/ccaas')
+dir.create('/tmp/ccaas')
 ccaas <- sort(unique(esp_df$ccaa))
 for(i in 1:length(ccaas)){
   this_ccaa <- ccaas[i]
   plot_data <- esp_df %>% mutate(geo = ccaa) %>% filter(ccaa == this_ccaa)
   roll_curve(plot_data, scales = 'fixed')  + theme(strip.text = element_text(size = 30))
-  ggsave(paste0('~/Desktop/ccaas/', i, this_ccaa, '_cases.png'),
+  ggsave(paste0('/tmp/ccaas/', i, this_ccaa, '_cases.png'),
          width = 1280 / 150,
          height = 720 / 150)
 }
@@ -2307,7 +2255,7 @@ for(i in 1:length(ccaas)){
   this_ccaa <- ccaas[i]
   plot_data <- esp_df %>% mutate(geo = ccaa) %>% filter(ccaa == this_ccaa)
   roll_curve(plot_data, scales = 'fixed', pop = TRUE)  + theme(strip.text = element_text(size = 30))
-  ggsave(paste0('~/Desktop/ccaas/', i, this_ccaa, '_cases_pop.png'),
+  ggsave(paste0('/tmp/ccaas/', i, this_ccaa, '_cases_pop.png'),
          width = 1280 / 150,
          height = 720 / 150)
 }
@@ -2317,7 +2265,7 @@ for(i in 1:length(ccaas)){
   this_ccaa <- ccaas[i]
   plot_data <- esp_df %>% mutate(geo = ccaa) %>% filter(ccaa == this_ccaa)
   roll_curve(plot_data, deaths = T, scales = 'fixed') + theme(strip.text = element_text(size = 30))
-  ggsave(paste0('~/Desktop/ccaas/', i, this_ccaa, '_deaths.png'),
+  ggsave(paste0('/tmp/ccaas/', i, this_ccaa, '_deaths.png'),
          width = 1280 / 150,
          height = 720 / 150)
 }
@@ -2327,7 +2275,7 @@ for(i in 1:length(ccaas)){
   this_ccaa <- ccaas[i]
   plot_data <- esp_df %>% mutate(geo = ccaa) %>% filter(ccaa == this_ccaa)
   roll_curve(plot_data, deaths = T, scales = 'fixed', pop = TRUE)  + theme(strip.text = element_text(size = 30))
-  ggsave(paste0('~/Desktop/ccaas/', i, this_ccaa, '_deaths_pop.png'),
+  ggsave(paste0('/tmp/ccaas/', i, this_ccaa, '_deaths_pop.png'),
          width = 1280 / 150,
          height = 720 / 150)
 }
@@ -2338,7 +2286,7 @@ for(i in 1:length(ccaas)){
 ```{r}
 plot_data <- esp_df %>% mutate(geo = ccaa) %>% filter(!ccaa %in% c('Melilla'))
 roll_curve(plot_data, scales = 'free_y')
-ggsave('~/Desktop/b.png',
+ggsave('/tmp/b.png',
        width = 1280 / 150,
        height = 720 / 150)
 ```
@@ -2346,7 +2294,7 @@ ggsave('~/Desktop/b.png',
 ```{r}
 plot_data <- esp_df %>% mutate(geo = ccaa) %>% filter(!ccaa %in% c('Melilla'))
 roll_curve(plot_data, deaths = T, scales = 'free_y')
-ggsave('~/Desktop/c.png',
+ggsave('/tmp/c.png',
        width = 1280 / 150,
        height = 720 / 150)
 ```
@@ -2355,7 +2303,7 @@ ggsave('~/Desktop/c.png',
 ```{r}
 plot_data <- esp_df %>% mutate(geo = ccaa) %>% filter(!ccaa %in% c('Melilla'))
 roll_curve(plot_data, deaths = T, scales = 'fixed')
-ggsave('~/Desktop/d.png',
+ggsave('/tmp/d.png',
        width = 1280 / 150,
        height = 720 / 150)
 ```
@@ -2365,7 +2313,7 @@ ggsave('~/Desktop/d.png',
 plot_data <- df_country %>% filter(country %in% c('Spain', 'Italy', 'Germany', 'France', 'US',
                                                   'China', 'Korea, South', 'Japan', 'Singapore')) %>% mutate(geo = country)
 roll_curve(plot_data, scales = 'free_y')
-ggsave('~/Desktop/z.png',
+ggsave('/tmp/z.png',
        width = 1280 / 150,
        height = 720 / 150)
 
@@ -2763,11 +2711,11 @@ plot_double_time <- function(data, ylog = F){
 options(scipen = '999')
 data <- make_double_time(n_deaths_start = 150, time_ahead = 7)
 data
-dir.create('~/Desktop/ccaa_predictions')
+dir.create('/tmp/ccaa_predictions')
 
 plot_double_time(data, ylog = T) +
   labs(subtitle = 'Basic log-linear model weighted at (1 + (1/ days ago)),\nassuming no change in growth trajectory since first day at >150 deaths')
-ggsave('~/Desktop/ccaa_predictions/spain.png')
+ggsave('/tmp/ccaa_predictions/spain.png')
 # All ccaas
 ccaas <- sort(unique(esp_df$ccaa))
 for(i in 1:length(ccaas)){
@@ -2782,7 +2730,7 @@ for(i in 1:length(ccaas)){
     time_ahead = 7)
   plot_double_time(data, ylog = T) +
   labs(subtitle = 'Basic log-linear model weighted at (1 + (1/ days ago)), assuming no change in growth trajectory since first day at >5 deaths')
-  ggsave(paste0('~/Desktop/ccaa_predictions/',
+  ggsave(paste0('/tmp/ccaa_predictions/',
                 this_ccaa, '.png'),
          height = 4.9,
          width = 8.5)
@@ -2801,7 +2749,7 @@ for(i in 1:length(ccaas)){
 #     # print(this_country)
 #     g <- plot_double_time(data, ylog = F) +
 #   labs(subtitle = 'Basic log-linear model assuming no change in growth trajectory since first day at >5 deaths')
-#     ggsave(paste0('~/Desktop/', this_country, '.png'), height = 5, width = 8)
+#     ggsave(paste0('/tmp/', this_country, '.png'), height = 5, width = 8)
 #     print(data)
 #   }
 # }

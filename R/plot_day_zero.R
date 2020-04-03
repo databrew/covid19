@@ -296,7 +296,7 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'US', 'Germany'),
   # Define pop_text
   pop_text <- ifelse(pop, paste0('\nper ',
                                  scales::comma(pop_adjustor),
-                                 ' population. '), '')
+                                 ' population '), '')
   
   # Define whether calendar or not
   if(calendar){
@@ -325,10 +325,10 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'US', 'Germany'),
                     #pop_text,
            ifelse(deaths, 'Deaths', 'Cases'),
                     ifelse(ylog, '\n(Logarithmic scale)', '')),
-         title = paste0('COVID-19 ', ifelse(deaths, 'deaths', 'cases'), ' since place\'s\nfirst day with ',
+         title = paste0('COVID-19 ', ifelse(deaths, 'deaths', 'cases'), ' since place\'s first day with ',
                         day0, " or more ", ifelse(cumulative, "cumulative ", "daily "),  ifelse(deaths, 'deaths ', 'cases '),
                         pop_text, ifelse(roll > 0, 
-                                         paste0('\n(rolling ', 
+                                         paste0(' (rolling ', 
                                                 ifelse(roll_fun == 'mean', 'average', 'sum'),
                                                 ' of ',
                                                 roll, ' days)'), '')),
