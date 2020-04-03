@@ -5,13 +5,15 @@
 \title{Plot day zero}
 \usage{
 plot_day_zero(
-  countries = c("Italy", "Spain", "France", "US", "Germany"),
+  countries = c("Italy", "Spain", "US", "Germany"),
   ylog = TRUE,
   day0 = 150,
   cumulative = TRUE,
   time_before = 0,
   add_markers = FALSE,
   line_size = 1.5,
+  point_size = 1.5,
+  point_alpha = 0.9,
   max_date = Sys.Date(),
   calendar = FALSE,
   deaths = FALSE,
@@ -19,7 +21,10 @@ plot_day_zero(
   pop_adjustor = 1e+06,
   by_district = FALSE,
   districts = NULL,
-  alpha = 0.8
+  alpha = 0.8,
+  roll = 0,
+  roll_fun = "mean",
+  color_var = "geo"
 )
 }
 \arguments{
@@ -34,6 +39,10 @@ plot_day_zero(
 \item{time_before}{How many days before outbreak to show}
 
 \item{line_size}{Size of line}
+
+\item{point_size}{Size of points}
+
+\item{point_alpha}{Alpha of points}
 
 \item{max_date}{The maximum date}
 
@@ -50,6 +59,10 @@ plot_day_zero(
 \item{districts}{Show by districts, default FALSE}
 
 \item{alpha}{alpha of lines}
+
+\item{roll}{How many days to get rolling values for}
+
+\item{roll_fun}{Mean or Sum}
 
 \item{add_markets}{Whether to show lines / circle at outbreak start}
 }

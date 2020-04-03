@@ -5,7 +5,7 @@
 \title{Prepare day zero data}
 \usage{
 prepare_day_zero_data(
-  countries = c("Italy", "Spain", "France", "US", "Germany"),
+  countries = c("Italy", "Spain", "US", "Germany"),
   day0 = 150,
   cumulative = TRUE,
   time_before = 0,
@@ -14,7 +14,9 @@ prepare_day_zero_data(
   pop = FALSE,
   pop_adjustor = 1e+06,
   by_district = FALSE,
-  districts = NULL
+  districts = NULL,
+  roll = 0,
+  roll_fun = "mean"
 )
 }
 \arguments{
@@ -37,6 +39,10 @@ prepare_day_zero_data(
 \item{by_district}{Show by district}
 
 \item{districts}{Show by districts, default FALSE}
+
+\item{roll}{How many days to get rolling values for}
+
+\item{roll_fun}{Mean or Sum}
 }
 \description{
 Generate a plot with time adjusted for the day at which the outbreak is considered to have started
