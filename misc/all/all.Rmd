@@ -42,7 +42,39 @@ library(zoo)
 options(scipen = '999')
 ```
 
-## Charts for Tot es Mou
+## Country trajectories, population adjusted
+
+```{r}
+countries <- c(
+  'Spain',
+  'US',
+  'France',
+  # 'Portugal',
+  'Italy',
+  'China'
+)
+districts <- c('Lombardia', 'Cataluña', 
+               'New York', 
+               'Hubei', 'Madrid')
+
+plot_day_zero(countries = countries,
+              districts = districts,
+              ylog = F,
+              day0 = 1,
+              cumulative = F,
+              time_before = 0,
+              roll = 3,
+              deaths = T,
+              pop = T,
+              by_district = T,
+              point_alpha = 0,
+              line_size = 3,
+              color_var = 'geo') +
+  scale_y_log10(limits = c(0.5, 100)) +
+  xlim(0, 30)
+```
+
+## Italy and Spain
 
 ```{r}
 dir.create('/tmp/totesmou')
@@ -220,7 +252,7 @@ ggplot(data = pd %>% group_by(country) %>% mutate(start_day = dplyr::first(date[
             aes(color = ccaa)) +
   geom_point(size = 3,
              aes(color = ccaa)) +
-  facet_wrap(~country, scales = 'free_x') +
+  facet_wrap(~country) +
   # xlim(as.Date('2020-03-09'),
   #      Sys.Date()-1) +
   theme_simple() +
@@ -228,8 +260,8 @@ ggplot(data = pd %>% group_by(country) %>% mutate(start_day = dplyr::first(date[
   # geom_line(lty = 2, alpha = 0.6) +
   labs(x = 'Data',
        y = 'Percentatge de morts',
-       title = 'Percentatge de morts de la regió més afectada vs resta del pais',
-       subtitle = 'A partir del primer día a cada país amb 50 o més morts') +
+       title = 'Percentatge de morts: regió més afectada vs resta del pais',
+       subtitle = 'A partir del primer día a cada país amb 50 morts acumulades') +
   theme(legend.position = 'top',
         strip.text = element_text(size = 30),
         legend.text = element_text(size = 10))  +
@@ -243,6 +275,210 @@ ggplot(data = pd %>% group_by(country) %>% mutate(start_day = dplyr::first(date[
             size = 7,
             show.legend = FALSE)
 ```
+
+```{r}
+# Same cahrt as previous, but one shared axis
+place_transform <- function(x){ifelse(x == 'Madrid', 'Madrid',
+                                      # ifelse(x == 'Cataluña', 'Cataluña',
+                                             'Rest of Spain')
+  # )
+}
+place_transform_ita <- function(x){
+  ifelse(x == 'Lombardia', 'Lombardia', 
+         # ifelse(x == 'Emilia Romagna', 'Emilia Romagna', 
+                'Rest of Italy')
+  # )
+}
+pd <- esp_df %>% mutate(country = 'Spain') %>%
+  mutate(ccaa = place_transform(ccaa)) %>%
+  bind_rows(ita %>% mutate(ccaa = place_transform_ita(ccaa),
+                           country = 'Italy')) %>%
+  group_by(country, ccaa, date) %>% 
+  summarise(cases = sum(cases),
+            uci = sum(uci),
+            deaths = sum(deaths),
+            cases_non_cum = sum(cases_non_cum),
+            deaths_non_cum = sum(deaths_non_cum),
+            uci_non_cum = sum(uci_non_cum)) %>%
+  left_join(esp_pop %>%
+              mutate(ccaa = place_transform(ccaa)) %>%
+              bind_rows(ita_pop %>% mutate(ccaa = place_transform_ita(ccaa))) %>%
+              group_by(ccaa) %>%
+              summarise(pop = sum(pop))) %>%
+  mutate(deaths_non_cum_p = deaths_non_cum / pop * 1000000) %>%
+  group_by(country, date) %>%
+  mutate(p_deaths_non_cum_country = deaths_non_cum / sum(deaths_non_cum) * 100,
+         p_deaths_country = deaths / sum(deaths) * 100)
+pd$ccaa <- factor(pd$ccaa,
+                  levels = c('Madrid',
+                             # 'Cataluña',
+                             'Rest of Spain',
+                             'Lombardia',
+                             # 'Emilia Romagna',
+                             'Rest of Italy'))
+cols <- c(
+  rev(brewer.pal(n = 3, 'Reds'))[1:2],
+  rev(brewer.pal(n = 3, 'Blues'))[1:2]
+)
+
+label_data <- pd %>%
+  filter(country  %in% c('Italy', 'Spain')) %>%
+  group_by(country) %>%
+  filter(date == max(date))  %>%
+  # mutate(label = gsub('\nitalianas', '',  gsub(' ', '\n', ccaa))) %>%
+  mutate(x = date - 2,
+         y = p_deaths_country + 
+           ifelse(p_deaths_country > 50, 10, -9)) %>%
+  ungroup
+ggplot(data = pd %>% group_by(country) %>% mutate(start_day = dplyr::first(date[deaths >=30])) %>% filter(date >= start_day),
+       aes(x = date,
+           y = p_deaths_country,
+           color = ccaa,
+           group = ccaa)) +
+  # geom_bar(stat = 'identity',
+  #          position = position_dodge(width = 0.99)) +
+  scale_fill_manual(name = '', values = cols) +
+  scale_color_manual(name = '', values = cols) +
+  geom_line(size = 2,
+            aes(color = ccaa)) +
+  geom_point(size = 3,
+             aes(color = ccaa)) +
+  # facet_wrap(~country, scales = 'free_x') +
+  # xlim(as.Date('2020-03-09'),
+  #      Sys.Date()-1) +
+  theme_simple() +
+  geom_hline(yintercept = 50, lty = 2, alpha = 0.6) +
+  # geom_line(lty = 2, alpha = 0.6) +
+  labs(x = 'Date',
+       y = 'Percentage of deaths',
+       title = 'Percentage of country\'s cumulative COVID-19 deaths by geography',
+       subtitle = 'Starting at first day with 50 or more cumulative deaths') +
+  theme(legend.position = 'top',
+        strip.text = element_text(size = 30),
+        legend.text = element_text(size = 10))  +
+  guides(color = guide_legend(nrow = 2,
+                              keywidth = 5))# +
+  # geom_text(data = label_data,
+  #           aes(x = x-2,
+  #               y = y,
+  #               label = label,
+  #               color = ccaa),
+  #           size = 7,
+  #           show.legend = FALSE)
+```
+
+Same chart as above but absolute numbers
+
+
+```{r}
+# Same cahrt as previous, but one shared axis
+place_transform <- function(x){ifelse(x == 'Madrid', 'Madrid',
+                                      # ifelse(x == 'Cataluña', 'Cataluña',
+                                             'Rest of Spain')
+  # )
+}
+place_transform_ita <- function(x){
+  ifelse(x == 'Lombardia', 'Lombardia', 
+         # ifelse(x == 'Emilia Romagna', 'Emilia Romagna', 
+                'Rest of Italy')
+  # )
+}
+pd <- esp_df %>% mutate(country = 'Spain') %>%
+  mutate(ccaa = place_transform(ccaa)) %>%
+  bind_rows(ita %>% mutate(ccaa = place_transform_ita(ccaa),
+                           country = 'Italy')) %>%
+  group_by(country, ccaa, date) %>% 
+  summarise(cases = sum(cases),
+            uci = sum(uci),
+            deaths = sum(deaths),
+            cases_non_cum = sum(cases_non_cum),
+            deaths_non_cum = sum(deaths_non_cum),
+            uci_non_cum = sum(uci_non_cum)) %>%
+  left_join(esp_pop %>%
+              mutate(ccaa = place_transform(ccaa)) %>%
+              bind_rows(ita_pop %>% mutate(ccaa = place_transform_ita(ccaa))) %>%
+              group_by(ccaa) %>%
+              summarise(pop = sum(pop))) %>%
+  mutate(deaths_non_cum_p = deaths_non_cum / pop * 1000000) %>%
+  group_by(country, date) %>%
+  mutate(p_deaths_non_cum_country = deaths_non_cum / sum(deaths_non_cum) * 100,
+         p_deaths_country = deaths / sum(deaths) * 100)
+pd$ccaa <- factor(pd$ccaa,
+                  levels = rev(c('Madrid',
+                             # 'Cataluña',
+                             'Rest of Spain',
+                             'Lombardia',
+                             # 'Emilia Romagna',
+                             'Rest of Italy')))
+cols <- c(
+  rev(brewer.pal(n = 3, 'Reds'))[1:2],
+  rev(brewer.pal(n = 3, 'Blues'))[1:2]
+)
+
+label_data <- pd %>%
+  filter(country  %in% c('Italy', 'Spain')) %>%
+  group_by(country) %>%
+  filter(date == max(date))  %>%
+  # mutate(label = gsub('\nitalianas', '',  gsub(' ', '\n', ccaa))) %>%
+  mutate(x = date - 2,
+         y = p_deaths_country + 
+           ifelse(p_deaths_country > 50, 10, -9)) %>%
+  ungroup
+
+# Get moving
+ma <- function(x, n = 2){
+    
+    if(length(x) >= n){
+      stats::filter(x, rep(1 / n, n), sides = 1)
+    } else {
+      new_n <- length(x)
+      stats::filter(x, rep(1 / new_n, new_n), sides = 1)
+    }
+}
+
+
+ggplot(data = pd %>% group_by(country) %>% 
+         mutate(start_day = dplyr::first(date[deaths >=1])) %>% 
+         filter(date >= start_day) %>% 
+         mutate(days_since = as.numeric(date - start_day)) %>%
+         ungroup %>% arrange(date) %>%
+         group_by(country, ccaa) %>%
+         mutate(rolling_average = ma(deaths_non_cum, n = 3)) %>%
+         ungroup,
+       aes(x = date,
+           y = rolling_average,
+           color = ccaa,
+           group = ccaa)) +
+  # geom_bar(stat = 'identity',
+  #          position = position_dodge(width = 0.99)) +
+  scale_fill_manual(name = '', values = cols) +
+  scale_color_manual(name = '', values = cols) +
+  geom_line(size = 2,
+            aes(color = ccaa)) +
+  geom_point(size = 3,
+             aes(color = ccaa)) +
+  # scale_y_log10(limits = c(1.5, 1000)) +
+  # scale_y_log10() +
+  facet_wrap(~country) +
+  # xlim(as.Date('2020-03-09'),
+  #      Sys.Date()-1) +
+  theme_simple() +
+  # geom_hline(yintercept = 50, lty = 2, alpha = 0.6) +
+  # geom_line(lty = 2, alpha = 0.6) +
+  labs(x = 'Date',
+       y = 'Deaths (log-scale)',
+       title = 'Daily COVID-19 deaths by geography',
+       subtitle = '3-day rolling average') +
+  theme(legend.position = 'top',
+        plot.title = element_text(size = 30),
+        plot.subtitle = element_text(size = 24),
+        strip.text = element_text(size = 30, hjust = 0.5),
+        legend.text = element_text(size = 20))  +
+  guides(color = guide_legend(nrow = 2,
+                              keywidth = 5))
+ggsave('~/Desktop/madlom.png')
+```
+
 
 
 ```{r}
@@ -356,7 +592,8 @@ pd
 
 pd <- plot_day_zero(countries = c(african_countries),
                     day0 = 10,
-                    max_date = Sys.Date())
+                    max_date = Sys.Date(),
+                    ylog = F)
 pd
 
 
@@ -424,7 +661,8 @@ g +
             # alpha = 1,
             size = 1.5,
             alpha = 0.8) +
-    scale_color_manual(name = '', values = cols) 
+    scale_color_manual(name = '', values = cols) +
+  scale_y_continuous()
 
 
 cols <- c( 'darkorange', 'black')
