@@ -99,7 +99,7 @@ date,country,cases,deaths,iso
 2020-04-03,Iraq,820,54,IRQ
 2020-04-03,Ireland,4273,120,IRL
 2020-04-03,Israel,7428,40,ISR
-2020-04-03,Italy,119827,14681,ITA
+2020-04-04,Italy,124632,15362,ITA
 2020-01-27,Ivory Coast,1,0,CIV
 2020-04-03,Jamaica,47,3,JAM
 2020-04-03,Japan,2617,63,JPN
@@ -160,7 +160,7 @@ date,country,cases,deaths,iso
 2020-04-03,Peru,1595,61,PER
 2020-04-03,Philippines,3018,136,PHL
 2020-04-03,Poland,3383,71,POL
-2020-04-03,Portugal,9886,246,PRT
+2020-04-04,Portugal,10524,266,PRT
 2020-03-21,Puerto Rico,0,0,PRI
 2020-04-03,Qatar,1075,3,QAT
 2020-03-08,Republic of Ireland,21,0,IRL
