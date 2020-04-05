@@ -34,6 +34,16 @@ run_app_mobile <- function(...) {
 #' @export
 #' @importFrom shiny shinyApp
 #' @importFrom golem with_golem_options
+run_app_mobile_region <- function(...) {
+  golem::with_golem_options(
+    app = mobile_app_region(),
+    golem_opts = list(...)
+  )
+}
+
+#' @export
+#' @importFrom shiny shinyApp
+#' @importFrom golem with_golem_options
 run_app_esp <- function(...) {
   golem::with_golem_options(
     app = mobile_app_esp(),

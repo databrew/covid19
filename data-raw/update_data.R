@@ -794,6 +794,10 @@ regions_pop <-
             canada_pop %>% mutate(country = 'Canada', iso = 'CAN'))
 usethis::use_data(regions_pop, overwrite = T)
 
+# get countries with regions 
+df_region <- df %>% filter(!is.na(district))
+usethis::use_data(df_region, overwrite = T)
+
 setwd('..')
 golem::detach_all_attached()
 rm(list=ls(all.names = TRUE))
