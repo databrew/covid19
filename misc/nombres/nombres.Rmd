@@ -1,0 +1,153 @@
+---
+title: "Nombres"
+author: "www.databrew.cc"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document:
+    code_folding: hide
+---
+
+
+```{r setup, include=FALSE, echo = FALSE}
+# Basic knitr options
+library(knitr)
+opts_chunk$set(comment = NA, 
+               # echo = FALSE, 
+               warning = FALSE, 
+               message = FALSE, 
+               error = TRUE, 
+               cache = FALSE,
+               fig.width = 9.64,
+               fig.height = 5.9,
+               fig.path = 'figures/')
+```
+
+```{r}
+## Load libraries
+library(covid19)
+library(ggplot2)
+library(lubridate)
+library(dplyr)
+library(ggplot2)
+library(sp)
+library(raster)
+library(viridis)
+library(ggthemes)
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(RColorBrewer)
+library(readr)
+library(zoo)
+options(scipen = '999')
+```
+
+```{r}
+# Read in names data from:
+# https://github.com/marcboquet/spanish-names
+if(!'mujeres.csv' %in% dir()){
+  download.file(url = 'https://github.com/marcboquet/spanish-names/raw/master/mujeres.csv',
+                destfile = 'mujeres.csv')
+}
+if(!'hombres.csv' %in% dir()){
+  download.file(url = 'https://github.com/marcboquet/spanish-names/raw/master/hombres.csv',
+                destfile = 'hombres.csv')
+}
+if(!'apellidos.csv' %in% dir()){
+  download.file(url = 'https://github.com/marcboquet/spanish-names/raw/master/apellidos.csv',
+                destfile = 'apellidos.csv')
+}
+hombres <- read_csv('hombres.csv')
+mujeres <- read_csv('mujeres.csv')
+apellidos <- read_csv('apellidos.csv')
+nombres <- bind_rows(hombres, mujeres)
+# Get number of dead
+n_dead <- df_country %>% filter(country == 'Spain',
+                                date == max(date)) %>%
+  summarise(n = sum(deaths)) %>% .$n
+
+# Generate names
+first_names <- sample(nombres$nombre, size = n_dead, replace = TRUE, prob = nombres$frec)
+last_names1 <- sample(apellidos$apellido, size = n_dead, replace = TRUE, prob = apellidos$frec_pri)
+last_names2 <- sample(apellidos$apellido, size = n_dead, replace = TRUE, prob = apellidos$frec_seg)
+
+# Combine
+combined <- paste0(first_names, ' ', 
+                   last_names1, ' ',
+                   last_names2)
+
+# Paste into chunks of 4 names per line
+n_columns <- 6
+chunk_starts <- seq(1, n_dead, by = n_columns)
+chunk_ends <- chunk_starts + (n_columns -1)
+out_list <- list()
+for(i in 1:length(chunk_starts)){
+  message(i)
+  the_end <- chunk_ends[i]
+  if(the_end > length(combined)){
+    the_end <- length(combined)
+  }
+  these <- combined[chunk_starts[i]:the_end]  
+  these <- these[!is.na(these)]
+  these <- paste0(these, collapse = ', ')
+  these <- paste0(these, '\n', collapse = '')
+  out_list[[i]] <- these
+}
+
+# Define number of lines per plot
+n_rows <- 100
+chunk_starts <- seq(1, n_dead, by = n_rows)
+chunk_ends <- chunk_starts + (n_rows -1)
+rows_list <- list()
+for(i in 1:length(chunk_starts)){
+  message(i)
+  the_end <- chunk_ends[i]
+  if(the_end > length(out_list)){
+    the_end <- length(out_list)
+  }
+  these <- unlist(out_list[chunk_starts[i]:the_end])  
+  these <- these[!is.na(these)]
+  these <- paste0(these, collapse = '')
+  rows_list[[i]] <- these
+}
+
+add_zero <- function(x, n){
+    x <- as.character(x)
+    adders <- n - nchar(x)
+    adders <- ifelse(adders < 0, 0, adders)
+    for (i in 1:length(x)){
+      if(!is.na(x[i])){
+        x[i] <- paste0(
+          paste0(rep('0', adders[i]), collapse = ''),
+          x[i],
+          collapse = '')  
+      } 
+    }
+    return(x)
+  }
+
+# Render plots
+if(!dir.exists('plots')){
+  dir.create('plots')
+}
+par(mar = c(0,0,0,0) + 0.1)
+for(i in 1:length(rows_list)){
+  file_name <- add_zero(i, 5)
+  file_name <- paste0('plots/', file_name, '.png')
+  png(filename = file_name,
+      width = 1200,
+      height = 1300)
+  plot(c(0, 1), c(0, 1), ann = F, bty = 'n', type = 'n', xaxt = 'n', yaxt = 'n')
+  text(x = 0.5, y = 0.5, rows_list[[i]], 
+     cex = 0.8, col = "black")
+  dev.off()
+}
+par(mar = c(5, 4, 4, 2) + 0.1)
+
+```
+
+```{r}
+par(mar = c(5, 4, 4, 2) + 0.1)
+
+```
