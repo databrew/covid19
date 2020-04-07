@@ -42,6 +42,69 @@ library(zoo)
 options(scipen = '999')
 ```
 
+## Day of week analysis
+
+```{r}
+pd <- esp_df %>%
+  arrange(date) %>%
+  group_by(date) %>%
+  summarise(deaths_non_cum = sum(deaths_non_cum),
+            cases_non_cum = sum(cases_non_cum)) %>%
+  ungroup %>%  
+  mutate(dow = weekdays(date)) %>%
+  mutate(week = isoweek(date)) %>%
+  group_by(week) %>%
+  mutate(start_date = min(date)) %>%
+  ungroup %>%
+  filter(date >= '2020-03-09')
+pd$dow <- factor(pd$dow,
+                 levels = c('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday',
+                            'Saturday', 'Sunday'),
+                 labels = c('Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes',
+                            'Sábado', 'Domingo'))
+n_cols <- length(unique(pd$start_date))
+cols <- colorRampPalette(RColorBrewer::brewer.pal(n = 9, name = 'Spectral'))(n_cols)
+pd$start_date <- factor(pd$start_date)
+ggplot(data = pd,
+       aes(x = dow,
+           y = cases_non_cum,
+           group = week,
+           color = start_date)) +
+  geom_line(size = 4) +
+  geom_point(size = 4) +
+  scale_color_manual(name = 'Primer día\nde la semana',
+                     values = cols) +
+  theme_simple() +
+  labs(x = 'Día de la semana',
+       y = 'Muertes')
+```
+
+## Basque country vs rest of Spain
+
+```{r}
+pd <- esp_df %>%
+  mutate(geo = ifelse(ccaa == 'País Vasco', 'Basque country', 'Rest of Spain')) %>%
+  group_by(geo, date) %>%
+  summarise(deaths = sum(deaths)) %>%
+  ungroup
+pp <- esp_pop %>%
+    mutate(geo = ifelse(ccaa == 'País Vasco', 'Basque country', 'Rest of Spain')) %>%
+  group_by(geo) %>%
+  summarise(pop = sum(pop))
+pd <- left_join(pd, pp) %>% mutate(pk = deaths / pop * 100000)
+
+ggplot(data = pd %>% filter(pk > 0.1),
+       aes(x = date,
+           y = pk,
+           color = geo)) +
+  geom_line() +
+  labs(x = 'Date',
+       y = 'Cumulative deaths per 100,000') +
+  scale_color_manual(name = '',
+                     values = c('red', 'black')) +
+  theme_simple() 
+```
+
 ## Country trajectories, population adjusted
 
 ```{r}
@@ -774,6 +837,8 @@ plot_day_zero(countries = c('China', 'Italy', 'Spain'),
 ## Map of portugal, france, spain
 
 ```{r}
+# cat_transform <- function(x){ifelse(x == 'Catalunya', 'Cataluña', x)}
+cat_transform <- function(x){return(x)}
 pd <- por_df %>% mutate(country = 'Portugal') %>%
   bind_rows(esp_df %>% mutate(country = 'Spain')) %>%
   bind_rows(fra_df %>% mutate(country = 'France')) %>%
@@ -784,6 +849,7 @@ pd <- por_df %>% mutate(country = 'Portugal') %>%
   )
 keep_date = pd %>% group_by(country) %>% summarise(max_date= max(date)) %>% summarise(x = min(max_date)) %>% .$x
 pd <- pd %>%
+  mutate(ccaa = cat_transform(ccaa)) %>%
   group_by(ccaa) %>%
   filter(date == keep_date) %>%
   # filter(date == '2020-03-27') %>%
@@ -945,6 +1011,7 @@ for(i in 1:length(unique_dates)){
     today_pd <- pd
 
   today_pd <- today_pd %>%
+      mutate(ccaa = cat_transform(ccaa)) %>%
     group_by(ccaa) %>%
     # filter(date == max(date)) %>%
     filter(date == this_date) %>%
@@ -2179,6 +2246,8 @@ for(i in 1:length(isos)){
   message(i, ' ', this_iso)
   countries <- world_pop %>% filter(sub_region == this_iso)
   pd <- df %>%
+    filter(!country %in% c('Guyan
+                           a', 'Bahamas', 'The Bahamas')) %>%
           group_by(country, iso, date) %>%
           summarise(cases = sum(cases, na.rm = TRUE)) %>%
     ungroup %>%
@@ -3730,10 +3799,11 @@ make_map <- function(var = 'deaths',
                      text_size = 2.7){
   
   if(is.null(data)){
-    data <- esp_df
+    data <- esp_df %>%  mutate(ccaa = cat_transform(ccaa))
+
   }
 
-  left <- espf
+  left <- espf %>%   mutate(ccaa = cat_transform(ccaa)) 
   right <- data[,c('ccaa', paste0(var, '_non_cum'))]
   
 

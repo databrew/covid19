@@ -1,0 +1,118 @@
+---
+title: "Google trends"
+author: "www.databrew.cc"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    code_folding: "hide"
+---
+
+
+```{r setup, include=FALSE, echo = FALSE}
+# Basic knitr options
+library(knitr)
+opts_chunk$set(comment = NA, 
+               # echo = FALSE, 
+               warning = FALSE, 
+               message = FALSE, 
+               error = TRUE, 
+               cache = FALSE,
+               fig.width = 9.64,
+               fig.height = 5.9,
+               fig.path = 'figures/')
+```
+
+```{r}
+## Load libraries
+library(covid19)
+library(ggplot2)
+library(lubridate)
+library(dplyr)
+library(ggplot2)
+library(sp)
+library(raster)
+library(viridis)
+library(ggthemes)
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(RColorBrewer)
+library(readr)
+library(zoo)
+options(scipen = '999')
+```
+
+```{r}
+library(gtrendsR)
+if(!'gt.RData' %in% dir()){
+  gt <- gtrends(keyword = 'gusto olfato',
+              geo = 'ES',
+              time = 'today 3-m',
+              low_search_volume = T)
+  save(gt, file = 'gt.RData')
+} else {
+  load('gt.RData')
+}
+
+# Get the regional ts
+
+
+```
+
+```{r}
+by_time <- gt$interest_over_time
+by_region <- gt$interest_by_region
+by_city <- gt$interest_by_city
+
+# Join regions with covid data
+covid <- esp_df %>% filter(date == max(date))
+
+by_region <- by_region %>%
+  mutate(ccaa = location) %>%
+  mutate(ccaa = ifelse(ccaa == 'Castile-La Mancha', 'CLM',
+                       ifelse(ccaa == 'Community of Madrid' , 'Madrid',
+                              ifelse(ccaa == 'Navarre', 'Navarra',
+                                     ifelse(ccaa == 'Castile and León', 'CyL', 
+                                            ifelse(ccaa == 'Catalonia', 'Cataluña', 
+                                                   ifelse(ccaa == 'Basque Country', 'País Vasco', 
+                                                          ifelse(ccaa == 'Valencian Community', 'C. Valenciana', 
+                                                                 ifelse(ccaa == 'Andalusia', 'Andalucía', 
+                                                                        ifelse(ccaa == 'Canary Islands', 'Canarias', 
+                                                                               ifelse(ccaa == 'Aragon', 'Aragón',
+                                                                                      ifelse(ccaa == 'Balearic Islands', 'Baleares', 
+                                                                                             ifelse(ccaa == 'Region of Murcia', 'Murcia', ccaa)))))))))))))
+
+pd <- left_join(by_region, covid) %>%
+  left_join(esp_pop) %>%
+  mutate(y = cases / pop * 1000000)
+
+library(ggrepel)
+ggplot(data = pd,
+       aes(x = y,
+           y = hits)) +
+  geom_point(size = 4, alpha = 0.6) +
+  geom_text_repel(aes(label = ccaa), size = 6) +
+  # scale_y_log10() +
+  geom_smooth(method='lm', formula= y~x) +
+  theme_simple() +
+  labs(y = 'Frecuencia relativa de búsquedas',
+       x = 'Muertes acumuladas por 1.000.000',
+       title = 'Correlación entre búsquedas en Google con las palabras "gusto"/"olfato" y muertes por 1.000.000')
+
+```
+
+```{r}
+ggplot(data = by_time,
+       aes(x = date,
+           y = hits)) +
+  geom_area(fill = 'darkorange',
+            color = 'black') +
+  geom_vline(xintercept = as.POSIXct(as.Date('2020-03-20')),
+             lwd = 3,
+             alpha = 0.7,
+             color = 'blue') +
+  theme_simple() +
+  labs(x = 'Fecha',
+       y = 'Porcentaje relativo de búsquedas',
+       title = 'Búsquedas en Google con las palabras "gusto" y "olfato"')
+```

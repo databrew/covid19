@@ -794,6 +794,9 @@ regions_pop <-
             canada_pop %>% mutate(country = 'Canada', iso = 'CAN'))
 usethis::use_data(regions_pop, overwrite = T)
 
+# Write to the covidcount directory
+write_csv(df_country, '../../covidcount/data/jhu.csv')
+write_csv(world_pop, '../../covidcount/data/world_pop.csv')
 setwd('..')
 golem::detach_all_attached()
 rm(list=ls(all.names = TRUE))
