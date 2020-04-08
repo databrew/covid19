@@ -118,7 +118,12 @@ countries <- c(
 )
 districts <- c('Lombardia', 'Cataluña', 
                'New York', 
-               'Hubei', 'Madrid')
+               # 'Hubei',
+               'CyL', 
+               'CLM', 
+               # 'Washington',
+               'La Rioja',
+               'Madrid')
 
 plot_day_zero(countries = countries,
               districts = districts,
@@ -132,9 +137,7 @@ plot_day_zero(countries = countries,
               by_district = T,
               point_alpha = 0,
               line_size = 3,
-              color_var = 'geo') +
-  scale_y_log10(limits = c(0.5, 100)) +
-  xlim(0, 30)
+              color_var = 'geo')
 ```
 
 ## Italy and Spain
