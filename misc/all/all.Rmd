@@ -897,7 +897,9 @@ centroids <- left_join(centroids, pd)
 # map <- map_sp <- map[centroids$y >35 & centroids$x > -10 &
 #              centroids$x < 8 & (centroids$y < 43  | map@data$ccaa %in% c('Occitanie', 'Nouvelle-Aquitaine') |
 #                                   map@data$ccaa %in% esp_df$ccaa),]
-map_sp <- map <-  map[centroids$x > -10 & centroids$y <47,]
+# map_sp <- map <-  map[centroids$x > -10 & centroids$y <47,]
+map_sp <- map <-  map[centroids$x > -10 & centroids$y <77,]
+
 # map_sp <- map <-  map[centroids$x > -10,]
 
 # fortify
@@ -923,7 +925,8 @@ g <- ggplot(data = map,
              group = group)) +
     geom_polygon(aes(fill = var),
                  lwd = 0.3,
-                 color = 'darkgrey',
+                 # color = 'darkgrey',
+                 color = NA,
                  size = 0.6) +
       scale_fill_gradientn(name = '',
                            colours = cols) +
@@ -972,16 +975,19 @@ popper <- regions_pop %>%
                   world_pop %>% filter(country == 'Andorra') %>% dplyr::mutate(ccaa = country) %>%
                     dplyr::select(-region, -sub_region)
                 )
+
+
 map_esp1 <- map_esp
 map_esp1@data <- map_esp1@data %>% dplyr::select(ccaa)
 map_fra1 <- map_fra
 map_fra1@data <- map_fra1@data %>% dplyr::select(ccaa = NAME_1)
 map_por1 <- map_por
 map_por1@data <- map_por1@data %>% dplyr::select(ccaa = CCDR)
-map_ita1 <- map_ita
-map_ita1@data <- map_ita1@data %>% dplyr::select(ccaa = NAME_1)
+map_ita1 <- map_ita 
+map_ita1@data <- map_ita1@data %>% dplyr::select(ccaa)
 map_and1 <- map_and
 map_and1@data <- map_and1@data %>% dplyr::select(ccaa = NAME_0)
+
 
 map <- 
   rbind(map_esp1,
@@ -999,7 +1005,8 @@ centroids$ccaa <- map@data$ccaa
 #              # centroids$x < 8 &
 #                (centroids$y < 43  | map@data$ccaa %in% c('Occitanie', 'Nouvelle-Aquitaine') |
 #                                   map@data$ccaa %in% esp_df$ccaa),]
-map_sp <- map <-  map[centroids$x > -10 & centroids$y <47,]
+# map_sp <- map <-  map[centroids$x > -10 & centroids$y <47,]
+map_sp <- map <-  map[centroids$x > -10 & centroids$y <477,]
 
 
 # fortify
@@ -1054,20 +1061,21 @@ for(i in 1:length(unique_dates)){
                group = group)) +
       geom_polygon(aes(fill = var),
                    lwd = 0.3,
-                   color = 'darkgrey',
+                   # color = 'darkgrey',
+                   color = NA,
                    size = 0.6) +
         scale_fill_gradientn(name = '',
                              colours = cols,
-                             breaks = seq(0, 800, 50),
-                             limits = c(0, 800)) +
+                             breaks = seq(0, 1000, 50),
+                             limits = c(0, 1000)) +
     # scale_fill_() +
     ggthemes::theme_map() +
-    theme(legend.position = 'top',
+    theme(legend.position = 'right',
           plot.title = element_text(size = 24)) +
-    guides(fill = guide_colorbar(direction= 'horizontal',
-                                 barwidth = 20,
-                                 barheight = 2,
-                                 label.position = 'bottom')) +
+    guides(fill = guide_colorbar(direction= 'vertical',
+                                 barwidth = 2,
+                                 barheight = 30,
+                                 label.position = 'left')) +
     labs(subtitle = 'Cumulative COVID-19 deaths per million population',
          title = paste0(format(this_date, '%B %d, %Y'))) +
     geom_text(data = today_centroids,
@@ -1081,14 +1089,14 @@ for(i in 1:length(unique_dates)){
   
   ggsave(paste0('/tmp/animation_map/', this_date, '.png'),
          plot = g,
-         height = 6, width = 10)
+         height = 6, width = 9)
 }
 ```
 
 ```
 # Command line
 cd /tmp/animation_map
-mogrify -resize 50% *.png
+mogrify -resize 40% *.png
 convert -delay 20 -loop 0 *.png result.gif
 
 ```
