@@ -39,7 +39,131 @@ library(rnaturalearthdata)
 library(RColorBrewer)
 library(readr)
 library(zoo)
+library(tidyr)
 options(scipen = '999')
+```
+
+# Lombardia, Catalonia, Madrid
+
+```{r}
+x = esp_df %>% left_join(esp_pop) %>%
+  bind_rows(ita %>% left_join(ita_pop)) %>%
+  filter(date == '2020-04-09') %>%
+  filter(ccaa %in% c('Madrid',
+                     'Cataluña', 'Lombardia')) %>%
+  dplyr::select(ccaa, deaths, cases, pop) %>%
+  mutate(deathsp = deaths / pop * 100000,
+         casesp = cases / pop * 100000)
+
+
+covid19::plot_day_zero(countries = c('Italy', 'Spain', 'China', 'South Korea', 'Sinagpore'),
+                       districts = c('Madrid', #'Hubei',
+                     'Cataluña', 'Lombardia'),
+                     by_district = T,
+                     roll = 7,
+                     deaths = F,
+                     pop = T,
+                     day0 = 0,
+                     ylog = F,
+                     calendar = T,
+                     cumulative = F) +
+  labs(x = 'Data',
+       y = 'Casos diaris (mitjana mòbil de 7 dies)',
+       title = 'Casos diaris per 1.000.000',
+       subtitle = 'Mitjana mòbil de 7 dies') 
+
+```
+
+```{r}
+covid19::plot_day_zero(countries = c('Italy', 'Spain'),
+                     roll = 7,
+                     deaths = F,
+                     pop = T,
+                     day0 = 0,
+                     ylog = F,
+                     calendar = T,
+                     cumulative = F) +
+  labs(x = 'Data',
+       y = 'Casos diaris per 1.000.000 (mitjana mòbil de 7 dies)',
+       title = 'Casos diaris per 1.000.000',
+       subtitle = 'Mitjana mòbil de 7 dies') +
+  theme(legend.direction = 'horizontal',
+        legend.position = 'top')
+```
+
+```{r}
+covid19::plot_day_zero(countries = c('Italy', 'Spain'),
+                     roll = 7,
+                     deaths = T,
+                     pop = T,
+                     day0 = 0,
+                     ylog = F,
+                     calendar = T,
+                     cumulative = F) +
+  labs(x = 'Data',
+       y = 'Morts diaris per 1.000.000 (mitjana mòbil de 7 dies)',
+       title = 'Morts diaris per 1.000.000',
+       subtitle = 'Mitjana mòbil de 7 dies') +
+  theme(legend.direction = 'horizontal',
+        legend.position = 'top')
+```
+
+```{r}
+covid19::plot_day_zero(countries = c('Italy', 'Spain'),
+                       by_district = T,
+                       districts = c('Madrid', 'Emilia-Romagna',
+                     'Cataluña', 'Lombardia'),
+                     roll = 7,
+                     deaths = F,
+                     pop = T,
+                     day0 = 0,
+                     ylog = F,
+                     calendar = T,
+                     cumulative = F) +
+  labs(x = 'Data',
+       y = 'Casos diaris per 1.000.000 (mitjana mòbil de 7 dies)',
+       title = 'Casos diaris per 1.000.000',
+       subtitle = 'Mitjana mòbil de 7 dies') +
+  theme(legend.direction = 'horizontal',
+        legend.position = 'top')
+```
+
+# Personas susceptibles
+
+```{r}
+left <- esp_df %>%
+  group_by(date) %>%
+  summarise(cases = sum(cases))
+left$pop <- esp_pop %>% summarise(pop = sum(pop)) %>% .$pop
+left$susceptible <- left$pop - (left$cases * 10)
+left$p <- left$susceptible / left$pop * 100
+
+ggplot(data = left,
+       aes(x = date,
+           y = p)) +
+  geom_line() +
+  ylim(0, 100)
+```
+
+
+## Asia
+
+```{r}
+
+covid19::plot_day_zero(countries = c('Japan', 'South Korea', 'Singapore', 'Hong Kong'),
+                     roll = 7,
+                     deaths = F,
+                     # pop = T,
+                     day0 = 0,
+                     ylog = F,
+                     calendar = T,
+                     cumulative = F) +
+    labs(x = 'Data',
+       y = 'Casos diaris (mitjana mòbil de 3 dies)',
+       title = 'Casos diaris',
+       subtitle = 'Mitjana mòbil de 3 dies') +
+  facet_wrap(~geo, scales = 'free_y') +
+  theme(legend.position = 'none')
 ```
 
 ## Day of week analysis
