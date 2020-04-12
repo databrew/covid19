@@ -43,6 +43,127 @@ library(tidyr)
 options(scipen = '999')
 ```
 
+# Daily cases Spain
+
+```{r}
+pd <- df_country %>%
+  filter(country == 'Spain')
+
+ggplot(data = pd,
+       aes(x = date,
+           y = cases_non_cum)) +
+  geom_bar(stat = 'identity') +
+  theme_simple() +
+  labs(x = 'Fecha',
+       y = 'Casos diarios',
+       title = 'Casos confirmados nuevos')
+```
+
+# Daily deahts in Spain
+
+```{r}
+pd <- df_country %>%
+  filter(country == 'Spain')
+
+ggplot(data = pd,
+       aes(x = date,
+           y = deaths_non_cum)) +
+  geom_bar(stat = 'identity') +
+  theme_simple() +
+  labs(x = 'Fecha',
+       y = 'Muertes diarias',
+       title = 'Muertes')
+```
+
+
+# Daily cases world / population-adjusted
+
+```{r}
+covid19::plot_day_zero(countries = c('Italy', 'Spain', 'US', 'Germany',
+                                     'Canada', 'UK', 'Netherlands'
+                                     ),
+                       ylog = F,
+                       day0 = 1,
+                       cumulative = F,
+                       calendar = T,
+                       pop = T,
+                       point_alpha = 0,
+                       color_var = 'geo')
+```
+
+# Cases per pop last week
+
+```{r}
+pd <- df_country %>%
+  left_join(world_pop %>% dplyr::select(iso, pop)) %>%
+  group_by(country) %>%
+  mutate(max_date = max(date)) %>%
+  mutate(week_ago = max_date - 6) %>%
+  # filter(date == max(date)) %>%
+  filter(date >= week_ago, date <= max_date) %>%
+  group_by(country) %>%
+  summarise(y = sum(cases_non_cum),
+            pop = dplyr::first(pop),
+            date_range = paste0(min(date), ' - ', max(date)),
+            yp = sum(cases_non_cum) / dplyr::first(pop) * 1000000) %>%
+  ungroup %>%
+  filter(pop > 1000000) %>%
+  arrange(desc(yp)) %>%
+  head(15) %>%
+  mutate(country = ifelse(country == 'United Kingdom', 'UK', country))
+pd$country <- factor(pd$country, levels = unique(pd$country))
+
+ggplot(data = pd,
+       aes(x = country,
+           y = yp)) +
+  geom_bar(stat = 'identity') +
+  theme_simple() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12)) +
+  geom_text(aes(label = round(yp, digits = 0)),
+            nudge_y = -50,
+            color = 'white') +
+  labs(x = '',
+       y = 'Cases per 1,000,000 (last 7 days)',
+       title = 'New confirmed COVID-19 cases per million population, last 7 days')
+```
+
+# Deaths per pop last week
+
+
+```{r}
+pd <- df_country %>%
+  left_join(world_pop %>% dplyr::select(iso, pop)) %>%
+  group_by(country) %>%
+  mutate(max_date = max(date)) %>%
+  mutate(week_ago = max_date - 6) %>%
+  # filter(date == max(date)) %>%
+  filter(date >= week_ago, date <= max_date) %>%
+  group_by(country) %>%
+  summarise(y = sum(deaths_non_cum),
+            pop = dplyr::first(pop),
+            date_range = paste0(min(date), ' - ', max(date)),
+            yp = sum(deaths_non_cum) / dplyr::first(pop) * 1000000) %>%
+  ungroup %>%
+  filter(pop > 1000000) %>%
+  arrange(desc(yp)) %>%
+  head(10) %>%
+  mutate(country = ifelse(country == 'United Kingdom', 'UK', country))
+pd$country <- factor(pd$country, levels = unique(pd$country))
+
+ggplot(data = pd,
+       aes(x = country,
+           y = yp)) +
+  geom_bar(stat = 'identity') +
+  theme_simple() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12)) +
+  geom_text(aes(label = round(yp, digits = 0)),
+            nudge_y = -10,
+            color = 'white') +
+  labs(x = '',
+       y = 'Deaths per 1,000,000 (last 7 days)',
+       title = 'New confirmed COVID-19 deaths per million population, last 7 days')
+```
+
 # Lombardia, Catalonia, Madrid
 
 ```{r}
@@ -1190,14 +1311,14 @@ for(i in 1:length(unique_dates)){
                    size = 0.6) +
         scale_fill_gradientn(name = '',
                              colours = cols,
-                             breaks = seq(0, 1000, 50),
-                             limits = c(0, 1000)) +
+                             breaks = seq(0, 1100, 50),
+                             limits = c(0, 1100)) +
     # scale_fill_() +
     ggthemes::theme_map() +
     theme(legend.position = 'right',
           plot.title = element_text(size = 24)) +
     guides(fill = guide_colorbar(direction= 'vertical',
-                                 barwidth = 2,
+                                 barwidth = 1,
                                  barheight = 30,
                                  label.position = 'left')) +
     labs(subtitle = 'Cumulative COVID-19 deaths per million population',
