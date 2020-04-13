@@ -166,6 +166,70 @@ ggplot(data = pd,
 
 # Lombardia, Catalonia, Madrid
 
+## New cases in last week
+
+```{r}
+pd <- esp_df %>%
+  left_join(esp_pop %>% dplyr::select(ccaa, pop)) %>%
+  mutate(country = 'Spain') %>%
+  bind_rows(
+    ita %>% left_join(ita_pop %>% dplyr::select(ccaa, pop)) %>% mutate(country = 'Italy')
+  ) %>%
+  bind_rows(
+    df %>% filter(country == 'US') %>% mutate(ccaa = district) %>% left_join(regions_pop %>% dplyr::select(ccaa, pop)) %>% mutate(country = 'US')) %>%
+  group_by(ccaa) %>%
+  mutate(max_date = max(date)) %>%
+  mutate(week_ago = max_date - 6) %>%
+  # filter(date == max(date)) %>%
+  filter(date >= week_ago, date <= max_date) %>%
+  group_by(ccaa) %>%
+  summarise(y = sum(cases_non_cum),
+            country = dplyr::first(country),
+            pop = dplyr::first(pop),
+            date_range = paste0(min(date), ' - ', max(date))) %>%
+  ungroup %>%
+  mutate(yp = y / pop * 1000000) %>%
+  ungroup %>%
+  # filter(pop > 1000000) %>%
+  arrange(desc(yp)) 
+
+#Get country totals
+pd %>%
+  group_by(country) %>%
+  summarise(y = sum(y, na.rm = T),
+            pop = sum(pop, na.rm = T)) %>%
+  ungroup %>%
+  mutate(yp = y / pop * 1000000)
+
+
+library(knitr)
+library(kableExtra)
+pd <- pd %>%
+  mutate(yp = round(yp, digits = 1)) %>%
+  mutate(Rank = 1:nrow(pd)) %>%
+  dplyr::select(Rank, 
+                Región = ccaa,
+                `Casos nuevos, 7 días` = y,
+                Población = pop,
+                `Casos nuevos 7 días por millón` = yp)
+kable(pd) %>%
+  kable_styling("striped", full_width = F) %>%
+  column_spec(which(names(pd) == 'Casos nuevos 7 días por millón'), bold = T) %>%
+  row_spec(which(pd$`Región` %in% esp_df$ccaa), bold = T, color = "white", background = "#D7261E")
+```
+
+# Just Italy and Spain
+
+```{r}
+xpd = pd %>% filter(`Región` %in% c(ita$ccaa, esp_df$ccaa))
+xpd$Rank <- 1:nrow(xpd)
+
+kable(xpd) %>%
+  kable_styling("striped", full_width = F) %>%
+  column_spec(which(names(xpd) == 'Casos nuevos 7 días por millón'), bold = T) %>%
+  row_spec(which(xpd$`Región` %in% esp_df$ccaa), bold = T, color = "white", background = "#D7261E")
+```
+
 ```{r}
 x = esp_df %>% left_join(esp_pop) %>%
   bind_rows(ita %>% left_join(ita_pop)) %>%

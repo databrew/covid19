@@ -1,0 +1,129 @@
+---
+title: "Momo"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    code_folding: "hide"
+---
+
+
+```{r setup, include=FALSE, echo = FALSE}
+# Basic knitr options
+library(knitr)
+opts_chunk$set(comment = NA, 
+               # echo = FALSE, 
+               warning = FALSE, 
+               message = FALSE, 
+               error = TRUE, 
+               cache = FALSE,
+               fig.width = 9.64,
+               fig.height = 5.9,
+               fig.path = 'figures/')
+```
+
+```{r}
+## Load libraries
+library(covid19)
+library(ggplot2)
+library(lubridate)
+library(dplyr)
+library(ggplot2)
+library(sp)
+library(raster)
+library(viridis)
+library(ggthemes)
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(RColorBrewer)
+library(readr)
+library(zoo)
+library(tidyr)
+options(scipen = '999')
+```
+
+```{r}
+momo <- read_csv('data')
+# ambito: nacional o ccaa
+# cod_ambito: si es nacional, viene vacío. Si es una comunidad autónoma, trae su código ISO 3166-2.
+# cod_ine_ambito: columna informativa sobre la comunidad autónoma, si aplica. Es su código INE.
+# nombre_ambito: columna informativa sobre la comunidad autónoma, si aplica. Es su nombre.
+# cod_sexo: código INE del sexo. 1 para hombres, 6 para mujeres.
+# nombre_sexo: columna informativa sobre el sexo. Su nombre descriptivo (hombres, mujeres).
+# cod_gedad: código del grupo de edad. Los posibles son: menos_65, 65_74, mas_74.
+# nombre_gedad: columna informativa sobre el grupo de edad. Su nombre descriptivo (p.e. edad < 65).
+# fecha_defuncion: la fecha a la que se refieren los indicadores descritos de aquí en adelante. Es la fecha en la que ocurre la defunción.
+# defunciones_observadas: el número de defunciones observadas (incluye la corrección por retraso).
+# defunciones_observadas_lim_inf: el límite inferior del invervalo de confianza de las defunciones observadas (debido a la corrección).
+# defunciones_observadas_lim_sup: de forma equivalente, el límite superior.
+# defunciones_esperadas: el número de defunciones esperadas, resultantes del modelo.
+# defunciones_esperadas_q01: el límite inferior del intervalo de confianza de las defunciones esperadas, correspondiente al percentil 1 de la distribución.
+# defunciones_esperadas_q99: de forma equivalente, el límite superior, al percentil 99.
+
+
+df <- momo %>% 
+  # Keep only ccaa
+  filter(ambito == 'nacional') %>%
+  # Keep all sex
+  filter(cod_sexo == 'all') %>%
+  filter(nombre_sexo == 'todos') %>%
+  # Keep all age groups
+  filter(cod_gedad == 'all',
+         nombre_gedad == 'todos') %>%
+  dplyr::select(ccaa = nombre_ambito,
+                date = fecha_defuncion,
+                observed = defunciones_observadas,
+                expected = defunciones_esperadas,
+                expected01 = defunciones_esperadas_q01,
+                expected99 = defunciones_esperadas_q99)
+
+dfl <- gather(df, key, value, observed:expected)
+
+
+ggplot(data = dfl %>% mutate(key = ifelse(key == 'expected',
+                                          'Esperado',
+                                          'Observado')),
+       aes(x = date,
+           y = value,
+           color = key)) +
+  geom_line() +
+  theme_simple() +
+  scale_color_manual(name = '',
+                     values = rev(c('red', 'black'))) +
+    geom_ribbon(data = dfl,
+            aes(x = date,
+                ymin = expected01,
+                ymax = expected99),
+            color = NA,
+            alpha = 0.3) +
+  theme(legend.position = 'top') +
+  labs(x = 'Fecha',
+       y = 'Muertes',
+       title = 'Muertes diarias: esperadas y observadas',
+       subtitles = 'Datos del sistema MoMo',
+       caption = 'Gráfico: elaoración propia. Datos crudos: https://momo.isciii.es/public/momo/dashboard/momo_dashboard.html#datos')# +
+  # ylim(0, max(dfl$value))
+ggsave('~/Desktop/grafic.png')
+
+# Get just since March
+since_march = dfl %>% filter(date >= '2020-03-10',
+                             date <= '2020-04-10')
+ggplot(data = since_march,
+       aes(x = date,
+           y = value,
+           color = key)) +
+  geom_line() +
+  geom_point() +
+  theme_simple() +
+  scale_color_manual(name = '',
+                     values = rev(c('red', 'black'))) +
+  geom_ribbon(data = since_march,
+            aes(x = date,
+                ymin = expected01,
+                ymax = expected99),
+            color = NA,
+            alpha = 0.3)
+
+sum(since_march$value[since_march$key == 'observed']) -
+  sum(since_march$value[since_march$key == 'expected'])
+```
