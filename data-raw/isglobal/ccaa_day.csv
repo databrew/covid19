@@ -43,6 +43,8 @@ date,ccaa,cases,uci,deaths,comment,cases_non_cum,deaths_non_cum,uci_non_cum
 2020-04-10,Andalucía,9712,602,737,NA,202,46,20
 2020-04-11,Andalucía,10006,619,799,NA,294,62,17
 2020-04-12,Andalucía,10187,621,815,NA,181,16,2
+2020-04-13,Andalucía,10192,631,836,NA,5,21,10
+2020-04-14,Andalucía,10595,665,865,NA,403,29,34
 2020-02-28,Aragón,1,NA,0,NA,1,0,NA
 2020-03-05,Aragón,1,1,0,NA,0,0,NA
 2020-03-07,Aragón,11,1,0,NA,10,0,0
@@ -82,6 +84,8 @@ date,ccaa,cases,uci,deaths,comment,cases_non_cum,deaths_non_cum,uci_non_cum
 2020-04-10,Aragón,3969,266,425,NA,138,16,3
 2020-04-11,Aragón,4070,272,450,NA,101,25,6
 2020-04-12,Aragón,4187,274,464,NA,117,14,2
+2020-04-13,Aragón,4245,280,492,NA,58,28,6
+2020-04-14,Aragón,4338,282,514,NA,93,22,2
 2020-03-01,Asturias,1,NA,0,NA,1,0,NA
 2020-03-02,Asturias,1,NA,0,NA,0,0,NA
 2020-03-03,Asturias,1,NA,0,NA,0,0,NA
@@ -124,6 +128,8 @@ date,ccaa,cases,uci,deaths,comment,cases_non_cum,deaths_non_cum,uci_non_cum
 2020-04-10,Asturias,1827,105,128,NA,28,7,5
 2020-04-11,Asturias,1892,106,140,NA,65,12,1
 2020-04-12,Asturias,1958,110,149,NA,66,9,4
+2020-04-13,Asturias,2051,111,156,NA,93,7,1
+2020-04-14,Asturias,2096,114,166,NA,45,10,3
 2020-02-28,Baleares,1,NA,0,NA,1,0,NA
 2020-03-01,Baleares,2,NA,0,NA,1,0,NA
 2020-03-02,Baleares,2,NA,0,NA,0,0,NA
@@ -167,6 +173,8 @@ date,ccaa,cases,uci,deaths,comment,cases_non_cum,deaths_non_cum,uci_non_cum
 2020-04-10,Baleares,1507,137,102,NA,19,5,1
 2020-04-11,Baleares,1534,142,112,NA,27,10,5
 2020-04-12,Baleares,1550,143,117,NA,16,5,1
+2020-04-13,Baleares,1571,145,118,NA,21,1,2
+2020-04-14,Baleares,1606,149,125,NA,35,7,4
 2020-02-27,C. Valenciana,2,NA,0,NA,2,0,NA
 2020-02-28,C. Valenciana,9,NA,0,NA,7,0,NA
 2020-03-01,C. Valenciana,15,NA,0,NA,6,0,NA
@@ -211,6 +219,8 @@ date,ccaa,cases,uci,deaths,comment,cases_non_cum,deaths_non_cum,uci_non_cum
 2020-04-10,C. Valenciana,8578,565,818,NA,247,22,4
 2020-04-11,C. Valenciana,8841,567,838,NA,263,20,2
 2020-04-12,C. Valenciana,9060,576,876,NA,219,38,9
+2020-04-13,C. Valenciana,9213,581,907,NA,153,31,5
+2020-04-14,C. Valenciana,9424,588,945,NA,211,38,7
 2020-02-27,Canarias,5,NA,0,NA,5,0,NA
 2020-02-28,Canarias,6,NA,0,NA,1,0,NA
 2020-03-01,Canarias,7,NA,0,NA,1,0,NA
@@ -255,6 +265,8 @@ date,ccaa,cases,uci,deaths,comment,cases_non_cum,deaths_non_cum,uci_non_cum
 2020-04-10,Canarias,1887,144,95,NA,29,1,3
 2020-04-11,Canarias,1918,144,95,NA,31,0,0
 2020-04-12,Canarias,1944,145,96,NA,26,1,1
+2020-04-13,Canarias,1958,147,102,NA,14,6,2
+2020-04-14,Canarias,1975,152,104,NA,17,2,5
 2020-03-01,Cantabria,1,NA,0,NA,1,0,NA
 2020-03-02,Cantabria,10,NA,0,NA,9,0,NA
 2020-03-03,Cantabria,10,NA,0,NA,0,0,NA
@@ -297,6 +309,8 @@ date,ccaa,cases,uci,deaths,comment,cases_non_cum,deaths_non_cum,uci_non_cum
 2020-04-10,Cantabria,1719,75,107,NA,60,5,2
 2020-04-11,Cantabria,1752,75,110,NA,33,3,0
 2020-04-12,Cantabria,1777,75,117,NA,25,7,0
+2020-04-13,Cantabria,1796,76,120,NA,19,3,1
+2020-04-14,Cantabria,1823,76,132,NA,27,12,0
 2020-02-27,Cataluña,2,NA,0,NA,2,0,NA
 2020-02-28,Cataluña,3,NA,0,NA,1,0,NA
 2020-03-01,Cataluña,6,NA,0,NA,3,0,NA
@@ -341,6 +355,8 @@ date,ccaa,cases,uci,deaths,comment,cases_non_cum,deaths_non_cum,uci_non_cum
 2020-04-10,Cataluña,32984,2629,3331,NA,1160,100,47
 2020-04-11,Cataluña,34027,2658,3442,NA,1043,111,29
 2020-04-12,Cataluña,34726,2713,3538,NA,699,96,55
+2020-04-13,Cataluña,35197,2775,3666,NA,471,128,62
+2020-04-14,Cataluña,36505,2789,3756,NA,1308,90,14
 2020-03-19,Ceuta,5,0,0,NA,5,0,0
 2020-03-20,Ceuta,5,0,0,NA,0,0,0
 2020-03-21,Ceuta,5,0,0,NA,0,0,0
@@ -366,6 +382,8 @@ date,ccaa,cases,uci,deaths,comment,cases_non_cum,deaths_non_cum,uci_non_cum
 2020-04-10,Ceuta,93,4,4,NA,2,0,0
 2020-04-11,Ceuta,93,4,4,NA,0,0,0
 2020-04-12,Ceuta,95,4,4,NA,2,0,0
+2020-04-13,Ceuta,96,4,4,NA,1,0,0
+2020-04-14,Ceuta,98,4,4,NA,2,0,0
 2020-03-01,CLM,1,NA,0,NA,1,0,NA
 2020-03-02,CLM,3,NA,0,NA,2,0,NA
 2020-03-03,CLM,3,NA,0,NA,0,0,NA
@@ -408,6 +426,8 @@ date,ccaa,cases,uci,deaths,comment,cases_non_cum,deaths_non_cum,uci_non_cum
 2020-04-10,CLM,13456,316,1483,NA,393,52,-13
 2020-04-11,CLM,13698,316,1543,NA,242,60,0
 2020-04-12,CLM,14054,475,1626,NA,356,83,159
+2020-04-13,CLM,14329,486,1714,NA,275,88,11
+2020-04-14,CLM,14680,495,1755,NA,351,41,9
 2020-02-28,CyL,2,NA,0,NA,2,0,NA
 2020-03-01,CyL,3,NA,0,NA,1,0,NA
 2020-03-02,CyL,3,NA,0,NA,0,0,NA
@@ -451,6 +471,8 @@ date,ccaa,cases,uci,deaths,comment,cases_non_cum,deaths_non_cum,uci_non_cum
 2020-04-10,CyL,11543,327,1180,NA,441,51,-5
 2020-04-11,CyL,12118,323,1221,NA,575,41,-4
 2020-04-12,CyL,12628,312,1263,NA,510,42,-11
+2020-04-13,CyL,13180,308,1299,NA,552,36,-4
+2020-04-14,CyL,13697,306,1337,NA,517,38,-2
 2020-03-01,Extremadura,4,NA,0,NA,4,0,NA
 2020-03-02,Extremadura,6,NA,0,NA,2,0,NA
 2020-03-03,Extremadura,6,NA,0,NA,0,0,NA
@@ -493,6 +515,8 @@ date,ccaa,cases,uci,deaths,comment,cases_non_cum,deaths_non_cum,uci_non_cum
 2020-04-10,Extremadura,2486,104,303,NA,154,15,3
 2020-04-11,Extremadura,2580,106,312,NA,94,9,2
 2020-04-12,Extremadura,2658,108,321,NA,78,9,2
+2020-04-13,Extremadura,2684,108,334,NA,26,13,0
+2020-04-14,Extremadura,2762,109,342,NA,78,8,1
 2020-03-05,Galicia,1,0,0,NA,1,0,0
 2020-03-07,Galicia,3,0,0,NA,2,0,0
 2020-03-08,Galicia,5,0,0,NA,2,0,0
@@ -531,6 +555,8 @@ date,ccaa,cases,uci,deaths,comment,cases_non_cum,deaths_non_cum,uci_non_cum
 2020-04-10,Galicia,7176,144,261,NA,230,18,-7
 2020-04-11,Galicia,7336,140,274,NA,160,13,-4
 2020-04-12,Galicia,7494,136,284,NA,158,10,-4
+2020-04-13,Galicia,7597,133,290,NA,103,6,-3
+2020-04-14,Galicia,7708,128,299,NA,111,9,-5
 2020-03-02,La Rioja,1,NA,0,NA,1,0,NA
 2020-03-03,La Rioja,1,NA,0,NA,0,0,NA
 2020-03-04,La Rioja,3,0,0,NA,2,0,NA
@@ -572,6 +598,8 @@ date,ccaa,cases,uci,deaths,comment,cases_non_cum,deaths_non_cum,uci_non_cum
 2020-04-10,La Rioja,3223,73,207,NA,147,11,2
 2020-04-11,La Rioja,3279,73,219,NA,56,12,0
 2020-04-12,La Rioja,3358,73,223,NA,79,4,0
+2020-04-13,La Rioja,3420,74,234,NA,62,11,1
+2020-04-14,La Rioja,3457,75,246,NA,37,12,1
 2020-02-27,Madrid,2,NA,0,NA,2,0,NA
 2020-02-28,Madrid,5,NA,0,NA,3,0,NA
 2020-03-01,Madrid,10,NA,0,NA,5,0,NA
@@ -616,6 +644,8 @@ date,ccaa,cases,uci,deaths,comment,cases_non_cum,deaths_non_cum,uci_non_cum
 2020-04-10,Madrid,45849,1376,6084,NA,1066,112,-23
 2020-04-11,Madrid,46587,1332,6278,NA,738,194,-44
 2020-04-12,Madrid,47146,1327,6423,NA,559,145,-5
+2020-04-13,Madrid,48048,1299,6568,NA,902,145,-28
+2020-04-14,Madrid,49526,1244,6724,NA,1478,156,-55
 2020-03-13,Melilla,2,0,0,NA,2,0,0
 2020-03-14,Melilla,3,0,0,NA,1,0,0
 2020-03-15,Melilla,8,0,0,NA,5,0,0
@@ -647,6 +677,8 @@ date,ccaa,cases,uci,deaths,comment,cases_non_cum,deaths_non_cum,uci_non_cum
 2020-04-10,Melilla,98,3,2,NA,3,0,0
 2020-04-11,Melilla,98,3,2,NA,0,0,0
 2020-04-12,Melilla,101,3,2,NA,3,0,0
+2020-04-13,Melilla,101,3,2,NA,0,0,0
+2020-04-14,Melilla,102,3,2,NA,1,0,0
 2020-03-08,Murcia,1,NA,0,NA,1,0,NA
 2020-03-09,Murcia,4,0,0,NA,3,0,NA
 2020-03-10,Murcia,9,0,0,NA,5,0,0
@@ -683,6 +715,8 @@ date,ccaa,cases,uci,deaths,comment,cases_non_cum,deaths_non_cum,uci_non_cum
 2020-04-10,Murcia,1413,88,94,NA,30,4,0
 2020-04-11,Murcia,1449,91,97,NA,36,3,3
 2020-04-12,Murcia,1463,94,101,NA,14,4,3
+2020-04-13,Murcia,1487,96,106,NA,24,5,2
+2020-04-14,Murcia,1520,97,109,NA,33,3,1
 2020-03-01,Navarra,1,NA,0,NA,1,0,NA
 2020-03-02,Navarra,1,NA,0,NA,0,0,NA
 2020-03-03,Navarra,1,NA,0,NA,0,0,NA
@@ -725,6 +759,8 @@ date,ccaa,cases,uci,deaths,comment,cases_non_cum,deaths_non_cum,uci_non_cum
 2020-04-10,Navarra,3817,124,227,NA,69,9,0
 2020-04-11,Navarra,3969,124,232,NA,152,5,0
 2020-04-12,Navarra,4092,124,239,NA,123,7,0
+2020-04-13,Navarra,4150,124,249,NA,58,10,0
+2020-04-14,Navarra,4246,124,252,NA,96,3,0
 2020-03-01,País Vasco,3,NA,0,NA,3,0,NA
 2020-03-02,País Vasco,9,NA,0,NA,6,0,NA
 2020-03-03,País Vasco,13,NA,0,NA,4,0,NA
@@ -767,3 +803,5 @@ date,ccaa,cases,uci,deaths,comment,cases_non_cum,deaths_non_cum,uci_non_cum
 2020-04-10,País Vasco,10515,453,765,NA,412,36,11
 2020-04-11,País Vasco,10772,459,804,NA,257,39,6
 2020-04-12,País Vasco,11018,464,831,NA,246,27,5
+2020-04-13,País Vasco,11226,470,859,NA,208,28,6
+2020-04-14,País Vasco,11475,471,902,NA,249,43,1

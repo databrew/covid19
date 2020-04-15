@@ -1405,7 +1405,7 @@ for(i in 1:length(unique_dates)){
 ```
 # Command line
 cd /tmp/animation_map
-mogrify -resize 40% *.png
+mogrify -resize 50% *.png
 convert -delay 20 -loop 0 *.png result.gif
 
 ```
