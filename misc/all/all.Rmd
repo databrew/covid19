@@ -43,6 +43,27 @@ library(tidyr)
 options(scipen = '999')
 ```
 
+```{r}
+pd = esp_df %>%
+  left_join(esp_pop) %>%
+  mutate(p = deaths_non_cum / pop * 1000000)
+
+ggplot(data = pd,
+       aes(x = date,
+           y = p)) +
+  # geom_step() +
+  geom_bar(stat = 'identity',
+           fill = 'red',
+           alpha = 0.6,
+           color = NA) +
+  # geom_ribbon(aes(x = date, ymin = 0, ymax = p), data = pd, fill = 'blue') +
+  facet_wrap(~ccaa) +
+  theme_minimal() +
+  labs(x = 'Date',
+       y = 'Daily deaths per 1,000,000',
+       title = 'Daily deaths per 1,000,000 population')
+```
+
 # Daily cases Spain
 
 ```{r}

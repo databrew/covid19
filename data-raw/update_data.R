@@ -23,6 +23,7 @@ library(readxl)
 library(rgdal)
 library(sp)
 library(raster)
+library(rgdal)
 
 # Pull from Spanish ministry
 if(!dir.exists('isciii')){
@@ -487,7 +488,10 @@ df <- df %>%
 library(gsheet)
 # url <- 'https://docs.google.com/spreadsheets/d/15UJWpsW6G7sEImE8aiQ5JrLCtCnbprpztfoEwyTNTEY/edit#gid=810081118'
 # esp_df <- gsheet::gsheet2tbl(url)
-esp_df <- isc
+na_to_zero <- function(x){ifelse(is.na(x), 0, x)}
+esp_df <- isc %>% mutate(cases = na_to_zero(cases),
+                         uci = na_to_zero(uci),
+                         deaths = na_to_zero(deaths))
 right <- esp_df %>%
   group_by(date) %>%
   summarise(cases = sum(cases, na.rm = TRUE),
@@ -538,8 +542,7 @@ if(do_italy_spain){
   # Spain
   left <- esp_df %>% 
     dplyr::rename(district = ccaa) %>%
-    mutate(country = 'Spain') %>%
-    dplyr::select( -comment)
+    mutate(country = 'Spain')
   right <- df %>% filter(country == 'Spain') %>%
     dplyr::select(date,country)
   add_these <- df %>% filter(country == 'Spain') %>%
