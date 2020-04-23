@@ -1,6 +1,8 @@
 # Prior to running this, one should
 # Clone the repo at https://github.com/CSSEGISandData/COVID-19/ into the same level as the covid19 directory (same level, not same directory)
 
+
+
 # Pull from JHU
 system('cd ../../COVID-19; pwd; git pull;')
 
@@ -21,6 +23,63 @@ library(readxl)
 library(rgdal)
 library(sp)
 library(raster)
+
+# Pull from Spanish ministry
+if(!dir.exists('isciii')){
+  dir.create('isciii')
+}
+isc <- read_csv('https://covid19.isciii.es/resources/serie_historica_acumulados.csv') %>%
+  filter(!is.na(CCAA))
+remove_from <- which(grepl('NOTA', isc$CCAA))[1]
+isc <- isc[1:(remove_from-1),]
+joiner <- tibble(CCAA = c('AN',
+                          'AR',
+                          'AS',
+                          'CB',
+                          'CE',
+                          'CL',
+                          'CM',
+                          'CN',
+                          'CT',
+                          'EX',
+                          'GA',
+                          'IB',
+                          'MC',
+                          'MD',
+                          'ML',
+                          'NC',
+                          'PV',
+                          'RI',
+                          'VC'),
+                 ccaa = c('Andalucía',
+                          'Aragón',
+                          'Asturias',
+                          'Cantabria',
+                          'Ceuta',
+                          'CyL',
+                          'CLM',
+                          'Canarias',
+                          'Cataluña',
+                          'Extremadura',
+                          'Galicia',
+                          'Baleares',
+                          'Murcia',
+                          'Madrid',
+                          'Melilla',
+                          'Navarra',
+                          'País Vasco',
+                          'La Rioja',
+                          'C. Valenciana'))
+isc <- left_join(isc, joiner)
+isc <- isc %>%
+  dplyr::select(date = FECHA,
+                ccaa,
+                cases = CASOS,
+                uci = UCI,
+                deaths = Fallecidos)
+isc$date <- as.Date(isc$date, format = '%d/%m/%Y')
+message('MAX DATE IN SPAIN IS ', max(isc$date))
+write_csv(isc, 'isciii/raw.csv')
 
 # Get French data
 cases <- read_csv('../../FRANCE-COVID-19/france_coronavirus_time_series-confirmed.csv')
@@ -426,8 +485,9 @@ df <- df %>%
 
 # Get most recent Spanish ministry data
 library(gsheet)
-url <- 'https://docs.google.com/spreadsheets/d/15UJWpsW6G7sEImE8aiQ5JrLCtCnbprpztfoEwyTNTEY/edit#gid=810081118'
-esp_df <- gsheet::gsheet2tbl(url)
+# url <- 'https://docs.google.com/spreadsheets/d/15UJWpsW6G7sEImE8aiQ5JrLCtCnbprpztfoEwyTNTEY/edit#gid=810081118'
+# esp_df <- gsheet::gsheet2tbl(url)
+esp_df <- isc
 right <- esp_df %>%
   group_by(date) %>%
   summarise(cases = sum(cases, na.rm = TRUE),
