@@ -29,7 +29,9 @@ library(rgdal)
 if(!dir.exists('isciii')){
   dir.create('isciii')
 }
-isc <- read_csv('https://covid19.isciii.es/resources/serie_historica_acumulados.csv') %>%
+isc <- read_csv('https://covid19.isciii.es/resources/serie_historica_acumulados.csv',
+                col_names = c("CCAA", "FECHA", "CASOS", "PCR+", "TestAc+", "Hospitalizados", "UCI", "Fallecidos", "Recuperados"),
+                col_types = c('ccddddddd')) %>%
   filter(!is.na(CCAA))
 remove_from <- which(grepl('NOTA', isc$CCAA))[1]
 isc <- isc[1:(remove_from-1),]
@@ -72,6 +74,13 @@ joiner <- tibble(CCAA = c('AN',
                           'La Rioja',
                           'C. Valenciana'))
 isc <- left_join(isc, joiner)
+# Deal with the PCR and Ac columns
+isc$CASOS <- ifelse(is.na(isc$CASOS),
+                    isc$`PCR+` + isc$`TestAc+`,
+                    isc$CASOS)
+isc <- isc %>%
+  mutate(CASOS = ifelse(is.na(CASOS), 0, CASOS))
+
 isc <- isc %>%
   dplyr::select(date = FECHA,
                 ccaa,
