@@ -44,6 +44,81 @@ options(scipen = '999')
 ```
 
 ```{r}
+# Number of Africa countries
+pd <- df_country
+pd <- pd %>% left_join(world_pop) %>%
+  filter(sub_region %in% c('Sub-Saharan Africa')) %>%
+  filter(cases > 0)
+pd <- pd %>% group_by(date) %>% tally
+
+ggplot(data = pd,
+       aes(x = date,
+           y = n)) +
+  # geom_line() +
+  geom_area(fill = 'darkorange',
+            color = 'black',
+            alpha = 0.6) +
+  theme_simple() +
+  labs(x = 'Date',
+       y = 'Countries',
+       title = 'Sub-Saharan African countries with confirmed COVID-19 cases')
+```
+
+```{r}
+# Overall Africa cases
+pd <- df_country
+pd <- pd %>% left_join(world_pop) %>%
+  filter(sub_region %in% c('Sub-Saharan Africa'))
+x = pd %>%
+  group_by(date) %>%
+  summarise(cases = sum(cases),
+            deaths = sum(deaths),
+            n = length(country[cases > 0]))
+
+x %>% filter(date == '2020-04-07' | date == max(date) | date == '2020-03-13')
+```
+
+```{r}
+# Tests
+pd <- testing
+entity_split <- strsplit(pd$Entity, split = ' - ')
+pd$country <- unlist(lapply(entity_split, function(x){x[1]}))
+pd$key <- unlist(lapply(entity_split, function(x){x[2]}))
+# pd <- pd %>% filter(key == 'tests performed')
+pd <- pd %>% left_join(world_pop)# %>%
+  # filter(sub_region %in% c('Sub-Saharan Africa', 'Southern Europe', 'Northern Europe', 'Western Europe'))
+
+ggplot(data = pd,
+       aes(x = Date,
+           y = `Cumulative total`,
+           group = country)) +
+  geom_line(aes(color = country))
+```
+
+```{r}
+x = pd %>% group_by(country) %>%
+  filter(Date == max(Date)) %>%
+  ungroup %>%
+  mutate(sub_region = ifelse(sub_region == 'Sub-Saharan Africa',
+                             'SSA', 'Other')) %>%
+  filter(!is.na(sub_region)) %>%
+  arrange(`Cumulative total`)
+x$sub_region <- factor(x$sub_region, levels = unique(x$sub_region))
+x$country <- factor(x$country, levels = unique(x$country))
+ggplot(data = x,
+       aes(x = country,
+           y = `Cumulative total`)) +
+  geom_bar(aes(fill = sub_region), stat = 'identity') +
+  theme_simple() +
+  scale_fill_manual(name = '',
+                    values = c('grey', 'darkorange')) +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(x= 'Country',
+       title = 'Tests administered')
+
+```
+
+```{r}
 pd = esp_df %>%
   left_join(esp_pop) %>%
   mutate(p = deaths_non_cum / pop * 1000000)
@@ -334,22 +409,22 @@ covid19::plot_day_zero(countries = c('Italy', 'Spain'),
         legend.position = 'top')
 ```
 
-# Personas susceptibles
+<!-- # Personas susceptibles -->
 
-```{r}
-left <- esp_df %>%
-  group_by(date) %>%
-  summarise(cases = sum(cases))
-left$pop <- esp_pop %>% summarise(pop = sum(pop)) %>% .$pop
-left$susceptible <- left$pop - (left$cases * 10)
-left$p <- left$susceptible / left$pop * 100
+<!-- ```{r} -->
+<!-- left <- esp_df %>% -->
+<!--   group_by(date) %>% -->
+<!--   summarise(cases = sum(cases)) -->
+<!-- left$pop <- esp_pop %>% summarise(pop = sum(pop)) %>% .$pop -->
+<!-- left$susceptible <- left$pop - (left$cases * 10) -->
+<!-- left$p <- left$susceptible / left$pop * 100 -->
 
-ggplot(data = left,
-       aes(x = date,
-           y = p)) +
-  geom_line() +
-  ylim(0, 100)
-```
+<!-- ggplot(data = left, -->
+<!--        aes(x = date, -->
+<!--            y = p)) + -->
+<!--   geom_line() + -->
+<!--   ylim(0, 100) -->
+<!-- ``` -->
 
 
 ## Asia
@@ -646,8 +721,8 @@ ggplot(data = pd %>% group_by(country) %>% mutate(start_day = dplyr::first(date[
   scale_color_manual(name = '', values = cols) +
   geom_line(size = 2,
             aes(color = ccaa)) +
-  geom_point(size = 3,
-             aes(color = ccaa)) +
+  # geom_point(size = 3,
+  #            aes(color = ccaa)) +
   facet_wrap(~country) +
   # xlim(as.Date('2020-03-09'),
   #      Sys.Date()-1) +
@@ -737,8 +812,8 @@ ggplot(data = pd %>% group_by(country) %>% mutate(start_day = dplyr::first(date[
   scale_color_manual(name = '', values = cols) +
   geom_line(size = 2,
             aes(color = ccaa)) +
-  geom_point(size = 3,
-             aes(color = ccaa)) +
+  # geom_point(size = 3,
+  #            aes(color = ccaa)) +
   # facet_wrap(~country, scales = 'free_x') +
   # xlim(as.Date('2020-03-09'),
   #      Sys.Date()-1) +
@@ -851,8 +926,8 @@ ggplot(data = pd %>% group_by(country) %>%
   scale_color_manual(name = '', values = cols) +
   geom_line(size = 2,
             aes(color = ccaa)) +
-  geom_point(size = 3,
-             aes(color = ccaa)) +
+  # geom_point(size = 3,
+  #            aes(color = ccaa)) +
   # scale_y_log10(limits = c(1.5, 1000)) +
   # scale_y_log10() +
   facet_wrap(~country) +
@@ -975,6 +1050,27 @@ roll_curve(plot_data, deaths = T, scales = 'fixed') + theme(strip.text = element
 african_countries <-  world_pop$country[world_pop$sub_region %in% c('Sub-Saharan Africa')]
 
 pd <- plot_day_zero(countries = c(african_countries),
+                    day0 = 1,
+                    max_date = Sys.Date() - 46,
+                    ylog = F) +
+  ylim(0, 5000)
+pd
+
+pd <- plot_day_zero(countries = c(african_countries),
+                    day0 = 1,
+                    max_date = Sys.Date(),
+                    ylog = F) +
+  ylim(0, 5000)  
+pd
+
+pd <- plot_day_zero(countries = c(african_countries),
+                    day0 = 1,
+                    calendar = T,
+                    max_date = Sys.Date(),
+                    ylog = T) + theme(legend.position = 'none')
+pd
+
+pd <- plot_day_zero(countries = c(african_countries),
                     day0 = 10,
                     max_date = Sys.Date() - 13)
 pd
@@ -1057,8 +1153,8 @@ g +
             # alpha = 1,
             size = 1.5,
             alpha = 0.8) +
-    scale_color_manual(name = '', values = cols) +
-  scale_y_continuous()
+    scale_y_log10() +
+    scale_color_manual(name = '', values = cols) 
 
 
 cols <- c( 'darkorange', 'black')
@@ -1098,8 +1194,10 @@ make_pyramid <- function(the_region = 'AFRICA-2019'){
              y = value,
              fill = key)) +
     geom_bar(stat = 'identity',
-             position = position_dodge()) +
-    scale_fill_manual(name = '', values = c('darkgrey', 'lightblue')) +
+             position = position_dodge(),
+             alpha = 0.6,
+             color = 'black') +
+    scale_fill_manual(name = '', values = c('darkorange', 'lightblue')) +
     theme_simple() +
     labs(x = 'Age group',
          y = 'Population') +
@@ -1140,7 +1238,8 @@ make_pyramid(the_region = 'Italy-2019') + labs(title = 'Italy')
 
 make_pyramid(the_region = 'EUROPE-2019') + labs(title = 'Europe')
 make_pyramid(the_region = 'Kenya-2019') + labs(title = 'Kenya')
-
+make_pyramid(the_region = 'Mozambique-2019') + labs(title = 'Mozambique')
+make_pyramid(the_region = 'Tanzania-2019') + labs(title = 'Tanzania')
 
 make_pyramid(the_region = 'Guatemala-2019') + labs(title = 'Guatemala')
 
@@ -1150,7 +1249,27 @@ make_pyramid(the_region = 'LATIN AMERICA AND THE CARIBBEAN-2019') + labs(title =
 
 make_pyramid_overlay() + labs(title = 'Population distribution by region')
 
+pyramid <- pyramid %>%
+  mutate(old = Age %in% c('80-84', '85-89', '90-94','95-99', '100+'))
+
+pyramid %>%
+  group_by(region, old) %>%
+  summarise(n = sum(M) + sum(F)) %>%
+  ungroup %>%
+  group_by(region) %>%
+  mutate(p = n / sum(n) * 100) %>%
+  filter(old)
+
 ```
+
+```{r}
+plot_day_zero(countries = c('South Africa', 'Spain'), day0 = 1, calendar = T)
+```
+
+```{r}
+plot_day_zero(countries = c('Kenya', 'Italy'), day0 = 10, calendar = F)
+```
+
 
 ## Pics
 
@@ -3403,6 +3522,18 @@ for(i in 1:length(ccaas)){
 # }
 ```
 
+```{r}
+counter <- 0
+# Africa
+data <- make_double_time(the_country = 'South Africa',
+                         n_deaths_start = 5, time_ahead = 7)
+data
+dir.create('/tmp/africa_predictions')
+
+plot_double_time(data, ylog = T) +
+  labs(subtitle = 'Basic log-linear model weighted at (1 + (1/ days ago)),\nassuming no change in growth trajectory since first day at >150 deaths')
+
+```
 
 ```{r}
 out_list <- curve_list <-  list()

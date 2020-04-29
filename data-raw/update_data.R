@@ -25,6 +25,11 @@ library(sp)
 library(raster)
 library(rgdal)
 
+# Testing data from our world in data
+testing <- read_csv('https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/testing/covid-testing-all-observations.csv')
+usethis::use_data(testing, overwrite = T)
+
+
 # Pull from Spanish ministry
 if(!dir.exists('isciii')){
   dir.create('isciii')
