@@ -44,6 +44,36 @@ options(scipen = '999')
 ```
 
 ```{r}
+pd <- df_country %>%
+  filter(country == 'India')
+
+ggplot(data = pd,
+       aes(x = date,
+           y = cases_non_cum)) +
+  geom_point() +
+  geom_segment(aes(xend = date, yend = 0)) +
+  theme_simple() +
+  labs(x = 'Date',
+       y = 'Incident cases',
+       title = 'INDIA: Confirmed COVID-19 cases')
+```
+
+```{r}
+pd <- esp_df %>%
+  filter(ccaa %in% c('Cataluña', 'Madrid'))
+ggplot(data = pd,
+       aes(x = date,
+           y = cases_non_cum)) +
+  geom_point() +
+  geom_segment(aes(xend = date, yend = 0)) +
+  theme_simple() +
+  labs(x = 'Date',
+       y = 'Incident cases',
+       title = 'Confirmed COVID-19 cases') +
+  facet_wrap(~ccaa)
+```
+
+```{r}
 # Number of Africa countries
 pd <- df_country
 pd <- pd %>% left_join(world_pop) %>%
