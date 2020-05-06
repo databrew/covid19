@@ -53,11 +53,27 @@ wp <- esp %>%
   filter(!sub_region_1 %in% c('Melilla', 'Ceuta')) %>%
   filter(start_date >= '2020-03-15')
 
+confinament <- 
+  tibble(xmin =  as.Date(c('2020-03-29')),
+         xmax =  as.Date(c('2020-04-12')),
+         ymax = 0,
+         ymin = min(wp$value))
+
 ggplot(data = wp,
        aes(x = start_date,
            y = value,
            color = key)) +
-  # geom_bar(stat = 'identity') +
+  # geom_rect(data = confinament,
+  #           aes(xmin = xmin,
+  #               ymin = ymin,
+  #               xmax = xmax,
+  #               ymax = ymax,
+  #               # x = NA,
+  #               # y = NA,
+  #               group = NA,
+  #               color = NA),
+  #           color = 'grey') +
+  # geom_bar(stat = 'identity') 
   geom_point() +
   geom_line() +
   # geom_area() +
@@ -78,7 +94,13 @@ ggplot(data = wp,
             alpha = 0.6,
             show.legend = F) +
   scale_color_manual(name = '',
-                     values = c('darkorange', 'brown'))
+                     values = c('darkorange', 'brown')) +
+  scale_x_date(breaks = sort(unique(wp$start_date)),
+               labels = format(sort(unique(wp$start_date)), '%b\n%d')) +
+  geom_vline(xintercept = as.Date(c('2020-03-28',
+                                    '2020-04-08')),
+             alpha = 0.7,
+             lty = 2)
 
 
 
