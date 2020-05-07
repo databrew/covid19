@@ -83,6 +83,10 @@ mobile_app_ui <- function(request) {
             f7Toggle('cumulative', 'Cumulative cases?',
                      checked = TRUE),
             br(),
+            helpText('Rolling average is only applicable if non-cumulative'),
+            sliderInput('roll', 'Rolling average',
+                        min = 0, max = 14, value = 0, step = 1),
+            br(),
             f7Stepper('line_size', 'Line thickness', min = 0.5, max = 4, value = 2, step = 0.5),
             br(),
             f7Stepper('line_opacity', 'Line opacity', min = 0, max = 1, value = 0.8, step = 0.05),
@@ -195,11 +199,20 @@ mobile_app_server <- function(input, output, session) {
   output$the_plot <- renderPlot({
     
     the_districts <- input$districts
+    
+    cumul <- input$cumulative
+    rol <- input$roll
+    if(is.null(rol)){
+      rol <- 0
+    }
+    if(cumul){
+      rol <- 0
+    }
 
     plot_day_zero(countries = input$country,
                   ylog = input$ylog,
                   day0 = input$day0,
-                  cumulative = input$cumulative,
+                  cumulative = cumul,
                   time_before = input$time_before,
                   line_size = input$line_size,
                   add_markers = FALSE,
@@ -209,7 +222,8 @@ mobile_app_server <- function(input, output, session) {
                   pop_adjustor = 1000000,
                   by_district = input$by_district,
                   districts = the_districts,
-                  alpha = input$line_opacity)
+                  alpha = input$line_opacity,
+                  roll = rol)
   })
 }
 

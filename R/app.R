@@ -58,7 +58,10 @@ app_ui <- function(request) {
                                                                        value = TRUE),
                                                          checkboxInput('cumulative', 'Cumulative cases?',
                                                                        value = TRUE),
-                                                         helpText('(Because the relationship between time and number of cases is exponential, using a logarithmic, rather than linear, scale is a better way to visualize comparisons countries over time.)'))
+                                                         helpText('(Because the relationship between time and number of cases is exponential, using a logarithmic, rather than linear, scale is a better way to visualize comparisons countries over time.)'),
+                                                         helpText('Rolling average is only applicable if non-cumulative'),
+                                                         sliderInput('roll', 'Rolling average',
+                                                                     min = 0, max = 14, value = 0, step = 1))
                                                 ))
                           )
                         )
@@ -229,10 +232,18 @@ app_server <- function(input, output, session) {
     yl <- input$ylog
     d0 <- input$day0
     cumul <- input$cumulative
+    rol <- input$roll
+    if(is.null(rol)){
+      rol <- 0
+    }
+    if(cumul){
+      rol <- 0
+    }
     plot_day_zero(countries = ctr,
                   ylog = yl,
                   day0 = d0,
-                  cumulative = cumul)
+                  cumulative = cumul,
+                  roll = rol)
   },
   height = 400, width = 700)
   

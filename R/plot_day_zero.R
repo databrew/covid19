@@ -111,7 +111,9 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'US', 'German
         group_by(iso, geo) %>%
         mutate(new_value = rollsum(x = value, roll, align = 'right', fill = NA))
     }
+    pd$old_value <- pd$value
     pd$value <- pd$new_value
+    
   }
   
   # Adjust by population
@@ -132,6 +134,10 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'US', 'German
     }
     pd <- pd %>%
       mutate(value = (value / pop) * pop_adjustor)
+    if('old_value' %in% names(pd)){
+      pd <- pd %>%
+        mutate(old_value = (old_value / pop) * pop_adjustor)
+    }
   }
   
   # Deal with day 0 adjustments
@@ -150,11 +156,19 @@ prepare_day_zero_data <-  function(countries = c('Italy', 'Spain', 'US', 'German
   }
   
   # Narrow down
-  pd <- pd %>%
-    dplyr::select(iso, geo,
-                         date, first_day,
-                         days_since_first_day,
-                         value)
+  if('old_value' %in% names(pd)){
+    pd <- pd %>%
+      dplyr::select(iso, geo,
+                    date, first_day,
+                    days_since_first_day,
+                    value, old_value)
+  } else {
+    pd <- pd %>%
+      dplyr::select(iso, geo,
+                    date, first_day,
+                    days_since_first_day,
+                    value)
+  }
   # Clean up type
   pd$days_since_first_day <- as.integer(pd$days_since_first_day)
   return(pd)
@@ -312,8 +326,8 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'US', 'Germany'),
                   y = value)) +
     geom_line(aes(color = color_var,
                   group = geo),  alpha = alpha, size = line_size) +
-    geom_point(aes(color = color_var,
-                   group = geo),  alpha = point_alpha, size = point_size) +
+    # geom_point(aes(color = color_var,
+    #                group = geo),  alpha = point_alpha, size = point_size) +
     # geom_point(aes(color = country), size = line_size, alpha = 0.6) +
     theme_bw() +
     scale_color_manual(name = '',
@@ -340,6 +354,21 @@ plot_day_zero <- function(countries = c('Italy', 'Spain', 'US', 'Germany'),
   if(ylog){
     g <- g + scale_y_log10()
   }
+  
+  if(roll > 0){
+    g <- g + 
+      geom_point(aes(color = color_var,
+                     group = geo,
+                     y = old_value),  
+                 alpha = point_alpha, 
+                 size = point_size) +
+      geom_line(aes(color = color_var,
+                     group = geo,
+                     y = old_value),  
+                 alpha = point_alpha, 
+                 size = 0.2) 
+  }
+  
   if(time_before < 0){
     g <- g +
       scale_x_continuous(

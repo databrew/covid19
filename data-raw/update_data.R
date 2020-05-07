@@ -93,6 +93,7 @@ isc <- isc %>%
                 uci = UCI,
                 deaths = Fallecidos)
 isc$date <- as.Date(isc$date, format = '%d/%m/%Y')
+isc <- isc %>% filter(!is.na(date))
 message('MAX DATE IN SPAIN IS ', max(isc$date))
 write_csv(isc, 'isciii/raw.csv')
 
