@@ -74,6 +74,18 @@ ggplot(data = pd,
 ```
 
 ```{r}
+# Africa cases
+# Number of Africa countries
+pd <- df_country
+pd %>% left_join(world_pop) %>%
+  # filter(sub_region %in% c('Sub-Saharan Africa')) %>%
+  filter(region %in% 'Africa') %>%
+  filter(cases > 0) %>%
+  group_by(date) %>%
+  summarise(cases = sum(cases))
+```
+
+```{r}
 # Number of Africa countries
 pd <- df_country
 pd <- pd %>% left_join(world_pop) %>%

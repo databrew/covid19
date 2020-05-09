@@ -34,7 +34,7 @@ usethis::use_data(testing, overwrite = T)
 if(!dir.exists('isciii')){
   dir.create('isciii')
 }
-isc <- read_csv('https://covid19.isciii.es/resources/serie_historica_acumulados.csv',
+isc <- read_csv('https://cnecovid.isciii.es/covid19/resources/agregados.csv',
                 col_names = c("CCAA", "FECHA", "CASOS", "PCR+", "TestAc+", "Hospitalizados", "UCI", "Fallecidos", "Recuperados"),
                 col_types = c('ccddddddd')) %>%
   filter(!is.na(CCAA))
@@ -81,7 +81,12 @@ joiner <- tibble(CCAA = c('AN',
 isc <- left_join(isc, joiner)
 # Deal with the PCR and Ac columns
 isc$CASOS <- ifelse(is.na(isc$CASOS),
-                    isc$`PCR+` + isc$`TestAc+`,
+                    ifelse(!is.na(isc$`PCR+`),
+                           isc$`PCR+`,
+                           0) + 
+                      ifelse(!is.na(isc$`TestAc+`),
+                             isc$`TestAc+`,
+                             0),
                     isc$CASOS)
 isc <- isc %>%
   mutate(CASOS = ifelse(is.na(CASOS), 0, CASOS))
