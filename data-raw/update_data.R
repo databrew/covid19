@@ -29,6 +29,28 @@ library(rgdal)
 testing <- read_csv('https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/testing/covid-testing-all-observations.csv')
 usethis::use_data(testing, overwrite = T)
 
+# Pull from transpariencia catalunya
+# https://analisi.transparenciacatalunya.cat/Salut/Registre-de-casos-de-COVID-19-realitzats-a-Catalun/qwj8-xpvk/data
+if(!dir.exists('trans_cat/')){
+  dir.create('trans_cat/')
+}
+trans_cat <- read_csv('https://analisi.transparenciacatalunya.cat/api/views/qwj8-xpvk/rows.csv?accessType=DOWNLOAD&sorting=true')
+trans_cat <- trans_cat %>%
+  mutate(date = as.Date(TipusCasData, format = '%d/%m/%Y'))
+write_csv(trans_cat, 'trans_cat/trans_cat.csv')
+usethis::use_data(trans_cat, overwrite = T)
+
+
+# Province level data for all of Spain
+provinces <- read_csv('https://github.com/montera34/escovid19data/blob/master/data/output/covid19-provincias-spain_consolidated.csv?raw=true')
+usethis::use_data(provinces, overwrite = T)
+
+# Get catalunya regions sanitarias
+library(rgdal)
+regions_sanitaries <- readOGR('regions_sanitaries/', 'RegionsS_2018', encoding = "latin1")
+usethis::use_data(regions_sanitaries, overwrite = T)
+
+
 
 # Pull from Spanish ministry
 if(!dir.exists('isciii')){
