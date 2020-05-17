@@ -571,7 +571,7 @@ if(do_italy_spain){
     dplyr::rename(district = ccaa) %>%
     mutate(country = 'Italy')
   right <- df %>% filter(country == 'Italy') %>%
-    dplyr::select(date,country)
+    dplyr::distinct(date,country)
   add_these <- df %>% filter(country == 'Italy') %>%
     filter(!date %in% left$date,
            date < max(left$date)) # remove any obs AHEAD of ministry data
@@ -586,7 +586,7 @@ if(do_italy_spain){
     dplyr::rename(district = ccaa) %>%
     mutate(country = 'Spain')
   right <- df %>% filter(country == 'Spain') %>%
-    dplyr::select(date,country)
+    dplyr::distinct(date,country)
   add_these <- df %>% filter(country == 'Spain') %>%
     filter(!date %in% left$date,
            date < max(left$date)) # remove any obs AHEAD of ministry data
@@ -601,7 +601,7 @@ if(do_italy_spain){
     dplyr::rename(district = ccaa) %>%
     mutate(country = 'Portugal')
   right <- df %>% filter(country == 'Portugal') %>%
-    dplyr::select(date,country)
+    dplyr::distinct(date,country)
   add_these <- df %>% filter(country == 'Portugal') %>%
     filter(!date %in% left$date,
            date < max(left$date)) # remove any obs AHEAD of ministry data

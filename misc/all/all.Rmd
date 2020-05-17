@@ -44,6 +44,10 @@ options(scipen = '999')
 ```
 
 ```{r}
+esp_df %>% filter(date == '2020-03-15')
+```
+
+```{r}
 pd <- df_country %>%
   filter(country == 'India')
 
