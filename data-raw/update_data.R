@@ -25,6 +25,11 @@ library(sp)
 library(raster)
 library(rgdal)
 
+# Read in economist excess mortality data
+excess <- read_csv('https://github.com/TheEconomist/covid-19-excess-deaths-tracker/raw/master/output-data/historical-deaths/spain_weekly_deaths.csv')
+usethis::use_data(excess, overwrite = T)
+
+
 # Testing data from our world in data
 testing <- read_csv('https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/testing/covid-testing-all-observations.csv')
 usethis::use_data(testing, overwrite = T)

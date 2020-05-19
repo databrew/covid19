@@ -43,8 +43,107 @@ library(tidyr)
 options(scipen = '999')
 ```
 
+
 ```{r}
-esp_df %>% filter(date == '2020-03-15')
+# Excess mortality spain
+
+pd <- excess %>% dplyr::rename(ccaa = region) %>% 
+  filter(ccaa != 'Spain') %>%
+  left_join(esp_pop %>%
+              mutate(ccaa = ifelse(ccaa == 'Baleares', 'Balears, Illes',
+                                   ifelse(ccaa == 'CLM', 'Castile-La Mancha',
+                                          ifelse(ccaa == 'CyL', 'Castile & León',
+                                                 ifelse(ccaa == 'C. Valenciana', 'Comunitat Valenciana', ccaa)))))) %>%
+  mutate(ccaa = ifelse(ccaa == 'Cataluña', 'Catalonia', ccaa)) %>%
+  mutate(ccaa = ifelse(ccaa == 'Comunitat Valenciana', 'Valencia', ccaa)) %>%
+  mutate(ccaa = ifelse(ccaa == 'País Vasco', 'Basque country', ccaa)) %>%
+  mutate(date = end_date)
+
+# Calculate percentage of normal
+pd <- pd %>%
+  mutate(p = total_deaths / expected_deaths * 100) %>% filter(!ccaa %in% c('Ceuta', 'Melilla', 'Canarias')) %>%
+  mutate(type = ifelse(p > 100, 'Above\nexpected\n', 'Below\nexpected\n'))
+
+# pd <- pd %>% filter(ccaa %in% c('Castile & León',
+#                                 'Castile-La Mancha',
+#                                 'Catalonia',
+#                                 'Madrid'))
+pd <- pd %>% filter(date > '2020-01-01')
+
+ggplot(data = pd,
+       aes(x = date,
+           y = p,
+           group = ccaa)) +
+  geom_hline(yintercept = 100, color = 'darkgrey') +
+  # geom_line() +
+  # geom_area(aes(ymin = 100)) +
+  geom_ribbon(aes(ymin=100, ymax=p), fill = 'darkgrey', alpha = 0.5) +
+  geom_line() +
+  geom_point(aes(color = type), alpha = 0.7) +
+  facet_wrap(~ccaa) +
+  scale_color_manual(name = '',
+                     values = c('darkred', 'blue')) +
+  # scale_fill_manual(name = '',
+  #                    values = c('darkred', 'blue')) +
+  databrew::theme_simple() +
+  theme(legend.position = 'right',
+        strip.text = element_text(size = 12, hjust = 0.5)) +
+  labs(x = '',
+       y = 'Percent',
+       title = 'Excess mortality by region',
+       caption = 'Raw from the Economist: https://github.com/TheEconomist/covid-19-excess-deaths-tracker/blob/master/output-data/historical-deaths/spain_weekly_deaths.csv\nChart by Joe Brew. Ceuta, Melilla, and Canarias removed due to low numbers.') 
+  # geom_hline(yintercept = 100)
+ggsave('~/Desktop/plot.png')
+```
+
+```{r}
+pd <- excess %>% dplyr::rename(ccaa = region) %>% 
+  filter(ccaa != 'Spain') %>%
+  left_join(esp_pop %>%
+              mutate(ccaa = ifelse(ccaa == 'Baleares', 'Balears, Illes',
+                                   ifelse(ccaa == 'CLM', 'Castile-La Mancha',
+                                          ifelse(ccaa == 'CyL', 'Castile & León',
+                                                 ifelse(ccaa == 'C. Valenciana', 'Comunitat Valenciana', ccaa)))))) %>%
+  mutate(ccaa = ifelse(ccaa == 'Cataluña', 'Catalonia', ccaa)) %>%
+  mutate(ccaa = ifelse(ccaa == 'Comunitat Valenciana', 'Valencia', ccaa)) %>%
+  mutate(ccaa = ifelse(ccaa == 'País Vasco', 'Basque country', ccaa)) %>%
+  mutate(date = end_date)
+
+# Calculate percentage of normal
+pd <- pd %>%
+  mutate(p = total_deaths / expected_deaths * 100) %>% filter(!ccaa %in% c('Ceuta', 'Melilla', 'Canarias')) %>%
+  mutate(type = ifelse(p > 100, 'Above\nexpected\n', 'Below\nexpected\n'))
+
+# pd <- pd %>% filter(ccaa %in% c('Castile & León',
+#                                 'Castile-La Mancha',
+#                                 'Catalonia',
+#                                 'Madrid'))
+pd <- pd %>% filter(date > '2020-01-01')
+pd$grp <- ifelse(grepl('Madrid|Castil|Rioj|Catal|Navarr', pd$ccaa), pd$ccaa, 'Others')
+cols <- c(RColorBrewer::brewer.pal(n = length(unique(pd$grp))-1, 'Set1'), 'black')
+cols[length(cols)-1] <- 'pink'
+pd <- pd %>% arrange(desc(p))
+pd$ccaa <- factor(pd$ccaa, levels = unique(pd$ccaa))
+ggplot(data = pd,
+       aes(x = date,
+           y = p,
+           group = ccaa)) +
+  geom_hline(yintercept = 100, color = 'darkgrey') +
+  geom_line(data = pd %>% filter(grp == 'Others'),
+            aes(color = grp), alpha = 0.7) +
+    geom_line(data = pd %>% filter(grp != 'Others'),
+            aes(color = grp),
+            size = 2, alpha = 0.8) +
+  databrew::theme_simple() +
+  theme(legend.position = 'right',
+        strip.text = element_text(size = 12, hjust = 0.5)) +
+  scale_color_manual(name = '',
+                     values = cols) +
+  labs(x = '',
+       y = 'Percent',
+       title = 'Excess mortality by region',
+       caption = 'Raw from the Economist: https://github.com/TheEconomist/covid-19-excess-deaths-tracker/blob/master/output-data/historical-deaths/spain_weekly_deaths.csv\nChart by Joe Brew. Ceuta, Melilla, and Canarias removed due to low numbers.') 
+ggsave('~/Desktop/plot2.png')
 ```
 
 ```{r}
