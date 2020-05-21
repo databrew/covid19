@@ -43,6 +43,106 @@ library(tidyr)
 options(scipen = '999')
 ```
 
+Municipalities
+
+```{r}
+  pd <- muni %>%
+  filter(date == max(date)) %>%
+    # Get confirmed cases by population
+    mutate(p = confirmed_cases / pop * 100000) %>%
+  arrange(desc(p))
+```
+
+```{r}
+
+c25 <- c(
+  "dodgerblue2", "#E31A1C", # red
+  "green4",
+  "#6A3D9A", # purple
+  "#FF7F00", # orange
+  "black", "gold1",
+  "skyblue2", "#FB9A99", # lt pink
+  "palegreen2",
+  "#CAB2D6", # lt purple
+  "#FDBF6F", # lt orange
+  "gray70", "khaki2",
+  "maroon", "orchid1", "deeppink1", "blue1", "steelblue4",
+  "darkturquoise", "green1", "yellow4", "yellow3",
+  "darkorange4", "brown"
+)
+
+comarcas <- sort(unique(muni$ComarcaDescripcio))
+for(i in 1:length(comarcas)){
+  this_comarca <- comarcas[i]
+  pd <- muni %>%
+    # Get confirmed cases by population
+    mutate(p = confirmed_cases / pop * 100000) %>%
+    dplyr::filter(ComarcaDescripcio %in% this_comarca)
+  
+  # pie(rep(1, 25), col = c25)
+  cols <- colorRampPalette(c25)(length(unique(pd$MunicipiDescripcio)))
+  
+  g <- ggplot(data = pd,
+         aes(x = date,
+             y = p)) +
+    geom_line(aes(group = MunicipiDescripcio,
+                  color = MunicipiDescripcio,
+                  size = pop),
+              alpha = 0.8) +
+    # scale_y_log10() +
+    # facet_wrap(~MunicipiDescripcio, scales = 'free_y') +
+      scale_color_manual(name = '', values = cols) +
+    databrew::theme_simple() +
+    labs(x = 'Data',
+         y = 'Casos per 100.000',
+         title = paste0(this_comarca),
+         subtitle = 'Incidència acumulada per 100.000 habitants') +
+    scale_size(name = 'Població') +
+    guides(color = guide_legend(override.aes = list(size = 2)))
+  print(g)
+  # Sys.sleep(10)
+}
+
+```
+
+Cumulative incidence map, Catalonia, by municipality
+
+```{r}
+# map <- municipios[municipios@data$id %in% muni$MunicipiCodi,]
+catalan_codes <- c('43', '08', '25', '17')
+map <- municipios[substr(municipios@data$id, 1, 2) %in% catalan_codes, ]
+
+map_fortified <- fortify(map, region = 'id')
+# Define function for getting each day
+get_day <- function(the_date = Sys.Date()-3){
+  pd <- muni %>% filter(date == the_date)
+  joined <- left_join(map_fortified, pd %>% dplyr::rename(id = MunicipiCodi)) %>%
+    mutate(p = confirmed_cases / pop * 100000)
+  
+  ggplot(data = joined,
+         aes(x = long,
+             y = lat,
+             fill = p)) +
+    geom_polygon(aes(group = id)) +
+    scale_fill_gradientn(name = '',
+                         colors = c('white', 'yellow', 'darkorange', 'red', 'darkred', 'black'),
+                       # colors = rev(RColorBrewer::brewer.pal(n = 9, name = 'Spectral')),
+                       limits = c(0, 10000)) +
+    xlim(1,2.5) +
+    ylim(41, 42.1)
+}
+dates <- seq(as.Date('2020-03-08'),
+             max(muni$date),
+             by = 1)
+
+for(i in 1:length(dates)){
+  this_date <- dates[i]
+  get_day(the_date = this_date)
+}
+```
+
+
+
 
 ```{r}
 # Excess mortality spain

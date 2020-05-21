@@ -24,6 +24,150 @@ library(rgdal)
 library(sp)
 library(raster)
 library(rgdal)
+library(raster)
+library(sp)
+library(readxl)
+library(rmapshaper)
+library(sf)
+
+
+esp0 <- getData(country = 'ESP', level = 0)
+usethis::use_data(esp0, overwrite = TRUE)
+
+esp1 <- getData(country = 'ESP', level = 1)
+usethis::use_data(esp1, overwrite = TRUE)
+
+# Municipal codes
+codes <- read_excel('20codmun.xlsx', skip = 1)
+
+## Get Spanish census data
+# Population by age and municipality
+# https://www.ine.es/jaxi/Tabla.htm?path=/t20/e244/avance/p02/l0/&file=1mun00.px&L=0
+download_url <- 'https://www.ine.es/jaxi/files/_px/es/csv_bdsc/t20/e244/avance/p02/l0/1mun00.csv_bdsc?nocab=1'
+download_file <- '1mun00.csv'
+if(!download_file %in% dir()){
+  download.file(url = download_url,
+                destfile = download_file)
+}
+# Read in
+census <- read_delim(download_file, delim = ';')
+# Clean up names
+names(census) <- c('municipio',
+                   'sexo',
+                   'edad',
+                   'periodio',
+                   'total')
+census$periodio <- NULL
+# Remove unnecessary values
+census <- census %>%
+  filter(!municipio %in% 'TOTAL NACIONAL',
+         !sexo %in% 'Ambos sexos',
+         !edad %in% 'Total')
+census$total <- ifelse(census$total == '..',
+                       0,
+                       as.numeric(as.character(gsub('.', '', 
+                                                    census$total, fixed = T))))
+census$edad <- gsub('años|año', '', census$edad)
+census$edad <- gsub(' y más', '', census$edad)
+census$edad <- as.numeric(as.character(census$edad))
+
+census$id <- unlist(lapply(strsplit(census$municipio, ' '),
+                           function(x){paste0(x[1], collapse = ' ')}))
+census$id <- trimws(census$id)
+# census$id <- as.numeric(census$id)
+census$municipio <- unlist(lapply(strsplit(census$municipio, ' '),
+                                  function(x){paste0(x[2:length(x)], collapse = ' ')}))
+census$municipio <- trimws(census$municipio)
+usethis::use_data(census, overwrite = TRUE)
+
+# Get Spain at municipal level
+# Must download teh following as 'lineas_limite.zip'
+# http://centrodedescargas.cnig.es/CentroDescargas/catalogo.do?Serie=CAANE
+# and then unzip
+# unzip('lineas_limite.zip')
+municipios <- readOGR('recintos_municipales_inspire_peninbal_etrs89',
+                      'recintos_municipales_inspire_peninbal_etrs89', encoding="UTF-8")
+# municipios <- st_read('recintos_municipales_inspire_peninbal_etrs89/recintos_municipales_inspire_peninbal_etrs89.shp')
+# municipios <- read_sf('recintos_municipales_inspire_peninbal_etrs89/recintos_municipales_inspire_peninbal_etrs89.shp')
+library(rgeos)
+regions_df <- municipios@data
+# x = gSimplify(municipios, tol = 0.05, topologyPreserve = TRUE)
+# municipios <- sp::SpatialPolygonsDataFrame(x, regions_df)
+
+
+# Get an ID in municipios
+census_ids <- sort(unique(census$id))
+census_ids <- sample(census_ids, length(census_ids))
+ids <- substr(municipios$INSPIREID, 20, 24)
+
+municipios$id <- ids
+usethis::use_data(municipios, overwrite = TRUE)
+
+# World cities
+cities <- read_csv('worldcities.csv')
+cities <- cities %>% filter(country == 'Spain')
+cities <- cities %>% dplyr::select(city, lat, lng, population)
+cities_sp <- cities %>% dplyr::mutate(x = lng, y = lat)
+coordinates(cities_sp) <- ~x+y
+proj4string(cities_sp) <- proj4string(municipios)
+usethis::use_data(cities, overwrite = T)
+usethis::use_data(cities_sp, overwrite = T)
+
+
+# Read in cat municipal level data
+muni <- read_csv('https://analisi.transparenciacatalunya.cat/api/views/jj6z-iyrp/rows.csv?accessType=DOWNLOAD&sorting=true')
+muni <- muni %>%
+  mutate(date = as.Date(TipusCasData, format = '%d/%m/%Y')) %>%
+  group_by(date,
+           ComarcaCodi,
+           ComarcaDescripcio,
+           MunicipiCodi,
+           MunicipiDescripcio) %>%
+  summarise(pcr = sum(NumCasos[TipusCasDescripcio == 'Positiu PCR'], na.rm = TRUE),
+            rdt = sum(NumCasos[TipusCasDescripcio == 'Positiu per Test Ràpid'], na.rm = TRUE),
+            suspect_cases = sum(NumCasos[TipusCasDescripcio == 'Sospitós'], na.rm = TRUE)) %>%
+  ungroup %>%
+  mutate(confirmed_cases = pcr + rdt,
+         total_cases = pcr + rdt + suspect_cases)
+# Get expanded
+left <- expand.grid(
+  date = seq(as.Date('2020-02-25'),
+             max(muni$date),
+             by = 1))
+out_list <- list()
+municipalities <- sort(unique(muni$MunicipiCodi))
+for(i in 1:length(municipalities)){
+  this_code <- municipalities[i]
+  this_data <- muni %>%
+    filter(MunicipiCodi == this_code)
+  joined <- left_join(left, this_data, by = 'date') %>%
+    tidyr::fill(ComarcaCodi, ComarcaDescripcio, MunicipiCodi, MunicipiDescripcio, .direction = 'downup') %>%
+    mutate_at(.vars = vars(pcr, rdt, suspect_cases, confirmed_cases, total_cases),
+              .funs = function(x){ifelse(is.na(x), 0, x)}) %>%
+    dplyr::rename(pcr_non_cum = pcr,
+                  rdt_non_cum = rdt,
+                  suspect_cases_non_cum = suspect_cases,
+                  confirmed_cases_non_cum = confirmed_cases,
+                  total_cases_non_cum = total_cases) %>%
+    dplyr::mutate(pcr = cumsum(pcr_non_cum),
+                  rdt = cumsum(rdt_non_cum),
+                  suspect_cases = cumsum(suspect_cases_non_cum),
+                  confirmed_cases = cumsum(confirmed_cases_non_cum),
+                  total_cases = cumsum(total_cases_non_cum))
+  out_list[[i]] <- joined
+}
+muni <- bind_rows(out_list)
+
+# Get population too into muni
+poppy <- census %>%
+  group_by(MunicipiCodi = id) %>%
+  summarise(pop = sum(total))
+muni <- left_join(
+  x = muni,
+  y = poppy
+)
+
+usethis::use_data(muni, overwrite = T)
 
 # Read in economist excess mortality data
 excess <- read_csv('https://github.com/TheEconomist/covid-19-excess-deaths-tracker/raw/master/output-data/historical-deaths/spain_weekly_deaths.csv')

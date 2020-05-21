@@ -8,3 +8,6 @@ packrat/*
 !packrat/packrat.lock
 !packrat/packrat.opts
 !packrat/init.R
+data-raw/recintos*
+data-raw/1mun00.csv
+data-raw/20codmun.xlsx
