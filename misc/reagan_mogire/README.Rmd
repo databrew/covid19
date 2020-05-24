@@ -1,0 +1,59 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  echo = FALSE,
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+
+```{r setup, include=FALSE, echo = FALSE}
+# Basic knitr options
+library(knitr)
+opts_chunk$set(comment = NA, 
+               # echo = FALSE, 
+               warning = FALSE, 
+               message = FALSE, 
+               error = TRUE, 
+               cache = FALSE,
+               fig.width = 9.6,
+               fig.height = 5.6,
+               fig.path = 'figures/')
+```
+
+```{r}
+## Load libraries
+library(covid19)
+library(ggplot2)
+library(lubridate)
+library(dplyr)
+library(ggplot2)
+library(sp)
+library(raster)
+library(viridis)
+library(ggthemes)
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(RColorBrewer)
+library(readr)
+options(scipen = '999')
+```
+
+```{r}
+countries <- c('Kenya', 'South Africa', 'Nigeria', 'United Kingdom', 'France', 'Spain', 'US', 'Canada', 'Mexico', 'Peru', 'Brazil', 'India', 'Australia', 'Indonesia', 'Egypt', 'United Arab Emirates', 'Iran')
+
+plot_day_zero(countries = countries,
+              ylog = TRUE,
+              day0 = 150,
+              cumulative = TRUE)
+ggsave('plot.pdf')
+```
