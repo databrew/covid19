@@ -46,7 +46,7 @@ options(scipen = '999')
 Municipalities
 
 ```{r}
-  pd <- muni %>%
+pd <- muni %>%
   filter(date == max(date)) %>%
     # Get confirmed cases by population
     mutate(p = confirmed_cases / pop * 100000) %>%

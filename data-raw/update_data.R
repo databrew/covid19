@@ -205,12 +205,11 @@ usethis::use_data(regions_sanitaries, overwrite = T)
 if(!dir.exists('isciii')){
   dir.create('isciii')
 }
-isc <- read_csv('https://cnecovid.isciii.es/covid19/resources/agregados.csv',
-                col_names = c("CCAA", "FECHA", "CASOS", "PCR+", "TestAc+", "Hospitalizados", "UCI", "Fallecidos", "Recuperados"),
-                col_types = c('ccddddddd')) %>%
+isc <- read_csv('https://cnecovid.isciii.es/covid19/resources/datos_ccaas.csv',
+                col_names = c("CCAA", "date", "cases"),
+                col_types = c('ccd'),
+                skip = 1) %>%
   filter(!is.na(CCAA))
-remove_from <- which(grepl('NOTA', isc$CCAA))[1]
-isc <- isc[1:(remove_from-1),]
 joiner <- tibble(CCAA = c('AN',
                           'AR',
                           'AS',
@@ -250,25 +249,11 @@ joiner <- tibble(CCAA = c('AN',
                           'La Rioja',
                           'C. Valenciana'))
 isc <- left_join(isc, joiner)
-# Deal with the PCR and Ac columns
-isc$CASOS <- ifelse(is.na(isc$CASOS),
-                    ifelse(!is.na(isc$`PCR+`),
-                           isc$`PCR+`,
-                           0) + 
-                      ifelse(!is.na(isc$`TestAc+`),
-                             isc$`TestAc+`,
-                             0),
-                    isc$CASOS)
-isc <- isc %>%
-  mutate(CASOS = ifelse(is.na(CASOS), 0, CASOS))
 
 isc <- isc %>%
-  dplyr::select(date = FECHA,
-                ccaa,
-                cases = CASOS,
-                uci = UCI,
-                deaths = Fallecidos)
-isc$date <- as.Date(isc$date, format = '%d/%m/%Y')
+  mutate(cases = ifelse(is.na(cases), 0, cases))
+
+isc$date <- as.Date(isc$date)
 isc <- isc %>% filter(!is.na(date))
 message('MAX DATE IN SPAIN IS ', max(isc$date))
 write_csv(isc, 'isciii/raw.csv')
@@ -680,9 +665,18 @@ library(gsheet)
 # url <- 'https://docs.google.com/spreadsheets/d/15UJWpsW6G7sEImE8aiQ5JrLCtCnbprpztfoEwyTNTEY/edit#gid=810081118'
 # esp_df <- gsheet::gsheet2tbl(url)
 na_to_zero <- function(x){ifelse(is.na(x), 0, x)}
-esp_df <- isc %>% mutate(cases = na_to_zero(cases),
+esp_df <- isc
+esp_df$uci <- esp_df$deaths <- NA
+esp_df <- esp_df %>% mutate(cases = na_to_zero(cases),
                          uci = na_to_zero(uci),
                          deaths = na_to_zero(deaths))
+# Get rolling sum
+esp_df <- esp_df %>%
+  arrange(date) %>%
+  group_by(ccaa) %>%
+  mutate(cases = cumsum(cases)) %>%
+  ungroup 
+
 right <- esp_df %>%
   group_by(date) %>%
   summarise(cases = sum(cases, na.rm = TRUE),

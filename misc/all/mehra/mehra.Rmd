@@ -1,0 +1,105 @@
+---
+title: "Mehra"
+output:
+  html_document:
+    keep_md: true
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = NA, 
+               echo = TRUE, 
+               warning = FALSE, 
+               message = FALSE, 
+               error = TRUE, 
+               cache = FALSE,
+  fig.width = 10,
+  fig.height = 10,
+  fig.path = "figures/",
+  out.width = "100%"
+)
+```
+
+```{r}
+cat('Date-time: ', Sys.time())
+## Load libraries
+library(covid19)
+library(ggplot2)
+library(lubridate)
+library(dplyr)
+library(readr)
+options(scipen = '999')
+```
+
+```{r}
+# "Congo, Dem. Rep." "Congo, Rep."      "Egypt, Arab Rep." "Gambia, The"
+pd <- df_country %>% ungroup %>%
+  mutate(country = 
+           ifelse(country == 'Congo (Kinshasa)', 'Congo, Dem. Rep.',
+                  ifelse(country == 'Congro (Brazzaville)',
+                         'Congro, Rep.',
+                         ifelse(country == 'Egypt', 'Egypt, Arab Rep.',
+                                ifelse(country == 'Gambia', 'Gambia, The',
+                                       country)))))
+pd <- pd %>% left_join(world_pop) %>%
+  filter(region %in% c('Africa')) %>%
+    # filter(region %in% c('Asia') &
+    #          country != 'China') %>%
+  # filter(sub_region %in% 'Latin America and the Caribbean') %>%
+  filter(cases > 0) %>%
+  group_by(date) %>%
+  summarise(cases = sum(cases),
+            deaths = sum(deaths),
+            countries = length(unique(country)))
+pd %>% tail
+length(unique(world_pop$country[world_pop$region == 'Africa']))
+```
+
+```{r}
+pd <- df_country  %>% ungroup %>%
+  mutate(country = 
+           ifelse(country == 'Congo (Kinshasa)', 'Congo, Dem. Rep.',
+                  ifelse(country == 'Congro (Brazzaville)',
+                         'Congro, Rep.',
+                         ifelse(country == 'Egypt', 'Egypt, Arab Rep.',
+                                ifelse(country == 'Gambia', 'Gambia, The',
+                                       country)))))
+pd <- pd %>% left_join(world_pop) %>%
+  filter(region %in% c('Africa')) %>%
+    # filter(region %in% c('Asia') &
+    #          country != 'China') %>%
+  # filter(sub_region %in% 'Latin America and the Caribbean') %>%
+  filter(cases > 0) %>%
+  filter(date == '2020-04-21') %>%
+  arrange(desc(cases))
+# Keep only the top 30 cases
+pd <- pd[1:30,]
+pd %>% ungroup %>%
+  summarise(cases = sum(cases),
+            deaths = sum(deaths),
+            countries = length(unique(country)))
+```
+
+
+```{r}
+pd <- df_country
+pd <- pd %>% left_join(world_pop) %>%
+  filter(region %in% c('Oceania')) %>%
+    # filter(region %in% c('Asia') &
+    #          country != 'China') %>%
+  # filter(sub_region %in% 'Latin America and the Caribbean') %>%
+  filter(cases > 0) %>%
+  filter(date == '2020-04-21') %>% # 1!!!
+  arrange(desc(cases))
+
+pd %>% group_by(country) %>%
+  summarise(cases = sum(cases),
+            deaths = sum(deaths),
+            countries = length(unique(country)))
+```
+
+
+South Africa: 5% hospitalization rate: https://sacoronavirus.co.za/2020/05/08/update-on-covid-19-8th-may-2020/
+
+US: <1% https://www.cdc.gov/coronavirus/2019-ncov/covid-data/covidview/index.html
