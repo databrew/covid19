@@ -1,0 +1,263 @@
+---
+title: "Testing and deaths in Brazil"
+author: '2020-06-10'
+date: "6/24/2020"
+output: html_document
+---
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = NA, 
+               echo = TRUE, 
+               warning = FALSE, 
+               message = FALSE, 
+               error = TRUE, 
+               cache = FALSE,
+  fig.path = "figures/",
+  out.width = "100%"
+)
+```
+
+```{r}
+cat('Date-time: ', Sys.time())
+## Load libraries
+library(covid19)
+library(ggplot2)
+library(lubridate)
+library(dplyr)
+library(readr)
+library(gsheet)
+options(scipen = '999')
+ggplot2::theme_set(theme_bw())
+```
+
+```{r}
+# Read in our world in data
+library(covid19)
+owid <- covid19::owid
+# filter for just Brazil
+brazil <- owid %>% filter(location == 'Brazil')
+# get the ivermectin vs non-ivermectin countries
+owid$ivermectin <-
+  ifelse(owid$location %in% c('Brazil', 'Peru', 'Dominican Republic', 'Honduras', 'Bolivia'),
+         'Promoting ivermectin',
+         ifelse(owid$location %in% c('Mexico', 'Canada', 'Chile',
+                                     'Cuba', 'Argentina',
+                                     'Nicaragua',
+                                     'Colombia', 'Panama',
+                                     'Uruguay', 'Venezuela'),
+                'Not promoting ivermectin',
+                NA))
+iver <- owid %>% filter(!is.na(ivermectin))
+```
+
+# Reproduction of chart
+
+## First attempt
+
+There is a chart at https://twitter.com/sebasugarte/status/1275752348552437761/photo/1 showing the apparent effectiveness of ivermectin at reducing the % of deaths among cases. Using "Our World in Data" testing, cases, and deaths data, we reproduce it:
+
+```{r}
+pd <- iver %>%
+  group_by(date, ivermectin) %>%
+  summarise(deaths = sum(new_deaths),
+            cases = sum(new_cases)) %>%
+  ungroup %>%
+  mutate(p = deaths / cases * 100)
+
+ggplot(data = pd,
+       aes(x = date,
+           y = p,
+           color = ivermectin)) +
+  geom_line() +
+  xlim(as.Date('2020-03-17'), as.Date(max(pd$date))) +
+  labs(x = 'Date',
+       y = 'Deaths / cases (%)') +
+  scale_color_manual(name = '',
+                     values = c('darkblue', 'darkorange'))
+
+```
+
+## With rolling
+
+The above is far less "smooth" than the twitter chart, which suggests they used a rolling average. Let's smooth via rolling 7 day average.
+
+```{r}
+
+pd <- iver %>%
+  group_by(date, ivermectin) %>%
+  summarise(deaths = sum(new_deaths),
+            cases = sum(new_cases)) %>%
+  ungroup %>%
+  group_by(ivermectin) %>%
+  mutate(deaths_roll = zoo::rollsumr(deaths, k = 7, fill = NA)) %>%
+  mutate(cases_roll = zoo::rollsumr(cases, k = 7, fill = NA)) %>%
+  mutate(p = deaths / cases * 100) %>%
+  mutate(p_roll = deaths_roll / cases_roll * 100)
+
+ggplot(data = pd,
+       aes(x = date,
+           y = p_roll,
+           color = ivermectin)) +
+  geom_line() +
+  xlim(as.Date('2020-03-17'), as.Date(max(pd$date))) +
+  labs(x = 'Date',
+       y = 'Deaths / cases (%)') +
+  scale_color_manual(name = '',
+                     values = c('darkblue', 'darkorange')) +
+  ylim(0, 9)
+```
+
+The above is similar, but not quite the same. It remains far less smooth than the twitter chart. Could it be that there rolling window is even larger than 7 days? Let's try 15...
+
+```{r}
+pd <- iver %>%
+  group_by(date, ivermectin) %>%
+  summarise(deaths = sum(new_deaths),
+            cases = sum(new_cases)) %>%
+  ungroup %>%
+  group_by(ivermectin) %>%
+  mutate(deaths_roll = zoo::rollsumr(deaths, k = 15, fill = NA)) %>%
+  mutate(cases_roll = zoo::rollsumr(cases, k = 15, fill = NA)) %>%
+  mutate(p = deaths / cases * 100) %>%
+  mutate(p_roll = deaths_roll / cases_roll * 100)
+
+ggplot(data = pd,
+       aes(x = date,
+           y = p_roll,
+           color = ivermectin)) +
+  geom_line() +
+  xlim(as.Date('2020-03-17'), as.Date(max(pd$date))) +
+  labs(x = 'Date',
+       y = 'Deaths / cases (%)') +
+  scale_color_manual(name = '',
+                     values = c('darkblue', 'darkorange')) +
+  ylim(0, 9)
+```
+
+Same general idea, but not quite the same. The cross-over dates are different, the non-ivermectin humps are different. But this is similar enough for us to move forward with other question.
+
+# Could this be attributable to outliers?
+
+Let's look at country-specific lines (instead of the aggregation) to see the extent to which things might be due to outliers.
+
+```{r}
+
+pd <- iver %>%
+  group_by(date, ivermectin, location) %>%
+  summarise(deaths = sum(new_deaths),
+            cases = sum(new_cases)) %>%
+  ungroup %>%
+  group_by(ivermectin, location) %>%
+  mutate(deaths_roll = zoo::rollsumr(deaths, k = 7, fill = NA)) %>%
+  mutate(cases_roll = zoo::rollsumr(cases, k = 7, fill = NA)) %>%
+  mutate(p = deaths / cases * 100) %>%
+  mutate(p_roll = deaths_roll / cases_roll * 100)
+
+ggplot(data = pd,
+       aes(x = date,
+           y = p_roll,
+           color = ivermectin,
+           group = location)) +
+  geom_line() +
+  xlim(as.Date('2020-03-17'), as.Date(max(pd$date))) +
+  labs(x = 'Date',
+       y = 'Deaths / cases (%)') +
+  scale_color_manual(name = '',
+                     values = c('darkblue', 'darkorange')) +
+  facet_wrap(~location, scales = 'free_y')
+```
+
+The above shows that country-specific variability is _very_ high. There are ivermectin-promoting countries (Peru) and non-ivermectin promoting countries (Mexico) where the deaths over cases are on the rise. By the same token there are ivermectin-promoting countries (DR) and non-ivermectin promoting countries (Argentina) where the rate appears to be falling.
+
+It's important to note that the size of the pandemic in each country has an important influence. Brazil has had >1 million cases. Mexico has only had 6% as many. Therefore, when aggregating multiple countries, the decline in Brazil is weighted 16 times more than the increase in Mexico.
+
+# What about testing
+
+Testing, of course, plays an important role in the CFR (the more tests, the greater the denominator). So, let's look at testing over time in each country
+
+```{r}
+pd <- iver %>%
+  group_by(date, ivermectin, location) %>%
+  summarise(deaths = sum(new_deaths),
+            cases = sum(new_cases),
+            tests = sum(new_tests_per_thousand)) %>%
+  ungroup %>%
+  group_by(ivermectin, location) %>%
+  mutate(deaths_roll = zoo::rollsumr(deaths, k = 7, fill = NA)) %>%
+  mutate(cases_roll = zoo::rollsumr(cases, k = 7, fill = NA)) %>%
+  mutate(tests_roll = zoo::rollsumr(tests, k = 7, fill = NA)) %>%
+  mutate(p = deaths / cases * 100) %>%
+  mutate(p_roll = deaths_roll / cases_roll * 100)
+
+ggplot(data = pd,
+       aes(x = date,
+           y = tests_roll,
+           color = ivermectin,
+           group = location)) +
+  geom_line() +
+  xlim(as.Date('2020-03-17'), as.Date(max(pd$date))) +
+  labs(x = 'Date',
+       y = 'Tests per thousand') +
+  scale_color_manual(name = '',
+                     values = c('darkblue', 'darkorange')) +
+  facet_wrap(~location, scales = 'free_y')
+```
+
+Oops. Testing numbers are not available for many countries (especially the ivermectin-promoting countries).
+
+# What about just deaths
+
+Cases are biased by testing. And testing isn't available. So, what options do we have for an unbiased comparison? Deaths per million population (instead of deaths per "cases")? Let's try.
+
+```{r}
+pd <- iver 
+
+ggplot(data = pd,
+       aes(x = date,
+           y = new_deaths_per_million,
+           color = ivermectin,
+           group = location)) +
+  geom_point(size = 0.3, alpha = 0.5) +
+  geom_smooth() +
+  xlim(as.Date('2020-03-17'), as.Date(max(pd$date))) +
+  labs(x = 'Date',
+       y = 'New daily deaths per thousand') +
+  scale_color_manual(name = '',
+                     values = c('darkblue', 'darkorange')) +
+  facet_wrap(~location, scales = 'free_y')
+```
+
+Okay, that's cool, but hard to see trends. Let's again aggregate across countries.
+
+
+```{r}
+pd <- iver %>% ungroup %>%
+  dplyr::arrange(date) %>%
+  dplyr::group_by(date, ivermectin) %>%
+  dplyr::summarise(deaths = sum(new_deaths),
+            cases = sum(new_cases),
+            population = sum(population)) %>%
+  ungroup %>%
+  group_by(ivermectin) %>%
+  mutate(deaths_roll = zoo::rollmeanr(deaths, k = 7, fill = NA)) %>%
+  ungroup %>%
+  # mutate(population = mean(population)) %>%
+  mutate(p = deaths / population * 1000000) %>%
+  mutate(p_roll = deaths_roll / population * 1000000)
+
+ggplot(data = pd,
+       aes(x = date,
+           y = p_roll,
+           color = ivermectin)) +
+  geom_line() +
+  xlim(as.Date('2020-03-17'), as.Date(max(pd$date))) +
+  labs(x = 'Date',
+       y = 'New daily deaths per million (rolling 7 day average)') +
+  scale_color_manual(name = '',
+                     values = c('darkblue', 'darkorange')) 
+```
+
+In the above, ivermectin no longer looks so good. But what's the causal pathway? Could it be that a bad pandemic situation causes ivermectin use?
+
+Also, what about the outsized role of Brazil
