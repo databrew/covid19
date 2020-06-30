@@ -30,6 +30,10 @@ library(readxl)
 library(rmapshaper)
 library(sf)
 
+# Get our world in data testin gdata
+owid <- read_csv('https://covid.ourworldindata.org/data/owid-covid-data.csv')
+usethis::use_data(owid, overwrite = TRUE)
+
 
 esp0 <- getData(country = 'ESP', level = 0)
 usethis::use_data(esp0, overwrite = TRUE)

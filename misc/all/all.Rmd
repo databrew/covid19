@@ -43,6 +43,24 @@ library(tidyr)
 options(scipen = '999')
 ```
 
+```{r}
+ggplot(data = muni %>% filter(ComarcaDescripcio == 'Conca de Barberà'),
+       aes(x = date,
+           y = confirmed_cases)) +
+  geom_point() +
+  facet_wrap(~MunicipiDescripcio)
+```
+
+```{r}
+fl <- df %>%
+  filter(district == 'Florida')
+
+ggplot(data = df,
+       aes(x = date,
+           y = cases)) +
+  geom_line()
+```
+
 Municipalities
 
 ```{r}
@@ -320,7 +338,7 @@ x = pd %>%
             deaths = sum(deaths),
             n = length(country[cases > 0]))
 
-x %>% filter(date == '2020-04-07' | date == max(date) | date == '2020-03-13')
+x %>% filter(date == '2020-04-13' | date == '2020-05-13' |  date == max(date) | date == '2020-03-13')
 ```
 
 ```{r}
@@ -338,6 +356,7 @@ ggplot(data = pd,
            y = `Cumulative total`,
            group = country)) +
   geom_line(aes(color = country))
+
 ```
 
 ```{r}
@@ -360,7 +379,7 @@ ggplot(data = x,
     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
   labs(x= 'Country',
        title = 'Tests administered')
-
+ggsave('~/Desktop/man/3.png')
 ```
 
 ```{r}
