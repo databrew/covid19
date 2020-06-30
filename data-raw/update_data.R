@@ -1049,6 +1049,15 @@ usethis::use_data(regions_pop, overwrite = T)
 # Write to the covidcount directory
 write_csv(df_country, '../../covidcount/data/jhu.csv')
 write_csv(world_pop, '../../covidcount/data/world_pop.csv')
+jeff = excess %>% filter(country == 'Spain')
+readr::write_csv(jeff, 'jeff.csv')
+y = jeff %>% filter(end_date >= '2020-03-01') %>%
+  group_by(region) %>%
+  summarise(total_deaths = sum(total_deaths),
+            expected_deaths = sum(expected_deaths)) %>%
+  mutate(percent_excess = total_deaths / expected_deaths * 100)
+
+  arrange()
 setwd('..')
 golem::detach_all_attached()
 rm(list=ls(all.names = TRUE))
