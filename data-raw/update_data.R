@@ -107,6 +107,7 @@ ids <- substr(municipios$INSPIREID, 20, 24)
 municipios$id <- ids
 usethis::use_data(municipios, overwrite = TRUE)
 
+
 # World cities
 cities <- read_csv('worldcities.csv')
 cities <- cities %>% filter(country == 'Spain')
@@ -173,6 +174,17 @@ muni <- left_join(
 
 usethis::use_data(muni, overwrite = T)
 
+cristina_bravo <- muni %>%
+  mutate(incidencia_per_100k = confirmed_cases_non_cum / pop * 100000)
+  
+cristina_bravo_bcn <- cristina_bravo %>%
+  filter(MunicipiDescripcio == 'Barcelona')
+
+write_csv(cristina_bravo, 'cristina_bravo.csv')
+write_csv(cristina_bravo_bcn, 'cristina_bravo_bcn.csv')
+
+# Incidencia
+# incidencia <- read_csv('https://analisi.transparenciacatalunya.cat/api/views/623z-r97q/rows.csv?accessType=DOWNLOAD&sorting=true')
 # Read in economist excess mortality data
 excess <- read_csv('https://github.com/TheEconomist/covid-19-excess-deaths-tracker/raw/master/output-data/historical-deaths/spain_weekly_deaths.csv')
 usethis::use_data(excess, overwrite = T)
