@@ -43,12 +43,326 @@ library(tidyr)
 options(scipen = '999')
 ```
 
+US deaths and cases
+
 ```{r}
-ggplot(data = muni %>% filter(ComarcaDescripcio == 'Conca de Barberà'),
+pd <- owid %>% filter(location == 'United States') %>%
+   mutate(deaths_roll = zoo::rollmeanr(new_deaths, k = 7, fill = NA)) %>%
+    mutate(cases_roll = zoo::rollmeanr(new_cases, k = 7, fill = NA)) %>%
+  dplyr::select(date,new_deaths, new_cases, deaths_roll, cases_roll) %>%
+  filter(date >= '2020-03-10')
+  # tidyr::gather(key, value, new_deaths:cases_roll)
+
+ggplot(data = pd,
+       aes(x = date)) +
+  # geom_bar(stat = 'identity', aes(y = new_cases, color = 'Cases', fill = 'Cases')) +
+  geom_line(aes(y = cases_roll, color = 'Cases')) +
+  geom_line(aes(y = deaths_roll * 15, color = 'Deaths')) +
+  geom_point(aes(y = new_cases, color = 'Cases'), alpha = 0.3) +
+  geom_point(aes(y = new_deaths * 15, color = 'Deaths'), alpha = 0.3) +
+  scale_y_continuous(sec.axis = sec_axis(~./15, name = "Deaths")) +
+  databrew::theme_simple() +
+  scale_color_manual(name = '',
+                     values = c('black', 'red')) +
+  # scale_fill_manual(name = '',
+  #                    values = c('black', 'red')) +
+  labs(y = 'Cases',
+       x = 'Date') +
+  theme(legend.position = 'bottom')
+```
+
+```{r}
+pd <- covid19::muni
+pd$ComarcaDescripcio <- trimws(as.character(pd$ComarcaDescripcio))
+keep5 <- function(x){substr(x, 1, 5)}
+
+# muni$ComarcaDescripcio <- gsub('à', 'a', muni$ComarcaDescripcio)
+lleida_comarques <- c('Aran', 'Alta Ribagorça', 'Pallars Sobirà',
+                      'Pallars Jussà', 'Alt Urgell', 'Cerdanya',
+                      'Solsonès', 'Noguera', "Pla d'Urgell",
+                      'Segrià', 'Garrigues', 'Urgell', 'Segarra')
+pd$ComarcaDescripcio <- keep5(pd$ComarcaDescripcio)
+lleida_comarques <- keep5(lleida_comarques)
+
+agg <- pd %>%
+  group_by(ComarcaDescripcio, date) %>%
+  summarise(cases = sum(confirmed_cases_non_cum, na.rm = TRUE),
+            pop = sum(pop)) %>%
+  ungroup %>%
+  arrange(date) %>% 
+  group_by(ComarcaDescripcio) %>%
+  mutate(cases_roll = zoo::rollmeanr(cases, k = 7, fill = NA)) %>%
+  ungroup %>%
+  mutate(cases100k = cases / pop * 100000,
+         cases_roll100k = cases_roll / pop * 100000)
+ggplot(data = agg %>% filter(ComarcaDescripcio %in% lleida_comarques),
        aes(x = date,
-           y = confirmed_cases)) +
+           y = cases100k)) +
+  geom_point(alpha = 0.3) +
+  geom_line(alpha =0.4) +
+  geom_line(aes(y = cases_roll100k), color = 'red') +
+  facet_wrap(~ComarcaDescripcio) +
+  cowplot::theme_cowplot()  +
+  xlim(as.Date('2020-05-01'),
+       (Sys.Date()-1))
+```
+
+```{r}
+# Santa Coloma
+scq <- muni %>%
+  filter(MunicipiDescripcio == 'Santa Coloma de Queralt') %>%
+  dplyr::select(date, confirmed_cases_non_cum)
+
+conca <- muni %>%
+  filter(grepl('Conca de Barbe', ComarcaDescripcio)) 
+
+ggplot(data = conca,
+       aes(x = date,
+           y = confirmed_cases_non_cum)) +
+  # geom_point() +
+  facet_wrap(~MunicipiDescripcio) +
+  geom_line()
+
+# All comarques
+pd <- muni %>% ungroup %>%
+  group_by(date, ComarcaDescripcio) %>%
+  summarise(new_cases = sum(confirmed_cases_non_cum),
+            pop = sum(pop)) %>%
+  ungroup %>%
+  arrange(date) %>%
+  group_by(ComarcaDescripcio) %>%
+  mutate(cases_roll = zoo::rollmeanr(new_cases, k = 7, fill = NA)) %>%
+  mutate(yp = new_cases / pop * 100000,
+         ypr = cases_roll / pop * 100000) %>%
+  mutate(ypl = sqrt(yp),
+         yprl = sqrt(ypl))
+
+# ggplot(data = pd,
+#        aes(x = date,
+#            y = cases_roll)) +
+#   geom_point(aes(y = new_cases), alpha = 0.3,
+#              size = 0.3) +
+#   geom_line(color = 'red', size = 0.3) +
+#   facet_wrap(~ComarcaDescripcio, scales = 'free_y')
+
+
+labeler <- sqrt(c(0, 10, 50, 100, 200))
+pd <- pd %>% filter(date <= '2020-07-15')
+levs <- pd %>% filter(date == max(date)) %>% arrange(desc(ypr)) %>% .$ComarcaDescripcio
+pd$ComarcaDescripcio <- factor(pd$ComarcaDescripcio, levels = rev(levs))
+ggplot(data = pd %>% filter(date >= '2020-03-11'),
+       aes(x = date,
+           y = ComarcaDescripcio,
+           fill = ypl)) +
+  geom_tile(
+    # color = 'black',size = 0.2
+    ) +
+  databrew::theme_simple() +
+  scale_fill_gradientn(name = '', colors = colorRampPalette(c('white',
+                                                              'grey',
+                                                              # 'yellow',
+                                                              # 'white',
+                                                              # 'orange',
+                                                              'darkorange', 
+                                                              'red',
+                                                              'darkred',
+                                                              'black'))(20),
+                       breaks = labeler, labels = round(labeler^2)) +
+  labs(x = '',
+       y = '',
+       title = 'Casos confirmats nous (per 100.000 habitants)') +
+  theme(axis.text.y = element_text(size = 10))
+ggsave('~/Desktop/daily.png')
+
+
+
+# Not population-adjusted
+ggplot(data = pd,
+       aes(x = date,
+           y = ComarcaDescripcio,
+           fill = new_cases)) +
+  geom_tile(color = 'white', size = 0.2) +
+  databrew::theme_simple() +
+  scale_fill_gradientn(name = '', colors = colorRampPalette(c('white', 
+                                                              'grey',
+                                                              # 'white',
+                                                              'darkorange', 
+                                                              'red',
+                                                              'black'))(20)) +#,
+                       # breaks = labeler, labels = round(labeler^2)) +
+  labs(x = '',
+       y = '',
+       title = 'Casos confirmats nous') +
+  theme(axis.text.y = element_text(size = 10))
+```
+
+```{r}
+# Now municipalities
+pd <- muni %>% ungroup %>%
+  group_by(date, MunicipiDescripcio) %>%
+  summarise(new_cases = sum(confirmed_cases_non_cum),
+            pop = sum(pop)) %>%
+  ungroup %>%
+  arrange(date) %>%
+  group_by(MunicipiDescripcio) %>%
+  mutate(cases_roll = zoo::rollmeanr(new_cases, k = 7, fill = NA)) %>%
+  mutate(yp = new_cases / pop * 100000,
+         ypr = cases_roll / pop * 100000) %>%
+  mutate(ypl = sqrt(yp),
+         yprl = sqrt(ypl))
+
+# ggplot(data = pd,
+#        aes(x = date,
+#            y = cases_roll)) +
+#   geom_point(aes(y = new_cases), alpha = 0.3,
+#              size = 0.3) +
+#   geom_line(color = 'red', size = 0.3) +
+#   facet_wrap(~ComarcaDescripcio, scales = 'free_y')
+
+
+labeler <- sqrt(c(0, 10, 50, 100, 200))
+pd <- pd %>% filter(date <= '2020-07-13')
+levs <- pd %>% filter(date == max(date)) %>% arrange(desc(ypr)) %>% .$MunicipiDescripcio
+pd$MunicipiDescripcio <- factor(pd$MunicipiDescripcio, levels = rev(levs))
+
+comarques <- sort(unique(muni$ComarcaDescripcio))
+dir.create('~/Desktop/comarques')
+for(i in 1:length(comarques)){
+  this_comarca <- comarques[i]
+  these_municipis <- muni$MunicipiDescripcio[muni$ComarcaDescripcio == this_comarca]
+  sub_pd <- pd %>%
+    filter(MunicipiDescripcio %in% these_municipis)
+  sub_pd$MunicipiDescripcio <- factor(sub_pd$MunicipiDescripcio, levels = rev(unique(sub_pd$MunicipiDescripcio)))
+  ggplot(data = sub_pd,
+         aes(x = date,
+             y = MunicipiDescripcio,
+             fill = yp)) +
+    geom_tile(color = 'white', size = 0.2) +
+    databrew::theme_simple() +
+    scale_fill_gradientn(name = '', colors = colorRampPalette(c('white', 
+                                                                # 'lightblue', 
+                                                                # 'white',
+                                                                'darkorange', 
+                                                                'red',
+                                                                'black'))(20)) +
+    labs(x = '',
+         y = '',
+         title = this_comarca)
+  ggsave(paste0('~/Desktop/comarques/', this_comarca, '.png'))
+}
+
+
+```
+
+```{r}
+# Number of municipios with any cases
+pd <- muni %>%
+  group_by(date) %>%
+  summarise(any_case = length(which(confirmed_cases_non_cum > 0)),
+            new_cases = sum(confirmed_cases_non_cum)) %>%
+  ungroup 
+
+ggplot(data = pd,
+       aes(x = date,
+           y = new_cases)) +
   geom_point() +
-  facet_wrap(~MunicipiDescripcio)
+  geom_line()
+```
+
+```{r}
+# Date of comarcas first case
+x <- covid19::muni %>%
+  group_by(MunicipiDescripcio) %>%
+  summarise(`Casos confirmats` = sum(confirmed_cases_non_cum),
+            `Població` = mean(pop),
+            date = min(date[confirmed_cases_non_cum > 0])) %>%
+  ungroup
+y <- x %>%
+  filter(`Casos confirmats` == 0) %>%
+  arrange(desc(`Població`)) %>% dplyr::select(-date)
+```
+
+
+```{r}
+# Catalonia age
+edat <- read_csv('https://analisi.transparenciacatalunya.cat/api/views/qwj8-xpvk/rows.csv?accessType=DOWNLOAD&sorting=true')
+pd <- edat %>%
+  mutate(date = as.Date(TipusCasData, format = '%d/%m/%Y'),
+         age_group = EdatRang) %>%
+  filter(!TipusCasDescripcio %in% c('Sospitós'),
+         !EdatRang %in% c('No classificat')) %>%
+  group_by(date, age_group) %>%
+  summarise(n = sum(NumCasos, na.rm = TRUE))
+
+left <- expand.grid(date = seq(min(pd$date),
+                               max(pd$date),
+                               by = 1),
+                    age_group = sort(unique(pd$age_group)))
+joined <- left_join(left, pd) %>%
+  mutate(n = ifelse(is.na(n), 0, n)) %>%
+  filter(date >= '2020-03-04')
+
+# Get by week
+bw <- joined %>%
+  mutate(week = lubridate::week(date)) %>%
+  group_by(week) %>%
+  mutate(week_start = min(date)) %>%
+  mutate(n_days = length(unique(date))) %>%
+  ungroup %>%
+  dplyr::select(-date) %>%
+  group_by(date = week_start, age_group) %>%
+  summarise(n = sum(n, na.rm = TRUE),
+            n_days = dplyr::first(n_days)) %>%
+  ungroup %>%
+  mutate(per_day = n / n_days)
+
+ggplot(data = bw,
+       aes(x = date,
+           y = age_group,
+           fill = per_day)) +
+    geom_tile() +
+    databrew::theme_simple() +
+    scale_fill_gradientn(name = '', colors =
+                           colorRampPalette(c('lightyellow', 
+                                                                # 'yellow',
+                                                                # 'lightblue', 
+                                                                # 'white',
+                                                                'darkorange', 
+                                                                'darkred'))(20)) +
+    labs(x = '',
+         y = '',
+         title = 'Catalunya: casos confirmats per edat',
+         subtitle = 'Catalonia: confirmed cases by age',
+         caption = 'Aix-x: setmana; Aix-y: edat. Color: casos nous.\nDades de https://analisi.transparenciacatalunya.cat/. Gràfic: @joethebrew')
+ggsave('~/Desktop/by_age.png', height = 4, width = 7)  
+
+```
+
+```{r}
+# Age by percentage
+bwp <- bw %>%
+  group_by(date) %>%
+  mutate(p = per_day / sum(per_day) * 100) %>%
+  ungroup
+ggplot(data = bwp,
+       aes(x = date,
+           y = age_group,
+           fill = p)) +
+    geom_tile() +
+    databrew::theme_simple() +
+    scale_fill_gradientn(name = '', colors =
+                           colorRampPalette(c('lightyellow', 
+                                                                # 'yellow',
+                                                                # 'lightblue', 
+                                                                # 'white',
+                                                                'darkorange', 
+                                                                'darkred'))(20)) +
+    labs(x = '',
+         y = '',
+         title = 'Catalunya: casos confirmats per edat',
+         subtitle = 'Catalonia: confirmed cases by age',
+         caption = 'Aix-x: setmana; Aix-y: edat. Color: casos nous.\nDades de https://analisi.transparenciacatalunya.cat/. Gràfic: @joethebrew')
+ggsave('~/Desktop/by_age.png', height = 4, width = 7) 
 ```
 
 ```{r}

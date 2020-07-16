@@ -260,4 +260,164 @@ ggplot(data = pd,
 
 In the above, ivermectin no longer looks so good. But what's the causal pathway? Could it be that a bad pandemic situation causes ivermectin use?
 
-Also, what about the outsized role of Brazil
+
+# Brazil vs Mexico
+
+### Population adjusted
+
+```{r}
+
+pd <- iver %>% ungroup %>%
+  filter(location %in% c('Mexico', 'Brazil')) %>%
+  dplyr::arrange(date) %>%
+  dplyr::group_by(date, location) %>%
+  dplyr::summarise(deaths = sum(new_deaths),
+            cases = sum(new_cases),
+            population = sum(population)) %>%
+  ungroup %>%
+  group_by(location) %>%
+  mutate(deaths_roll = zoo::rollmeanr(deaths, k = 7, fill = NA)) %>%
+  ungroup %>%
+  # mutate(population = mean(population)) %>%
+  mutate(p = deaths / population * 1000000) %>%
+  mutate(p_roll = deaths_roll / population * 1000000)
+
+ggplot(data = pd,
+       aes(x = date,
+           y = p_roll,
+           color = location)) +
+  geom_line() +
+  xlim(as.Date('2020-03-17'), as.Date(max(pd$date))) +
+  labs(x = 'Date',
+       y = 'New daily deaths per million (rolling 7 day average)') +
+  scale_color_manual(name = '',
+                     values = c('darkblue', 'darkorange')) 
+```
+
+
+### Not population adjusted
+
+```{r}
+
+pd <- iver %>% ungroup %>%
+  filter(location %in% c('Mexico', 'Brazil')) %>%
+  dplyr::arrange(date) %>%
+  dplyr::group_by(date, location) %>%
+  dplyr::summarise(deaths = sum(new_deaths),
+            cases = sum(new_cases),
+            population = sum(population)) %>%
+  ungroup %>%
+  group_by(location) %>%
+  mutate(deaths_roll = zoo::rollmeanr(deaths, k = 7, fill = NA)) %>%
+  ungroup %>%
+  # mutate(population = mean(population)) %>%
+  mutate(p = deaths / population * 1000000) %>%
+  mutate(p_roll = deaths_roll / population * 1000000)
+
+ggplot(data = pd,
+       aes(x = date,
+           y = deaths_roll,
+           color = location)) +
+  geom_line() +
+  xlim(as.Date('2020-03-17'), as.Date(max(pd$date))) +
+  labs(x = 'Date',
+       y = 'New daily deaths (rolling 7 day average)') +
+  scale_color_manual(name = '',
+                     values = c('darkblue', 'darkorange')) 
+```
+
+
+
+### Cases (population adjusted)
+
+```{r}
+
+pd <- iver %>% ungroup %>%
+  filter(location %in% c('Mexico', 'Brazil')) %>%
+  dplyr::arrange(date) %>%
+  dplyr::group_by(date, location) %>%
+  dplyr::summarise(deaths = sum(new_deaths),
+            cases = sum(new_cases),
+            population = sum(population)) %>%
+  ungroup %>%
+  group_by(location) %>%
+  mutate(deaths_roll = zoo::rollmeanr(deaths, k = 7, fill = NA)) %>%
+    mutate(cases_roll = zoo::rollmeanr(cases, k = 7, fill = NA)) %>%
+  ungroup %>%
+  # mutate(population = mean(population)) %>%
+  mutate(p = cases / population * 1000000) %>%
+  mutate(p_roll = cases_roll / population * 1000000)
+
+ggplot(data = pd,
+       aes(x = date,
+           y = cases_roll,
+           color = location)) +
+  geom_line() +
+  xlim(as.Date('2020-03-17'), as.Date(max(pd$date))) +
+  labs(x = 'Date',
+       y = 'New daily cases (rolling 7 day average) per million') +
+  scale_color_manual(name = '',
+                     values = c('darkblue', 'darkorange')) 
+```
+
+
+### Cases (not population adjusted)
+
+```{r}
+
+pd <- iver %>% ungroup %>%
+  filter(location %in% c('Mexico', 'Brazil')) %>%
+  dplyr::arrange(date) %>%
+  dplyr::group_by(date, location) %>%
+  dplyr::summarise(deaths = sum(new_deaths),
+            cases = sum(new_cases),
+            population = sum(population)) %>%
+  ungroup %>%
+  group_by(location) %>%
+  mutate(deaths_roll = zoo::rollmeanr(deaths, k = 7, fill = NA)) %>%
+    mutate(cases_roll = zoo::rollmeanr(cases, k = 7, fill = NA)) %>%
+  ungroup %>%
+  # mutate(population = mean(population)) %>%
+  mutate(p = cases / population * 1000000) %>%
+  mutate(p_roll = cases_roll / population * 1000000)
+
+ggplot(data = pd,
+       aes(x = date,
+           y = cases,
+           color = location)) +
+  geom_line() +
+  xlim(as.Date('2020-03-17'), as.Date(max(pd$date))) +
+  labs(x = 'Date',
+       y = 'New daily cases (rolling 7 day average)') +
+  scale_color_manual(name = '',
+                     values = c('darkblue', 'darkorange')) 
+```
+
+### Case fatality rate: Mexico vs Brazil
+
+
+```{r}
+
+pd <- iver %>%
+    filter(location %in% c('Mexico', 'Brazil')) %>%
+  group_by(date, location) %>%
+  summarise(deaths = sum(new_deaths),
+            cases = sum(new_cases)) %>%
+  ungroup %>%
+  group_by(location) %>%
+  mutate(deaths_roll = zoo::rollsumr(deaths, k = 7, fill = NA)) %>%
+  mutate(cases_roll = zoo::rollsumr(cases, k = 7, fill = NA)) %>%
+  mutate(p = deaths / cases * 100) %>%
+  mutate(p_roll = deaths_roll / cases_roll * 100)
+
+ggplot(data = pd,
+       aes(x = date,
+           y = p_roll,
+           color = location)) +
+  geom_line() +
+  xlim(as.Date('2020-03-17'), as.Date(max(pd$date))) +
+  labs(x = 'Date',
+       y = 'Deaths / cases (%)') +
+  scale_color_manual(name = '',
+                     values = c('darkblue', 'darkorange')) 
+```
