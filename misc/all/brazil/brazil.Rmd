@@ -233,6 +233,7 @@ Okay, that's cool, but hard to see trends. Let's again aggregate across countrie
 
 ```{r}
 pd <- iver %>% ungroup %>%
+  filter(!location %in% 'Peru') %>%
   dplyr::arrange(date) %>%
   dplyr::group_by(date, ivermectin) %>%
   dplyr::summarise(deaths = sum(new_deaths),
