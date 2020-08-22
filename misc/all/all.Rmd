@@ -43,6 +43,293 @@ library(tidyr)
 options(scipen = '999')
 ```
 
+```{r}
+# Matrix for Aleix Prat
+
+# All comarques
+pd <- muni %>% ungroup %>%
+  group_by(date, ComarcaDescripcio) %>%
+  summarise(new_cases = sum(confirmed_cases_non_cum),
+            pop = sum(pop)) %>%
+  ungroup %>%
+  arrange(date) %>%
+  group_by(ComarcaDescripcio) %>%
+  mutate(cases_roll = zoo::rollmeanr(new_cases, k = 7, fill = NA)) %>%
+  mutate(yp = new_cases / pop * 100000,
+         ypr = cases_roll / pop * 100000) %>%
+  mutate(ypl = sqrt(yp),
+         yprl = sqrt(ypl))
+
+# Make wide matrix
+pdw <- pd %>% dplyr::select(date, ComarcaDescripcio, yp) %>%
+  tidyr::spread(key = date, value = yp)
+write_csv(pdw, 'aleix_prat.csv')
+
+
+
+# Create weekly (instead of pd)
+weekly <- pd %>%
+   mutate(week = lubridate::week(date)) %>%
+  group_by(week, ComarcaDescripcio) %>%
+  mutate(week_start = min(date)) %>%
+  mutate(n_days = length(unique(date))) 
+
+ggplot(data = pd %>% filter(date >= '2020-03-11',
+                            date <= '2020-08-20'),
+       aes(x = date,
+           y = ComarcaDescripcio,
+           fill = ypl)) +
+  geom_tile(
+    # color = 'black',size = 0.2
+    ) +
+  databrew::theme_simple() +
+  scale_fill_gradientn(name = '', colors = colorRampPalette(c('beige',
+                                                              # 'grey',
+                                                              # 'yellow',
+                                                              # 'white',
+                                                              # 'orange',
+                                                              'darkorange', 
+                                                              'red',
+                                                              'darkred',
+                                                              'black'))(20),
+                       breaks = labeler, labels = round(labeler^2)) +
+  labs(x = '',
+       y = '',
+       title = 'Casos confirmats nous (per 100.000 habitants)',
+       caption = 'Aix-x: dia; Aix-y: comarca; Color: casos nous.\nDades de https://analisi.transparenciacatalunya.cat/. Gràfic: @joethebrew') +
+  theme(axis.text.y = element_text(size = 10))
+ggsave('~/Desktop/daily.png', width = 10, height = 6)
+
+```
+
+```{r}
+covid19::plot_day_zero(ylog = F,
+                       day0 = 1, 
+                       by_district = TRUE,
+                       calendar = TRUE,
+                       pop = TRUE,
+                       roll = 7,
+                       alpha = 0.7,
+                       point_size = 0.5,
+                       point_alpha =0.5,
+                       countries = c('Spain', 'Italy', 'US'),
+                       districts = c('Cataluña',  'Aragón', 'Madrid',  'Lombardia', 'Florida', 'New York', 'Emilia-Romagna'),
+                       cumulative = FALSE) +
+  labs(x = 'Date',
+       y = 'Cases per million',
+       title = 'Confirmed Covid-19 cases per 1,000,000 population\nRolling average of previous 7 days',
+       subtitle = 'Data from Italy / USA as of Aug 21 2020; Data from Spain as of Aug 16 2020') +
+  scale_color_colorblind(name = '',
+                         guide = guide_legend(reverse = TRUE))
+ggsave('~/Desktop/plot.png')
+```
+
+```{r}
+# US vs Spain
+
+pd <- owid %>%
+  filter(location %in% c('United States', 'Spain', 'Italy')) %>%
+  mutate(location = ifelse(location == 'United States', 'USA', location))
+ggplot(data = pd,
+       aes(x = date,
+           y = new_cases_smoothed_per_million,
+           color = location,
+           shape = location)) +
+  geom_line(size = 1) +
+  geom_point(data = pd %>% dplyr::filter(weekdays(date) == 'Friday') , size = 3) +
+  databrew::theme_simple() +
+  labs(x = 'Date',
+       y = 'Cases per million (smoothed)',
+       title = 'Daily cases per million population',
+       subtitle = '7-day rolling average',
+       caption = 'Chart: @joethebrew. Data source: Our World in Data.\nhttps://github.com/owid/covid-19-data/tree/master/public/data') +
+  theme(legend.position = 'right',
+        legend.title = element_blank()) +
+  scale_color_colorblind(name = '',
+                         guide = guide_legend(reverse = TRUE))
+  # scale_color_manual(name = '',
+  #                    values = c('black', 'red', 'blue'),
+  #                    guide = guide_legend(reverse = TRUE))
+ggsave('~/Desktop/comparsion.png', height = 4, width = 7.5)
+```
+
+```{r}
+# ECDC
+pd <- ecdc %>%
+  mutate(date = as.Date(dateRep, format = '%d/%m/%Y')) %>%
+  mutate(cum14 = Cumulative_number_for_14_days_of_COVID.19_cases_per_100000) %>%
+  mutate(country = countriesAndTerritories) %>%
+  arrange(date) %>%
+  filter(popData2019 >= 100000,
+         continentExp == 'Europe') %>%
+  group_by(country) %>%
+  mutate(deaths14 = zoo::rollsumr(deaths, 14, fill = NA)) %>%
+  ungroup %>%
+  mutate(deathsp = deaths14 / popData2019 * 100000) %>%
+  filter(date == '2020-08-19') %>%
+  arrange(desc(cum14)) 
+pd[1:5,]
+
+
+pd <- ecdc %>%
+  mutate(date = as.Date(dateRep, format = '%d/%m/%Y')) %>%
+  mutate(cum14 = Cumulative_number_for_14_days_of_COVID.19_cases_per_100000) %>%
+  mutate(country = countriesAndTerritories) %>%
+  arrange(date) %>%
+  filter(popData2019 >= 1000000) %>%
+  filter(continentExp == 'Europe') %>%
+  group_by(country) %>%
+  mutate(deaths14 = zoo::rollsumr(deaths, 14, fill = NA)) %>%
+  ungroup %>%
+  mutate(deathsp = deaths14 / popData2019 * 100000) %>%
+  arrange(desc(cum14)) %>%
+  filter(country %in% c('Spain', 'Italy')) 
+  # mutate(spain = ifelse(country == 'Spain', 'Spain',
+  #                       'Others'))
+
+ggplot(data = pd,
+       aes(x = date,
+           y = cum14,
+           color = country,
+           group = country)) +
+  geom_line(alpha = 0.7) + 
+  # geom_line(data = pd %>% filter(country == 'Spain'),
+  #      aes(x = date,
+  #          y = cum14,
+  #          color = spain,
+  #          group = country),
+  #      size = 2) +
+  scale_color_manual(name = '',
+                     values = c('black', 'red')) +
+  # scale_y_log10() +
+  databrew::theme_simple() +
+  labs(x = 'Fecha',
+        y = 'Casos por 100.000, últimos 14 días',
+        title = 'Incidencia Covid-19, Italia y España')
+ggsave('~/Desktop/esp_vs_ita.png')
+
+
+ggplot(data = pd,
+       aes(x = date,
+           y = deathsp,
+           color = country,
+           group = country)) +
+  geom_line(alpha = 0.7) + 
+  # geom_line(data = pd %>% filter(country == 'Spain'),
+  #      aes(x = date,
+  #          y = cum14,
+  #          color = spain,
+  #          group = country),
+  #      size = 2) +
+  scale_color_manual(name = '',
+                     values = c('black', 'red')) +
+  # scale_y_log10() +
+  databrew::theme_simple() +
+  labs(x = 'Fecha',
+        y = 'Muertos por 100.000, últimos 14 días',
+        title = 'Muertes Covid-19, Italia y España')
+ggsave('~/Desktop/deaths_esp_vs_ita.png')
+
+ggplot(data = pd,
+       aes(x = date,
+           y = deaths,
+           color = country,
+           group = country)) +
+  geom_line(alpha = 0.7) + 
+  # geom_line(data = pd %>% filter(country == 'Spain'),
+  #      aes(x = date,
+  #          y = cum14,
+  #          color = spain,
+  #          group = country),
+  #      size = 2) +
+  scale_color_manual(name = '',
+                     values = c('black', 'red')) +
+  # scale_y_log10() +
+  databrew::theme_simple() +
+  labs(x = 'Fecha',
+        y = 'Muertes diarias',
+        title = 'Muertes Covid-19, Italia y España')
+```
+
+
+```{r}
+pd <- ecdc %>%
+  mutate(date = as.Date(dateRep, format = '%d/%m/%Y')) %>%
+  mutate(cum14 = Cumulative_number_for_14_days_of_COVID.19_cases_per_100000) %>%
+  mutate(country = countriesAndTerritories) %>%
+  arrange(date) %>%
+  filter(popData2019 >= 10000000) %>%
+  group_by(country) %>%
+  mutate(deaths14 = zoo::rollsumr(deaths, 14, fill = NA)) %>%
+  ungroup %>%
+  mutate(deathsp = deaths14 / popData2019 * 100000) %>%
+  arrange(desc(cum14)) 
+
+
+ggplot(data = pd,
+       aes(x = date,
+           y = cum14,
+           group = country,
+           color = continentExp)) +
+  geom_line(alpha = 0.6) +
+  geom_line(data = pd %>% filter(country == 'Spain'),
+       aes(x = date,
+           y = cum14,
+           color = 'red',
+           group = country),
+       size = 2)
+```
+
+```{r}
+# Leaflet for municipi
+pd <- abs %>%
+  # filter(RegioSanitariaDescripcio %in% c('Barcelona Ciutat')) %>%
+    filter(RegioSanitariaDescripcio %in% c('Barcelona Ciutat',
+                                         'Metropolità Nord',
+                                         'Metropolità Sud')) %>%
+  arrange(date) %>%
+  group_by(ABSCodi) %>%
+  mutate(cases_roll = zoo::rollsumr(confirmed_cases_non_cum, k = 7, fill = NA)) %>%
+  mutate(incidence_week_100k = cases_roll / pop * 100000)
+
+map <- abs_shp
+right <- pd %>% filter(date == (Sys.Date()-3))
+map@data$ABSCodi <- map@data$CODIABS
+
+map@data <- left_join(map@data, right)
+# map <- map[!map@data$CODIABS %in% pd$ABSCodi,]
+map <- map[map@data$CODIABS %in% pd$ABSCodi |
+             map@data$NOMABS %in% c('Montcada i Reixac - 2',
+                                      'Montcada i Reixac - 1',
+                                    'Castellbisbal'),]
+
+map <- spTransform(map, "+init=epsg:4326")
+
+bins <- c(-1, 10, 20, 50, 100, 200, 500,Inf)
+library(RColorBrewer)
+library(leaflet)
+pal <- colorBin("YlOrRd", domain = map@data$incidence_week_100k, bins = bins)
+
+leaflet() %>%
+  addProviderTiles(providers$Stamen.TonerBackground) %>%
+  addPolygons(data = map,
+              
+  fillColor = ~pal(incidence_week_100k),
+  weight = 0.5,#2,
+  opacity = 0.2,
+  color = 'black', #"white",
+  # dashArray = "3",
+  popup = paste0(map@data$NOMABS, ' ', map@data$CODIABS),
+  # popup = paste0(map@data$ABSDescripcio, ': ', round(map@data$incidence_week_100k)),
+  fillOpacity = 0.9
+  )
+  
+```
+
+```{r}
+
+```
+
 US deaths and cases
 
 ```{r}
@@ -67,8 +354,11 @@ ggplot(data = pd,
   # scale_fill_manual(name = '',
   #                    values = c('black', 'red')) +
   labs(y = 'Cases',
-       x = 'Date') +
+       x = 'Date',
+       title = 'US Covid-19 Cases and deaths',
+       subtitle = 'Dot = daily observation; Line = 7 day rolling average') +
   theme(legend.position = 'bottom')
+ggsave('~/Desktop/us_cases_and_deaths.png')
 ```
 
 ```{r}
@@ -113,6 +403,14 @@ scq <- muni %>%
   filter(MunicipiDescripcio == 'Santa Coloma de Queralt') %>%
   dplyr::select(date, confirmed_cases_non_cum)
 
+ggplot(data = scq,
+       aes(x = date,y = confirmed_cases_non_cum )) +
+  geom_bar(stat = 'identity') +
+  databrew::theme_simple() +
+  xlim(Sys.Date() - 40, Sys.Date() - 1) +
+  labs(x = 'Data',
+       y = 'Casos confirmats')
+
 conca <- muni %>%
   filter(grepl('Conca de Barbe', ComarcaDescripcio)) 
 
@@ -147,10 +445,19 @@ pd <- muni %>% ungroup %>%
 
 
 labeler <- sqrt(c(0, 10, 50, 100, 200))
-pd <- pd %>% filter(date <= '2020-07-15')
+# pd <- pd %>% filter(date <= '2020-07-16')
 levs <- pd %>% filter(date == max(date)) %>% arrange(desc(ypr)) %>% .$ComarcaDescripcio
 pd$ComarcaDescripcio <- factor(pd$ComarcaDescripcio, levels = rev(levs))
-ggplot(data = pd %>% filter(date >= '2020-03-11'),
+
+# Create weekly (instead of pd)
+weekly <- pd %>%
+   mutate(week = lubridate::week(date)) %>%
+  group_by(week, ComarcaDescripcio) %>%
+  mutate(week_start = min(date)) %>%
+  mutate(n_days = length(unique(date))) %>%
+
+ggplot(data = pd %>% filter(date >= '2020-03-11',
+                            date <= '2020-08-18'),
        aes(x = date,
            y = ComarcaDescripcio,
            fill = ypl)) +
@@ -158,8 +465,8 @@ ggplot(data = pd %>% filter(date >= '2020-03-11'),
     # color = 'black',size = 0.2
     ) +
   databrew::theme_simple() +
-  scale_fill_gradientn(name = '', colors = colorRampPalette(c('white',
-                                                              'grey',
+  scale_fill_gradientn(name = '', colors = colorRampPalette(c('beige',
+                                                              # 'grey',
                                                               # 'yellow',
                                                               # 'white',
                                                               # 'orange',
@@ -170,12 +477,90 @@ ggplot(data = pd %>% filter(date >= '2020-03-11'),
                        breaks = labeler, labels = round(labeler^2)) +
   labs(x = '',
        y = '',
-       title = 'Casos confirmats nous (per 100.000 habitants)') +
+       title = 'Casos confirmats nous (per 100.000 habitants)',
+       caption = 'Aix-x: dia; Aix-y: comarca; Color: casos nous.\nDades de https://analisi.transparenciacatalunya.cat/. Gràfic: @joethebrew') +
   theme(axis.text.y = element_text(size = 10))
-ggsave('~/Desktop/daily.png')
+ggsave('~/Desktop/daily.png', width = 10, height = 6)
+
+```
+
+```{r}
+# Weekly version
+pd <- muni %>% ungroup %>%
+  group_by(date, ComarcaDescripcio) %>%
+  summarise(new_cases = sum(confirmed_cases_non_cum),
+            pop = sum(pop)) %>%
+  ungroup %>%
+  arrange(date) %>%
+  group_by(ComarcaDescripcio) %>%
+  mutate(cases_roll = zoo::rollmeanr(new_cases, k = 7, fill = NA)) %>%
+  mutate(yp = new_cases / pop * 100000,
+         ypr = cases_roll / pop * 100000) %>%
+  mutate(ypl = sqrt(yp),
+         yprl = sqrt(ypl))
 
 
+labeler <- sqrt(c(0, 10, 50, 100, 200))
+# pd <- pd %>% filter(date <= '2020-07-16')
+levs <- pd %>% filter(date == max(date)) %>% arrange(desc(ypr)) %>% .$ComarcaDescripcio
+pd$ComarcaDescripcio <- factor(pd$ComarcaDescripcio, levels = rev(levs))
 
+
+ggplot(data = pd %>% filter(date >= '2020-03-11',
+                            date <= '2020-08-18'),
+       aes(x = date,
+           y = ComarcaDescripcio,
+           fill = ypl)) +
+  geom_tile(
+    # color = 'black',size = 0.2
+    ) +
+  databrew::theme_simple() +
+  scale_fill_gradientn(name = '', colors = colorRampPalette(c('beige',
+                                                              # 'grey',
+                                                              # 'yellow',
+                                                              # 'white',
+                                                              # 'orange',
+                                                              'darkorange', 
+                                                              'red',
+                                                              'darkred',
+                                                              'black'))(20),
+                       breaks = labeler, labels = round(labeler^2)) +
+  labs(x = '',
+       y = '',
+       title = 'Casos confirmats nous (per 100.000 habitants)',
+       caption = 'Aix-x: dia; Aix-y: comarca; Color: casos nous.\nDades de https://analisi.transparenciacatalunya.cat/. Gràfic: @joethebrew') +
+  theme(axis.text.y = element_text(size = 10))
+ggsave('~/Desktop/weekly.png', width = 10, height = 6)
+
+```
+
+```{r}
+# 50 as the cut-off
+pd$fifty <- ifelse(pd$yp >= 50/7, '>50',
+                   ifelse(pd$yp >= 25/7, '25-50',
+                   '<25'))
+pd$fifty <- factor(pd$fifty,
+                   levels = c('<25', '25-50', '>50'))
+ggplot(data = pd %>% filter(date >= '2020-03-11'),
+       aes(x = date,
+           y = ComarcaDescripcio,
+           fill = fifty)) +
+  geom_tile(
+    # color = 'black',size = 0.2
+    ) +
+  databrew::theme_simple() +
+  scale_fill_manual(name = 'Incidència\nper 100.000',
+                    values = c('beige', 'darkorange', 'darkred')) +
+  labs(x = '',
+       y = '',
+       title = 'Casos nous\n(convertit en incidència setmanal per 100.000)',
+       caption = 'Eix-x: dia; Eix-y: comarca; Color: casos nous.\nDades de https://analisi.transparenciacatalunya.cat/. Gràfic: @joethebrew') +
+  theme(axis.text.y = element_text(size = 10))
+ggsave('~/Desktop/daily_binary.png', width = 10, height = 6)
+
+```
+
+```{r}
 # Not population-adjusted
 ggplot(data = pd,
        aes(x = date,
@@ -194,6 +579,389 @@ ggplot(data = pd,
        y = '',
        title = 'Casos confirmats nous') +
   theme(axis.text.y = element_text(size = 10))
+```
+
+```{r}
+# Anoia
+pd <- muni %>%
+  filter(ComarcaDescripcio == 'Anoia') %>%
+  group_by(date_month = lubridate::month(date),
+           date_day = lubridate::day(date)) %>%
+  summarise(cases = sum(confirmed_cases_non_cum)) %>%
+  filter(date_month %in% c(3, 7)) %>%
+  mutate(date_month = factor(date_month,
+                             levels = c('3', '7'),
+                             labels = c('Març', 'Juliol')))
+
+ggplot(data = pd,
+       aes(x = date_day,
+           y = cases,
+           group = date_month,
+           color = date_month)) +
+  geom_line()
+
+```
+
+```{r}
+# Top few
+# All comarques
+pd <- muni %>% ungroup %>%
+  group_by(date, ComarcaDescripcio) %>%
+  summarise(new_cases = sum(confirmed_cases_non_cum),
+            pop = sum(pop)) %>%
+  ungroup %>%
+  arrange(date) %>%
+  group_by(ComarcaDescripcio) %>%
+  mutate(cases_roll = zoo::rollmeanr(new_cases, k = 7, fill = NA)) %>%
+  mutate(yp = new_cases / pop * 100000,
+         ypr = cases_roll / pop * 100000) %>%
+  mutate(ypl = sqrt(yp),
+         yprl = sqrt(ypl))
+
+# ggplot(data = pd,
+#        aes(x = date,
+#            y = cases_roll)) +
+#   geom_point(aes(y = new_cases), alpha = 0.3,
+#              size = 0.3) +
+#   geom_line(color = 'red', size = 0.3) +
+#   facet_wrap(~ComarcaDescripcio, scales = 'free_y')
+
+
+labeler <- sqrt(c(0, 10, 50, 100, 200))
+# pd <- pd %>% filter(date <= '2020-07-16')
+levs <- pd %>% filter(date == max(date)) %>% arrange(desc(ypr)) %>% .$ComarcaDescripcio
+pd$ComarcaDescripcio <- factor(pd$ComarcaDescripcio, levels = (levs))
+# Keep only top few
+pd <- pd %>%
+  filter(ComarcaDescripcio %in% levs[1:10]) %>%
+  filter(date >= '2020-07-01')
+
+ggplot(data = pd,
+       aes(x = date,
+           y = yp,
+           color = ComarcaDescripcio)) +
+  geom_line()
+```
+
+# Small municipalities with cases in the last week
+
+```{r}
+# Above the 50 per 100.000 week
+pd <- muni %>%
+  filter(date >= (Sys.Date() - 7),
+         date <= (Sys.Date()-1)) %>%
+  # filter(pop < 4000) %>%
+  group_by(MunicipiDescripcio) %>%
+  summarise(cases = sum(confirmed_cases_non_cum),
+            pop = mean(pop),
+            id = dplyr::first(MunicipiCodi)) %>%
+  ungroup %>%
+  mutate(per100000week = (cases/pop) * 100000) %>%
+  arrange(desc(per100000week), pop)
+pd
+
+```
+
+```{r}
+library(maptools)
+catalan_codes <- c('43', '08', '25', '17')
+
+map <- municipios
+map <- map[substr(map@data$id, 1, 2) %in% catalan_codes, ]
+map_fort <- fortify(map, id = 'id' )# %>% mutate(id = as.numeric(as.character(id)))
+# Dot plot animation
+dot_plot <- function(the_date = Sys.Date(),
+                     out_dir = '~/Desktop/animation'){
+  if(!dir.exists(out_dir)){
+    dir.create(out_dir)
+  }
+  
+  map <- municipios
+  map <- map[substr(map@data$id, 1, 2) %in% catalan_codes, ]
+  
+  right <- muni %>%
+    mutate(id = MunicipiCodi) %>%
+    # filter(date == the_date) %>%
+    # filter(date %in% seq( (the_date - 6), the_date, 1)) %>%
+    group_by(id) %>%
+    summarise(cases = sum(confirmed_cases_non_cum[date == the_date], na.rm = TRUE),
+              cases1 = sum(confirmed_cases_non_cum[date == (the_date -1)], na.rm = TRUE),
+              cases2 = sum(confirmed_cases_non_cum[date == (the_date -2)], na.rm = TRUE))
+  
+  map@data <- map@data %>%
+    left_join(right) %>%
+    mutate(cases = ifelse(is.na(cases), 0, cases),
+           cases1 = ifelse(is.na(cases1), 0, cases1),
+           cases2 = ifelse(is.na(cases2), 0, cases2))
+  final <- map_fort %>%
+    left_join(right) %>%
+    mutate(cases = ifelse(is.na(cases), 0, cases),
+           cases1 = ifelse(is.na(cases1), 0, cases1),
+           cases2 = ifelse(is.na(cases2), 0, cases2))
+  
+  dots <- dotsInPolys(map, as.integer(map@data$cases))
+  dots1 <- dotsInPolys(map, as.integer(map@data$cases1))
+  dots2 <- dotsInPolys(map, as.integer(map@data$cases2))
+  
+  dots_df <- tibble(long = coordinates(dots)[,1],
+                    lat = coordinates(dots)[,2],
+                    ID  = dots$ID) 
+  dots_df1 <- tibble(long = coordinates(dots1)[,1],
+                    lat = coordinates(dots1)[,2],
+                    ID  = dots1$ID) 
+  dots_df2 <- tibble(long = coordinates(dots2)[,1],
+                    lat = coordinates(dots2)[,2],
+                    ID  = dots2$ID) 
+  g <- ggplot() +
+    geom_polygon(data = map_fort,
+                 aes(x = long,
+                     y = lat,
+                     group = group),
+                 fill = 'black',
+                 color = 'darkgrey',
+                 size = 0.1) +
+    geom_point(data = dots_df,
+               aes(x = long,
+                   y = lat),
+               color = 'red',
+               alpha = 0.9,
+               size = 0.15) +
+    geom_point(data = dots_df1,
+               aes(x = long,
+                   y = lat),
+               color = 'red',
+               alpha = 0.5,
+               size = 0.15) +
+        geom_point(data = dots_df2,
+               aes(x = long,
+                   y = lat),
+               color = 'red',
+               alpha = 0.2,
+               size = 0.15) +
+    labs(title = the_date) +
+    databrew::theme_simple() +
+    theme_map() +
+    coord_map() +
+    theme(plot.title = element_text(size = 22))
+  ggsave(paste0(out_dir, '/', the_date, '.png'),
+                height = 8,
+                width = 10)
+  
+}
+
+# dot_plot(the_date = Sys.Date() -5 )
+
+dates <- seq(as.Date('2020-03-10'), Sys.Date()-1, 1)
+# dates <- dates[weekdays(dates) == 'Tuesday']
+for(i in 1:length(dates)){
+  message(dates[i])
+  dot_plot(dates[i])
+}
+```
+
+```{r}
+# choropleth
+map <- municipios
+map <- map[substr(map@data$id, 1, 2) %in% catalan_codes, ]
+map_fort <- fortify(map, region  = 'id' )# %>% mutate(id = as.numeric(as.character(id)))
+# Dot plot animation
+choro_plot <- function(the_date = Sys.Date(),
+                     out_dir = '~/Desktop/animation_choro'){
+  if(!dir.exists(out_dir)){
+    dir.create(out_dir)
+  }
+
+  right <- muni %>%
+    mutate(id = MunicipiCodi) %>%
+    # filter(date == the_date) %>%
+    # filter(date %in% seq( (the_date - 6), the_date, 1)) %>%
+    group_by(id) %>%
+    summarise(cases = sum(confirmed_cases_non_cum[date == the_date], na.rm = TRUE),
+              cases1 = sum(confirmed_cases_non_cum[date == (the_date -1)], na.rm = TRUE),
+              cases2 = sum(confirmed_cases_non_cum[date == (the_date -2)], na.rm = TRUE),
+              cases_lag = sum(confirmed_cases_non_cum[date <= the_date & date >= (the_date-6)]),
+              pop = dplyr::first(pop)) %>%
+    ungroup %>%
+    mutate(cases_k = cases_lag / pop * 100000) %>%
+    mutate(cases = ifelse(is.na(cases), 0, cases),
+           cases1 = ifelse(is.na(cases1), 0, cases1),
+           cases2 = ifelse(is.na(cases2), 0, cases2),
+           cases_lag = ifelse(is.na(cases_lag), 0, cases_lag),
+           cases_k = ifelse(is.na(cases_k), 0, cases_k))
+
+  final <- map_fort %>%
+    left_join(right)
+  
+  final$category <- ifelse(final$cases_k == 0, 
+                                  '0',
+                                  ifelse(final$cases_k <= 20,
+                           '0-20',
+                           ifelse(final$cases_k <= 50,
+                                  '20-50',
+                                  ifelse(final$cases_k <= 200,
+                                         '50-200',
+                                         '200+'))))
+  final$category <- ifelse(is.na(final$category), 0, final$category)
+  final$category <- factor(final$category, 
+                           levels = c('0', '0-20','20-50', '50-200', '200+'))
+  g <- ggplot() +
+    geom_polygon(data = final,
+                 aes(x = long,
+                     y = lat,
+                     group = group,
+                     fill = category),
+                 color = 'black',
+                 size = 0.1) +
+    labs(title = the_date,
+         subtitle = 'Casos confirmats (darrers 7 dies) per 100.000 habitants' ) +
+    databrew::theme_simple() +
+    theme_map() +
+    coord_map() +
+    theme(plot.title = element_text(size = 24),
+          plot.subtitle = element_text(size = 20),
+          legend.text = element_text(size = 20)) +
+    scale_fill_manual(name = '',
+                         values = c( 'beige', 'yellow', 'darkorange', 'red', 'darkred')) +
+    # scale_fill_gradientn(name = 'Incidència setmanal\n(per 100.000)',
+    #                      colors = c('white', 'beige', 'darkorange', 'red', 'darkred'),
+    #                      breaks = c(0, 50, 200, 500),
+    #                      limits = c(0, (round(max(muni$confirmed_cases_non_cum / muni$pop * 100000)))),
+  # na.value = 'white')
+    theme(legend.position = 'bottom')
+  ggsave(paste0(out_dir, '/', the_date, '.png'),
+                height = 8,
+                width = 10)
+  
+}
+
+# dot_plot(the_date = Sys.Date() -5 )
+
+dates <- seq(as.Date('2020-03-10'), Sys.Date()-3, 1)
+dates <- dates[c(1:5, (length(dates) -20):length(dates))]
+# dates <- dates[weekdays(dates) == 'Tuesday']
+for(i in 1:length(dates)){
+  message(dates[i])
+  choro_plot(dates[i])
+}
+```
+
+```
+# Command line
+cd ~/Desktop/animation
+mogrify -resize 50% *.png
+convert -delay 20 -loop 0 *.png result.gif
+
+```
+
+# Time chart 
+
+```{r}
+pd <- muni %>% ungroup %>%
+  group_by(date, ComarcaDescripcio) %>%
+  summarise(new_cases = sum(confirmed_cases_non_cum),
+            pop = sum(pop)) %>%
+  ungroup %>%
+  arrange(date) %>%
+  group_by(ComarcaDescripcio) %>%
+  mutate(cases_roll = zoo::rollsumr(new_cases, k = 7, fill = NA)) %>%
+  mutate(yp = new_cases / pop * 100000,
+         ypr = cases_roll / pop * 100000) %>%
+  mutate(danger = ypr >= 50)
+
+library(ggrepel)
+make_plot <- function(the_date,
+                      out_dir = 'ts_chart'){
+  if(!dir.exists('ts_chart')){
+    dir.create('ts_chart')
+  }
+  sub_data <- pd %>%
+    filter(date <= the_date) %>%
+    filter(!is.na(danger))
+  label_df <- sub_data %>% filter(date == the_date) %>%
+    arrange(desc(ypr))
+  label_df <- label_df[1:3,]
+  label_df <- label_df %>% filter(ypr >= 50)
+  top3 <- sub_data %>% filter(ComarcaDescripcio %in% label_df$ComarcaDescripcio)
+  sub_data <- sub_data %>%
+    filter(!ComarcaDescripcio %in% label_df$ComarcaDescripcio)
+  ggplot() +
+    geom_line(alpha = 0.5,
+              data = sub_data,
+         aes(x = date,
+             y = ypr,
+             group = ComarcaDescripcio)) +
+    geom_line(alpha = 0.9,
+              data = top3,
+         aes(x = date,
+             y = ypr,
+             group = ComarcaDescripcio),
+         color = 'darkred') +
+    # scale_y_log10() +
+    geom_hline(yintercept = 50, color = 'blue') +
+    databrew::theme_simple() +
+    geom_point(data = label_df,
+              aes(x = date ,
+                  y = ypr),
+              color = 'darkred') +
+    geom_text(data = label_df,
+              aes(x = date + 0.5,
+                  y = ypr,
+                  label = ComarcaDescripcio)) +
+    labs(title = the_date,
+         x = 'Data',
+         y = 'Casos per 100.000 (darrers 7 dies)') +
+    theme(legend.position = 'none') +
+    xlim(min(sub_data$date),
+         max(sub_data$date) + 2) +
+    ylim(0, max(pd$ypr, na.rm = T)+1)
+  ggsave(paste0(out_dir, '/', the_date, '.png'),
+                height = 8,
+                width = 10) 
+}
+# dates <- sort(unique(pd$date))
+dates <- seq(as.Date('2020-03-10'),
+             Sys.Date()-1,
+             by = 1)
+for(i in 1:length(dates)){
+  make_plot(the_date = dates[i])
+}
+```
+
+```
+# Command line
+cd ts_chart
+mogrify -resize 50% *.png
+convert -delay 15 -loop 0 *.png result.gif
+
+```
+
+```{r}
+pd <- muni %>%
+  filter(date >= (Sys.Date() - 8)) %>%
+  filter(pop < 4000) %>%
+  group_by(MunicipiDescripcio) %>%
+  summarise(cases = sum(confirmed_cases_non_cum),
+            pop = mean(pop)) %>%
+  arrange(desc(cases), pop) %>%
+  filter(cases > 5)
+
+pd <- muni %>%
+  filter(date >= (Sys.Date() - 8)) %>%
+  group_by(MunicipiDescripcio) %>%
+  summarise(cases = sum(confirmed_cases_non_cum),
+            pop = mean(pop)) %>%
+  arrange(desc(cases), pop) %>%
+  filter(cases > 1)
+
+fit <- lm(cases ~ pop, data = pd)
+ggplot(data = pd,
+       aes(x = pop,
+           y = cases)) +
+  geom_point() +
+  scale_x_log10() +
+  scale_y_log10() +
+  geom_smooth(formula= y~x)
+
 ```
 
 ```{r}
@@ -221,9 +989,24 @@ pd <- muni %>% ungroup %>%
 
 
 labeler <- sqrt(c(0, 10, 50, 100, 200))
-pd <- pd %>% filter(date <= '2020-07-13')
+pd <- pd %>% filter(date <= (Sys.Date()-1))
 levs <- pd %>% filter(date == max(date)) %>% arrange(desc(ypr)) %>% .$MunicipiDescripcio
 pd$MunicipiDescripcio <- factor(pd$MunicipiDescripcio, levels = rev(levs))
+
+pd$fifty <- ifelse(pd$yp >= 50, '>50',
+                   ifelse(pd$yp >= 40, '40-50',
+                          ifelse(pd$yp >= 30, '30-40',
+                          ifelse(pd$yp >= 20, '20-30',
+                                 ifelse(pd$yp >= 10, '10-20',
+                                        ifelse(pd$yp > 0, '<10', '0'))))))
+pd$fifty <- factor(pd$fifty,
+                   levels = c('0',
+                              '<10',
+                              '10-20',
+                              '20-30',
+                              '30-40',
+                              '40-50',
+                              '>50'))
 
 comarques <- sort(unique(muni$ComarcaDescripcio))
 dir.create('~/Desktop/comarques')
@@ -236,19 +1019,24 @@ for(i in 1:length(comarques)){
   ggplot(data = sub_pd,
          aes(x = date,
              y = MunicipiDescripcio,
-             fill = yp)) +
-    geom_tile(color = 'white', size = 0.2) +
+             fill = yp
+             # fill = fifty
+             )) +
+    geom_tile(
+      color = 'white', size = 0.02
+      ) +
     databrew::theme_simple() +
-    scale_fill_gradientn(name = '', colors = colorRampPalette(c('white', 
-                                                                # 'lightblue', 
-                                                                # 'white',
-                                                                'darkorange', 
-                                                                'red',
-                                                                'black'))(20)) +
+    scale_fill_gradientn(name = '', colors = colorRampPalette(c('beige',                                                              'darkorange', 'red', 'darkred','black'))(20)) +
+    # scale_fill_manual(name = 'Incidència',
+    #                   values = colorRampPalette(c('white',
+    #                                               'beige',
+    #                              'darkorange',
+    #                              'darkred'))(length(unique(pd$fifty)))) +
     labs(x = '',
          y = '',
-         title = this_comarca)
-  ggsave(paste0('~/Desktop/comarques/', this_comarca, '.png'))
+         title = paste0(this_comarca, ': Casos nous confirmats per 100.000'))
+  ggsave(paste0('~/Desktop/comarques/', this_comarca, '.png'),
+         height = 6, width = 11.5)
 }
 
 
@@ -264,10 +1052,15 @@ pd <- muni %>%
 
 ggplot(data = pd,
        aes(x = date,
-           y = new_cases)) +
+           y = any_case)) +
   geom_point() +
   geom_line()
 ```
+
+
+
+
+
 
 ```{r}
 # Date of comarcas first case
@@ -316,7 +1109,7 @@ bw <- joined %>%
   ungroup %>%
   mutate(per_day = n / n_days)
 
-ggplot(data = bw,
+ggplot(data = bw %>% filter(date != max(date)),
        aes(x = date,
            y = age_group,
            fill = per_day)) +
@@ -333,9 +1126,56 @@ ggplot(data = bw,
          y = '',
          title = 'Catalunya: casos confirmats per edat',
          subtitle = 'Catalonia: confirmed cases by age',
-         caption = 'Aix-x: setmana; Aix-y: edat. Color: casos nous.\nDades de https://analisi.transparenciacatalunya.cat/. Gràfic: @joethebrew')
+         caption = 'Eix-x: setmana; Eix-y: edat. Color: casos nous.\nDades de https://analisi.transparenciacatalunya.cat/. Gràfic: @joethebrew')
 ggsave('~/Desktop/by_age.png', height = 4, width = 7)  
 
+```
+
+```{r}
+# Age by month
+pd <- edat %>%
+  mutate(date = as.Date(TipusCasData, format = '%d/%m/%Y'),
+         age_group = EdatRang) %>%
+  filter(!TipusCasDescripcio %in% c('Sospitós'),
+         !EdatRang %in% c('No classificat')) %>%
+  mutate(date_month = paste0(format(date, '%Y-%m'), '-01')) %>%
+  mutate(age = ifelse(age_group %in% c('60-69', '70-79', '80-89', '90+'), '>60', '<60')) %>%
+  group_by(date_month, age) %>%
+  summarise(n = sum(NumCasos, na.rm = TRUE),
+            days = length(unique(date))) %>%
+  group_by(date_month) %>% 
+  mutate(p = n / sum(n) * 100) %>%
+  filter(date_month >= '2020-03-01') %>%
+  mutate(date_label = format(as.Date(date_month), '%b')) %>%
+  mutate(date_label = factor(date_label, 
+                             levels = c('Mar','Apr','May','Jun','Jul', 'Aug'),
+                             labels = c('Mar','Abr','Mai','Jun','Jul', 'Ago'))) %>%
+  mutate(n = n / days) %>%
+  dplyr::select(-days) %>%
+  gather(key, value, n:p) %>%
+  mutate(key = ifelse(key == 'n',
+                      'Casos per dia',
+                      'Percentatge de tots els casos'))
+# pd <- pd %>% filter(date_label != 'Ago')
+
+ggplot(data = pd,
+       aes(x = date_label,
+           y = value,
+           color = age,
+           group = age)) +
+  geom_line(size = 2, alpha = 0.6) +
+  # geom_point(size = 2) +
+  databrew::theme_simple() +
+  facet_wrap(~key, scales = 'free_y') +
+  labs(y = '',
+       x = 'Mes',
+       title = 'Casos confirmats i edat: Covid-19 a Catalunya') +
+  scale_color_manual(name = 'Edat',
+                     values = c('darkorange',
+                                'purple')) +
+  theme(legend.position = 'top',
+        strip.text = element_text(size = 18))
+ggsave('~/Desktop/age2.png', width = 8.5, height = 5)
 ```
 
 ```{r}
